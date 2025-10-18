@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tài khoản của tôi - TechZone</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icon Library -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        // Cấu hình Tailwind CSS, đặt màu primary tương đương Bootstrap Blue (#0d6efd)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#0d6efd',
+                        'text': '#212529',
+                        'bg-light': '#f8f9fa'
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bg-light font-sans text-text">
+
+    <!-- Header (Navbar) -->
+    <header>
+        <nav class="bg-white shadow-md sticky top-0 z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <a class="text-2xl font-bold text-primary" href="index.html">
+                        <i class="bi bi-phone-vibrate-fill"></i> TechZone
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Sidebar Navigation (3/12 cột trên màn hình lớn) -->
+            <div class="lg:col-span-3">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                    <!-- User Info -->
+                    <div class="flex items-center mb-6 border-b border-gray-200 pb-4">
+                        <i class="bi bi-person-circle text-4xl sm:text-5xl text-primary mr-3"></i>
+                        <div>
+                            <small class="text-gray-500 text-sm">Tài khoản của</small>
+                            <h5 class="font-semibold text-lg">Nguyễn Văn A</h5>
+                        </div>
+                    </div>
+                    
+                    <!-- Navigation Links -->
+                    <nav class="flex flex-col space-y-1" id="account-nav-list">
+                        <!-- Nav Link 1: Thông tin tài khoản (Default Active) -->
+                        <button class="nav-link text-left w-full p-3 rounded-lg flex items-center transition duration-150 active-tab" 
+                                data-tab="account">
+                            <i class="bi bi-person-fill w-6 mr-2"></i> Thông tin tài khoản
+                        </button>
+                        
+                        <!-- Nav Link 2: Lịch sử đơn hàng -->
+                        <button class="nav-link text-left w-full p-3 rounded-lg flex items-center transition duration-150" 
+                                data-tab="orders">
+                            <i class="bi bi-box-seam-fill w-6 mr-2"></i> Lịch sử đơn hàng
+                        </button>
+                        
+                        <!-- Nav Link 3: Đổi mật khẩu -->
+                        <button class="nav-link text-left w-full p-3 rounded-lg flex items-center transition duration-150" 
+                                data-tab="password">
+                            <i class="bi bi-key-fill w-6 mr-2"></i> Đổi mật khẩu
+                        </button>
+                        
+                        <!-- Nav Link 4: Đăng xuất (Link) -->
+                        <a href="./DangKy.html" class="text-gray-700 hover:bg-gray-100 w-full p-3 rounded-lg flex items-center transition duration-150 mt-2">
+                            <i class="bi bi-box-arrow-left w-6 mr-2"></i> Đăng xuất
+                        </a>
+                    </nav>
+                </div>
+            </div>
+            
+            <!-- Tab Content Area (9/12 cột trên màn hình lớn) -->
+            <div class="lg:col-span-9">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                    <div id="tab-content-container">
+
+                        <!-- Tab 1: Thông tin tài khoản (Default Active) -->
+                        <div id="account-tab" class="tab-pane active-content">
+                            <h3 class="mb-6 text-2xl font-bold">Thông tin tài khoản</h3>
+                            <form>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Họ và tên</label>
+                                        <input type="text" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="Nguyễn Văn A">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                        <input type="email" class="w-full p-2 border border-gray-200 bg-gray-100 rounded-lg cursor-not-allowed" value="nguyenvana@email.com" disabled>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Số điện thoại</label>
+                                        <input type="text" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" value="0987654321">
+                                    </div>
+                                    <!-- Placeholder to keep grid layout -->
+                                    <div class="hidden md:block"></div> 
+                                </div>
+                                
+                                <div class="mb-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Địa chỉ</label>
+                                    <textarea class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" rows="3">123 Đường ABC, Phường XYZ, Quận 1, TP. Hồ Chí Minh</textarea>
+                                </div>
+                                <button type="submit" class="bg-primary hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 shadow-md">
+                                    Lưu thay đổi
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Tab 2: Lịch sử đơn hàng -->
+                        <div id="orders-tab" class="tab-pane hidden">
+                            <h3 class="mb-6 text-2xl font-bold">Lịch sử đơn hàng</h3>
+                            
+                            <!-- Order Card 1 (Đã giao hàng) -->
+                            <div class="border border-gray-200 rounded-xl mb-4 overflow-hidden transition duration-200 hover:shadow-lg">
+                                <div class="bg-bg-light p-4 border-b border-gray-200">
+                                    <div class="flex justify-between items-center flex-wrap">
+                                        <div class="text-sm sm:text-base mb-2 sm:mb-0">
+                                            <strong class="font-semibold">Mã đơn hàng:</strong> #123456
+                                        </div>
+                                        <div>
+                                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Đã giao hàng
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <small class="text-gray-500 block">Ngày đặt: 10/10/2025</small>
+                                </div>
+                                <div class="p-4">
+                                    <p class="mb-1 text-gray-700">1x iPhone 15 Pro Max 256GB</p>
+                                    <p class="mb-3 text-gray-700">1x Samsung Galaxy S23 Ultra</p>
+                                    <div class="flex justify-between items-center border-t pt-3">
+                                        <span>Tổng tiền: <strong class="text-red-600 font-bold">50.980.000₫</strong></span>
+                                        <a href="#" class="text-primary border border-primary hover:bg-primary hover:text-white text-sm font-medium py-1 px-4 rounded-lg transition duration-200">
+                                            Xem chi tiết
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order Card 2 (Đang xử lý) -->
+                            <div class="border border-gray-200 rounded-xl mb-4 overflow-hidden transition duration-200 hover:shadow-lg">
+                                <div class="bg-bg-light p-4 border-b border-gray-200">
+                                    <div class="flex justify-between items-center flex-wrap">
+                                        <div class="text-sm sm:text-base mb-2 sm:mb-0">
+                                            <strong class="font-semibold">Mã đơn hàng:</strong> #123321
+                                        </div>
+                                        <div>
+                                            <span class="inline-flex items-center px-3 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                                Đang xử lý
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <small class="text-gray-500 block">Ngày đặt: 12/10/2025</small>
+                                </div>
+                                <div class="p-4">
+                                    <p class="mb-3 text-gray-700">1x Xiaomi 13T Pro 5G</p>
+                                    <div class="flex justify-between items-center border-t pt-3">
+                                        <span>Tổng tiền: <strong class="text-red-600 font-bold">15.990.000₫</strong></span>
+                                        <a href="#" class="text-primary border border-primary hover:bg-primary hover:text-white text-sm font-medium py-1 px-4 rounded-lg transition duration-200">
+                                            Xem chi tiết
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tab 3: Đổi mật khẩu -->
+                        <div id="password-tab" class="tab-pane hidden">
+                            <h3 class="mb-6 text-2xl font-bold">Đổi mật khẩu</h3>
+                            <form class="max-w-md">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Mật khẩu cũ</label>
+                                    <input type="password" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Mật khẩu mới</label>
+                                    <input type="password" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                </div>
+                                <div class="mb-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Xác nhận mật khẩu mới</label>
+                                    <input type="password" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                                </div>
+                                <button type="submit" class="bg-primary hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 shadow-md">
+                                    Cập nhật mật khẩu
+                                </button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer (Tối giản) -->
+    <footer class="bg-gray-800 text-gray-400 py-4 mt-10">
+        <div class="max-w-7xl mx-auto px-4 text-center text-sm">
+            &copy; 2025 TechZone. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Lấy danh sách tất cả các nút điều hướng
+            const navButtons = document.querySelectorAll('.nav-link');
+            
+            // Hàm xử lý việc chuyển tab
+            const switchTab = (tabId, navElement) => {
+                // 1. Ẩn tất cả nội dung tab
+                document.querySelectorAll('.tab-pane').forEach(pane => {
+                    pane.classList.add('hidden');
+                    pane.classList.remove('block');
+                });
+
+                // 2. Xóa trạng thái active khỏi tất cả các nút điều hướng
+                navButtons.forEach(link => {
+                    link.classList.remove('bg-primary', 'text-white', 'font-semibold', 'active-tab');
+                    link.classList.add('text-gray-700', 'hover:bg-gray-100');
+                });
+
+                // 3. Hiển thị nội dung tab được chọn
+                const targetPane = document.getElementById(tabId + '-tab');
+                if (targetPane) {
+                    targetPane.classList.remove('hidden');
+                    targetPane.classList.add('block');
+                }
+
+                // 4. Đặt trạng thái active cho nút được click
+                navElement.classList.add('bg-primary', 'text-white', 'font-semibold', 'active-tab');
+                navElement.classList.remove('text-gray-700', 'hover:bg-gray-100');
+            };
+
+            // Gán sự kiện click cho các nút
+            navButtons.forEach(button => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // Thiết lập trạng thái ban đầu cho các nút không active
+                if (!button.classList.contains('active-tab')) {
+                    button.classList.add('text-gray-700', 'hover:bg-gray-100');
+                } else {
+                    // Thiết lập trạng thái ban đầu cho nút active
+                    button.classList.add('bg-primary', 'text-white', 'font-semibold');
+                    // Ensure the correct tab content is shown initially
+                    switchTab(tabId, button);
+                }
+
+                button.addEventListener('click', () => {
+                    switchTab(tabId, button);
+                });
+            });
+
+            // Hiển thị tab mặc định (Thông tin tài khoản) nếu chưa được set
+            if (document.querySelector('.active-tab')) {
+                const defaultButton = document.querySelector('.active-tab');
+                const defaultTabId = defaultButton.getAttribute('data-tab');
+                switchTab(defaultTabId, defaultButton);
+            }
+        });
+    </script>
+</body>
+</html>

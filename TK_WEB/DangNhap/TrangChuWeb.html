@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechZone - Cửa hàng điện thoại hàng đầu</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#0d6efd', /* Tương đương --primary-color */
+                        'secondary': '#6c757d', /* Tương đương --secondary-color */
+                        'text': '#212529', /* Tương đương --text-color */
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS tuỳ chỉnh cho Hero Banner và Product Card (giữ lại) */
+        .hero-banner {
+            height: 500px;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://source.unsplash.com/1600x900/?smartphone,technology') no-repeat center center;
+            background-size: cover;
+        }
+
+        .product-card img {
+            height: 250px;
+            object-fit: contain;
+        }
+        
+        /* Hiệu ứng filter cho logo brand (giữ lại) */
+        .brand-logo img {
+            filter: grayscale(100%);
+            transition: filter .3s;
+        }
+        .brand-logo img:hover {
+            filter: grayscale(0%);
+        }
+    </style>
+</head>
+<body class="font-sans text-text">
+
+    <header>
+        <nav class="sticky top-0 z-50 bg-white shadow-md">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <a class="flex-shrink-0 text-2xl font-bold text-primary" href="index.html">
+                        <i class="bi bi-phone-vibrate-fill"></i> TechZone
+                    </a>
+                    
+                    <div class="hidden lg:flex lg:space-x-8">
+                        <a href="index.html" class="text-primary font-semibold border-b-2 border-primary py-2 px-1">Trang chủ</a>
+                        
+                        <div class="relative group">
+                            <button class="text-gray-700 hover:text-primary py-2 px-1 inline-flex items-center">
+                                Sản phẩm <i class="bi bi-chevron-down text-xs ml-1"></i>
+                            </button>
+                            <ul class="absolute hidden group-hover:block bg-white shadow-lg py-2 w-40 z-10 rounded-md">
+                                <li><a class="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Apple</a></li>
+                                <li><a class="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Samsung</a></li>
+                                <li><a class="block px-4 py-2 text-gray-700 hover:bg-gray-100" href="#">Xiaomi</a></li>
+                            </ul>
+                        </div>
+                        
+                        <a href="../khuyenmai.html" class="text-gray-700 hover:text-primary py-2 px-1">Khuyến mãi</a>
+                        <a href="./tintuc.html" class="text-gray-700 hover:text-primary py-2 px-1">Tin tức</a>
+                    </div>
+
+                    <div class="flex items-center space-x-4">
+                        
+                        <div class="hidden xl:flex items-center border border-gray-300 rounded-md overflow-hidden bg-gray-50">
+                            <input type="search" placeholder="Tìm kiếm sản phẩm..." class="py-1 px-3 text-sm focus:outline-none w-48 bg-transparent">
+                            <button class="bg-primary hover:bg-blue-700 text-white p-2 transition duration-200">
+                                <i class="bi bi-search text-sm"></i>
+                            </button>
+                        </div>
+
+                        <a href="./GioHang.html" class="relative text-gray-700 hover:text-primary">
+                            <i class="bi bi-cart3 text-xl"></i>
+                            <span class="absolute top-0 right-0 -mt-1 -mr-2 text-xs bg-red-600 text-white rounded-full h-5 w-5 flex items-center justify-center">2</span>
+                        </a>
+
+                        <button class="xl:hidden text-gray-700 hover:text-primary p-2">
+                             <i class="bi bi-search text-xl"></i>
+                        </button>
+
+                        <a href="./DangKy.html" class="hidden sm:inline-block border border-primary text-primary hover:bg-primary hover:text-white transition duration-200 py-1 px-3 rounded-md">Đăng nhập</a>
+                         <a href="./dn_ad.html" class="hidden sm:inline-block border border-primary text-primary hover:bg-primary hover:text-white transition duration-200 py-1 px-3 rounded-md">admin</a>
+                    </div>
+                    
+                    <button class="lg:hidden p-2 rounded-md text-gray-700 hover:text-primary">
+                        <i class="bi bi-list text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-banner flex items-center justify-center text-center">
+            <div class="container mx-auto px-4">
+                <h1 class="text-5xl sm:text-6xl font-extrabold mb-4 text-white drop-shadow-lg">Sắm đồ công nghệ, giá siêu hời</h1>
+                <p class="text-xl sm:text-2xl mb-8 text-white">Khám phá ngay những mẫu điện thoại mới nhất</p>
+                <a href="#" class="bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 inline-block">Mua sắm ngay</a>
+            </div>
+        </section>
+
+        <section class="py-12">
+            <div class="container mx-auto px-4">
+                <h2 class="text-center text-3xl font-bold mb-10 text-text">🔥 SẢN PHẨM BÁN CHẠY NHẤT</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <div class="col">
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col product-card hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
+                            <img src="https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumbnew-600x600.jpg" class="w-full" alt="iPhone 15 Pro Max">
+                            <div class="p-4 flex flex-col flex-grow">
+                                <h5 class="text-lg font-semibold mb-2">iPhone 15 Pro Max 256GB</h5>
+                                <div class="mt-auto">
+                                    <p class="text-2xl font-bold text-primary mb-3">
+                                        28.990.000₫ 
+                                        <span class="text-base font-normal text-secondary line-through ml-2">34.990.000₫</span>
+                                    </p>
+                                    <a href="chi-tiet-san-pham.html" class="block w-full text-center bg-primary hover:bg-blue-700 text-white font-medium py-2 rounded-md transition duration-200">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col product-card hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
+                            <img src="https://cdn.tgdd.vn/Products/Images/42/283818/samsung-galaxy-s23-ultra-thumb-xanh-600x600.jpg" class="w-full" alt="Samsung Galaxy S23 Ultra">
+                            <div class="p-4 flex flex-col flex-grow">
+                                <h5 class="text-lg font-semibold mb-2">Samsung Galaxy S23 Ultra 5G</h5>
+                                <div class="mt-auto">
+                                    <p class="text-2xl font-bold text-primary mb-3">
+                                        21.990.000₫ 
+                                        <span class="text-base font-normal text-secondary line-through ml-2">31.990.000₫</span>
+                                    </p>
+                                    <a href="chi-tiet-san-pham.html" class="block w-full text-center bg-primary hover:bg-blue-700 text-white font-medium py-2 rounded-md transition duration-200">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col">
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col product-card hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
+                            <img src="https://cdn.tgdd.vn/Products/Images/42/313431/xiaomi-13t-pro-thumb-xanh-600x600.jpg" class="w-full" alt="Xiaomi 13T Pro">
+                            <div class="p-4 flex flex-col flex-grow">
+                                <h5 class="text-lg font-semibold mb-2">Xiaomi 13T Pro 5G</h5>
+                                <div class="mt-auto">
+                                    <p class="text-2xl font-bold text-primary mb-3">15.990.000₫</p>
+                                    <a href="chi-tiet-san-pham.html" class="block w-full text-center bg-primary hover:bg-blue-700 text-white font-medium py-2 rounded-md transition duration-200">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col product-card hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
+                            <img src="https://cdn.tgdd.vn/Products/Images/42/289662/oppo-reno10-thumb-blue-600x600.jpg" class="w-full" alt="OPPO Reno10">
+                            <div class="p-4 flex flex-col flex-grow">
+                                <h5 class="text-lg font-semibold mb-2">OPPO Reno10 5G 256GB</h5>
+                                <div class="mt-auto">
+                                    <p class="text-2xl font-bold text-primary mb-3">9.490.000₫</p>
+                                    <a href="chi-tiet-san-pham.html" class="block w-full text-center bg-primary hover:bg-blue-700 text-white font-medium py-2 rounded-md transition duration-200">Xem chi tiết</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <section class="py-12 bg-gray-100">
+            <div class="container mx-auto px-4">
+                <h2 class="text-center text-3xl font-bold mb-10 text-text">THƯƠNG HIỆU HÀNG ĐẦU</h2>
+                <div class="flex flex-wrap justify-center items-center -mx-4">
+                    <div class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-4 mb-8 brand-logo text-center">
+                        <img src="https://cdn.worldvectorlogo.com/logos/apple-11.svg" alt="Apple" class="max-h-12 mx-auto transition duration-300">
+                    </div>
+                    <div class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-4 mb-8 brand-logo text-center">
+                        <img src="https://cdn.worldvectorlogo.com/logos/samsung-5.svg" alt="Samsung" class="max-h-12 mx-auto transition duration-300">
+                    </div>
+                    <div class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-4 mb-8 brand-logo text-center">
+                        <img src="https://cdn.worldvectorlogo.com/logos/xiaomi-2.svg" alt="Xiaomi" class="max-h-12 mx-auto transition duration-300">
+                    </div>
+                    <div class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-4 mb-8 brand-logo text-center">
+                        <img src="https://cdn.worldvectorlogo.com/logos/oppo-logo.svg" alt="Oppo" class="max-h-12 mx-auto transition duration-300">
+                    </div>
+                    <div class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-4 mb-8 brand-logo text-center">
+                        <img src="https://cdn.worldvectorlogo.com/logos/vivo-1.svg" alt="Vivo" class="max-h-12 mx-auto transition duration-300">
+                    </div>
+                    <div class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-4 mb-8 brand-logo text-center">
+                        <img src="https://cdn.worldvectorlogo.com/logos/realme-1.svg" alt="Realme" class="max-h-12 mx-auto transition duration-300">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-text text-gray-400 pt-12 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <div class="col">
+                    <h5 class="text-white text-xl font-bold mb-4">TechZone</h5>
+                    <p>Chuyên cung cấp các sản phẩm điện thoại thông minh chính hãng với giá tốt nhất thị trường, cùng dịch vụ hậu mãi chu đáo.</p>
+                </div>
+                
+                <div class="col">
+                    <h5 class="text-white text-xl font-bold mb-4">Liên kết</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition duration-200">Sản phẩm</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-200">Giới thiệu</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-200">Liên hệ</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col">
+                    <h5 class="text-white text-xl font-bold mb-4">Chính sách</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition duration-200">Chính sách bảo hành</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-200">Chính sách đổi trả</a></li>
+                        <li><a href="#" class="hover:text-white transition duration-200">Chính sách giao hàng</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col">
+                    <h5 class="text-white text-xl font-bold mb-4">Kết nối với chúng tôi</h5>
+                    <div class="flex space-x-4 social-icons">
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-200"><i class="bi bi-facebook text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-200"><i class="bi bi-instagram text-2xl"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition duration-200"><i class="bi bi-tiktok text-2xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="border-gray-700 my-8">
+            
+            <div class="text-center">
+                <p>&copy; 2025 TechZone. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

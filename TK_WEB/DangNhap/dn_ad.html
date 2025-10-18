@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập Quản trị - TechZone Admin</title>
+    <!-- Tải Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Icon (Bootstrap Icons) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <script>
+        // Cấu hình Tailwind để sử dụng màu Primary (xanh dương) và font Inter
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Định nghĩa màu primary và màu cho header tối (dark-header)
+                        'primary': '#0d6efd',
+                        'primary-dark': '#0b5ed7',
+                        'dark-header': '#343a40',
+                        'bg-light': '#f8f9fa',
+                        'text-dark': '#212529',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-bg-light font-sans">
+
+    <!-- LOGIN CONTAINER: Căn giữa theo cả chiều ngang và dọc -->
+    <div class="min-h-screen flex items-center justify-center p-4 sm:p-8">
+        <!-- LOGIN CARD -->
+        <div class="w-full max-w-md bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden">
+            
+            <!-- CARD HEADER -->
+            <div class="bg-dark-header text-white text-center text-xl font-bold py-4 px-6 rounded-t-xl">
+                <i class="bi bi-shield-lock-fill mr-2"></i> HỆ THỐNG QUẢN TRỊ
+            </div>
+            
+            <!-- CARD BODY -->
+            <div class="p-6 sm:p-8">
+                <div class="text-center mb-6">
+                    <!-- Logo TechZone -->
+                    <a href="index.html" class="text-3xl font-extrabold text-text-dark">
+                        <i class="bi bi-phone-vibrate-fill text-primary"></i> TechZone
+                    </a>
+                </div>
+                
+                <form>
+                    <div class="mb-4">
+                        <label for="adminEmail" class="block text-sm font-medium text-gray-700 mb-1">Email hoặc Tên đăng nhập</label>
+                        <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition duration-150" 
+                               id="adminEmail" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-1">Mật khẩu</label>
+                        <input type="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition duration-150" 
+                               id="adminPassword" required>
+                    </div>
+
+                    <div class="flex justify-between items-center mb-6 text-sm">
+                        <div class="flex items-center">
+                            <input class="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary" type="checkbox" value="" id="rememberMe">
+                            <label class="ml-2 text-gray-600" for="rememberMe">
+                                Ghi nhớ đăng nhập
+                            </label>
+                        </div>
+                        <a href="#" class="text-primary hover:text-primary-dark text-sm font-medium transition duration-150">Quên mật khẩu?</a>
+                    </div>
+
+                    <div class="w-full">
+                        <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 rounded-lg transition duration-200 shadow-md hover:shadow-lg">
+                           <a href="../TrangChuadmin.html">Đăng nhập</a>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="text-center mt-6">
+                    <a href="./TrangChuWeb.html" class="text-gray-500 hover:text-primary text-sm font-medium transition duration-150">
+                        <i class="bi bi-arrow-left-circle mr-1"></i> Quay về trang chủ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
