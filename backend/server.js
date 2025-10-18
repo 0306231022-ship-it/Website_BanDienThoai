@@ -1,9 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const DangNhap = require('./Routers/DangNhap'); // ✅ đường dẫn đúng nếu thư mục Routers nằm cùng cấp với server.js
-
 const app = express();
 const port = 5000;
 
