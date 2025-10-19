@@ -1,83 +1,19 @@
-        :root {
-            --primary-color: #0d6efd; /* Màu xanh dương chủ đạo */
-            --secondary-color: #6c757d;
-            --text-color: #212529;
-        }
+.hero-banner {
+    height: 500px;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://source.unsplash.com/1600x900/?smartphone,technology') no-repeat center center;
+    background-size: cover;
+}
 
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+.product-card img {
+    height: 250px;
+    object-fit: contain;
+}
 
-        .navbar-brand {
-            font-weight: bold;
-        }
-        
-        /* --- Hero Banner --- */
-        .hero-banner {
-            height: 500px;
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://source.unsplash.com/1600x900/?smartphone,technology') no-repeat center center;
-            background-size: cover;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        .hero-banner h1 {
-            font-size: 3.5rem;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-        }
-
-        /* --- Product Card --- */
-        .product-card {
-            transition: transform .2s, box-shadow .2s;
-            border: 1px solid #eee;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        .product-card img {
-            height: 250px;
-            object-fit: contain;
-            padding: 1rem;
-        }
-        .product-price {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        .old-price {
-            text-decoration: line-through;
-            font-size: 1rem;
-            color: var(--secondary-color);
-            margin-left: 0.5rem;
-        }
-
-        /* --- Brands Section --- */
-        .brand-logo img {
-            max-height: 50px;
-            filter: grayscale(100%);
-            transition: filter .3s;
-        }
-        .brand-logo img:hover {
-            filter: grayscale(0%);
-        }
-        
-        /* --- Footer --- */
-        .footer {
-            background-color: var(--text-color);
-            color: #ccc;
-        }
-        .footer a {
-            color: #ccc;
-            text-decoration: none;
-        }
-        .footer a:hover {
-            color: white;
-        }
-        .footer .social-icons i {
-            font-size: 1.5rem;
-            margin-right: 1rem;
-        }
+/* Hiệu ứng filter cho logo brand (giữ lại) */
+.brand-logo img {
+    filter: grayscale(100%);
+    transition: filter .3s;
+}
+.brand-logo img:hover {
+    filter: grayscale(0%);
+}
