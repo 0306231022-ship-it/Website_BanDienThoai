@@ -1,25 +1,14 @@
 const express = require('express');
 const db = require('../src/config/db');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
 const router = express.Router();
-const app = express();
-
-app.use(cookieParser());
-app.use(session({
-  secret: 'bi-mat-cua-ban',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { maxAge: 3600000 } 
-}));
 
 router.post('/', (req, res) => {
   const { action, data } = req.body;
+  console.log('🟢 Action nhận được:', action);
+  console.log('🟢 Data:', data);
 
   switch (action) {
-
-    // 🟩 Kiểm tra đăng nhập người dùng (từ cookie/session)
-    case 'LayDLDN_US':
+    case 'KiemTraNguoiDung':
       const taiKhoan1 = req.cookies.TaiKhoan;   
       const taiKhoan2 = req.session.TaiKhoan;   
       if (taiKhoan1 || taiKhoan2) {
@@ -29,7 +18,6 @@ router.post('/', (req, res) => {
       }
       break;
 
-    // 🟨 Kiểm tra đăng nhập admin
     case 'KT_DL_AD':
       const taiKhoan3 = req.cookies.TaiKhoan_admin;   
       const taiKhoan4 = req.session.TaiKhoan_admin;   
@@ -40,7 +28,6 @@ router.post('/', (req, res) => {
       }
       break;
 
-    // 🟥 Đăng nhập người dùng
     case 'DN_US':
       const { Email, MatKhau } = data;
       const sql = 'SELECT * FROM nguoidung WHERE EMAIL=? AND MATKHAU=? LIMIT 1';
@@ -52,14 +39,12 @@ router.post('/', (req, res) => {
           }]);
         } else {
           if (rows.length > 0) {
-            // ✅ Có người dùng khớp
             res.json([{ 
               ThanhCong: true,
               TinNhan: "Đăng nhập thành công!",
               DuLieu: rows[0]
             }]);
           } else {
-            // ❌ Không tìm thấy user
             res.json([{ 
               ThanhCong: false,
               TinNhan: "Email hoặc mật khẩu không đúng!" 
@@ -76,4 +61,3 @@ router.post('/', (req, res) => {
 });
 
 module.exports = router;
-

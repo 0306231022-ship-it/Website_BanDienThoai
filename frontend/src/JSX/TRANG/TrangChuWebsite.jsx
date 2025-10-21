@@ -5,10 +5,10 @@ import Footer from '../ThanhPhan/Website/Footer';
 import KhuyenMaiPage from '../ThanhPhan/Website/SanPhamKhuyenMai';
 import NewsPage from '../ThanhPhan/Website/TinTuc';
 import SanPhamTrangChu from '../ThanhPhan/Website/SanPhamTrangChu';
+import AccountDashboard from '../ThanhPhan/NguoiDung/TrangChuNguoiDung';
 import ShoppingCart from '../ThanhPhan/Website/GioHang';
-
+import DangNhap from './DangNhapNguoiDung';
 import { useAppContext } from '../../CONTEXT/TrangChuWrb';
-
 function TrangChuWeb() {
     const { state } = useAppContext();
     const renderPage = () => {
@@ -21,6 +21,10 @@ function TrangChuWeb() {
                 return <NewsPage />;
             case 'GioHang' :
                 return <ShoppingCart/>
+            case 'TrangChu_NguoiDung' :
+                return <AccountDashboard/>
+            case 'DangNhap_NguoiDung' :
+                return <DangNhap/>
             default:
                 return <p>Đang cập nhật hệ thống....</p>;
         }

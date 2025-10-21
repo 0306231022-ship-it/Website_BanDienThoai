@@ -1,12 +1,34 @@
 import React from "react";
 import { useAppContext } from "../../../CONTEXT/TrangChuWrb";
+import * as API from '../../../JS/API/API';
+
 
 function Menu() {
     const { state, dispatch } = useAppContext();
 
-    const ChuyenTrang = (tenTrang) => {
-        dispatch({ type: "SET_TRANG", payload: tenTrang });
-    };
+    const ChuyenTrang = async(tenTrang,TrangThai) => {
+        if(TrangThai==="DangNhap"){
+            const yeucau={
+                NhiemVu:'KiemTraNguoiDung',
+                DiaChi:1
+            };
+            const KiemTra = await API.CallAPI(undefined,yeucau);
+            if(KiemTra.ThanhCong){
+                 dispatch({ type: "SET_TRANG", payload: 'TrangChu_NguoiDung' });
+            }else{
+                 dispatch({ type: "SET_TRANG", payload: tenTrang });
+            }
+        }else{
+            dispatch({ type: "SET_TRANG", payload: tenTrang });
+        }
+        
+        
+        
+                   
+    }
+
+       
+    
 
     const isActive = (tenTrang) => state.Trang === tenTrang;
 
@@ -137,6 +159,8 @@ function Menu() {
                     <button className="lg:hidden p-2 rounded-md text-gray-700 hover:text-primary">
                         <i className="bi bi-list text-2xl"></i>
                     </button>
+                    
+                    
                 </div>
             </div>
         </nav>
