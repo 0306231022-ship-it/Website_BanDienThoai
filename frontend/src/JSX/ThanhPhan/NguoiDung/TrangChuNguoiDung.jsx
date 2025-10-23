@@ -1,8 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { 
-    BiPhoneVibrateFill, BiPersonCircle, BiPersonFill, BiBoxSeamFill, 
-    BiKeyFill, BiLogOut
-} from 'react-icons/bi';
+
 
 // Lưu ý: Các màu 'primary', 'text', 'bg-light' PHẢI được định nghĩa trong tailwind.config.js của bạn.
 // Ví dụ:
@@ -36,9 +33,9 @@ const AccountDashboard = () => {
 
     // Dữ liệu cho Sidebar Navigation
     const navItems = [
-        { id: 'account', icon: BiPersonFill, label: 'Thông tin tài khoản' },
-        { id: 'orders', icon: BiBoxSeamFill, label: 'Lịch sử đơn hàng' },
-        { id: 'password', icon: BiKeyFill, label: 'Đổi mật khẩu' },
+        { id: 'account', icon: "", label: 'Thông tin tài khoản' },
+        { id: 'orders', icon: "", label: 'Lịch sử đơn hàng' },
+        { id: 'password', icon: "", label: 'Đổi mật khẩu' },
     ];
 
     // --- Component Tab Nội Dung ---
@@ -178,7 +175,7 @@ const AccountDashboard = () => {
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="flex justify-between items-center h-16">
                             <a className="text-2xl font-bold text-primary flex items-center" href="index.html">
-                                <BiPhoneVibrateFill className="mr-2" /> TechZone
+                               TechZone
                             </a>
                         </div>
                     </div>
@@ -194,7 +191,7 @@ const AccountDashboard = () => {
                         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
                             {/* User Info */}
                             <div className="flex items-center mb-6 border-b border-gray-200 pb-4">
-                                <BiPersonCircle className="text-4xl sm:text-5xl text-primary mr-3" />
+                             
                                 <div>
                                     <small className="text-gray-500 text-sm">Tài khoản của</small>
                                     <h5 className="font-semibold text-lg">Nguyễn Văn A</h5>
@@ -227,7 +224,7 @@ const AccountDashboard = () => {
 
                                 {/* Link Đăng xuất */}
                                 <a href="./DangKy.html" className="text-gray-700 hover:bg-red-50 hover:text-red-600 w-full p-3 rounded-lg flex items-center transition duration-150 mt-2 border-t pt-3 border-gray-100">
-                                    <BiLogOut className="w-6 mr-2 text-xl" /> Đăng xuất
+                                    Đăng xuất
                                 </a>
                             </nav>
                         </div>

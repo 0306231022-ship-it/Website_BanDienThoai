@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppContext } from "../../../CONTEXT/TrangChuWrb";
 import * as API from '../../../JS/API/API';
-
+import { Link } from "react-router-dom";
 
 function Menu() {
     const { state, dispatch } = useAppContext();
@@ -143,16 +143,7 @@ function Menu() {
                         >
                             Đăng nhập
                         </button>
-                        <button
-                            onClick={() => ChuyenTrang("Admin")}
-                            className={`hidden sm:inline-block py-1 px-3 rounded-md border ${
-                                isActive("Admin")
-                                    ? "border-b-2 border-blue-600 text-blue-700"
-                                    : "text-primary border-primary"
-                            }`}
-                        >
-                            Admin
-                        </button>
+                        <Link to="/admin" className={`hidden sm:inline-block py-1 px-3 rounded-md border `}>Admin</Link>
                     </div>
 
                     {/* Mobile Menu Icon */}

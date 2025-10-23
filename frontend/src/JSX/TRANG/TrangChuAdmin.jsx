@@ -1,74 +1,26 @@
 import React, { useEffect } from 'react';
-import { Line } from 'react-chartjs-2';
+import { useNavigate } from "react-router-dom";
 import '../../CSS/TrangChuAD.css';
-import {
-    BsShieldShaded, BsSpeedometer2, BsBoxSeam, BsReceipt, BsPeopleFill, BsGearFill,
-    BsBoxArrowLeft, BsBellFill, BsPersonCircle, BsCartCheck, BsCashCoin, BsPersonPlus,
-    BsExclamationTriangle
-} from 'react-icons/bs';
-
-// Bạn NÊN đặt khối CSS này trong file CSS toàn cục (ví dụ: index.css)
-// vì Tailwind không hỗ trợ tùy chỉnh scrollbar một cách dễ dàng.
-
-
-const chartData = {
-    labels: ['Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'CN', 'Thứ 2', 'Thứ 3'],
-    datasets: [{
-        label: 'Doanh thu (Triệu VNĐ)',
-        data: [3.5, 4.2, 5.1, 7.8, 6.4, 8.1, 9.3],
-        // Dùng Tailwind class: bg-blue-500/50 và text-blue-500
-        backgroundColor: 'rgba(59, 130, 246, 0.5)', 
-        borderColor: 'rgb(59, 130, 246)', 
-        borderWidth: 1,
-        fill: true,
-        tension: 0.4
-    }]
-};
-
-const chartOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: { display: false },
-        tooltip: {
-            callbacks: {
-                label: (context) => {
-                    let label = context.dataset.label || '';
-                    if (label) label += ': ';
-                    if (context.parsed.y !== null) {
-                        label += new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(context.parsed.y * 1000000);
-                    }
-                    return label;
-                }
-            }
-        }
-    },
-    scales: {
-        y: {
-            beginAtZero: true,
-            grid: {
-                // Tương đương text-gray-200 với opacity thấp
-                display: true,
-                color: 'rgba(200, 200, 200, 0.2)' 
-            },
-            ticks: {
-                callback: (value) => value + 'M' 
-            }
-        },
-        x: { grid: { display: false } }
-    }
-};
-
+import * as API from '../../JS/API/API';
+import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
 const Dashboard = () => {
-    // Inject CSS for custom scrollbar (Nếu bạn không thể đặt nó trong index.css)
+    const ChuyenTrang=useNavigate();
     useEffect(() => {
-        const styleSheet = document.createElement("style");
-        styleSheet.type = "text/css";
-        document.head.appendChild(styleSheet);
-        return () => {
-            document.head.removeChild(styleSheet);
+        //Kiemr tra đăng nhập, nếu chưa đăng nhập sẽ trả về trang đăng nhập mới được về
+        // Kiểm tra trên sesion/cookies sau này sẽ kiểm tra trên token
+        const KiemTraDangNhap=async()=>{
+            const yeucau={
+                DiaChi:1,
+                NhiemVu:"KiemTraDangNhap_AD"
+            };
+             const kiemtra= await API.CallAPI(undefined,yeucau);
+             if(!kiemtra.ThanhCong){
+                ThongBao.ThongBao_CanhBao("Vui lòng đăng nhập trước khi sử dụng!");
+                ChuyenTrang('/DangNhapAD');
+             }
         };
-    }, []);
+        KiemTraDangNhap();
+    },[ChuyenTrang]);
 
     return (
         // Dùng class 'font-sans' (Tailwind default) và 'bg-gray-100'
@@ -76,40 +28,46 @@ const Dashboard = () => {
             {/* Sidebar - Dùng 'scrollbar-dark' đã định nghĩa bên trên */}
             <div className="fixed inset-y-0 left-0 w-72 bg-gray-900 text-gray-400 p-4 flex flex-col shadow-xl scrollbar-dark z-10">
                 <div className="text-white font-bold text-2xl pb-4 mb-4 border-b border-gray-700 flex items-center">
-                    <BsShieldShaded className="mr-2" />
+                    <i className="fas fa-tools mr-3 text-blue-500"></i> {/* Icon cho Admin Panel */}
                     <span className="text-lg">Admin Panel</span> 
                 </div>
                 <ul className="flex flex-col flex-grow space-y-1">
                     <li className="nav-item">
                         <a href="admin.html" className="flex items-center text-white bg-blue-600 font-medium hover:bg-blue-700 p-3 rounded-lg transition duration-200">
-                            <BsSpeedometer2 className="w-6 mr-3" /> Dashboard
+                            <i className="fas fa-tachometer-alt mr-3"></i> {/* Icon cho Dashboard */}
+                            Dashboard
                         </a>
                     </li>
                     <li className="nav-item">
                         <a href="#" className="flex items-center text-gray-300 hover:bg-gray-800 hover:text-white p-3 rounded-lg transition duration-200">
-                            <BsBoxSeam className="w-6 mr-3" /> Quản lý sản phẩm
+                            <i className="fas fa-box-open mr-3"></i> {/* Icon cho Quản lý sản phẩm */}
+                            Quản lý sản phẩm
                         </a>
                     </li>
                     <li className="nav-item">
                         <a href="#" className="flex items-center text-gray-300 hover:bg-gray-800 hover:text-white p-3 rounded-lg transition duration-200">
-                            <BsReceipt className="w-6 mr-3" /> Quản lý đơn hàng
+                            <i className="fas fa-shopping-cart mr-3"></i> {/* Icon cho Quản lý đơn hàng */}
+                            Quản lý đơn hàng
                         </a>
                     </li>
                     <li className="nav-item">
                         <a href="#" className="flex items-center text-gray-300 hover:bg-gray-800 hover:text-white p-3 rounded-lg transition duration-200">
-                            <BsPeopleFill className="w-6 mr-3" /> Quản lý người dùng
+                            <i className="fas fa-users mr-3"></i> {/* Icon cho Quản lý người dùng */}
+                            Quản lý người dùng
                         </a>
                     </li>
                     <li className="nav-item">
                         <a href="#" className="flex items-center text-gray-300 hover:bg-gray-800 hover:text-white p-3 rounded-lg transition duration-200">
-                            <BsGearFill className="w-6 mr-3" /> Cài đặt
+                           <i className="fas fa-cog mr-3"></i> {/* Icon cho Cài đặt */}
+                           Cài đặt
                         </a>
                     </li>
                 </ul>
                 {/* Logout Section */}
                 <div className="mt-auto pt-3 border-t border-gray-700">
                     <a href="./DangNhap/dn_ad.html" className="text-center block bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white p-3 rounded-lg transition duration-200">
-                        <BsBoxArrowLeft className="inline mr-2" /> Đăng xuất
+                      <i className="fas fa-sign-out-alt mr-2"></i> {/* Icon cho Đăng xuất */}
+                      Đăng xuất
                     </a>
                 </div>
             </div>
@@ -117,12 +75,12 @@ const Dashboard = () => {
             {/* Main Content */}
             <div className="ml-72 p-8 transition-all duration-300" id="main-content">
                 <header className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">Bảng điều khiển</h1>
+                    <h1 className="text-3xl font-bold text-gray-800">Bảng điều khiển </h1>
                     <div className="flex items-center space-x-6">
-                        <BsBellFill className="text-xl text-gray-500 hover:text-gray-800 cursor-pointer" />
+                    
                         <div className="relative">
                             <a href="#" className="flex items-center text-gray-800 text-decoration-none">
-                                <BsPersonCircle className="text-3xl mr-2" />
+                                <i className="fas fa-user-circle text-2xl mr-2"></i> {/* Icon cho Admin User */}
                                 <strong className="font-semibold">Super Admin</strong>
                             </a>
                         </div>
@@ -139,7 +97,7 @@ const Dashboard = () => {
                                 <div className="text-4xl font-bold">1,258</div>
                                 <div className="text-gray-200 mt-1 text-sm">Đơn hàng mới</div>
                             </div>
-                            <BsCartCheck className="text-5xl opacity-50" />
+                            <i className="fas fa-clipboard-list text-5xl opacity-75"></i> {/* Icon cho Đơn hàng mới */}
                         </div>
                     </div>
 
@@ -150,7 +108,7 @@ const Dashboard = () => {
                                 <div className="text-4xl font-bold">25.6M</div>
                                 <div className="text-gray-200 mt-1 text-sm">Doanh thu tháng</div>
                             </div>
-                            <BsCashCoin className="text-5xl opacity-50" />
+                            <i className="fas fa-money-bill-wave text-5xl opacity-75"></i> {/* Icon cho Doanh thu tháng */}
                         </div>
                     </div>
 
@@ -161,7 +119,7 @@ const Dashboard = () => {
                                 <div className="text-4xl font-bold">512</div>
                                 <div className="mt-1 text-sm">Người dùng mới</div>
                             </div>
-                            <BsPersonPlus className="text-5xl opacity-50" />
+                            <i className="fas fa-user-plus text-5xl opacity-75"></i> {/* Icon cho Người dùng mới */}
                         </div>
                     </div>
 
@@ -172,7 +130,7 @@ const Dashboard = () => {
                                 <div className="text-4xl font-bold">3</div>
                                 <div className="text-gray-200 mt-1 text-sm">Sản phẩm sắp hết</div>
                             </div>
-                            <BsExclamationTriangle className="text-5xl opacity-50" />
+                            <i className="fas fa-exclamation-triangle text-5xl opacity-75"></i> {/* Icon cho Sản phẩm sắp hết */}
                         </div>
                     </div>
                 </div>
@@ -188,7 +146,7 @@ const Dashboard = () => {
                             </div>
                             <div className="p-5">
                                 <div className="w-full h-80">
-                                    <Line data={chartData} options={chartOptions} />
+                                    sau này tính sau
                                 </div>
                             </div>
                         </div>

@@ -1,123 +1,141 @@
 import React, { useState } from 'react';
-import { useAuth } from './AuthContext'; // Giả định có AuthContext
-
-// Cấu hình Tailwind được nhúng vào trong file (thường được thực hiện ở môi trường bên ngoài)
-// Tuy nhiên, trong môi trường file đơn, chúng ta có thể giả định các class như 'primary', 'dark-header' đã được định nghĩa.
-
+import { Link, useNavigate } from "react-router-dom";
+import * as fun from '../../JS/FUNCTONS/function';
+import * as API from '../../JS/API/API';
+import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
 const LoginAdmin = () => {
-    // State để quản lý dữ liệu form
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-
-    // Xử lý logic đăng nhập
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setError(''); 
-        setLoading(true);
-
-        // --- Logic Xử lý Đăng Nhập (Giả định) ---
-        setTimeout(() => {
-            if (email === 'admin@techzone.com' && password === '123456') {
-                // Thành công: Chuyển hướng hoặc xử lý state đã đăng nhập
-                // Trong thực tế: window.location.href = "/TrangChuAdmin.html";
-                console.log("Đăng nhập thành công! Chuyển hướng...");
-                // Giả lập chuyển hướng
-                window.location.href = "TrangChuadmin.html"; 
-            } else {
-                // Thất bại
-                setError('Email hoặc mật khẩu không chính xác. Vui lòng thử lại.');
+    const [showPassword, setShowPassword] = useState(false);
+    const [ghinho,setghinho]=useState(false);
+    const ChuyenTrang=useNavigate();
+    const handleSubmit = async() => {
+        let DuLieu={
+            Email:email,
+            MatKhau:password
+        };
+        const kiemtra=fun.KiemTraRong(DuLieu)
+        if(!kiemtra){
+            setError('Vui lòng nhập đầy đủ thông tin ')
+        }else{
+            DuLieu={
+                ...DuLieu,
+                TrangThai:ghinho
+            };
+            const yeucau={
+                DiaChi:1,
+                NhiemVu:"DangNhap_AD"
+            };
+            const DangNhap=await API.CallAPI(DuLieu,yeucau)
+            alert(JSON.stringify(DangNhap))
+            if(DangNhap[0].ThanhCong){
+                ThongBao.ThongBao_ThanhCong(DangNhap.TinNhan);
+                ChuyenTrang('/Admin');
+            }else{
+                setError(DangNhap.TinNhan);
             }
-            setLoading(false);
-        }, 1000); 
+        }
+
     };
 
     return (
-        // LOGIN CONTAINER: Căn giữa theo cả chiều ngang và dọc, đảm bảo full màn hình
-        <div className="min-h-screen flex items-center justify-center p-4 sm:p-8 bg-gray-100">
-            {/* LOGIN CARD */}
-            <div className="w-full max-w-md bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden 
-                            transform transition duration-300 hover:shadow-3xl">
+        <div className="min-h-screen flex items-center justify-center p-4 sm:p-8 bg-gray-100 antialiased">
+            <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden 
+                            transform transition duration-500 hover:shadow-3xl hover:scale-[1.01]">
                 
-                {/* CARD HEADER */}
-                <div className="bg-dark-header text-white text-center text-xl font-bold py-5 px-6 rounded-t-xl 
-                                border-b-4 border-primary">
-                    {/* Sử dụng icon Bootstrap Icons thông qua className */}
-                    <i className="bi bi-shield-lock-fill mr-2 text-2xl"></i> HỆ THỐNG QUẢN TRỊ
+                <div className="bg-gray-800 text-white text-center text-xl font-extrabold py-6 px-8 rounded-t-2xl 
+                                border-b-4 border-blue-500 flex justify-center items-center">
+                    <i className="bi bi-shield-lock-fill mr-3 text-2xl text-blue-400"></i> HỆ THỐNG QUẢN TRỊ
                 </div>
                 
-                {/* CARD BODY */}
-                <div className="p-6 sm:p-8">
-                    <div className="text-center mb-6">
-                        {/* Logo TechZone */}
-                        <a href="index.html" className="text-4xl font-extrabold text-text-dark tracking-tight">
-                            <i className="bi bi-phone-vibrate-fill text-primary mr-1"></i> 
-                            <span className="text-gray-800">Tech</span><span className="text-primary">Zone</span>
+                <div className="p-6 sm:p-10">
+                    <div className="text-center mb-8">
+                        <a href="index.html" className="text-4xl font-black text-gray-900 tracking-tight">
+                            <i className="bi bi-phone-vibrate-fill text-blue-600 mr-1"></i> 
+                            <span className="text-gray-800">Tech</span><span className="text-blue-600">Zone</span>
                         </a>
-                        <p className="text-sm text-gray-500 mt-2">Đăng nhập để tiếp tục quản lý</p>
+                        <p className="text-base text-gray-500 mt-3 font-medium">Đăng nhập để tiếp tục quản lý</p>
                     </div>
 
-                    {/* Hiển thị lỗi */}
                     {error && (
-                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-4" role="alert">
-                            <strong className="font-bold">Lỗi!</strong>
-                            <span className="block sm:inline ml-2">{error}</span>
+                        <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-xl relative mb-6 transition-all duration-300" role="alert">
+                            <strong className="font-semibold text-base">Cảnh báo:</strong>
+                            <span className="block sm:inline ml-2 text-sm">{error}</span>
                         </div>
                     )}
                     
-                    <form onSubmit={handleSubmit}>
-                        <div className="mb-5">
-                            <label htmlFor="adminEmail" className="block text-sm font-medium text-gray-700 mb-2">Email hoặc Tên đăng nhập</label>
+                    
+                        <div className="mb-6">
+                            <label htmlFor="adminEmail" className="block text-sm font-semibold text-gray-700 mb-2">Email hoặc Tên đăng nhập</label>
                             <div className="relative">
-                                <i className="bi bi-person-fill absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <i className="bi bi-person-fill absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
                                 <input 
                                     type="email" 
-                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition duration-150" 
+                                    className="w-full pl-11 pr-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-900 placeholder-gray-500" 
                                     id="adminEmail" 
+                                    placeholder="Nhập email..."
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    required 
                                     disabled={loading}
                                 />
                             </div>
                         </div>
 
-                        <div className="mb-5">
-                            <label htmlFor="adminPassword" className="block text-sm font-medium text-gray-700 mb-2">Mật khẩu</label>
+                        {/* Ô mật khẩu */}
+                        <div className="mb-6">
+                            <label htmlFor="adminPassword" className="block text-sm font-semibold text-gray-700 mb-2">Mật khẩu</label>
                             <div className="relative">
-                                <i className="bi bi-lock-fill absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                <i className="bi bi-lock-fill absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
+                                
+                                {/* 👇 input thay đổi type dựa vào showPassword */}
                                 <input 
-                                    type="password" 
-                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition duration-150" 
+                                    type={showPassword ? "text" : "password"} 
+                                    className="w-full pl-11 pr-11 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-gray-900 placeholder-gray-500" 
                                     id="adminPassword" 
+                                    placeholder="Nhập mật khẩu..."
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    required
                                     disabled={loading}
                                 />
+                                
+                                {/* 👁 Nút ẩn/hiện mật khẩu */}
+                                <button 
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-800 transition"
+                                    tabIndex={-1}
+                                >
+                                    <i className={`bi ${showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'} text-xl`}></i>
+                                </button>
                             </div>
                         </div>
 
-                        <div className="flex justify-between items-center mb-6 text-sm">
+                        <div className="flex justify-between items-center mb-8 text-sm">
                             <div className="flex items-center">
                                 <input 
-                                    className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary checked:bg-primary" 
+                                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 checked:bg-blue-600 transition duration-150" 
                                     type="checkbox" 
                                     id="rememberMe"
                                     disabled={loading}
+                                    onChange={(e)=>{setghinho(e.target.checked)}}
                                 />
-                                <label className="ml-2 text-gray-600 select-none" htmlFor="rememberMe">
+                                <label className="ml-2 text-gray-600 select-none font-normal" htmlFor="rememberMe">
                                     Ghi nhớ đăng nhập
                                 </label>
                             </div>
-                            <a href="#" className="text-primary hover:text-primary-dark text-sm font-semibold transition duration-150">Quên mật khẩu?</a>
+                            <a href="#" className="text-blue-600 hover:text-blue-800 text-sm font-semibold transition duration-150 hover:underline">Quên mật khẩu?</a>
                         </div>
 
                         <div className="w-full">
-                            <button 
+                            <button onClick={handleSubmit}
                                 type="submit" 
-                                className={`w-full text-white font-bold py-3 rounded-lg transition duration-200 shadow-md ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-primary-dark hover:shadow-xl'}`}
+                                className={`w-full text-white text-lg font-bold py-3 rounded-xl transition duration-300 shadow-lg 
+                                            ${loading 
+                                                ? 'bg-gray-400 cursor-not-allowed flex items-center justify-center' 
+                                                : 'bg-blue-600 hover:bg-blue-700 hover:shadow-xl'}`}
                                 disabled={loading}
                             >
                                 {loading ? (
@@ -135,12 +153,12 @@ const LoginAdmin = () => {
                                 )}
                             </button>
                         </div>
-                    </form>
+                 
 
-                    <div className="text-center mt-8">
-                        <a href="TrangChuWeb.html" className="text-gray-500 hover:text-primary text-sm font-medium transition duration-150 flex items-center justify-center">
+                    <div className="text-center mt-8 pt-4 border-t border-gray-200">
+                        <Link to="/" className="text-gray-500 hover:text-blue-600 text-sm font-medium transition duration-200 flex items-center justify-center">
                             <i className="bi bi-arrow-left-circle mr-2"></i> Quay về trang chủ
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
