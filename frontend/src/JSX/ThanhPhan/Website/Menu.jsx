@@ -143,7 +143,7 @@ function Menu() {
                         >
                             Đăng nhập
                         </button>
-                        <Link to="/admin" className={`hidden sm:inline-block py-1 px-3 rounded-md border `}>Admin</Link>
+                        <Link to="/KiemTraDangNhap" className={`hidden sm:inline-block py-1 px-3 rounded-md border `}>Admin</Link>
                     </div>
 
                     {/* Mobile Menu Icon */}

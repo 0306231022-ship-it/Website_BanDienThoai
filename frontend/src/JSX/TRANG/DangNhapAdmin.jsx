@@ -4,7 +4,6 @@ import * as fun from '../../JS/FUNCTONS/function';
 import * as API from '../../JS/API/API';
 import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
 const LoginAdmin = () => {
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -13,6 +12,7 @@ const LoginAdmin = () => {
     const [ghinho,setghinho]=useState(false);
     const ChuyenTrang=useNavigate();
     const handleSubmit = async() => {
+        setLoading(true);
         let DuLieu={
             Email:email,
             MatKhau:password
@@ -29,13 +29,13 @@ const LoginAdmin = () => {
                 DiaChi:1,
                 NhiemVu:"DangNhap_AD"
             };
-            const DangNhap=await API.CallAPI(DuLieu,yeucau)
-            alert(JSON.stringify(DangNhap))
+            const DangNhap=await API.CallAPI(DuLieu,yeucau);
+            setLoading(false);
             if(DangNhap[0].ThanhCong){
-                ThongBao.ThongBao_ThanhCong(DangNhap.TinNhan);
+                ThongBao.ThongBao_ThanhCong(DangNhap[0].TinNhan);
                 ChuyenTrang('/Admin');
             }else{
-                setError(DangNhap.TinNhan);
+                setError(DangNhap[0].TinNhan);
             }
         }
 
