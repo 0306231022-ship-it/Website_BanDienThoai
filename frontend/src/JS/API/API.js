@@ -10,7 +10,6 @@ export async function CallAPI(dulieu = null, yeucau) {
   const DuongDan = DiaChi(yeucau.DiaChi);
 
   const bodyData = {
-    action: yeucau.NhiemVu,
     data: dulieu || {}
   };
 

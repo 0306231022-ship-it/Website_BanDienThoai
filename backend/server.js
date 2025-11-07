@@ -1,30 +1,40 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const DangNhap = require('./Routers/DangNhap'); // ✅ đường dẫn đúng nếu thư mục Routers nằm cùng cấp với server.js
+import "dotenv/config.js";
+import express from 'express';
+import bodyParser from 'body-parser';
+import TaiKhoanRouter from '../backend/src/routes/TaiKhoanRouter.js';
+
 const app = express();
-const port = 5000;
+app.use(bodyParser.json());
 
-// --- Middleware ---
-app.use(express.json());
-app.use(cors({
-  origin: 'http://localhost:3000', // React chạy tại cổng 3000
-  credentials: true, // Cho phép gửi cookie/session qua fetch
-}));
-app.use(cookieParser());
-app.use(session({
-  secret: 'bi-mat-cua-ban', // Khóa bí mật cho session
-  resave: false,
-  saveUninitialized: true,
-  cookie: { maxAge: 3600000 }, // 1 giờ
-}));
-
-// --- Gắn router ---
-app.use('/api/users', DangNhap);
-
-// --- Khởi động server ---
-app.listen(port, () => {
-  console.log(`✅ Server Node.js đang chạy tại http://localhost:${port}`);
+// Routes
+app.get('/', (req, res) => {
+    res.send('Server API running');
 });
+//Đinh nghĩa các route
+app.use('/api/users', TaiKhoanRouter);
+app.use((req, res) => {
+    res.status(404).json({ message: 'Endpoint not found' });
+});
+
+// Custom error handler
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    if (process.env.NODE_ENV === 'production') {
+        return res.status(500).json({ message: 'Something went wrong' });
+    }
+    // In development, provide entire error for debugging
+    else return res.status(500).json({
+        message: err.message,
+        url: req.originalUrl,
+        method: req.method,
+        stack: err.stack
+    });
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+export default app;

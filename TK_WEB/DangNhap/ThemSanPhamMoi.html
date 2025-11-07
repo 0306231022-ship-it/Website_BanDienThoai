@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Điện Thoại Mới - Admin Panel</title>
+    <!-- Tải Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        /* Custom input focus style */
+        input:focus, textarea:focus, select:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-indigo': '#4f46e5', /* Màu xanh indigo */
+                        'primary-green': '#059669',
+                    }
+                }
+            }
+        }
+
+        // --- Logic Toast/Modal (Tái sử dụng từ file trước) ---
+        
+        function showToast(message, type = 'success') {
+            const box = document.getElementById('message-box');
+            box.textContent = message;
+            box.classList.remove('hidden', 'bg-red-500', 'bg-green-500', 'bg-blue-500', 'bg-yellow-500');
+            
+            if (type === 'success') {
+                box.classList.add('bg-green-500');
+            } else if (type === 'error') {
+                box.classList.add('bg-red-500');
+            } else if (type === 'info') {
+                box.classList.add('bg-blue-500');
+            } else {
+                box.classList.add('bg-yellow-500');
+            }
+
+            box.style.opacity = '1';
+
+            setTimeout(() => {
+                box.style.opacity = '0';
+                setTimeout(() => box.classList.add('hidden'), 300);
+            }, 3000);
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault(); // Ngăn chặn form submit thật
+            
+            const productName = document.getElementById('product_name').value;
+            const price = document.getElementById('price').value;
+            const stock = document.getElementById('stock').value;
+            
+            // Lấy thông số kỹ thuật điện thoại
+            const specs = {
+                brand: document.getElementById('brand').value,
+                chip: document.getElementById('chip').value,
+                ram: document.getElementById('ram').value,
+                storage: document.getElementById('storage').value,
+                screen_size: document.getElementById('screen_size').value,
+                battery: document.getElementById('battery').value
+            };
+
+            if (!productName || !price || !stock || !specs.brand) {
+                return showToast('Vui lòng điền đầy đủ các trường bắt buộc (*).', 'error');
+            }
+
+            // Giả lập logic gửi dữ liệu đến server
+            const formData = {
+                name: productName,
+                category: 'Điện thoại', // Đã cố định
+                price: price,
+                stock: stock,
+                sku: document.getElementById('sku').value,
+                description: document.getElementById('description').value,
+                specifications: specs
+            };
+
+            console.log('Dữ liệu Điện thoại:', formData);
+            
+            // Hiển thị thông báo thành công và reset form
+            showToast(`Điện thoại "${productName}" đã được thêm thành công!`, 'success');
+            document.getElementById('product-form').reset();
+            
+            // Reset image preview
+            document.getElementById('image-preview').innerHTML = '<p class="text-gray-400">Không có ảnh nào được chọn.</p>';
+        }
+
+        function previewImages(event) {
+            const preview = document.getElementById('image-preview');
+            preview.innerHTML = '';
+            const files = event.target.files;
+
+            if (files.length === 0) {
+                preview.innerHTML = '<p class="text-gray-400">Không có ảnh nào được chọn.</p>';
+                return;
+            }
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'relative group';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-24 h-24 object-cover rounded-lg border-2 border-gray-200';
+                    
+                    imgContainer.appendChild(img);
+                    preview.appendChild(imgContainer);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+</head>
+<body class="min-h-screen p-4 md:p-8">
+
+    <!-- Header Section -->
+    <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-1">Thêm Điện Thoại Mới</h1>
+        <p class="text-gray-500">Điền thông tin chi tiết và thông số kỹ thuật để thêm mẫu điện thoại mới.</p>
+    </header>
+    
+    <!-- Toast/Modal Replacement -->
+    <div id="message-box" class="fixed bottom-5 right-5 p-4 rounded-lg text-white font-medium shadow-xl hidden transition-opacity duration-300 z-50" style="opacity: 0;"></div>
+
+    <!-- Main Form Container -->
+    <div class="bg-white card rounded-xl p-6 md:p-8 max-w-5xl mx-auto">
+        
+        <form id="product-form" onsubmit="handleSubmit(event)" class="space-y-8">
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- CỘT TRÁI: THÔNG TIN CƠ BẢN & MÔ TẢ -->
+                <div class="lg:col-span-2 space-y-8">
+                    
+                    <!-- PHẦN 1: THÔNG TIN CƠ BẢN -->
+                    <div class="border-b border-gray-200 pb-8">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">1. Chi Tiết Cơ Bản</h2>
+                        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                            
+                            <!-- Tên Sản Phẩm -->
+                            <div>
+                                <label for="product_name" class="block text-sm font-medium text-gray-700">Tên Mẫu Điện Thoại *</label>
+                                <input type="text" id="product_name" required
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150"
+                                       placeholder="Ví dụ: iPhone 16 Pro Max, Samsung Galaxy S25 Ultra">
+                            </div>
+                            
+                            <!-- SKU / Mã Sản Phẩm -->
+                            <div>
+                                <label for="sku" class="block text-sm font-medium text-gray-700">Mã SKU / Phiên bản</label>
+                                <input type="text" id="sku"
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150"
+                                       placeholder="VD: IP16PM-256GB-BL">
+                            </div>
+
+                        </div>
+
+                        <!-- Mô tả chi tiết -->
+                        <div class="mt-6">
+                            <label for="description" class="block text-sm font-medium text-gray-700">Mô tả Chi tiết Sản Phẩm</label>
+                            <textarea id="description" rows="5"
+                                      class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150"
+                                      placeholder="Thông tin đầy đủ về thiết kế, tính năng nổi bật, công nghệ camera..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- PHẦN 2: HÌNH ẢNH -->
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">3. Hình Ảnh Sản Phẩm</h2>
+                        
+                        <!-- Khu vực Upload -->
+                        <div class="mb-4">
+                            <label for="product_images" class="block text-sm font-medium text-gray-700 mb-2">Tải lên (Chọn tối đa 5 ảnh)</label>
+                            <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-primary-indigo/50 transition duration-150 cursor-pointer relative">
+                                <input id="product_images" name="product_images[]" type="file" multiple accept="image/*" onchange="previewImages(event)" class="absolute w-full h-full opacity-0 cursor-pointer">
+                                <div class="space-y-1 text-center">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0l-10.02 10.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                    </svg>
+                                    <div class="flex text-sm text-gray-600">
+                                        <span class="relative cursor-pointer bg-white rounded-md font-medium text-primary-indigo hover:text-indigo-500">
+                                            Chọn tệp
+                                        </span>
+                                        <p class="pl-1">hoặc kéo và thả</p>
+                                    </div>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF lên đến 10MB</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Khu vực Preview Ảnh -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Xem trước Hình ảnh</label>
+                            <div id="image-preview" class="flex flex-wrap gap-3 p-4 bg-gray-100 rounded-lg min-h-[100px] items-center">
+                                <p class="text-gray-400 text-sm">Không có ảnh nào được chọn.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <!-- CỘT PHẢI: GIÁ & THÔNG SỐ KỸ THUẬT -->
+                <div class="lg:col-span-1 space-y-8">
+                    
+                    <!-- PHẦN 3: GIÁ VÀ KHO HÀNG -->
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">2. Giá & Kho Hàng</h2>
+                        <div class="space-y-4">
+                            
+                            <!-- Giá Bán -->
+                            <div>
+                                <label for="price" class="block text-sm font-medium text-gray-700">Giá Bán (VND) *</label>
+                                <input type="number" id="price" required min="0" step="1000"
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150"
+                                       placeholder="VD: 25990000">
+                            </div>
+                            
+                            <!-- Số Lượng Trong Kho -->
+                            <div>
+                                <label for="stock" class="block text-sm font-medium text-gray-700">Số Lượng Trong Kho *</label>
+                                <input type="number" id="stock" required min="0"
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150"
+                                       placeholder="Số lượng">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PHẦN 4: THÔNG SỐ KỸ THUẬT ĐIỆN THOẠI -->
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-4">4. Thông Số Kỹ Thuật</h2>
+                        <div class="space-y-3">
+                            
+                            <!-- Hãng Sản Xuất -->
+                            <div>
+                                <label for="brand" class="block text-sm font-medium text-gray-700">Hãng Sản Xuất *</label>
+                                <select id="brand" required class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150">
+                                    <option value="">-- Chọn Hãng --</option>
+                                    <option value="Apple">Apple</option>
+                                    <option value="Samsung">Samsung</option>
+                                    <option value="Xiaomi">Xiaomi</option>
+                                    <option value="Oppo">Oppo</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+
+                            <!-- Chip -->
+                            <div>
+                                <label for="chip" class="block text-sm font-medium text-gray-700">Chip / Bộ xử lý</label>
+                                <input type="text" id="chip" placeholder="VD: Apple A17 Bionic, Snapdragon 8 Gen 4"
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150">
+                            </div>
+                            
+                            <!-- RAM -->
+                            <div>
+                                <label for="ram" class="block text-sm font-medium text-gray-700">RAM (GB)</label>
+                                <input type="text" id="ram" placeholder="VD: 8GB, 12GB"
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150">
+                            </div>
+                            
+                            <!-- Bộ nhớ trong -->
+                            <div>
+                                <label for="storage" class="block text-sm font-medium text-gray-700">Bộ nhớ trong</label>
+                                <input type="text" id="storage" placeholder="VD: 128GB, 256GB, 1TB"
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150">
+                            </div>
+                            
+                            <!-- Kích thước màn hình -->
+                            <div>
+                                <label for="screen_size" class="block text-sm font-medium text-gray-700">Kích thước Màn hình</label>
+                                <input type="text" id="screen_size" placeholder="VD: 6.7 inch"
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150">
+                            </div>
+                            
+                            <!-- Pin -->
+                            <div>
+                                <label for="battery" class="block text-sm font-medium text-gray-700">Dung lượng Pin</label>
+                                <input type="text" id="battery" placeholder="VD: 4500 mAh"
+                                       class="mt-1 block w-full border border-gray-300 rounded-lg p-3 shadow-sm transition duration-150">
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Submit Buttons -->
+            <div class="pt-6 border-t border-gray-200 flex justify-end space-x-4">
+                <button type="button" onclick="document.getElementById('product-form').reset(); showToast('Đã đặt lại biểu mẫu.', 'info');"
+                        class="px-6 py-3 border border-gray-300 rounded-lg shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition duration-150">
+                    Đặt Lại
+                </button>
+                <button type="submit" 
+                        class="px-6 py-3 border border-transparent rounded-lg shadow-md text-base font-medium text-white bg-primary-green hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-green transition duration-150">
+                    <i class="fas fa-mobile-alt mr-2"></i> Thêm Điện Thoại
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- Font Awesome for icons (optional) -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

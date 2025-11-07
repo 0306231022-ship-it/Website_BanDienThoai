@@ -1,160 +1,87 @@
-import React from "react";
-import { useAppContext } from "../../../CONTEXT/TrangChuWrb";
-import * as API from '../../../JS/API/API';
+import { useUI } from "../../../REDUCER/TrangChuWeb";
 import { Link } from "react-router-dom";
 
 function Menu() {
-    const { state, dispatch } = useAppContext();
+    const { dispatch } = useUI();
 
-    const ChuyenTrang = async(tenTrang,TrangThai) => {
-        if(TrangThai==="DangNhap"){
-            const yeucau={
-                NhiemVu:'KiemTraNguoiDung',
-                DiaChi:1
-            };
-            const KiemTra = await API.CallAPI(undefined,yeucau);
-            if(KiemTra.ThanhCong){
-                 dispatch({ type: "SET_TRANG", payload: 'TrangChu_NguoiDung' });
-            }else{
-                 dispatch({ type: "SET_TRANG", payload: tenTrang });
-            }
-        }else{
-            dispatch({ type: "SET_TRANG", payload: tenTrang });
-        }
-        
-        
-        
-                   
-    }
-
-       
-    
-
-    const isActive = (tenTrang) => state.Trang === tenTrang;
+    // Giả sử số lượng sản phẩm trong giỏ (bạn có thể lấy từ context, cookie, API,...)
+    const cartCount = 3; 
 
     return (
-        <nav className="sticky top-0 z-50 bg-white shadow-md">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex justify-between items-center h-16">
-                    <button className={`flex-shrink-0 text-2xl font-bold text-primary`}>
-                        <i className="bi bi-phone-vibrate-fill text-blue-600"></i> TechZone
+        <>
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
+
+                <div className="flex items-center w-full lg:w-auto">
+                    <Link to="" className="text-2xl font-bold text-primary flex items-center mr-6 flex-shrink-0">
+                        <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                        Phone<span className="text-secondary">Store</span>
+                    </Link>
+
+                    <nav className="hidden lg:flex space-x-6 text-lg mr-8 flex-shrink-0">
+                        <Link onClick={() => dispatch({ type: "SHOW_HOME" })} className="hover:text-primary transition duration-300">Trang chủ</Link>
+                        <Link onClick={() => dispatch({ type: "SHOW_PRODUCTS" })} className="hover:text-primary transition duration-300">Sản phẩm</Link>
+                        <Link onClick={() => dispatch({ type: "SHOW_NOIBAT" })} className="hover:text-primary transition duration-300">Nổi bật</Link>
+                        <Link onClick={() => dispatch({ type: "SHOW_TINTUC" })} className="hover:text-primary transition duration-300">Tin tức</Link>
+                        <Link onClick={() => dispatch({ type: "SHOW_LIENHE" })} className="hover:text-primary transition duration-300">Liên hệ</Link>
+                    </nav>
+
+                    <div className="hidden md:flex items-center border border-gray-200 rounded-full px-4 py-2 shadow-sm focus-within:border-primary transition duration-300 w-full max-w-sm">
+                        <svg className="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" placeholder="Tìm kiếm sản phẩm..." className="focus:outline-none w-full text-sm bg-transparent" />
+                    </div>
+                </div>
+
+                <div className="flex items-center space-x-2 sm:space-x-4 ml-4">
+
+                    {/* Nút tìm kiếm mobile */}
+                    <button className="p-2 rounded-full hover:bg-gray-100 transition duration-300 md:hidden" title="Tìm kiếm">
+                        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
                     </button>
 
-                    {/* Menu Desktop */}
-                    <div className="hidden lg:flex lg:space-x-8">
-                        <button
-                            onClick={() => ChuyenTrang("TrangChu")}
-                            className={`font-semibold py-2 px-1 ${
-                                isActive("TrangChu")
-                                    ? "border-b-2 border-blue-600 text-blue-700"
-                                    : "text-gray-700 hover:text-primary"
-                            }`}
-                        >
-                            Trang chủ
-                        </button>
+                    {/* Giỏ hàng */}
+                    <button onClick={() => dispatch({ type: "SHOW_GIOHANG" })} className="relative p-2 rounded-full hover:bg-gray-100 transition duration-300" title="Giỏ hàng">
+                        {/* Biểu tượng */}
+                        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 010 2a2 2 0 010-4m-8 2a2 2 0 010 2a2 2 0 010-4" />
+                        </svg>
 
-                        {/* Dropdown Sản phẩm */}
-                        <div className="relative group">
-                            <button className="text-gray-700 hover:text-primary py-2 px-1 inline-flex items-center">
-                                Sản phẩm <i className="bi bi-chevron-down text-xs ml-1"></i>
-                            </button>
-                            <ul className="absolute hidden group-hover:block bg-white shadow-lg py-2 w-40 z-10 rounded-md">
-                                {["Apple", "Samsung", "Xiaomi"].map((brand) => (
-                                    <li key={brand}>
-                                        <button
-                                            className={`block px-4 py-2 w-full text-left ${
-                                                isActive(brand)
-                                                    ? "border-b-2 border-blue-600 text-blue-700"
-                                                    : "text-gray-700 hover:bg-gray-100"
-                                            }`}
-                                            onClick={() => ChuyenTrang(brand)}
-                                        >
-                                            {brand}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        <button
-                            onClick={() => ChuyenTrang("KhuyenMai")}
-                            className={`py-2 px-1 ${
-                                isActive("KhuyenMai")
-                                    ? "border-b-2 border-blue-600 text-blue-700"
-                                    : "text-gray-700 hover:text-primary"
-                            }`}
-                        >
-                            Khuyến mãi
-                        </button>
-
-                        <button
-                            onClick={() => ChuyenTrang("TinTuc")}
-                            className={`py-2 px-1 ${
-                                isActive("TinTuc")
-                                    ? "border-b-2 border-blue-600 text-blue-700"
-                                    : "text-gray-700 hover:text-primary"
-                            }`}
-                        >
-                            Tin tức
-                        </button>
-                    </div>
-
-                    {/* Icons và Buttons */}
-                    <div className="flex items-center space-x-4">
-
-                        {/* Search Desktop giữ nguyên */}
-                        <div className="hidden xl:flex items-center border border-gray-300 rounded-md overflow-hidden bg-gray-50">
-                            <input
-                                type="search"
-                                placeholder="Tìm kiếm sản phẩm..."
-                                className="py-1 px-3 text-sm focus:outline-none w-48 bg-transparent text-gray-800"
-                            />
-                            <button className="bg-primary bg-blue-700 text-white p-2 transition duration-200">
-                                <i className="bi bi-search text-sm"></i>
-                            </button>
-                        </div>
-
-                        {/* Cart Icon */}
-                        <button 
-                            className={`relative text-gray-700 hover:text-primary
-                                        ${isActive("GioHang")
-                                    ? "border-b-2 border-blue-600 text-blue-700"
-                                    : "text-gray-700 hover:text-primary"}`}
-                             onClick={() => ChuyenTrang("GioHang")}>
-                            <i className="bi bi-cart3 text-xl"></i>
-                            <span className="absolute top-0 right-0 -mt-1 -mr-2 text-xs bg-red-600 text-white rounded-full h-5 w-5 flex items-center justify-center">
-                                2
+                        {/* Số lượng sản phẩm */}
+                        {cartCount > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full px-1.5 py-0.5 shadow">
+                                {cartCount}
                             </span>
-                        </button>
-
-                        {/* Search Icon Mobile */}
-                        <button className="xl:hidden text-gray-700 hover:text-primary p-2">
-                            <i className="bi bi-search text-xl"></i>
-                        </button>
-
-                        {/* Đăng nhập / Admin */}
-                        <button
-                            onClick={() => ChuyenTrang("DangNhap")}
-                            className={` py-1 px-3 rounded-md border ${
-                                isActive("DangNhap")
-                                    ? "border-b-2 border-blue-600 text-blue-700"
-                                    : "text-primary border-primary"
-                            }`}
-                        >
-                            Đăng nhập
-                        </button>
-                        <Link to="/KiemTraDangNhap" className={`hidden sm:inline-block py-1 px-3 rounded-md border `}>Admin</Link>
-                    </div>
-
-                    {/* Mobile Menu Icon */}
-                    <button className="lg:hidden p-2 rounded-md text-gray-700 hover:text-primary">
-                        <i className="bi bi-list text-2xl"></i>
+                        )}
                     </button>
-                    
-                    
+
+                    {/* Tài khoản */}
+                    <Link to="/TrangChuND" className="p-2 rounded-full hover:bg-gray-100 transition duration-300" title="Tài khoản">
+                        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </Link>
+
+                    {/* Admin */}
+                    <button className="p-2 rounded-full hover:bg-gray-100 transition duration-300" title="Khu vực Admin">
+                        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </button>
+
+                    {/* Menu mobile */}
+                    <button className="p-2 rounded-full hover:bg-gray-100 transition duration-300 lg:hidden" title="Menu">
+                        <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </nav>
+        </>
     );
 }
 

@@ -1,82 +1,71 @@
 import React from 'react';
-
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import * as API from '../../../JS/API/API';
 function Footer() {
+    //demo backend
+    useEffect(() => {
+        // Test API khi component Footer được gắn vào DOM
+        const testAPI = async () => {
+            const yeucau = {
+                DiaChi: 1
+            };
+            const response = await API.CallAPI(undefined, yeucau);
+            console.log('Kết quả từ API:', response);
+        };
+        testAPI();  
+
+    });
     return (
-        <footer className="bg-gray-900 text-gray-400 pt-12 pb-8">
-            <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                    
-                    {/* Cột 1: TechZone */}
-                    <div className="space-y-3">
-                        <h5 className="text-white text-xl font-bold mb-4">TechZone</h5>
-                        <p>Chuyên cung cấp các sản phẩm điện thoại thông minh chính hãng với giá tốt nhất thị trường, cùng dịch vụ hậu mãi chu đáo.</p>
+          <footer id="contact" className="bg-gray-800 text-white py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+    
+            <div>
+                <h4 className="text-xl font-bold mb-4 text-secondary">PhoneStore</h4>
+                <p className="text-sm text-gray-400">Chuyên cung cấp các sản phẩm điện thoại di động chính hãng, giá tốt nhất thị trường.</p>
+            </div>
 
-                        <div className="space-y-2 mt-2">
-                            <p className="flex items-start">
-                                <span className="mr-3 mt-1 text-blue-500 text-xl">📍</span>
-                                <span><strong>Địa chỉ:</strong> Tòa nhà TechZone, 123 Đường Công Nghệ, Quận Thủ Đức, TP. HCM</span>
-                            </p>
-                            <p className="flex items-center">
-                                <span className="mr-3 text-blue-500 text-xl">📞</span>
-                                <span><strong>Điện thoại:</strong> (028) 123 4567 - 0987 654 321</span>
-                            </p>
-                            <p className="flex items-center">
-                                <span className="mr-3 text-blue-500 text-xl">✉️</span>
-                                <span><strong>Email:</strong> support@techzone.vn</span>
-                            </p>
-                        </div>
-                    </div>
+           
+            <div>
+                <h4 className="text-lg font-semibold mb-4">Sản phẩm</h4>
+                <ul className="space-y-2 text-sm text-gray-400">
+                    <li><Link to="" className="hover:text-white transition duration-200">Điện thoại Mới</Link></li>
+                    <li><Link to="" className="hover:text-white transition duration-200">Phụ kiện</Link></li>
+                    <li><Link to="" className="hover:text-white transition duration-200">Máy đã qua sử dụng</Link></li>
+                    <li><Link to="" className="hover:text-white transition duration-200">Máy tính bảng</Link></li>
+                </ul>
+            </div>
 
-                    {/* Cột 2: Liên kết */}
-                    <div>
-                        <h5 className="text-white text-xl font-bold mb-4">Liên kết</h5>
-                        <ul className="space-y-2">
-                            {['Sản phẩm', 'Giới thiệu', 'Liên hệ', 'Tin tức'].map((link, idx) => (
-                                <li key={idx}>
-                                    <a href="#" className="hover:text-white transition duration-200">{link}</a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+           
+            <div>
+                <h4 className="text-lg font-semibold mb-4">Hỗ trợ</h4>
+                <ul className="space-y-2 text-sm text-gray-400">
+                    <li><Link to="" className="hover:text-white transition duration-200">Chính sách bảo hành</Link></li>
+                    <li><Link to="" className="hover:text-white transition duration-200">Câu hỏi thường gặp (FAQ)</Link></li>
+                    <li><Link to="" className="hover:text-white transition duration-200">Liên hệ hỗ trợ</Link></li>
+                    <li><Link to="" className="hover:text-white transition duration-200">Chính sách đổi trả</Link></li>
+                </ul>
+            </div>
 
-                    {/* Cột 3: Chính sách */}
-                    <div>
-                        <h5 className="text-white text-xl font-bold mb-4">Chính sách</h5>
-                        <ul className="space-y-2">
-                            {['Chính sách bảo hành', 'Chính sách đổi trả', 'Chính sách giao hàng', 'Quy định bảo mật'].map((policy, idx) => (
-                                <li key={idx}>
-                                    <a href="#" className="hover:text-white transition duration-200">{policy}</a>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Cột 4: Kết nối */}
-                    <div>
-                        <h5 className="text-white text-xl font-bold mb-4">Kết nối với chúng tôi</h5>
-                        <div className="flex space-x-4 mt-2">
-                            {[
-                                { name: 'Facebook', icon: '📘' },
-                                { name: 'Instagram', icon: '📸' },
-                                { name: 'TikTok', icon: '🎵' },
-                                { name: 'Zalo', icon: '💬' }
-                            ].map((social, idx) => (
-                                <a key={idx} href="#" aria-label={social.name} className="text-gray-400 hover:text-white transition duration-200 text-2xl">
-                                    {social.icon}
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-
-                </div>
-
-                <hr className="border-gray-700 my-8" />
-
-                <div className="text-center text-gray-500">
-                    <p>&copy; 2025 TechZone. All Rights Reserved.</p>
+        
+            <div>
+                <h4 className="text-lg font-semibold mb-4">Liên hệ</h4>
+                <p className="text-sm text-gray-400 mb-2">Địa chỉ: 123 Đường Công Nghệ, Quận 1, TP. HCM</p>
+                <p className="text-sm text-gray-400 mb-2">Điện thoại: (028) 1234 5678</p>
+                <p className="text-sm text-gray-400">Email: support@phonestore.vn</p>
+               
+                <div class="flex space-x-4 mt-4">
+                    <Link to="" className="hover:text-secondary transition duration-300">Facebook</Link>
+                    <Link to="" className="hover:text-secondary transition duration-300">Instagram</Link>
+                    <Link to="" className="hover:text-secondary transition duration-300">Zalo</Link>
                 </div>
             </div>
-        </footer>
+        </div>
+
+        <div className="mt-12 border-t border-gray-700 pt-8 text-center">
+            <p className="text-sm text-gray-400">&copy; 2025 PhoneStore. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </footer>
     );
 }
 

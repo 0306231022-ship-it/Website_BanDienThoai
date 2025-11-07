@@ -2,25 +2,31 @@ import React from 'react';
 import '../../CSS/TrangChuWeb.css';
 import Menu from '../ThanhPhan/Website/Menu';
 import Footer from '../ThanhPhan/Website/Footer';
-import KhuyenMaiPage from '../ThanhPhan/Website/SanPhamKhuyenMai';
-import NewsPage from '../ThanhPhan/Website/TinTuc';
 import SanPhamTrangChu from '../ThanhPhan/Website/SanPhamTrangChu';
+import SanPham from '../ThanhPhan/Website/SanPham';
+import SanPhamNoiBat from '../ThanhPhan/Website/SanPhamNoiBat';
+import TinTuc from '../ThanhPhan/Website/TinTuc';
+import LienHe from '../ThanhPhan/Website/LienHe';
+import GioHang from '../ThanhPhan/Website/GioHang';
 import AccountDashboard from '../ThanhPhan/NguoiDung/TrangChuNguoiDung';
-import ShoppingCart from '../ThanhPhan/Website/GioHang';
 import DangNhap from './DangNhapNguoiDung';
-import { useAppContext } from '../../CONTEXT/TrangChuWrb';
+import { useUI } from "../../REDUCER/TrangChuWeb";
 function TrangChuWeb() {
-    const { state } = useAppContext();
+    const { state } = useUI();
     const renderPage = () => {
-        switch (state.Trang) {
-            case 'TrangChu':
+        switch (state.currentPage) {
+            case 'SHOW_HOME':
                 return <SanPhamTrangChu/>
-            case 'KhuyenMai':
-                return <KhuyenMaiPage />;
-            case 'TinTuc':
-                return <NewsPage />;
-            case 'GioHang' :
-                return <ShoppingCart/>
+            case 'SHOW_PRODUCTS':
+                return <SanPham />;
+            case 'SHOW_NOIBAT':
+                return <SanPhamNoiBat />;
+            case 'SHOW_TINTUC': 
+                return <TinTuc/>
+            case 'SHOW_LIENHE':
+                return <LienHe/>;
+                case 'SHOW_GIOHANG':
+                return <GioHang/>;
             case 'TrangChu_NguoiDung' :
                 return <AccountDashboard/>
             case 'DangNhap_NguoiDung' :

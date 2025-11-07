@@ -1,104 +1,172 @@
-function SanPhamTrangChu(){
-    const featuredProducts = [
-        {
-            name: "iPhone 15 Pro Max 256GB",
-            currentPrice: "28.990.000₫",
-            oldPrice: "34.990.000₫",
-            imageUrl: "https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumbnew-600x600.jpg",
-            link: "chi-tiet-san-pham.html"
-        },
-        {
-            name: "Samsung Galaxy S23 Ultra 5G",
-            currentPrice: "21.990.000₫",
-            oldPrice: "31.990.000₫",
-            imageUrl: "https://cdn.tgdd.vn/Products/Images/42/283818/samsung-galaxy-s23-ultra-thumb-xanh-600x600.jpg",
-            link: "chi-tiet-san-pham.html"
-        },
-        {
-            name: "Xiaomi 13T Pro 5G",
-            currentPrice: "15.990.000₫",
-            oldPrice: null,
-            imageUrl: "https://cdn.tgdd.vn/Products/Images/42/313431/xiaomi-13t-pro-thumb-xanh-600x600.jpg",
-            link: "chi-tiet-san-pham.html"
-        },
-        {
-            name: "OPPO Reno10 5G 256GB",
-            currentPrice: "9.490.000₫",
-            oldPrice: null,
-            imageUrl: "https://cdn.tgdd.vn/Products/Images/42/289662/oppo-reno10-thumb-blue-600x600.jpg",
-            link: "chi-tiet-san-pham.html"
-        },
-    ];
+import { Link } from "react-router-dom";
 
-    const brands = [
-        { name: "Apple", logoUrl: "https://cdn.worldvectorlogo.com/logos/apple-11.svg" },
-        { name: "Samsung", logoUrl: "https://cdn.worldvectorlogo.com/logos/samsung-5.svg" },
-        { name: "Xiaomi", logoUrl: "https://cdn.worldvectorlogo.com/logos/xiaomi-2.svg" },
-        { name: "Oppo", logoUrl: "https://cdn.worldvectorlogo.com/logos/oppo-logo.svg" },
-        { name: "Vivo", logoUrl: "https://cdn.worldvectorlogo.com/logos/vivo-1.svg" },
-        { name: "Realme", logoUrl: "https://cdn.worldvectorlogo.com/logos/realme-1.svg" },
-    ];
+// Cấu hình Tailwind CSS cho các màu tùy chỉnh
+// Primary: Xanh đậm (Deep Indigo)
+// Secondary: Vàng (Accent Yellow)
 
-    const ProductCard = ({ product }) => (
-        <div className="col">
-            <div className="bg-white rounded-lg shadow-lg overflow-hidden h-full flex flex-col product-card hover:shadow-xl hover:-translate-y-1 transition duration-300 border border-gray-100">
-                <img src={product.imageUrl} className="w-full" alt={product.name} />
-                <div className="p-4 flex flex-col flex-grow">
-                    <h5 className="text-lg font-semibold mb-2">{product.name}</h5>
-                    <div className="mt-auto">
-                        <p className="text-2xl font-bold text-blue-600 mb-3">
-                            {product.currentPrice}
-                            {product.oldPrice && (
-                                <span className="text-base font-normal text-gray-500 line-through ml-2">{product.oldPrice}</span>
-                            )}
+
+// Thành phần chính của ứng dụng
+const SanPhamTrangChu = () => {
+    // Để tích hợp cấu hình Tailwind CSS vào môi trường React đơn file
+    // chúng ta chèn script config vào đầu trang (hoặc sử dụng global script)
+    // Trong môi trường này, ta giả định config đã được load.
+
+    // Nội dung component SanPhamTrangChu của bạn
+    return (
+        <>
+          <div className="min-h-screen bg-gray-50">
+            {/* Inject custom Tailwind config via a dangerouslySetInnerHTML block (for single-file environment) */}
+        
+            {/* Header Section */}
+            <section id="home" className="bg-primary text-white py-16 md:py-24 lg:py-32">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
+                    <div className="md:w-1/2 mb-10 md:mb-0">
+                        <span className="text-secondary uppercase font-bold text-sm tracking-widest block mb-2">Công nghệ đỉnh cao trong tay bạn</span>
+                        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+                            Khám Phá Thế Giới Điện Thoại <span className="text-secondary">Mới Nhất</span>
+                        </h1>
+                        <p className="text-lg mb-8 opacity-90 max-w-lg">
+                            Tuyển chọn những mẫu smartphone cao cấp, hiệu năng vượt trội và thiết kế đột phá. Mua sắm ngay để nhận ưu đãi lớn!
                         </p>
-                        <a href={product.link} className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-md transition duration-200">Xem chi tiết</a>
+                        <Link className="inline-block bg-secondary text-primary font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-yellow-400 transition duration-300 transform hover:scale-105">
+                            Xem Sản Phẩm Ngay
+                        </Link>
+                    </div>
+                    <div className="md:w-1/2 flex justify-center">
+                        {/* Placeholder ảnh điện thoại */}
+                        <div className="w-64 h-64 sm:w-80 sm:h-80 bg-gray-700 rounded-3xl shadow-2xl flex items-center justify-center relative transform rotate-3">
+                            <svg className="w-3/4 h-3/4 text-gray-500 opacity-50" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 2a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V4a2 2 0 00-2-2H7zm0 2h10v16H7V4zm4 18a1 1 0 100-2 1 1 0 000 2z"></path></svg>
+                            <span className="absolute text-2xl font-semibold text-white/90">Smartphone</span>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            {/* Product Grid Section (Bán chạy nhất) */}
+            <section id="products" className="py-16 md:py-24">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-4xl font-extrabold text-center text-gray-900 mb-4">Sản Phẩm Bán Chạy Nhất</h2>
+                    <p className="text-xl text-center text-gray-500 mb-12">Những lựa chọn được khách hàng yêu thích và đánh giá cao.</p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                        {/* Product Card 1 */}
+                        <div className="bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 flex flex-col items-center border border-gray-100">
+                            {/* Placeholder ảnh sản phẩm */}
+                            <div className="w-full h-48 bg-gray-100 rounded-xl mb-4 flex items-center justify-center">
+                                <span className="text-gray-400 text-sm">Galaxy Z Fold Pro</span>
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 text-center">Galaxy Z Fold Pro</h3>
+                            <p className="text-sm text-gray-500 mb-4 text-center">Màn hình gập, 512GB</p>
+                            <p className="text-3xl font-extrabold text-primary mb-6">39.990.000₫</p>
+                            <button className="w-full bg-secondary text-primary-dark font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300 shadow-md">
+                                Thêm vào giỏ hàng
+                            </button>
+                        </div>
+
+                        {/* Product Card 2 */}
+                        <div className="bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 flex flex-col items-center border border-gray-100">
+                            <div className="w-full h-48 bg-gray-100 rounded-xl mb-4 flex items-center justify-center">
+                                <span className="text-gray-400 text-sm">iPhone 16 Pro Max</span>
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 text-center">iPhone 16 Pro Max</h3>
+                            <p className="text-sm text-gray-500 mb-4 text-center">Chip A18 Bionic, 256GB</p>
+                            <p className="text-3xl font-extrabold text-primary mb-6">35.490.000₫</p>
+                            <button className="w-full bg-secondary text-primary-dark font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300 shadow-md">
+                                Thêm vào giỏ hàng
+                            </button>
+                        </div>
+
+                        {/* Product Card 3 */}
+                        <div className="bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 flex flex-col items-center border border-gray-100">
+                            <div className="w-full h-48 bg-gray-100 rounded-xl mb-4 flex items-center justify-center">
+                                <span className="text-gray-400 text-sm">Xiaomi 15 Ultra</span>
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 text-center">Xiaomi 15 Ultra</h3>
+                            <p className="text-sm text-gray-500 mb-4 text-center">Camera Leica, 1TB</p>
+                            <p className="text-3xl font-extrabold text-primary mb-6">28.990.000₫</p>
+                            <button className="w-full bg-secondary text-primary-dark font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300 shadow-md">
+                                Thêm vào giỏ hàng
+                            </button>
+                        </div>
+
+                        {/* Product Card 4 */}
+                        <div className="bg-white p-6 rounded-2xl shadow-xl hover:shadow-2xl transition duration-300 transform hover:-translate-y-1 flex flex-col items-center border border-gray-100">
+                            <div className="w-full h-48 bg-gray-100 rounded-xl mb-4 flex items-center justify-center">
+                                <span className="text-gray-400 text-sm">Oppo Find X7</span>
+                            </div>
+                            <h3 className="text-xl font-bold mb-2 text-center">Oppo Find X7</h3>
+                            <p className="text-sm text-gray-500 mb-4 text-center">Sạc siêu nhanh, 12GB RAM</p>
+                            <p className="text-3xl font-extrabold text-primary mb-6">19.500.000₫</p>
+                            <button className="w-full bg-secondary text-primary-dark font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300 shadow-md">
+                                Thêm vào giỏ hàng
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="text-center mt-12">
+                        <Link className="inline-block border-2 border-primary text-primary font-semibold py-3 px-8 rounded-xl hover:bg-primary hover:text-white transition duration-300 shadow-lg">
+                            Xem tất cả sản phẩm
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* Features Section (Lý do chọn chúng tôi) */}
+            <section id="featured" className="bg-primary py-16 md:py-20">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <h2 className="text-3xl font-bold text-center text-white mb-12">Lý Do Khách Hàng Tin Tưởng PhoneStore</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-white">
+
+                        {/* Feature 1 */}
+                        <div className="text-center p-6 bg-primary/90 rounded-xl shadow-lg border border-white/20">
+                            <svg className="w-10 h-10 mx-auto mb-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            <h3 className="text-xl font-semibold mb-2">Giao Hàng Siêu Tốc</h3>
+                            <p className="text-sm opacity-80">Nhận máy trong vòng 24 giờ tại các thành phố lớn.</p>
+                        </div>
+
+                        {/* Feature 2 */}
+                        <div className="text-center p-6 bg-primary/90 rounded-xl shadow-lg border border-white/20">
+                            <svg className="w-10 h-10 mx-auto mb-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.001 12.001 0 002.944 12c.047 3.01 1.295 5.86 3.04 8.618a11.955 11.955 0 0114.13-14.13c1.745-2.758 2.993-5.608 3.04-8.618A12.001 12.001 0 0021.056 12z"></path></svg>
+                            <h3 className="text-xl font-semibold mb-2">Bảo Hành 12 Tháng</h3>
+                            <p className="text-sm opacity-80">Chính sách bảo hành chính hãng, 1 đổi 1 trong 30 ngày.</p>
+                        </div>
+
+                        {/* Feature 3 */}
+                        <div className="text-center p-6 bg-primary/90 rounded-xl shadow-lg border border-white/20">
+                            <svg className="w-10 h-10 mx-auto mb-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                            <h3 className="text-xl font-semibold mb-2">Thanh Toán Linh Hoạt</h3>
+                            <p className="text-sm opacity-80">Hỗ trợ trả góp 0%, thanh toán qua nhiều hình thức.</p>
+                        </div>
+
+                        {/* Feature 4 */}
+                        <div className="text-center p-6 bg-primary/90 rounded-xl shadow-lg border border-white/20">
+                            <svg className="w-10 h-10 mx-auto mb-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <h3 className="text-xl font-semibold mb-2">Hỗ Trợ 24/7</h3>
+                            <p className="text-sm opacity-80">Đội ngũ chuyên gia luôn sẵn sàng hỗ trợ kỹ thuật.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* CTA Section */}
+            <section className="py-16 bg-gray-100">
+                <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">Đăng Ký Nhận Tin Tức & Khuyến Mãi</h2>
+                    <p className="text-lg text-gray-600 mb-8">Đừng bỏ lỡ các ưu đãi độc quyền và thông tin sản phẩm mới nhất.</p>
+                    <div className="max-w-xl mx-auto flex flex-col sm:flex-row gap-4">
+                        {/* Đã sửa lỗi: Thêm dấu đóng / vào thẻ input */}
+                        <input type="email" placeholder="Nhập địa chỉ email của bạn" className="flex-grow p-4 border border-gray-300 rounded-xl focus:ring-primary focus:border-primary shadow-inner" />
+                        <button className="bg-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-blue-700 transition duration-300 shadow-md">
+                            Đăng Ký Ngay
+                        </button>
+                    </div>
+                </div>
+            </section>
         </div>
-    );
-
-    return(
-        <>
-                 {/* Hero Banner */}
-                <section className="hero-banner flex items-center justify-center text-center">
-                    <div className="container mx-auto px-4">
-                        <h1 className="text-5xl sm:text-6xl font-extrabold mb-4 text-white drop-shadow-lg">Sắm đồ công nghệ, giá siêu hời</h1>
-                        <p className="text-xl sm:text-2xl mb-8 text-white">Khám phá ngay những mẫu điện thoại mới nhất</p>
-                        <a href="#" className="bg-primary hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg text-lg transition duration-300 transform hover:scale-105 inline-block bg-blue-600">Mua sắm ngay</a>
-                    </div>
-                </section>
-
-                {/* Sản phẩm bán chạy nhất */}
-                <section className="py-12">
-                    <div className="container mx-auto px-4">
-                        <h2 className="text-center text-3xl font-bold mb-10 text-gray-800">🔥 SẢN PHẨM BÁN CHẠY NHẤT</h2>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            {featuredProducts.map((product, index) => (
-                                <ProductCard key={index} product={product} />
-                            ))}
-                        </div>
-                    </div>
-                </section>
-                
-                {/* --- */}
-
-                {/* Thương hiệu hàng đầu */}
-                <section className="py-12 bg-gray-100">
-                    <div className="container mx-auto px-4">
-                        <h2 className="text-center text-3xl font-bold mb-10 text-gray-800">THƯƠNG HIỆU HÀNG ĐẦU</h2>
-                        <div className="flex flex-wrap justify-center items-center -mx-4">
-                            {brands.map((brand, index) => (
-                                <div key={index} className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/6 px-4 mb-8 brand-logo text-center">
-                                    <img src={brand.logoUrl} alt={brand.name} className="max-h-12 mx-auto transition duration-300" />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
         </>
-    )
-}
+      
+    );
+};
+
 export default SanPhamTrangChu;

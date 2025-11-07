@@ -25,6 +25,7 @@ router.post('/', (req, res) => {
       const taiKhoan2 = req.session.TaiKhoan;   
       if (taiKhoan1 || taiKhoan2) {
         return res.json([{ ThanhCong: true }]);
+      
       } 
       return res.json([{ ThanhCong: false }]);
       break;

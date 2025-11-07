@@ -1,15 +1,15 @@
 const mysql = require('mysql2');
-
-const db = mysql.createConnection({
+import { createPool } from 'mysql2';
+const pool = createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
+export async function execute(sql, params) {
+  return await pool.execute(sql, params);
+}
 
-db.connect(err => {
-  if (err) console.log('❌ Lỗi kết nối DB:', err);
-  else console.log('✅ Kết nối MySQL thành công!');
-});
-
-module.exports = db;
