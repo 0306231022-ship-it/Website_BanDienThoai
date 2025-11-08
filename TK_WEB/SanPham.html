@@ -1,476 +1,401 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhoneStore - Cửa hàng Điện thoại Di động Cao cấp</title>
-    <!-- Tải Tailwind CSS -->
+    <!-- Thay đổi Title -->
+    <title>Sản Phẩm - TechMobile 2025</title>
+    <meta name="description" content="Khám phá tất cả sản phẩm của TechMobile, từ AI Series, Foldable đến Eco Series.">
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Cấu hình Tailwind cho font Inter và màu sắc tùy chỉnh -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Giữ nguyên config Tailwind từ file gốc -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        'primary': '#1e40af', // Màu xanh đậm
-                        'secondary': '#facc15', // Màu vàng/hổ phách
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        },
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        accent: {
+                            400: '#34d399',
+                            500: '#10b981',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(14, 165, 233, 0.6)' },
+                        }
                     }
                 }
             }
         }
     </script>
-    <style>
-        /* Đảm bảo cuộn mượt mà */
-        html { scroll-behavior: smooth; }
-        /* Tùy chỉnh nhẹ cho hiệu ứng */
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-    </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800">
+<body class="min-h-screen bg-white font-inter">
 
-    <!-- Header / Thanh điều hướng -->
-    <header class="sticky top-0 z-50 bg-white shadow-md">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
-            
-            <!-- Group 1: Logo, Menu, and Search Bar -->
-            <div class="flex items-center w-full lg:w-auto">
+    <!-- Header & Navigation (Giữ nguyên) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
                 <!-- Logo -->
-                <a href="#" class="text-2xl font-bold text-primary flex items-center mr-6 flex-shrink-0">
-                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                    Phone<span class="text-secondary">Store</span>
-                </a>
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-dark-900">TechMobile</span>
+                </div>
 
-                <!-- Menu (Chỉ hiển thị trên desktop lớn) -->
-                <nav class="hidden lg:flex space-x-6 text-lg mr-8 flex-shrink-0">
-                    <a href="#home" class="hover:text-primary transition duration-300">Trang chủ</a>
-                    <a href="#products" class="hover:text-primary transition duration-300">Sản phẩm</a>
-                    <a href="#featured" class="hover:text-primary transition duration-300">Nổi bật</a>
-                    <a href="#contact" class="hover:text-primary transition duration-300">Liên hệ</a>
+                <!-- Desktop Navigation (Cập nhật link "Sản Phẩm" active) -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <!-- Cập nhật link về trang chủ -->
+                    <a href="mobile-phone-ecommerce-2025.html" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</a>
+                    <!-- Đánh dấu "Sản Phẩm" là trang hiện tại -->
+                    <a href="#" class="text-primary-500 font-bold transition-colors">Sản Phẩm</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">AI & Công Nghệ</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Bền Vững</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Hỗ Trợ</a>
                 </nav>
 
-                <!-- Search Input (Desktop/Tablet Only) -->
-                <div class="hidden md:flex items-center border border-gray-200 rounded-full px-4 py-2 shadow-sm focus-within:border-primary transition duration-300 w-full max-w-sm">
-                    <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    <input type="text" placeholder="Tìm kiếm sản phẩm..." class="focus:outline-none w-full text-sm bg-transparent">
+                <!-- Search & Actions (Cập nhật link giỏ hàng, user) -->
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center bg-dark-50 rounded-full px-4 py-2">
+                        <i class="fas fa-search text-dark-600 mr-2"></i>
+                        <input type="text" placeholder="Tìm kiếm điện thoại..." class="bg-transparent outline-none text-dark-900">
+                    </div>
+                    <!-- Cập nhật link cho các trang đã tạo -->
+                    <a href="cart.html" class="p-2 text-dark-600 hover:text-primary-500 transition-colors">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                    <a href="user-profile.html" class="p-2 text-dark-600 hover:text-primary-500 transition-colors">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <button class="md:hidden p-2 text-dark-600">
+                        <i class="fas fa-bars"></i>
+                    </button>
                 </div>
-            </div>
-            
-            <!-- Group 2: Icons (Action Icons) -->
-            <div class="flex items-center space-x-2 sm:space-x-4 ml-4">
-                
-                <!-- Search Button (Mobile Only) -->
-                <button class="p-2 rounded-full hover:bg-gray-100 transition duration-300 md:hidden" title="Tìm kiếm">
-                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </button>
-
-                <!-- Shopping Cart Icon -->
-                <button class="p-2 rounded-full hover:bg-gray-100 transition duration-300" title="Giỏ hàng">
-                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 010 2a2 2 010-4m-8 2a2 2 010 2a2 2 010-4"></path></svg>
-                </button>
-
-                <!-- User/Profile Icon -->
-                <button class="p-2 rounded-full hover:bg-gray-100 transition duration-300" title="Tài khoản">
-                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                </button>
-
-                <!-- Admin Store Icon -->
-                <button class="p-2 rounded-full hover:bg-gray-100 transition duration-300" title="Khu vực Admin">
-                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                </button>
-
-                <!-- Hamburger Menu (Mobile Menu Toggle) -->
-                <button class="p-2 rounded-full hover:bg-gray-100 transition duration-300 lg:hidden" title="Menu">
-                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
             </div>
         </div>
     </header>
 
+    <!-- Main Content (Nội dung mới cho trang sản phẩm) -->
     <main>
-        <!-- Hero Section -->
-        <section id="home" class="bg-primary text-white py-16 md:py-24 lg:py-32">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between">
-                <div class="md:w-1/2 mb-10 md:mb-0">
-                    <span class="text-secondary uppercase font-bold text-sm tracking-widest block mb-2">Công nghệ đỉnh cao trong tay bạn</span>
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
-                        Khám Phá Thế Giới Điện Thoại <span class="text-secondary">Mới Nhất</span>
-                    </h1>
-                    <p class="text-lg mb-8 opacity-90 max-w-lg">
-                        Tuyển chọn những mẫu smartphone cao cấp, hiệu năng vượt trội và thiết kế đột phá. Mua sắm ngay để nhận ưu đãi lớn!
-                    </p>
-                    <a href="#products" class="inline-block bg-secondary text-primary font-bold py-3 px-8 rounded-xl shadow-lg hover:bg-yellow-400 transition duration-300 transform hover:scale-105">
-                        Xem Sản Phẩm Ngay
-                    </a>
-                </div>
-                <div class="md:w-1/2 flex justify-center">
-                    <!-- Placeholder ảnh điện thoại -->
-                    <div class="w-64 h-64 sm:w-80 sm:h-80 bg-gray-700 rounded-3xl shadow-2xl flex items-center justify-center relative transform rotate-3">
-                        <svg class="w-3/4 h-3/4 text-gray-500 opacity-50" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 2a2 2 0 00-2 2v16a2 2 0 002 2h10a2 2 0 002-2V4a2 2 0 00-2-2H7zm0 2h10v16H7V4zm4 18a1 1 0 100-2 1 1 0 000 2z"></path></svg>
-                        <span class="absolute text-2xl font-semibold">Smartphone</span>
-                    </div>
+        
+        <!-- Hero Section & Lọc -->
+        <section class="bg-dark-50 py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h1 class="text-4xl md:text-5xl font-bold text-dark-900 mb-4">
+                    Khám Phá Sản Phẩm
+                </h1>
+                <p class="text-xl text-dark-600 max-w-2xl mx-auto">
+                    Tìm kiếm công nghệ di động tiên tiến nhất, được thiết kế cho tương lai.
+                </p>
+                <!-- Lọc nhanh (dùng anchor links) -->
+                <div class="flex flex-wrap justify-center space-x-2 mt-8">
+                    <a href="#" class="px-4 py-2 bg-primary-500 text-white rounded-lg">Tất Cả</a>
+                    <a href="#ai-series" class="px-4 py-2 text-dark-600 hover:bg-white rounded-lg transition-colors">AI Series</a>
+                    <a href="#foldable" class="px-4 py-2 text-dark-600 hover:bg-white rounded-lg transition-colors">Foldable</a>
+                    <a href="#eco-series" class="px-4 py-2 text-dark-600 hover:bg-white rounded-lg transition-colors">Eco Series</a>
                 </div>
             </div>
         </section>
 
-        <!-- Product Listing Page (Thay thế và mở rộng phần #products cũ) -->
-        <section id="products" class="py-16 md:py-24 bg-gray-100">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-4xl font-extrabold text-center mb-2">Tất Cả Sản Phẩm</h2>
-                <p class="text-xl text-center text-gray-500 mb-10">Duyệt qua danh mục điện thoại di động phong phú của chúng tôi.</p>
-                
-                <div class="flex flex-col lg:flex-row gap-10">
-                    
-                    <!-- Sidebar / Filters (Chỉ hiện thị trên màn hình lớn) -->
-                    <div class="lg:w-1/4 p-6 bg-white rounded-2xl shadow-xl h-fit hidden lg:block">
-                        <h3 class="text-2xl font-bold mb-6 text-primary border-b pb-2">Bộ Lọc</h3>
-
-                        <!-- Filter Group 1: Hãng sản xuất -->
-                        <div class="mb-6">
-                            <h4 class="font-semibold text-lg mb-3 flex justify-between items-center">
-                                Hãng Sản Xuất
-                            </h4>
-                            <div class="space-y-2 text-gray-600">
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="form-checkbox text-primary rounded-md mr-2"> Apple (12)
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="form-checkbox text-primary rounded-md mr-2"> Samsung (15)
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="form-checkbox text-primary rounded-md mr-2"> Xiaomi (8)
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="form-checkbox text-primary rounded-md mr-2"> Oppo (5)
-                                </label>
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="form-checkbox text-primary rounded-md mr-2"> Khác (3)
-                                </label>
+        <!-- Mục 1: AI Series -->
+        <section id="ai-series" class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+                        AI Series
+                    </h2>
+                    <p class="text-dark-600">Trí tuệ nhân tạo trong tầm tay bạn, tối ưu hóa mọi trải nghiệm.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Product 1 (Copy từ gốc) -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=2" 
+                                    alt="AI Phone Pro 2025" 
+                                    class="w-full rounded-xl mb-4" loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-primary-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    AI
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">AI Phone Pro 2025</h3>
+                            <p class="text-dark-600 text-sm mb-4">Trợ lý AI, camera 200MP, pin 2 ngày</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">12.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
                             </div>
                         </div>
-
-                        <!-- Filter Group 2: Khoảng Giá -->
-                        <div class="mb-6 border-t pt-4">
-                            <h4 class="font-semibold text-lg mb-3">Khoảng Giá (VNĐ)</h4>
-                            <input type="range" min="1000000" max="50000000" value="20000000" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer range-primary">
-                            <p class="text-sm mt-2 text-center text-gray-500">Dưới 20.000.000</p>
-                        </div>
-
-                        <!-- Filter Group 3: RAM -->
-                        <div class="mb-6 border-t pt-4">
-                            <h4 class="font-semibold text-lg mb-3">RAM</h4>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="bg-primary text-white text-xs font-medium px-3 py-1 rounded-full cursor-pointer hover:opacity-80">8GB</span>
-                                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-3 py-1 rounded-full cursor-pointer hover:bg-gray-300">12GB</span>
-                                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-3 py-1 rounded-full cursor-pointer hover:bg-gray-300">16GB</span>
-                                <span class="bg-gray-200 text-gray-800 text-xs font-medium px-3 py-1 rounded-full cursor-pointer hover:bg-gray-300">24GB</span>
-                            </div>
-                        </div>
-
-                        <button class="w-full bg-primary text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition duration-300 mt-4">
-                            Áp Dụng Lọc
-                        </button>
                     </div>
-                    
-                    <!-- Main Content / Product Grid (75%) -->
-                    <div class="lg:w-3/4">
-                        <!-- Sorting/View Options -->
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 border-b pb-4">
-                            <p class="text-gray-600 mb-3 sm:mb-0">Hiển thị <span class="font-bold">1-9</span> trong <span class="font-bold">43</span> sản phẩm</p>
-                            <div class="flex items-center space-x-3">
-                                <label for="sort" class="text-sm font-medium text-gray-700">Sắp xếp theo:</label>
-                                <select id="sort" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm">
-                                    <option>Mới nhất</option>
-                                    <option>Giá: Thấp đến Cao</option>
-                                    <option>Giá: Cao đến Thấp</option>
-                                    <option>Đánh giá</option>
-                                </select>
+                    <!-- Product 2 (Copy từ gốc) -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=5" 
+                                    alt="AI Phone Lite" 
+                                    class="w-full rounded-xl mb-4" loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-primary-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    AI
+                                </div>
                             </div>
-                        </div>
-                        
-                        <!-- Product Grid (Responsive: 1, 2, or 3 columns) -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
-                            
-                            <!-- Product Card 1 (iPhone) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center relative">
-                                    <span class="absolute top-2 left-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">HOT</span>
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">iPhone 16 Pro Max</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">256GB, Sierra Blue. Hàng chính hãng.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.9 (245 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">35.490.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
-                                </button>
-                            </div>
-
-                            <!-- Product Card 2 (Samsung Fold) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center relative">
-                                    <span class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">MỚI</span>
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v6m7-2h3v8H7v-8h3m0 0V4m0 0h-4v16a2 2 0 002 2h6a2 2 0 002-2V4h-4z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">Galaxy Z Fold Pro</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">Màn hình gập, 512GB, màu Đen.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.7 (189 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">39.990.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
-                                </button>
-                            </div>
-
-                            <!-- Product Card 3 (Xiaomi) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">Xiaomi 15 Ultra</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">Camera Leica, 1TB. Hiệu năng khủng.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.8 (312 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">28.990.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
-                                </button>
-                            </div>
-
-                            <!-- Product Card 4 (Oppo) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">Oppo Find X7</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">Sạc siêu nhanh, 12GB RAM, Xanh Ngọc.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.5 (98 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">19.500.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
-                                </button>
-                            </div>
-
-                            <!-- Product Card 5 (Samsung S series) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">Samsung S25 Ultra</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">Chip Exynos 2500, 512GB, Đen.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.6 (150 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">32.990.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
-                                </button>
-                            </div>
-
-                            <!-- Product Card 6 (iPhone SE) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">iPhone SE (2025)</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">Giá tốt, 128GB, màu Đỏ.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.4 (500 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">14.990.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
-                                </button>
-                            </div>
-
-                            <!-- Product Card 7 (Google Pixel) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">Google Pixel 10 Pro</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">Camera AI đỉnh cao, 256GB.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.8 (99 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">25.500.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
-                                </button>
-                            </div>
-
-                            <!-- Product Card 8 (Sony Xperia) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">Sony Xperia Z6</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">Chống nước IP68, 512GB, Xanh rêu.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.3 (78 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">22.000.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
-                                </button>
-                            </div>
-
-                            <!-- Product Card 9 (Asus ROG) -->
-                            <div class="bg-white p-6 rounded-2xl shadow-xl card-hover transition duration-300 flex flex-col items-center">
-                                <div class="w-full h-48 bg-gray-200 rounded-xl mb-4 flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-400 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-                                </div>
-                                <h3 class="text-xl font-bold mb-2 text-center">ROG Phone 9 Pro</h3>
-                                <p class="text-sm text-gray-500 mb-4 text-center">Điện thoại chơi game, 16GB RAM.</p>
-                                <div class="flex items-center mb-2">
-                                    <span class="text-secondary mr-1">★</span> 4.9 (120 đánh giá)
-                                </div>
-                                <p class="text-3xl font-extrabold text-primary mb-6">29.990.000₫</p>
-                                <button class="w-full bg-secondary text-primary font-bold py-3 rounded-xl hover:bg-yellow-400 transition duration-300">
-                                    Mua Ngay
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">AI Phone Lite</h3>
+                            <p class="text-dark-600 text-sm mb-4">Trợ lý AI cơ bản, camera 108MP, pin 1.5 ngày</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">6.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
                                 </button>
                             </div>
                         </div>
-
-                        <!-- Pagination -->
-                        <div class="flex justify-center mt-12">
-                            <nav class="flex space-x-2" aria-label="Pagination">
-                                <a href="#" class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
-                                    Trước
-                                </a>
-                                <a href="#" aria-current="page" class="z-10 px-4 py-2 text-sm font-medium text-primary border border-primary bg-blue-50 rounded-lg">
-                                    1
-                                </a>
-                                <a href="#" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
-                                    2
-                                </a>
-                                <a href="#" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
-                                    3
-                                </a>
-                                <a href="#" class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100">
-                                    Sau
-                                </a>
-                            </nav>
+                    </div>
+                    <!-- Product 3 (Mới) -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=7" 
+                                    alt="AI Vision Max" 
+                                    class="w-full rounded-xl mb-4" loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-primary-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    AI
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">AI Vision Max</h3>
+                            <p class="text-dark-600 text-sm mb-4">Chuyên gia nhiếp ảnh AI, màn hình 8K</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">18.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features Section (Lý do chọn chúng tôi) -->
-        <section id="featured" class="bg-primary bg-opacity-95 py-16 md:py-20">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="text-3xl font-bold text-center text-white mb-12">Lý Do Khách Hàng Tin Tưởng PhoneStore</h2>
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-white">
-
-                    <!-- Feature 1 -->
-                    <div class="text-center p-6 bg-primary rounded-xl shadow-lg">
-                        <svg class="w-10 h-10 mx-auto mb-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        <h3 class="text-xl font-semibold mb-2">Giao Hàng Siêu Tốc</h3>
-                        <p class="text-sm opacity-80">Nhận máy trong vòng 24 giờ tại các thành phố lớn.</p>
+        <!-- Mục 2: Foldable -->
+        <section id="foldable" class="py-16 bg-dark-50">
+            <div class="container mx-auto px-4">
+                <div class="mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+                        Foldable
+                    </h2>
+                    <p class="text-dark-600">Mở ra tương lai của màn hình gập, đa nhiệm không giới hạn.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Product 1 (Copy từ gốc) -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=3" 
+                                    alt="FoldMax Z" 
+                                    class="w-full rounded-xl mb-4" loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-primary-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    Mới
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">FoldMax Z</h3>
+                            <p class="text-dark-600 text-sm mb-4">Màn hình gập, đa nhiệm, thiết kế cao cấp</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">24.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- Feature 2 -->
-                    <div class="text-center p-6 bg-primary rounded-xl shadow-lg">
-                        <svg class="w-10 h-10 mx-auto mb-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.001 12.001 0 002.944 12c.047 3.01 1.295 5.86 3.04 8.618a11.955 11.955 0 0114.13-14.13c1.745-2.758 2.993-5.608 3.04-8.618A12.001 12.001 0 0021.056 12z"></path></svg>
-                        <h3 class="text-xl font-semibold mb-2">Bảo Hành 12 Tháng</h3>
-                        <p class="text-sm opacity-80">Chính sách bảo hành chính hãng, 1 đổi 1 trong 30 ngày.</p>
-                    </div>
-
-                    <!-- Feature 3 -->
-                    <div class="text-center p-6 bg-primary rounded-xl shadow-lg">
-                        <svg class="w-10 h-10 mx-auto mb-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                        <h3 class="text-xl font-semibold mb-2">Thanh Toán Linh Hoạt</h3>
-                        <p class="text-sm opacity-80">Hỗ trợ trả góp 0%, thanh toán qua nhiều hình thức.</p>
-                    </div>
-
-                    <!-- Feature 4 -->
-                    <div class="text-center p-6 bg-primary rounded-xl shadow-lg">
-                        <svg class="w-10 h-10 mx-auto mb-4 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        <h3 class="text-xl font-semibold mb-2">Hỗ Trợ 24/7</h3>
-                        <p class="text-sm opacity-80">Đội ngũ chuyên gia luôn sẵn sàng hỗ trợ kỹ thuật.</p>
+                    <!-- Product 2 (Mới) -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=9" 
+                                    alt="FoldMini" 
+                                    class="w-full rounded-xl mb-4" loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-primary-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    Mới
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">FoldMini</h3>
+                            <p class="text-dark-600 text-sm mb-4">Thiết kế gập vỏ sò, nhỏ gọn, thời trang</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">21.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        <!-- CTA Section -->
-        <section class="py-16 bg-gray-100">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl sm:text-4xl font-extrabold mb-4">Đăng Ký Nhận Tin Tức & Khuyến Mãi</h2>
-                <p class="text-lg text-gray-600 mb-8">Đừng bỏ lỡ các ưu đãi độc quyền và thông tin sản phẩm mới nhất.</p>
-                <div class="max-w-xl mx-auto flex flex-col sm:flex-row gap-4">
-                    <input type="email" placeholder="Nhập địa chỉ email của bạn" class="flex-grow p-4 border border-gray-300 rounded-xl focus:ring-primary focus:border-primary">
-                    <button class="bg-primary text-white font-bold py-4 px-8 rounded-xl hover:bg-blue-700 transition duration-300 shadow-md">
-                        Đăng Ký Ngay
-                    </button>
+        
+        <!-- Mục 3: Eco Series -->
+        <section id="eco-series" class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+                        Eco Series
+                    </h2>
+                    <p class="text-dark-600">Công nghệ bền vững, thiết kế vì môi trường, hiệu năng ấn tượng.</p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Product 1 (Copy từ gốc) -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=4" 
+                                    alt="Eco Phone S" 
+                                    class="w-full rounded-xl mb-4" loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-accent-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    Eco
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">Eco Phone S</h3>
+                            <p class="text-dark-600 text-sm mb-4">Vật liệu tái chế, tiết kiệm năng lượng, thiết kế tối giản</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">8.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Product 2 (Mới) -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=11" 
+                                    alt="Eco Pro" 
+                                    class="w-full rounded-xl mb-4" loading="lazy" />
+                                <div class="absolute top-4 left-4 bg-accent-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    Eco
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">Eco Pro</h3>
+                            <p class="text-dark-600 text-sm mb-4">Pin năng lượng mặt trời (thụ động), vỏ tre</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">11.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
-
+        
     </main>
 
-    <!-- Footer -->
-    <footer id="contact" class="bg-gray-800 text-white py-12">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8">
-            <!-- Cột 1: Thông tin công ty -->
-            <div>
-                <h4 class="text-xl font-bold mb-4 text-secondary">PhoneStore</h4>
-                <p class="text-sm text-gray-400">Chuyên cung cấp các sản phẩm điện thoại di động chính hãng, giá tốt nhất thị trường.</p>
-            </div>
-
-            <!-- Cột 2: Sản phẩm -->
-            <div>
-                <h4 class="text-lg font-semibold mb-4">Sản phẩm</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-white transition duration-200">Điện thoại Mới</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-200">Phụ kiện</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-200">Máy đã qua sử dụng</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-200">Máy tính bảng</a></li>
-                </ul>
-            </div>
-
-            <!-- Cột 3: Hỗ trợ -->
-            <div>
-                <h4 class="text-lg font-semibold mb-4">Hỗ trợ</h4>
-                <ul class="space-y-2 text-sm text-gray-400">
-                    <li><a href="#" class="hover:text-white transition duration-200">Chính sách bảo hành</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-200">Câu hỏi thường gặp (FAQ)</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-200">Liên hệ hỗ trợ</a></li>
-                    <li><a href="#" class="hover:text-white transition duration-200">Chính sách đổi trả</a></li>
-                </ul>
-            </div>
-
-            <!-- Cột 4: Liên hệ -->
-            <div>
-                <h4 class="text-lg font-semibold mb-4">Liên hệ</h4>
-                <p class="text-sm text-gray-400 mb-2">Địa chỉ: 123 Đường Công Nghệ, Quận 1, TP. HCM</p>
-                <p class="text-sm text-gray-400 mb-2">Điện thoại: (028) 1234 5678</p>
-                <p class="text-sm text-gray-400">Email: support@phonestore.vn</p>
-                <!-- Social Icons Placeholder -->
-                <div class="flex space-x-4 mt-4">
-                    <a href="#" class="hover:text-secondary transition duration-300">Facebook</a>
-                    <a href="#" class="hover:text-secondary transition duration-300">Instagram</a>
-                    <a href="#" class="hover:text-secondary transition duration-300">Zalo</a>
+    <!-- Footer (Giữ nguyên từ file gốc) -->
+    <footer class="bg-dark-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">TechMobile</span>
+                    </div>
+                    <p class="text-dark-300">
+                        Đi đầu trong công nghệ di động với các sản phẩm AI, bền vững và đột phá.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
                 </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold">Sản Phẩm</h3>
+                    <ul class="space-y-2 text-dark-300">
+                        <li><a href="#ai-series" class="hover:text-white transition-colors">AI Series</a></li>
+                    <li><a href="#foldable" class="hover:text-white transition-colors">Foldable</a></li>
+                    <li><a href="#eco-series" class="hover:text-white transition-colors">Eco Series</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Phụ Kiện</a></li>
+                </ul>
             </div>
+
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Hỗ Trợ</h3>
+                <ul class="space-y-2 text-dark-300">
+                    <li><a href="#" class="hover:text-white transition-colors">Trung Tâm Hỗ Trợ</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Bảo Hành</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Hướng Dẫn Mua Hàng</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Liên Hệ</a></li>
+            </ul>
         </div>
 
-        <div class="mt-12 border-t border-gray-700 pt-8 text-center">
-            <p class="text-sm text-gray-400">&copy; 2025 PhoneStore. Tất cả quyền được bảo lưu.</p>
+        <div class="space-y-4">
+            <h3 class="text-lg font-bold">Liên Hệ</h3>
+            <div class="space-y-2 text-dark-300">
+                <div class="flex items-center">
+                    <i class="fas fa-map-marker-alt mr-3"></i>
+                <span>123 Nguyễn Văn Linh, Quận 7, TP.HCM</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone mr-3"></i>
+            <span>1900 1234</span>
+        </div>
+        <div class="flex items-center">
+            <i class="fas fa-envelope mr-3"></i>
+            <span>info@techmobile.vn</span>
+        </div>
+    </div>
+</div>
+            </div>
+            <div class="border-t border-dark-800 mt-12 pt-8 text-center text-dark-300">
+                <p>&copy; 2025 TechMobile. Tất cả quyền được bảo lưu.</p>
+            </div>
         </div>
     </footer>
+
+
 
 </body>
 </html>

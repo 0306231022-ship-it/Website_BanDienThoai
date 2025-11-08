@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bền Vững & Hỗ Trợ - TechVision</title>
+    <meta name="description" content="Trang bền vững và hỗ trợ khách hàng cho website bán điện thoại theo xu hướng 2025">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'eco-green': '#10b981',
+                        'eco-teal': '#0d9488',
+                        'dark-bg': '#0a0a0a',
+                        'card-bg': '#1a1a1a',
+                        'accent': '#00d4ff',
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #10b981, #0d9488);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .eco-glow {
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white text-gray-800 font-inter">
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-eco-green to-eco-teal rounded-lg"></div>
+                    <span class="text-2xl font-bold gradient-text">TechVision</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-800 hover:text-eco-green transition-colors duration-300 font-medium">Trang Chủ</a>
+                    <a href="#" class="text-gray-800 hover:text-eco-green transition-colors duration-300 font-medium">Sản Phẩm</a>
+                    <a href="#" class="text-eco-green font-medium">Bền Vững</a>
+                    <a href="#" class="text-gray-800 hover:text-eco-green transition-colors duration-300 font-medium">Hỗ Trợ</a>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-gradient-to-r from-eco-green to-eco-teal text-gray-800 px-6 py-2 rounded-full font-medium hover:shadow-lg hover:shadow-eco-green/20 transition-all">
+                        Đăng Nhập
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Trang Bền Vững -->
+        <section id="sustainability" class="py-16">
+            <div class="container mx-auto px-4">
+                <!-- Hero Section Bền Vững -->
+                <div class="text-center mb-16">
+                    <h1 class="text-5xl lg:text-6xl font-bold mb-6">
+                        <span class="gradient-text">Tương Lai Bền Vững</span><br>
+                        Cùng TechVision
+                    </h1>
+                    <p class="text-xl text-gray-700 max-w-3xl mx-auto">
+                        Cam kết của chúng tôi về môi trường và trách nhiệm xã hội trong từng sản phẩm công nghệ
+                    </p>
+                </div>
+
+                <!-- Cam Kết Bền Vững -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-eco-green transition-all group text-center">
+                        <div class="w-20 h-20 bg-eco-green rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:eco-glow transition-all">
+                            <i class="fas fa-recycle text-3xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Vật Liệu Tái Chế</h3>
+                        <p class="text-gray-600">Sử dụng 85% vật liệu tái chế trong sản xuất vỏ máy và phụ kiện</p>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-eco-green transition-all group text-center">
+                        <div class="w-20 h-20 bg-eco-green rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:eco-glow transition-all">
+                            <i class="fas fa-leaf text-3xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Năng Lượng Xanh</h3>
+                        <p class="text-gray-600">Nhà máy sản xuất sử dụng 100% năng lượng tái tạo</p>
+                    </div>
+                    <div class="bg-gray-50 p-8 rounded-2xl border border-gray-200 hover:border-eco-green transition-all group text-center">
+                        <div class="w-20 h-20 bg-eco-green rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:eco-glow transition-all">
+                            <i class="fas fa-truck text-3xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-4">Vận Chuyển Xanh</h3>
+                        <p class="text-gray-600">Giảm 60% khí thải carbon trong chuỗi cung ứng và vận chuyển</p>
+                    </div>
+                </div>
+
+                <!-- Chương Trình Tái Chế -->
+                <div class="bg-gradient-to-r from-green-900 to-teal-900 rounded-2xl p-12 mb-16">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 class="text-4xl font-bold mb-6">Chương Trình Tái Chế</h2>
+                            <p class="text-xl text-gray-200 mb-6">
+                                Thu hồi và tái chế điện thoại cũ. Nhận ưu đãi lên đến 3 triệu đồng khi đổi máy cũ lấy máy mới.
+                            </p>
+                            <ul class="space-y-3 text-gray-700 mb-8">
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-eco-green mr-3"></i>
+                                    Xử lý an toàn chất thải điện tử
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-eco-green mr-3"></i>
+                                    Tái chế 99% linh kiện có thể tái sử dụng
+                                </li>
+                                <li class="flex items-center">
+                                    <i class="fas fa-check-circle text-eco-green mr-3"></i>
+                                    Bảo vệ dữ liệu người dùng tuyệt đối
+                                </li>
+                            </ul>
+                            <button class="bg-white text-dark-bg px-8 py-4 rounded-full font-semibold hover:bg-gray-100 transition-all">
+                                Tham Gia Ngay
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <img 
+                                src="https://picsum.photos/500/400?random=5" 
+                                alt="Chương trình tái chế điện thoại thân thiện môi trường"
+                                class="rounded-2xl shadow-2xl"
+                                loading="lazy"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Báo Cáo Môi Trường -->
+                <div class="bg-gray-50 rounded-2xl p-8 border border-gray-200">
+                    <h2 class="text-3xl font-bold mb-8 text-center gradient-text">Thành Tựu Bền Vững 2024</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                        <div class="p-6">
+                            <div class="text-4xl font-bold text-eco-green mb-2">85%</div>
+                            <div class="text-gray-600">Vật liệu tái chế</div>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-4xl font-bold text-eco-green mb-2">60%</div>
+                            <div class="text-gray-600">Giảm khí thải carbon</div>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-4xl font-bold text-eco-green mb-2">50K+</div>
+                            <div class="text-gray-600">Điện thoại tái chế</div>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-4xl font-bold text-eco-green mb-2">100%</div>
+                            <div class="text-gray-600">Năng lượng tái tạo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trang Hỗ Trợ -->
+        <section id="support" class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <!-- Hero Section Hỗ Trợ -->
+                <div class="text-center mb-16">
+                    <h1 class="text-5xl lg:text-6xl font-bold mb-6">
+                        <span class="gradient-text">Trung Tâm Hỗ Trợ</span><br>
+                        Luôn Đồng Hành Cùng Bạn
+                    </h1>
+                    <p class="text-xl text-gray-700 max-w-3xl mx-auto">
+                        Dịch vụ hỗ trợ 24/7 với AI thông minh và đội ngũ chuyên gia giàu kinh nghiệm
+                    </p>
+                </div>
+
+                <!-- Các Kênh Hỗ Trợ -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 hover:border-eco-green transition-all text-center group">
+                        <div class="w-16 h-16 bg-eco-green rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow">
+                            <i class="fas fa-robot text-2xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Hỗ Trợ AI</h3>
+                        <p class="text-gray-600 text-sm">Trợ lý ảo thông minh giải đáp 24/7</p>
+                        <button class="mt-4 text-eco-green hover:text-eco-teal transition-colors font-medium">
+                            Bắt Đầu Chat
+                        </button>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 hover:border-eco-green transition-all text-center group">
+                        <div class="w-16 h-16 bg-eco-green rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow">
+                            <i class="fas fa-phone-alt text-2xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Hotline</h3>
+                        <p class="text-gray-600 text-sm">1800-1234 (Miễn phí)</p>
+                        <button class="mt-4 text-eco-green hover:text-eco-teal transition-colors font-medium">
+                            Gọi Ngay
+                        </button>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 hover:border-eco-green transition-all text-center group">
+                        <div class="w-16 h-16 bg-eco-green rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow">
+                            <i class="fas fa-store text-2xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Cửa Hàng</h3>
+                        <p class="text-gray-600 text-sm">Hệ thống 50+ cửa hàng toàn quốc</p>
+                        <button class="mt-4 text-eco-green hover:text-eco-teal transition-colors font-medium">
+                            Tìm Cửa Hàng
+                        </button>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 hover:border-eco-green transition-all text-center group">
+                        <div class="w-16 h-16 bg-eco-green rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-slow">
+                            <i class="fas fa-tools text-2xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Sửa Chữa</h3>
+                        <p class="text-gray-600 text-sm">Dịch vụ sửa chữa chuyên nghiệp</p>
+                        <button class="mt-4 text-eco-green hover:text-eco-teal transition-colors font-medium">
+                            Đặt Lịch
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Câu Hỏi Thường Gặp -->
+                <div class="bg-white rounded-2xl p-8 border border-gray-200 mb-16">
+                    <h2 class="text-3xl font-bold mb-8 text-center gradient-text">Câu Hỏi Thường Gặp</h2>
+                    <div class="space-y-4 max-w-4xl mx-auto">
+                        <div class="border-b border-gray-300 pb-4">
+                            <button class="flex justify-between items-center w-full text-left font-semibold text-lg hover:text-eco-green transition-colors">
+                                <span>Làm thế nào để tham gia chương trình đổi cũ lấy mới?</span>
+                                <i class="fas fa-chevron-down text-eco-green"></i>
+                            </button>
+                            <div class="mt-2 text-gray-600">
+                                Bạn có thể mang điện thoại cũ đến bất kỳ cửa hàng TechVision nào để được đánh giá và nhận ưu đãi. Hoặc sử dụng dịch vụ thu hồi tận nơi qua ứng dụng của chúng tôi.
+                            </div>
+                        </div>
+                        <div class="border-b border-gray-300 pb-4">
+                            <button class="flex justify-between items-center w-full text-left font-semibold text-lg hover:text-eco-green transition-colors">
+                                <span>Thời gian bảo hành sản phẩm là bao lâu?</span>
+                                <i class="fas fa-chevron-down text-eco-green"></i>
+                            </button>
+                            <div class="mt-2 text-gray-600">
+                                Tất cả sản phẩm TechVision được bảo hành chính hãng 24 tháng cho phần cứng và 12 tháng cho pin. Dịch vụ bảo hành mở rộng có sẵn.
+                            </div>
+                        </div>
+                        <div class="border-b border-gray-300 pb-4">
+                            <button class="flex justify-between items-center w-full text-left font-semibold text-lg hover:text-eco-green transition-colors">
+                                <span>Có dịch vụ sửa chữa tại nhà không?</span>
+                                <i class="fas fa-chevron-down text-eco-green"></i>
+                            </button>
+                            <div class="mt-2 text-gray-600">
+                                Có, chúng tôi cung cấp dịch vụ sửa chữa tại nhà tại các thành phố lớn. Đặt lịch qua ứng dụng hoặc hotline 1800-1234.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Biểu Mẫu Liên Hệ -->
+                <div class="bg-gradient-to-r from-green-900 to-teal-900 rounded-2xl p-12">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <div>
+                            <h2 class="text-4xl font-bold mb-6">Liên Hệ Với Chúng Tôi</h2>
+                            <p class="text-xl text-gray-200 mb-8">
+                                Đội ngũ hỗ trợ của chúng tôi luôn sẵn sàng giải đáp mọi thắc mắc của bạn.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-eco-green rounded-full flex items-center justify-center">
+                                        <i class="fas fa-clock text-gray-800"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Thời Gian Làm Việc</div>
+                                        <div class="text-gray-700">24/7 - Hỗ trợ qua AI và Hotline</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 bg-eco-green rounded-full flex items-center justify-center">
+                                        <i class="fas fa-envelope text-gray-800"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-semibold">Email Hỗ Trợ</div>
+                                        <div class="text-gray-700">support@techvision.vn</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
+                            <form class="space-y-6">
+                                <div>
+                                    <label class="block text-gray-200 mb-2">Họ và Tên</label>
+                                    <input type="text" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:border-eco-green transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-200 mb-2">Email</label>
+                                    <input type="email" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:border-eco-green transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-200 mb-2">Tin Nhắn</label>
+                                    <textarea rows="4" class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-gray-800 placeholder-gray-400 focus:outline-none focus:border-eco-green transition-all"></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-eco-green text-gray-800 py-4 rounded-xl font-semibold hover:bg-eco-teal transition-all">
+                                    Gửi Tin Nhắn
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-eco-green to-eco-teal rounded-lg"></div>
+                        <span class="text-xl font-bold gradient-text">TechVision</span>
+                    </div>
+                    <p class="text-gray-600">Điện thoại AI & Công nghệ bền vững theo xu hướng 2025</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Bền Vững</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Cam Kết Môi Trường</a></li>
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Tái Chế</a></li>
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Báo Cáo ESG</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Hỗ Trợ</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Trung Tâm Hỗ Trợ</a></li>
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Bảo Hành</a></li>
+                        <li><a href="#" class="hover:text-eco-green transition-colors">Sửa Chữa</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Kết Nối</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-eco-green transition-all">
+                            <i class="fab fa-facebook-f text-gray-800"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-eco-green transition-all">
+                            <i class="fab fa-twitter text-gray-800"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-eco-green transition-all">
+                            <i class="fab fa-instagram text-gray-800"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
+                <p>&copy; 2025 TechVision. Tất cả các quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Define data at the beginning
+        const sustainabilityData = {
+            "commitments": [
+                {
+                    "icon": "recycle",
+                    "title": "Vật Liệu Tái Chế",
+                    "description": "Sử dụng 85% vật liệu tái chế trong sản xuất vỏ máy và phụ kiện"
+                },
+                {
+                    "icon": "leaf",
+                    "title": "Năng Lượng Xanh",
+                    "description": "Nhà máy sản xuất sử dụng 100% năng lượng tái tạo"
+                },
+                {
+                    "icon": "truck",
+                    "title": "Vận Chuyển Xanh",
+                    "description": "Giảm 60% khí thải carbon trong chuỗi cung ứng và vận chuyển"
+                }
+            ],
+            "achievements": [
+                { "value": "85%", "label": "Vật liệu tái chế" },
+                { "value": "60%", "label": "Giảm khí thải carbon" },
+                { "value": "50K+", "label": "Điện thoại tái chế" },
+                { "value": "100%", "label": "Năng lượng tái tạo" }
+            ]
+        };
+
+        const supportChannels = [
+            {
+                "icon": "robot",
+                "title": "Hỗ Trợ AI",
+                "description": "Trợ lý ảo thông minh giải đáp 24/7",
+                "action": "Bắt Đầu Chat"
+            },
+            {
+                "icon": "phone-alt",
+                "title": "Hotline",
+                "description": "1800-1234 (Miễn phí)",
+                "action": "Gọi Ngay"
+            },
+            {
+                "icon": "store",
+                "title": "Cửa Hàng",
+                "description": "Hệ thống 50+ cửa hàng toàn quốc",
+                "action": "Tìm Cửa Hàng"
+            },
+            {
+                "icon": "tools",
+                "title": "Sửa Chữa",
+                "description": "Dịch vụ sửa chữa chuyên nghiệp",
+                "action": "Đặt Lịch"
+            }
+        ];
+
+        const faqs = [
+            {
+                "question": "Làm thế nào để tham gia chương trình đổi cũ lấy mới?",
+                "answer": "Bạn có thể mang điện thoại cũ đến bất kỳ cửa hàng TechVision nào để được đánh giá và nhận ưu đãi. Hoặc sử dụng dịch vụ thu hồi tận nơi qua ứng dụng của chúng tôi."
+            },
+            {
+                "question": "Thời gian bảo hành sản phẩm là bao lâu?",
+                "answer": "Tất cả sản phẩm TechVision được bảo hành chính hãng 24 tháng cho phần cứng và 12 tháng cho pin. Dịch vụ bảo hành mở rộng có sẵn."
+            },
+            {
+                "question": "Có dịch vụ sửa chữa tại nhà không?",
+                "answer": "Có, chúng tôi cung cấp dịch vụ sửa chữa tại nhà tại các thành phố lớn. Đặt lịch qua ứng dụng hoặc hotline 1800-1234."
+            }
+        ];
+
+        // FAQ toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqButtons = document.querySelectorAll('#support .border-b button');
+            
+            faqButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const icon = this.querySelector('i');
+                    
+                    // Toggle answer visibility
+                    if (answer.style.display === 'block') {
+                        answer.style.display = 'none';
+                        icon.className = 'fas fa-chevron-down text-eco-green';
+                    } else {
+                        answer.style.display = 'block';
+                        icon.className = 'fas fa-chevron-up text-eco-green';
+                    }
+                });
+            });
+
+            // Initialize all answers as hidden
+            document.querySelectorAll('#support .border-b button + div').forEach(answer => {
+                answer.style.display = 'none';
+            });
+        });
+
+        // Smooth scroll to sections
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

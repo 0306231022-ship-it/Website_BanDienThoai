@@ -1,0 +1,392 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechVision - Điện Thoại AI & Công Nghệ 2025</title>
+    <meta name="description" content="Trang web bán điện thoại thông minh tích hợp AI và công nghệ tiên tiến theo xu hướng 2025">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'neon-blue': '#00f5ff',
+                        'neon-purple': '#b967ff',
+                        'dark-bg': '#0a0a0a',
+                        'card-bg': '#1a1a1a',
+                        'accent': '#00d4ff',
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 20px #00f5ff; }
+            to { box-shadow: 0 0 30px #b967ff; }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #00f5ff, #b967ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white text-gray-800 font-inter">
+    <!-- Header với Navigation -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-gray-200">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg"></div>
+                    <span class="text-2xl font-bold gradient-text">TechVision</span>
+                </div>
+
+                <!-- Navigation Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-800 hover:text-neon-blue transition-colors duration-300 font-medium">Trang Chủ</a>
+                    <a href="#" class="text-gray-800 hover:text-neon-blue transition-colors duration-300 font-medium">Sản Phẩm AI</a>
+                    <a href="#" class="text-gray-800 hover:text-neon-blue transition-colors duration-300 font-medium">Công Nghệ Mới</a>
+                    <a href="#" class="text-gray-800 hover:text-neon-blue transition-colors duration-300 font-medium">So Sánh</a>
+                    <a href="#" class="text-gray-800 hover:text-neon-blue transition-colors duration-300 font-medium">Hỗ Trợ</a>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-gray-600 hover:text-gray-800 transition-colors">
+                        <i class="fas fa-search text-lg"></i>
+                    </button>
+                    <button class="p-2 text-gray-600 hover:text-gray-800 transition-colors">
+                        <i class="fas fa-shopping-cart text-lg"></i>
+                    </button>
+                    <button class="bg-gradient-to-r from-neon-blue to-neon-purple text-gray-800 px-6 py-2 rounded-full font-medium hover:shadow-lg hover:shadow-neon-blue/20 transition-all">
+                        Đăng Nhập
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section với AI Focus -->
+        <section class="relative py-20 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-blue-900/20"></div>
+            <div class="container mx-auto px-4 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h1 class="text-5xl lg:text-6xl font-bold mb-6">
+                            <span class="gradient-text">Điện Thoại AI</span><br>
+                            Tương Lai 2025
+                        </h1>
+                        <p class="text-xl text-gray-700 mb-8">
+                            Trải nghiệm công nghệ trí tuệ nhân tạo tiên tiến trong lòng bàn tay. 
+                            Điện thoại thông minh thế hệ mới với AI tích hợp toàn diện.
+                        </p>
+                        <div class="flex flex-wrap gap-4">
+                            <button class="bg-gradient-to-r from-neon-blue to-neon-purple text-gray-800 px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl hover:shadow-neon-blue/30 transition-all">
+                                Khám Phá Ngay
+                            </button>
+                            <button class="border border-neon-blue text-neon-blue px-8 py-4 rounded-full font-semibold text-lg hover:bg-neon-blue/10 transition-all">
+                                Xem Demo AI
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <img 
+                            src="https://picsum.photos/600/400?random=1" 
+                            alt="Điện thoại AI cao cấp với màn hình cong và ánh sáng neon"
+                            class="rounded-2xl shadow-2xl animate-float"
+                            loading="lazy"
+                        />
+                        <div class="absolute -top-4 -right-4 w-24 h-24 bg-neon-purple rounded-full blur-xl opacity-50"></div>
+                        <div class="absolute -bottom-4 -left-4 w-32 h-32 bg-neon-blue rounded-full blur-xl opacity-30"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tính Năng AI Nổi Bật -->
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-4 gradient-text">Công Nghệ AI Đột Phá</h2>
+                    <p class="text-xl text-gray-600">Những tính năng thông minh định hình tương lai di động</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 hover:border-neon-blue transition-all group">
+                        <div class="w-16 h-16 bg-gradient-to-r from-neon-blue to-neon-purple rounded-2xl flex items-center justify-center mb-4 group-hover:animate-glow">
+                            <i class="fas fa-brain text-2xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">AI Assistant Pro</h3>
+                        <p class="text-gray-600">Trợ lý ảo thông minh học hỏi thói quen và tối ưu hóa trải nghiệm người dùng</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 hover:border-neon-blue transition-all group">
+                        <div class="w-16 h-16 bg-gradient-to-r from-neon-blue to-neon-purple rounded-2xl flex items-center justify-center mb-4 group-hover:animate-glow">
+                            <i class="fas fa-camera text-2xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Camera AI Vision</h3>
+                        <p class="text-gray-600">Hệ thống camera tích hợp AI nhận diện cảnh vật và tối ưu hóa hình ảnh thời gian thực</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 hover:border-neon-blue transition-all group">
+                        <div class="w-16 h-16 bg-gradient-to-r from-neon-blue to-neon-purple rounded-2xl flex items-center justify-center mb-4 group-hover:animate-glow">
+                            <i class="fas fa-battery-full text-2xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Smart Battery AI</h3>
+                        <p class="text-gray-600">AI quản lý pin thông minh, học tập thói quen sử dụng để tối ưu thời lượng</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-200 hover:border-neon-blue transition-all group">
+                        <div class="w-16 h-16 bg-gradient-to-r from-neon-blue to-neon-purple rounded-2xl flex items-center justify-center mb-4 group-hover:animate-glow">
+                            <i class="fas fa-shield-alt text-2xl text-gray-800"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">AI Security</h3>
+                        <p class="text-gray-600">Bảo mật nâng cao với AI nhận diện khuôn mặt và hành vi bất thường</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sản Phẩm Nổi Bật -->
+        <section class="py-16">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold mb-4 gradient-text">Sản Phẩm AI Hàng Đầu</h2>
+                    <p class="text-xl text-gray-600">Những điện thoại thông minh tích hợp AI tiên tiến nhất</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 hover:border-neon-blue transition-all group">
+                        <div class="relative overflow-hidden">
+                            <img 
+                                src="https://picsum.photos/400/300?random=2" 
+                                alt="Quantum AI Pro - Điện thoại AI cao cấp"
+                                class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                            />
+                            <div class="absolute top-4 right-4 bg-gradient-to-r from-neon-blue to-neon-purple text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                MỚI
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Quantum AI Pro</h3>
+                            <p class="text-gray-600 mb-4">Chip AI Neural 8.0, Camera 200MP AI, Pin 5000mAh Smart</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-neon-blue">28.990.000₫</span>
+                                <span class="text-gray-500 line-through">32.990.000₫</span>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-neon-blue to-neon-purple text-gray-800 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-neon-blue/20 transition-all">
+                                Thêm Vào Giỏ
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 hover:border-neon-blue transition-all group">
+                        <div class="relative overflow-hidden">
+                            <img 
+                                src="https://picsum.photos/400/300?random=3" 
+                                alt="Neural Vision X - Điện thoại camera AI"
+                                class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                            />
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Neural Vision X</h3>
+                            <p class="text-gray-600 mb-4">Triple Camera AI 150MP, Màn hình OLED 120Hz, Chip AI 7.0</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-neon-blue">22.490.000₫</span>
+                                <span class="text-gray-500 line-through">25.990.000₫</span>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-neon-blue to-neon-purple text-gray-800 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-neon-blue/20 transition-all">
+                                Thêm Vào Giỏ
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-2xl overflow-hidden border border-gray-200 hover:border-neon-blue transition-all group">
+                        <div class="relative overflow-hidden">
+                            <img 
+                                src="https://picsum.photos/400/300?random=4" 
+                                alt="Smart AI Lite - Điện thoại AI giá rẻ"
+                                class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                                loading="lazy"
+                            />
+                            <div class="absolute top-4 right-4 bg-red-500 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                GIẢM 15%
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2">Smart AI Lite</h3>
+                            <p class="text-gray-600 mb-4">Chip AI 5.0, Camera 108MP, Pin 4500mAh, Màn hình AMOLED</p>
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-2xl font-bold text-neon-blue">15.990.000₫</span>
+                                <span class="text-gray-500 line-through">18.790.000₫</span>
+                            </div>
+                            <button class="w-full bg-gradient-to-r from-neon-blue to-neon-purple text-gray-800 py-3 rounded-xl font-semibold hover:shadow-lg hover:shadow-neon-blue/20 transition-all">
+                                Thêm Vào Giỏ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Demo AI Interactive -->
+        <section class="py-16 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-4xl font-bold mb-6 gradient-text">Trải Nghiệm AI Thực Tế</h2>
+                        <p class="text-xl text-gray-700 mb-8">
+                            Tương tác với trí tuệ nhân tạo ngay trên trình duyệt. 
+                            Trải nghiệm sức mạnh của công nghệ 2025.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 p-4 bg-white rounded-xl border border-gray-300">
+                                <div class="w-12 h-12 bg-neon-blue rounded-full flex items-center justify-center">
+                                <i class="fas fa-microphone text-gray-800"></i>
+                            </div>
+                            <p class="text-gray-600">Nhấn để nói chuyện với AI Assistant</p>
+                            <div class="flex items-center space-x-4 p-4 bg-white rounded-xl border border-gray-300">
+                                <div class="w-12 h-12 bg-neon-purple rounded-full flex items-center justify-center">
+                                <i class="fas fa-image text-gray-800"></i>
+                            </div>
+                            <p class="text-gray-600">Tải ảnh lên để AI phân tích và tối ưu hóa</p>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="bg-gradient-to-br from-purple-900 to-blue-900 rounded-2xl p-8">
+                            <div class="text-center">
+                                <div class="w-32 h-32 mx-auto mb-6 bg-gradient-to-r from-neon-blue to-neon-purple rounded-2xl flex items-center justify-center animate-glow">
+                                    <i class="fas fa-robot text-4xl text-gray-800"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-4">AI Demo Center</h3>
+                                <p class="text-gray-700 mb-6">Trải nghiệm các tính năng AI tiên tiến</div>
+                                <button class="bg-white text-dark-bg px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all">
+                                    Bắt Đầu Demo
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter với AI Personalization -->
+        <section class="py-16">
+            <div class="container mx-auto px-4">
+                <div class="bg-gradient-to-r from-purple-900 to-blue-900 rounded-2xl p-12 text-center">
+                    <h2 class="text-4xl font-bold mb-4">Nhận Tin Công Nghệ AI</h2>
+                <p class="text-xl text-gray-200 mb-8">Đăng ký để nhận thông tin mới nhất về điện thoại AI và công nghệ 2025</p>
+                <div class="max-w-2xl mx-auto flex flex-col sm:flex-row gap-4">
+                    <input 
+                        type="email" 
+                        placeholder="Nhập email của bạn..." 
+                        class="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-gray-800 placeholder-gray-300 focus:outline-none focus:border-neon-blue transition-all"
+                    />
+                    <button class="bg-gradient-to-r from-neon-blue to-neon-purple text-gray-800 px-8 py-4 rounded-full font-semibold hover:shadow-xl hover:shadow-neon-blue/30 transition-all">
+                        Đăng Ký Ngay
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg"></div>
+                        <span class="text-xl font-bold gradient-text">TechVision</span>
+                    </div>
+                    <p class="text-gray-600">Điện thoại AI & Công nghệ tiên tiến theo xu hướng 2025</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Sản Phẩm AI</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Quantum Series</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Neural Vision</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Smart AI</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">AI Accessories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Hỗ Trợ</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Trung Tâm AI</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Hướng Dẫn Sử Dụng</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Bảo Hành</a></li>
+                        <li><a href="#" class="hover:text-neon-blue transition-colors">Liên Hệ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Kết Nối</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-neon-blue transition-all">
+                            <i class="fab fa-facebook-f text-gray-800"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-neon-blue transition-all">
+                            <i class="fab fa-twitter text-gray-800"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-neon-blue transition-all">
+                            <i class="fab fa-instagram text-gray-800"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
+                <p>&copy; 2025 TechVision. Tất cả các quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Define data at the beginning
+        const products = [
+            {
+                "id": 1,
+                "name": "Quantum AI Pro",
+                "price": "28.990.000₫",
+                "oldPrice": "32.990.000₫",
+                "description": "Chip AI Neural 8.0, Camera 200MP AI, Pin 5000mAh Smart",
+                "image": "https://picsum.photos/400/300?random=2",
+                "badge": "MỚI"
+            },
+            {
+                "id": 2,
+                "name": "Neural Vision X",
+                "price": "22.490.000₫",
+                "oldPrice": "25.990.000₫",
+                "description": "Triple Camera AI 150MP, Màn hình OLED 120Hz, Chip AI 7.0",
+                "image": "https://picsum.photos/400/300?random=3",
+                "badge": ""
+            },
+            {
+                "id": 3,
+                "name": "Smart AI Lite",
+                "price": "15.990.000₫",
+                "oldPrice": "18.790.000₫",
+                "description": "Chip AI 5.0, Camera 108MP, Pin 4500mAh, Màn hình AMOLED",
+                "image": "https://picsum.photos/400/300?random=4",
+                "badge": "GIẢM 15%"
+            }
+        ];
+
+        const features = [
+            {
+                "icon": "brain",
+                "title": "AI Assistant

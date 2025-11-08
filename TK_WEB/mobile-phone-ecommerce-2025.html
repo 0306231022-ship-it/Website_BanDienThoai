@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechMobile - Điện Thoại Thông Minh 2025</title>
+    <meta name="description" content="Cửa hàng điện thoại thông minh với công nghệ mới nhất 2025. AI, foldable, bền vững và trải nghiệm người dùng tối ưu.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        },
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        accent: {
+                            400: '#34d399',
+                            500: '#10b981',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(14, 165, 233, 0.6)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-white font-inter">
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-dark-900">TechMobile</span>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Sản Phẩm</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">AI & Công Nghệ</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Bền Vững</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Hỗ Trợ</a>
+                </nav>
+
+                <!-- Search & Actions -->
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center bg-dark-50 rounded-full px-4 py-2">
+                        <i class="fas fa-search text-dark-600 mr-2"></i>
+                        <input type="text" placeholder="Tìm kiếm điện thoại..." class="bg-transparent outline-none text-dark-900">
+                    </div>
+                    <button class="p-2 text-dark-600 hover:text-primary-500 transition-colors">
+                        <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <button class="p-2 text-dark-600 hover:text-primary-500 transition-colors">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <button class="md:hidden p-2 text-dark-600">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-br from-primary-50 to-white py-16">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center px-3 py-1 rounded-full bg-accent-400/20 text-accent-500 text-sm font-medium">
+                            <i class="fas fa-leaf mr-2"></i>
+                            Công Nghệ Bền Vững 2025
+                        </div>
+                        <h1 class="text-4xl md:text-6xl font-bold text-dark-900 leading-tight">
+                            Tương Lai Di Động
+                            <span class="text-primary-500">Đã Tới</span>
+                        </h1>
+                        <p class="text-xl text-dark-600 leading-relaxed">
+                            Khám phá điện thoại thông minh thế hệ mới với AI tích hợp, thiết kế bền vững và trải nghiệm người dùng đột phá.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button class="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-medium transition-all transform hover:scale-105">
+                            Mua Ngay
+                            </button>
+                            <button class="border border-primary-500 text-primary-500 hover:bg-primary-50 px-8 py-4 rounded-lg font-medium transition-all">
+                                <i class="fas fa-play mr-2"></i>
+                                Xem Demo
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <img 
+                            src="https://picsum.photos/600/400?random=1" 
+                            alt="Điện thoại thông minh công nghệ AI 2025" 
+                            class="w-full rounded-2xl shadow-2xl animate-float"
+                            loading="lazy"
+                        />
+                        <div class="absolute -bottom-4 -right-4 bg-white rounded-2xl shadow-xl p-6 animate-glow">
+                            <div class="text-2xl font-bold text-primary-500">AI Pro</div>
+                            <div class="text-sm text-dark-600">Trợ lý ảo thông minh</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+                        Xu Hướng Công Nghệ 2025
+                    </h2>
+                    <p class="text-xl text-dark-600 max-w-2xl mx-auto">
+                        Các tính năng đột phá định hình tương lai của điện thoại thông minh
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-all">
+                        <div class="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-brain text-primary-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-900 mb-2">AI Tích Hợp</h3>
+                        <p class="text-dark-600">Trợ lý ảo thông minh, xử lý hình ảnh AI, tối ưu hóa hiệu suất</p>
+                    </div>
+                    <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-all">
+                        <div class="w-16 h-16 bg-accent-400/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-recycle text-accent-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-900 mb-2">Bền Vững</h3>
+                        <p class="text-dark-600">Vật liệu tái chế, tiết kiệm năng lượng, thiết kế thân thiện môi trường</p>
+                    </div>
+                    <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-all">
+                        <div class="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-expand-alt text-primary-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-900 mb-2">Màn Hình Gập</h3>
+                        <p class="text-dark-600">Công nghệ màn hình linh hoạt, đa nhiệm hoàn hảo</p>
+                    </div>
+                    <div class="text-center p-6 rounded-2xl hover:shadow-lg transition-all">
+                        <div class="w-16 h-16 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-bolt text-primary-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-dark-900 mb-2">Sạc Siêu Nhanh</h3>
+                        <p class="text-dark-600">Sạc không dây 100W, pin sinh học, công nghệ tiết kiệm năng lượng</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="py-16 bg-dark-50">
+            <div class="container mx-auto px-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+                    <div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-dark-900 mb-4">
+                            Sản Phẩm Nổi Bật
+                        </h2>
+                        <p class="text-dark-600">Điện thoại thông minh với công nghệ tiên tiến nhất</p>
+                    </div>
+                    <div class="flex space-x-2 mt-4 md:mt-0">
+                        <button class="px-4 py-2 bg-primary-500 text-white rounded-lg">Tất Cả</button>
+                        <button class="px-4 py-2 text-dark-600 hover:bg-white rounded-lg transition-colors">AI Series</button>
+                        <button class="px-4 py-2 text-dark-600 hover:bg-white rounded-lg transition-colors">Foldable</button>
+                        <button class="px-4 py-2 text-dark-600 hover:bg-white rounded-lg transition-colors">Eco Series</button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    <!-- Product 1 -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=2" 
+                                    alt="AI Phone Pro 2025 - Điện thoại AI cao cấp" 
+                                    class="w-full rounded-xl mb-4"
+                                    loading="lazy"
+                                />
+                                <div class="absolute top-4 left-4 bg-accent-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    Bền Vững
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">AI Phone Pro 2025</h3>
+                            <p class="text-dark-600 text-sm mb-4">Trợ lý AI, camera 200MP, pin 2 ngày</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">12.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=3" 
+                                    alt="FoldMax Z - Điện thoại màn hình gập" 
+                                    class="w-full rounded-xl mb-4"
+                                    loading="lazy"
+                                />
+                                <div class="absolute top-4 left-4 bg-primary-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    Mới
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">FoldMax Z</h3>
+                            <p class="text-dark-600 text-sm mb-4">Màn hình gập, đa nhiệm, thiết kế cao cấp</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">24.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=4" 
+                                    alt="Eco Phone S - Điện thoại bền vững" 
+                                    class="w-full rounded-xl mb-4"
+                                    loading="lazy"
+                                />
+                                <div class="absolute top-4 left-4 bg-accent-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    Eco
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">Eco Phone S</h3>
+                            <p class="text-dark-600 text-sm mb-4">Vật liệu tái chế, tiết kiệm năng lượng, thiết kế tối giản</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">8.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-2">
+                        <div class="p-6">
+                            <div class="relative">
+                                <img 
+                                    src="https://picsum.photos/300/300?random=5" 
+                                    alt="AI Phone Lite - Điện thoại AI giá rẻ" 
+                                    class="w-full rounded-xl mb-4"
+                                    loading="lazy"
+                                />
+                                <div class="absolute top-4 left-4 bg-primary-500 text-white px-2 py-1 rounded text-sm font-medium">
+                                    AI
+                                </div>
+                            </div>
+                            <h3 class="text-xl font-bold text-dark-900 mb-2">AI Phone Lite</h3>
+                            <p class="text-dark-600 text-sm mb-4">Trợ lý AI cơ bản, camera 108MP, pin 1.5 ngày</p>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-primary-500">6.990.000₫</div>
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition-colors">
+                                <i class="fas fa-cart-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AR Experience Section -->
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <h2 class="text-3xl md:text-4xl font-bold text-dark-900">
+                            Trải Nghiệm AR
+                            <span class="text-primary-500">Thực Tế Ảo</span>
+                        </h2>
+                        <p class="text-xl text-dark-600 leading-relaxed">
+                                Trải nghiệm điện thoại trong không gian ảo với công nghệ AR. Xem sản phẩm từ mọi góc độ trước khi mua.
+                            </p>
+                            <button class="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 rounded-lg font-medium transition-all transform hover:scale-105">
+                            <i class="fas fa-vr-cardboard mr-2"></i>
+                            Khởi Động AR
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <img 
+                                src="https://picsum.photos/600/400?random=6" 
+                                alt="Trải nghiệm thực tế ảo với điện thoại" 
+                                class="w-full rounded-2xl shadow-xl"
+                                loading="lazy"
+                            />
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl flex items-end justify-center pb-8">
+                                <div class="text-white text-center">
+                                    <div class="text-2xl font-bold mb-2">AR Experience</div>
+                                    <div class="text-sm">Quét mã QR để trải nghiệm</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Newsletter Section -->
+            <section class="py-16 bg-primary-500">
+                <div class="container mx-auto px-4">
+                    <div class="max-w-2xl mx-auto text-center">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                            Cập Nhật Công Nghệ Mới
+                        </h2>
+                        <p class="text-primary-100 text-xl mb-8">
+                            Nhận thông tin mới nhất về điện thoại và công nghệ 2025
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <input 
+                                type="email" 
+                                placeholder="Email của bạn..." 
+                                class="flex-1 px-6 py-4 rounded-lg border-0 outline-none"
+                            />
+                            <button class="bg-white text-primary-500 hover:bg-primary-50 px-8 py-4 rounded-lg font-medium transition-all">
+                            Đăng Ký Ngay
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-dark-900 text-white py-12">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-2">
+                            <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-mobile-alt text-white"></i>
+                            </div>
+                            <span class="text-xl font-bold">TechMobile</span>
+                        </div>
+                        <p class="text-dark-300">
+                            Đi đầu trong công nghệ di động với các sản phẩm AI, bền vững và đột phá.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                            <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                            <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                            <i class="fab fa-instagram"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-bold">Sản Phẩm</h3>
+                        <ul class="space-y-2 text-dark-300">
+                            <li><a href="#" class="hover:text-white transition-colors">AI Series</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Foldable</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Eco Series</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Phụ Kiện</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold">Hỗ Trợ</h3>
+                    <ul class="space-y-2 text-dark-300">
+                        <li><a href="#" class="hover:text-white transition-colors">Trung Tâm Hỗ Trợ</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Bảo Hành</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Hướng Dẫn Mua Hàng</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Liên Hệ</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Liên Hệ</h3>
+                <div class="space-y-2 text-dark-300">
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker-alt mr-3"></i>
+                    <span>123 Nguyễn Văn Linh, Quận 7, TP.HCM</span>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-phone mr-3"></i>
+                <span>1900 1234</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-envelope mr-3"></i>
+                <span>info@techmobile.vn</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="border-t border-dark-800 mt-12 pt-8 text-center text-dark-300">
+        <p>&copy; 2025 TechMobile. Tất cả quyền được bảo lưu.</p>
+    </div>
+</footer>
+
+
+    </body>
+    </html>

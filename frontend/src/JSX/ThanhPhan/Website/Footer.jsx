@@ -17,55 +17,73 @@ function Footer() {
 
     });
     return (
-          <footer id="contact" className="bg-gray-800 text-white py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8">
-    
-            <div>
-                <h4 className="text-xl font-bold mb-4 text-secondary">PhoneStore</h4>
-                <p className="text-sm text-gray-400">Chuyên cung cấp các sản phẩm điện thoại di động chính hãng, giá tốt nhất thị trường.</p>
-            </div>
-
-           
-            <div>
-                <h4 className="text-lg font-semibold mb-4">Sản phẩm</h4>
-                <ul className="space-y-2 text-sm text-gray-400">
-                    <li><Link to="" className="hover:text-white transition duration-200">Điện thoại Mới</Link></li>
-                    <li><Link to="" className="hover:text-white transition duration-200">Phụ kiện</Link></li>
-                    <li><Link to="" className="hover:text-white transition duration-200">Máy đã qua sử dụng</Link></li>
-                    <li><Link to="" className="hover:text-white transition duration-200">Máy tính bảng</Link></li>
-                </ul>
-            </div>
-
-           
-            <div>
-                <h4 className="text-lg font-semibold mb-4">Hỗ trợ</h4>
-                <ul className="space-y-2 text-sm text-gray-400">
-                    <li><Link to="" className="hover:text-white transition duration-200">Chính sách bảo hành</Link></li>
-                    <li><Link to="" className="hover:text-white transition duration-200">Câu hỏi thường gặp (FAQ)</Link></li>
-                    <li><Link to="" className="hover:text-white transition duration-200">Liên hệ hỗ trợ</Link></li>
-                    <li><Link to="" className="hover:text-white transition duration-200">Chính sách đổi trả</Link></li>
-                </ul>
-            </div>
-
-        
-            <div>
-                <h4 className="text-lg font-semibold mb-4">Liên hệ</h4>
-                <p className="text-sm text-gray-400 mb-2">Địa chỉ: 123 Đường Công Nghệ, Quận 1, TP. HCM</p>
-                <p className="text-sm text-gray-400 mb-2">Điện thoại: (028) 1234 5678</p>
-                <p className="text-sm text-gray-400">Email: support@phonestore.vn</p>
-               
-                <div class="flex space-x-4 mt-4">
-                    <Link to="" className="hover:text-secondary transition duration-300">Facebook</Link>
-                    <Link to="" className="hover:text-secondary transition duration-300">Instagram</Link>
-                    <Link to="" className="hover:text-secondary transition duration-300">Zalo</Link>
+       <footer class="bg-dark-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">TechMobile</span>
+                    </div>
+                    <p class="text-dark-300">
+                        Đi đầu trong công nghệ di động với các sản phẩm AI, bền vững và đột phá.
+                    </p>
+                    <div class="flex space-x-4">
+                        <Link to="" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                        </Link>
+                        <Link to="" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-twitter"></i>
+                        </Link>
+                        <Link to="" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-instagram"></i>
+                        </Link>
+                    </div>
                 </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold">Sản Phẩm</h3>
+                    <ul class="space-y-2 text-dark-300">
+                        <li><Link to="" class="hover:text-white transition-colors">AI Series</Link></li>
+                    <li><Link to="" class="hover:text-white transition-colors">Foldable</Link></li>
+                    <li><Link to="" class="hover:text-white transition-colors">Eco Series</Link></li>
+                    <li><Link to="" class="hover:text-white transition-colors">Phụ Kiện</Link></li>
+                </ul>
             </div>
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Hỗ Trợ</h3>
+                <ul class="space-y-2 text-dark-300">
+                    <li><Link to="" class="hover:text-white transition-colors">Trung Tâm Hỗ Trợ</Link></li>
+                <li><Link to="" class="hover:text-white transition-colors">Bảo Hành</Link></li>
+                <li><Link to="" class="hover:text-white transition-colors">Hướng Dẫn Mua Hàng</Link></li>
+                <li><Link to="" class="hover:text-white transition-colors">Liên Hệ</Link></li>
+            </ul>
         </div>
-
-        <div className="mt-12 border-t border-gray-700 pt-8 text-center">
-            <p className="text-sm text-gray-400">&copy; 2025 PhoneStore. Tất cả quyền được bảo lưu.</p>
+        <div class="space-y-4">
+            <h3 class="text-lg font-bold">Liên Hệ</h3>
+            <div class="space-y-2 text-dark-300">
+                <div class="flex items-center">
+                    <i class="fas fa-map-marker-alt mr-3"></i>
+                <span>123 Nguyễn Văn Linh, Quận 7, TP.HCM</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone mr-3"></i>
+            <span>1900 1234</span>
+        </div>
+        <div class="flex items-center">
+            <i class="fas fa-envelope mr-3"></i>
+            <span>info@techmobile.vn</span>
+        </div>
+    </div>
+</div>
+            </div>
+            <div class="border-t border-dark-800 mt-12 pt-8 text-center text-dark-300">
+                <p>&copy; 2025 TechMobile. Tất cả quyền được bảo lưu.</p>
+            </div>
         </div>
     </footer>
+
     );
 }
 

@@ -10,19 +10,16 @@ export const uiReducer = (state, action) => {
   switch (action.type) {
     case "SHOW_HOME":
       return { ...state, currentPage: "SHOW_HOME" };
-    case "SHOW_SANPHAM":
-      return { ...state, currentPage: "SHOW_SANPHAM" };
-    case "SHOW_AI":
-      return { ...state, currentPage: "SHOW_AI" };
-    case "SHOW_BENVUNG":
-      return { ...state, currentPage: "SHOW_BENVUNG" };
-    case "SHOW_HOTRO":
-      return { ...state, currentPage: "SHOW_HOTRO" };
+    case "SHOW_PRODUCTS":
+      return { ...state, currentPage: "SHOW_PRODUCTS" };
+    case "SHOW_NOIBAT":
+      return { ...state, currentPage: "SHOW_NOIBAT" };
+    case "SHOW_TINTUC":
+      return { ...state, currentPage: "SHOW_TINTUC" };
+    case "SHOW_LIENHE":
+      return { ...state, currentPage: "SHOW_LIENHE" };
     case "SHOW_GIOHANG":
       return { ...state, currentPage: "SHOW_GIOHANG" };
-    case "SHOW_NGUOIDUNG":
-      return { ...state, currentPage: "SHOW_NGUOIDUNG" };
-      
     default:
       return state;
   }

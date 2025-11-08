@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Địa Chỉ Mới - TechMobile</title> 
+    <meta name="description" content="Thêm địa chỉ giao hàng mới tại TechMobile.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Giữ nguyên config từ file gốc
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        },
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        accent: {
+                            100: '#f0fdf4', 
+                            400: '#34d399',
+                            500: '#10b981',
+                            700: '#047857', 
+                        },
+                        yellow: {
+                            100: '#fefce8',
+                            700: '#a16207'
+                        },
+                        red: {
+                            50: '#fef2f2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        }
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.3)' },
+                            '100%': { boxShadow: '0 0 30px rgba(14, 165, 233, 0.6)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0px)' }
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'fade-in-up-0': 'fadeInUp 0.5s ease-out forwards',
+                        'fade-in-up-1': 'fadeInUp 0.5s ease-out 100ms forwards',
+                        'fade-in-up-2': 'fadeInUp 0.5s ease-out 200ms forwards',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Đảm bảo các item bắt đầu ở trạng thái ẩn để hiệu ứng hoạt động */
+        [class*="animate-fade-in-up"] {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white font-inter">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-dark-900">TechMobile</span>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="mobile-phone-ecommerce-2025.html" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Sản Phẩm</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">AI & Công Nghệ</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Bền Vững</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Hỗ Trợ</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center bg-dark-50 rounded-full px-4 py-2">
+                        <i class="fas fa-search text-dark-600 mr-2"></i>
+                        <input type="text" placeholder="Tìm kiếm điện thoại..." class="bg-transparent outline-none text-dark-900">
+                    </div>
+                    <a href="cart.html" class="p-2 text-dark-600 hover:text-primary-500 transition-colors relative">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                    <a href="user-profile.html" class="p-2 text-primary-500 transition-colors">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <button class="md:hidden p-2 text-dark-600">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="bg-dark-50 py-16">
+        <div class="container mx-auto px-4">
+            
+            <h1 class="text-3xl md:text-4xl font-bold text-dark-900 mb-12 animate-fade-in-up-0">
+                Tài Khoản Của Bạn
+            </h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
+                
+                <aside class="lg:col-span-1 animate-fade-in-up-1">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 sticky top-24">
+                        <div class="flex items-center gap-4 mb-6">
+                            <img src="https://picsum.photos/200/200?random=10" alt="Avatar" class="w-16 h-16 rounded-full object-cover">
+                            <div>
+                                <h2 class="text-lg font-bold text-dark-900">Xin chào,</h2>
+                                <p class="text-primary-500 font-medium">Nguyễn Văn A</p>
+                            </div>
+                        </div>
+                        <nav class="space-y-2">
+                            <a href="user-profile.html" class="flex items-center gap-3 px-4 py-3 text-dark-600 hover:bg-dark-50 hover:text-dark-900 rounded-lg font-medium transition-colors">
+                                <i class="fas fa-user-circle w-5 text-center"></i>
+                                <span>Tổng Quan</span>
+                            </a>
+                            <a href="user-profile-details.html" class="flex items-center gap-3 px-4 py-3 text-dark-600 hover:bg-dark-50 hover:text-dark-900 rounded-lg font-medium transition-colors">
+                                <i class="fas fa-edit w-5 text-center"></i>
+                                <span>Thông Tin Cá Nhân</span>
+                            </a>
+                            <a href="order-history.html" class="flex items-center gap-3 px-4 py-3 text-dark-600 hover:bg-dark-50 hover:text-dark-900 rounded-lg font-medium transition-colors">
+                                <i class="fas fa-box-open w-5 text-center"></i>
+                                <span>Lịch Sử Đơn Hàng</span>
+                            </a>
+                            <a href="user-addresses.html" class="flex items-center gap-3 px-4 py-3 bg-primary-50 text-primary-600 rounded-lg font-medium transition-colors">
+                                <i class="fas fa-map-marker-alt w-5 text-center"></i>
+                                <span>Địa Chỉ Của Tôi</span>
+                            </a>
+                            <a href="#" class="flex items-center gap-3 px-4 py-3 text-dark-600 hover:bg-dark-50 hover:text-dark-900 rounded-lg font-medium transition-colors">
+                                <i class="fas fa-heart w-5 text-center"></i>
+                                <span>Danh Sách Yêu Thích</span>
+                            </a>
+                            <div class="border-t border-dark-100 my-2"></div>
+                            <a href="#" class="flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 hover:text-red-600 rounded-lg font-medium transition-colors">
+                                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                                <span>Đăng Xuất</span>
+                            </a>
+                        </nav>
+                    </div>
+                </aside>
+
+                <section class="lg:col-span-3">
+                    
+                    <div class="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-2">
+                        <div class="flex items-center gap-4 mb-6">
+                            <a href="user-addresses.html" class="text-dark-600 hover:text-primary-500 transition-colors">
+                                <i class="fas fa-arrow-left fa-lg"></i>
+                            </a>
+                            <h2 class="text-2xl font-bold text-dark-900">Thêm Địa Chỉ Mới</h2>
+                        </div>
+
+                        <form action="#" method="POST" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="full_name" class="block text-sm font-medium text-dark-600">Họ và Tên</label>
+                                    <input type="text" id="full_name" placeholder="Nguyễn Văn A" class="w-full mt-1 px-4 py-3 rounded-lg border border-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                </div>
+                                <div>
+                                    <label for="phone" class="block text-sm font-medium text-dark-600">Số Điện Thoại</label>
+                                    <input type="tel" id="phone" placeholder="0901234567" class="w-full mt-1 px-4 py-3 rounded-lg border border-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="street_address" class="block text-sm font-medium text-dark-600">Địa chỉ chi tiết</label>
+                                <input type="text" id="street_address" placeholder="Số nhà, tên tòa nhà, tên đường..." class="w-full mt-1 px-4 py-3 rounded-lg border border-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div>
+                                    <label for="city" class="block text-sm font-medium text-dark-600">Tỉnh/Thành Phố</label>
+                                    <select id="city" class="w-full mt-1 px-4 py-3 rounded-lg border border-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white">
+                                        <option value="">Chọn Tỉnh/Thành</option>
+                                        <option value="hcm">TP. Hồ Chí Minh</option>
+                                        <option value="hn">Hà Nội</option>
+                                        <option value="dn">Đà Nẵng</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="district" class="block text-sm font-medium text-dark-600">Quận/Huyện</label>
+                                    <select id="district" class="w-full mt-1 px-4 py-3 rounded-lg border border-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white">
+                                        <option value="">Chọn Quận/Huyện</option>
+                                        <option value="q1">Quận 1</option>
+                                        <option value="q7">Quận 7</option>
+                                        <option value="qbt">Quận Bình Thạnh</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="ward" class="block text-sm font-medium text-dark-600">Phường/Xã</label>
+                                    <select id="ward" class="w-full mt-1 px-4 py-3 rounded-lg border border-dark-100 focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white">
+                                        <option value="">Chọn Phường/Xã</option>
+                                        <option value="pbn">Phường Bến Nghé</option>
+                                        <option value="ptp">Phường Tân Phong</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-dark-600 mb-2">Loại địa chỉ</label>
+                                <div class="flex gap-4">
+                                    <label for="type_home" class="flex items-center gap-2 px-4 py-3 rounded-lg border border-dark-100 cursor-pointer">
+                                        <input type="radio" id="type_home" name="address_type" class="focus:ring-primary-500 text-primary-500" checked>
+                                        <span>Nhà riêng</span>
+                                    </label>
+                                    <label for="type_office" class="flex items-center gap-2 px-4 py-3 rounded-lg border border-dark-100 cursor-pointer">
+                                        <input type="radio" id="type_office" name="address_type" class="focus:ring-primary-500 text-primary-500">
+                                        <span>Văn phòng</span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="set_default" class="flex items-center gap-2 text-dark-600 cursor-pointer">
+                                    <input type="checkbox" id="set_default" class="rounded border-dark-300 focus:ring-primary-500 text-primary-500">
+                                    <span class="font-medium">Đặt làm địa chỉ mặc định</span>
+                                </label>
+                            </div>
+                            
+                            <div class="flex justify-end gap-4 pt-4 border-t border-dark-100 mt-8">
+                                <a href="user-addresses.html" class="bg-dark-100 hover:bg-dark-200 text-dark-800 px-6 py-3 rounded-lg font-medium transition-colors">
+                                    Hủy
+                                </a>
+                                <button type="submit" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105">
+                                    Lưu Địa Chỉ
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">TechMobile</span>
+                    </div>
+                    <p class="text-dark-300">
+                        Đi đầu trong công nghệ di động với các sản phẩm AI, bền vững và đột phá.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold">Sản Phẩm</h3>
+                    <ul class="space-y-2 text-dark-300">
+                        <li><a href="#" class="hover:text-white transition-colors">AI Series</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Foldable</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Eco Series</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Phụ Kiện</a></li>
+                </ul>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Hỗ Trợ</h3>
+                <ul class="space-y-2 text-dark-300">
+                    <li><a href="#" class="hover:text-white transition-colors">Trung Tâm Hỗ Trợ</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Bảo Hành</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Hướng Dẫn Mua Hàng</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Liên Hệ</a></li>
+            </ul>
+        </div>
+        <div class="space-y-4">
+            <h3 class="text-lg font-bold">Liên Hệ</h3>
+            <div class="space-y-2 text-dark-300">
+                <div class="flex items-center">
+                    <i class="fas fa-map-marker-alt mr-3"></i>
+                <span>123 Nguyễn Văn Linh, Quận 7, TP.HCM</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone mr-3"></i>
+            <span>1900 1234</span>
+        </div>
+        <div class="flex items-center">
+            <i class="fas fa-envelope mr-3"></i>
+            <span>info@techmobile.vn</span>
+        </div>
+    </div>
+</div>
+            </div>
+            <div class="border-t border-dark-800 mt-12 pt-8 text-center text-dark-300">
+                <p>&copy; 2025 TechMobile. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

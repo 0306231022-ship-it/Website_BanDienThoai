@@ -1,29 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import TrangChuNguoiDung from './JSX/ThanhPhan/NguoiDung/TrangChuNguoiDung';
+import TrangChuWeb from '../src/JSX/TRANG/TrangChuWebsite.jsx';
+import AI_CONGNGHE from '../src/JSX/ThanhPhan/Website/AI_CONGNGHE';
+import SanPhamTrangChu from '../src/JSX/ThanhPhan/Website/SanPhamTrangChu';
+import SanPham from '../src/JSX/ThanhPhan/Website/SanPham';
+import BenVung from '../src/JSX/ThanhPhan/Website/BenVung';
+import HoTro from '../src/JSX/ThanhPhan/Website/HoTro';
+import GioHang from '../src/JSX/ThanhPhan/Website/GioHang';
+import TrangChuNguoiDung from '../src/JSX/ThanhPhan/NguoiDung/TrangChuNguoiDung';
 import './index.css';
-import TrangChuWeb from './JSX/TRANG/TrangChuWebsite';
-import KiemTraDangNhap from './JS/KiemTraDangNhap/KiemTraDN';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import { UIProvider } from "../src/REDUCER/TrangChuWeb";
-import Dashboard from './JSX/TRANG/TrangChuAdmin';
-import LoginAdmin from './JSX/TRANG/DangNhapAdmin';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
     <UIProvider>
-      {/* Bọc toàn bộ trong BrowserRouter */}
       <BrowserRouter>
         <Routes>
-          {/* Trang chủ */}
           <Route path="/" element={<TrangChuWeb />} />
-          {/* Trang kiểm tra đăng nhập */}
-          <Route path="/KiemTraDangNhap" element={<KiemTraDangNhap />} />
-          <Route path="/Admin" element={<Dashboard />} />
-          <Route path="/DangNhapAD" element={<LoginAdmin />} />
-           <Route path="/TrangChuND" element={<TrangChuNguoiDung />} />
+          <Route path="/cong-nghe" element={<AI_CONGNGHE />} />
+          <Route path="/sanpham-trangchu" element={<SanPhamTrangChu />} />
+          <Route path="/san-pham" element={<SanPham />} />
+          <Route path="/ben-vung" element={<BenVung />} />
+          <Route path="/ho-tro" element={<HoTro />} />
+          <Route path="/gio-hang" element={<GioHang />} />
+          <Route path="/trang-nguoidung" element={<TrangChuNguoiDung />} />
+
         </Routes>
       </BrowserRouter>
     </UIProvider>
