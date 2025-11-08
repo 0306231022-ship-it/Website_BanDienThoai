@@ -1,10 +1,4 @@
-import { Link } from "react-router-dom";
-import HoSoCaNhan from "./HoSoCaNhan";
-import ChinhSuaThongTin from "./ChinhSuaThongTin";
-import LichSuDonHang from "./LichSuDonHang";
-import DiaChiCuaToi from "./DiaChiCuaToi";
-import ThemDiaChi from "./ThemDiaChi";
-import SanPhamYeuThich from "./SanPhamYeuThich";
+import { Outlet, Link } from "react-router-dom";
 
 function TrangChuNguoiDung() {
     return (
@@ -39,7 +33,7 @@ function TrangChuNguoiDung() {
                                     </Link>
 
                                     <Link
-                                        to=""
+                                        to="/nguoi-dung"
                                         className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-edit w-5 text-center"></i>
@@ -47,7 +41,7 @@ function TrangChuNguoiDung() {
                                     </Link>
 
                                     <Link
-                                        to=""
+                                        to="lich-su-don-hang"
                                         className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-box-open w-5 text-center"></i>
@@ -55,7 +49,7 @@ function TrangChuNguoiDung() {
                                     </Link>
 
                                     <Link
-                                        to=""
+                                        to="dia-chi-cua-toi"
                                         className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-map-marker-alt w-5 text-center"></i>
@@ -63,7 +57,7 @@ function TrangChuNguoiDung() {
                                     </Link>
 
                                     <Link
-                                        to=""
+                                        to="san-pham-yeu-thich"
                                         className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-heart w-5 text-center"></i>
@@ -85,7 +79,8 @@ function TrangChuNguoiDung() {
 
                         {/* Phần nội dung chính */}
                         <section className="lg:col-span-3 space-y-8">
-                            <SanPhamYeuThich />
+                            
+                  <Outlet />
                         </section>
                     </div>
                 </div>

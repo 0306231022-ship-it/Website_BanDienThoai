@@ -1,4 +1,4 @@
-
+import {Link} from "react-router-dom";
 function ThemDiaChi() {
     return(
         <>
@@ -6,10 +6,9 @@ function ThemDiaChi() {
                     
                     <div className="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-2">
                         <div className="flex items-center gap-4 mb-6">
-                            <a href="user-addresses.html" className="text-dark-600 hover:text-primary-500 transition-colors">
-                                <i className="fas fa-arrow-left fa-lg"></i>
-                            </a>
-                            <h2 className="text-2xl font-bold text-dark-900">Thêm Địa Chỉ Mới</h2>
+                            <Link to="/nguoi-dung/dia-chi-cua-toi" className="text-dark-600 hover:text-primary-500 transition-colors">
+                                <i className="fas fa-arrow-left fa-lg"></i> quay lại
+                            </Link>
                         </div>
 
                         <form action="#" method="POST" className="space-y-6">

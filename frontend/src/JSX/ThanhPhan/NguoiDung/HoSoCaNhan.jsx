@@ -5,9 +5,9 @@ function HoSoCaNhan() {
  <div className="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-2">
                         <div className="flex justify-between items-center mb-6">
                             <h2 className="text-2xl font-bold text-dark-900">Thông Tin Cá Nhân</h2>
-                            <button className="text-primary-500 hover:text-primary-600 font-medium transition-colors">
+                            <Link  to="chinh-sua-thong-tin" className="text-primary-500 hover:text-primary-600 font-medium transition-colors">
                                 <i className="fas fa-edit mr-2"></i>Chỉnh sửa
-                            </button>
+                            </Link>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>

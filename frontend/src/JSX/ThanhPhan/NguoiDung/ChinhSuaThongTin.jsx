@@ -1,3 +1,5 @@
+import { Link} from "react-router-dom";
+
 function ChinhSuaThongTin() {
     return (
         <>
@@ -33,9 +35,9 @@ function ChinhSuaThongTin() {
                                 </div>
                             </div>
                             <div class="flex justify-end gap-4 pt-4">
-                                <button type="button" class="bg-dark-100 hover:bg-dark-200 text-dark-800 px-6 py-3 rounded-lg font-medium transition-colors">
+                                <Link to="/nguoi-dung" class="bg-dark-100 hover:bg-dark-200 text-dark-800 px-6 py-3 rounded-lg font-medium transition-colors">
                                     Hủy
-                                </button>
+                                </Link>
                                 <button type="submit" class="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-lg font-medium transition-all transform hover:scale-105">
                                     Lưu Thay Đổi
                                 </button>

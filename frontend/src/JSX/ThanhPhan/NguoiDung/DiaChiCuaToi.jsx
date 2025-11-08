@@ -1,9 +1,8 @@
+import { Link } from "react-router-dom";
 function DiaChiCuaToi() {
     return (
         <>
             <div class="container mx-auto px-4">
-            
-           
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12">
        
                 <section class="lg:col-span-3">
@@ -11,9 +10,9 @@ function DiaChiCuaToi() {
                     <div class="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-2">
                         <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
                             <h2 class="text-2xl font-bold text-dark-900">Địa Chỉ Của Tôi</h2>
-                            <button class="w-full md:w-auto bg-primary-500 hover:bg-primary-600 text-white px-5 py-3 rounded-lg font-medium transition-colors transform hover:scale-105">
+                            <Link to="/nguoi-dung/them-dia-chi" class="w-full md:w-auto bg-primary-500 hover:bg-primary-600 text-white px-5 py-3 rounded-lg font-medium transition-colors transform hover:scale-105">
                                 <i class="fas fa-plus mr-2"></i>Thêm Địa Chỉ Mới
-                            </button>
+                            </Link>
                         </div>
 
                         <div class="space-y-6">

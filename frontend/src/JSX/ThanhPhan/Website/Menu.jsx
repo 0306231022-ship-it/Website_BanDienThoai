@@ -1,9 +1,8 @@
 import React from 'react';
-import { useUI } from "../../../REDUCER/TrangChuWeb";
 import { Link } from "react-router-dom";
 
 function Menu() {
-    const { dispatch } = useUI();
+  
     const cartCount = 3; 
 
     return (
@@ -14,21 +13,20 @@ function Menu() {
                     <div className="flex items-center justify-between py-4">
                 
                         {/* Biến Logo thành Link về Trang chủ */}
-                        <Link  onClick={() => dispatch({ type: "SHOW_HOME" })} className="flex items-center space-x-2">
+                        <Link  to="/" className="flex items-center space-x-2">
                             <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
                                 <i className="fas fa-mobile-alt text-white text-xl"></i>
                             </div>
                             <span className="text-2xl font-bold text-dark-900">TechMobile</span>
                         </Link>
                         <nav className="hidden md:flex items-center space-x-8">
-                            <Link  onClick={() => dispatch({ type: "SHOW_HOME" })} className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</Link>
-                            <Link onClick={() => dispatch({ type: "SHOW_SANPHAM" })}  className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Sản Phẩm</Link>
-                            <Link onClick={() => dispatch({ type: "SHOW_AI" })}  className="text-dark-900 hover:text-primary-500 font-medium transition-colors">AI & Công Nghệ</Link>
-                            <Link onClick={() => dispatch({ type: "SHOW_BENVUNG" })}  className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Bền Vững</Link>
-                            <Link onClick={() => dispatch({ type: "SHOW_HOTRO" })}  className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Hỗ Trợ</Link>
+                            <Link  to="/" className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</Link>
+                            <Link to="/san-pham"  className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Sản Phẩm</Link>
+                            <Link to="/ai-cong-nghe" className="text-dark-900 hover:text-primary-500 font-medium transition-colors">AI & Công Nghệ</Link>
+                            <Link to="/ben-vung" className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Bền Vững</Link>
+                            <Link to="/ho-tro"  className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Hỗ Trợ</Link>
                         </nav>
 
-                
                         <div className="flex items-center space-x-4">
                             <div className="hidden md:flex items-center bg-dark-50 rounded-full px-4 py-2">
                                 <i className="fas fa-search text-dark-600 mr-2"></i>
@@ -36,7 +34,7 @@ function Menu() {
                             </div>
                             
                             {/* Cập nhật nút Giỏ hàng và User thành Link */}
-                            <Link  onClick={() => dispatch({ type: "SHOW_GIOHANG" })} className="p-2 text-dark-600 hover:text-primary-500 transition-colors relative">
+                            <Link  to="/gio-hang" className="p-2 text-dark-600 hover:text-primary-500 transition-colors relative">
                                 <i className="fas fa-shopping-cart"></i>
                                 {cartCount > 0 && (
                                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -44,7 +42,7 @@ function Menu() {
                                     </span>
                                 )}
                             </Link>
-                            <Link  onClick={() => dispatch({ type: "SHOW_NGUOIDUNG" })} className="p-2 text-dark-600 hover:text-primary-500 transition-colors">
+                            <Link to="/nguoi-dung" className="p-2 text-dark-600 hover:text-primary-500 transition-colors">
                                 <i className="fas fa-user"></i>
                             </Link>
                             <button className="md:hidden p-2 text-dark-600">
