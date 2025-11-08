@@ -1,7 +1,7 @@
 // 🧭 Hàm xác định đường dẫn (giống backend)
 function DiaChi(code) {
   switch (code) {
-    case 1: return 'http://localhost:5000/api/users';
+    case 1: return 'http://localhost:3001/api/users/login';
     default: return 'http://localhost:5000/unknown';
   }
 }

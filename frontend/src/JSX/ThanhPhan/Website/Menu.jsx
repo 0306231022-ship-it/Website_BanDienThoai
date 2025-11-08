@@ -1,8 +1,16 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-
+import { useEffect } from 'react';
+import * as API from '../../../JS/API/API.js';
 function Menu() {
-  
+    //demo gọi API
+     useEffect(() => {
+        const fetchData = async () => {
+            const response = await API.CallAPI({ username: 'testuser' }, { DiaChi: 1  });
+            alert(JSON.stringify(response));
+        };
+        fetchData();
+    });
     const cartCount = 3; 
 
     return (
