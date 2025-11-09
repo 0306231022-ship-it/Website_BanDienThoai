@@ -1,0 +1,87 @@
+<section id="section-seller-info" class="section " aria-label="Cài đặt thông tin Người bán">
+    
+    <div class="flex items-center justify-between mb-6 mt-6 border-b pb-3 border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-900">💼 Cài Đặt Thông Tin Người Bán/Doanh Nghiệp</h2>
+        <button class="px-5 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-semibold shadow-md transition" aria-label="Lưu thông tin người bán">
+            <i class="fas fa-save mr-2"></i> Lưu Thông Tin
+        </button>
+    </div>
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl border border-teal-100">
+        <form class="space-y-6">
+            
+            <h3 class="text-xl font-bold text-teal-700 pb-2 border-b border-gray-100">1. Thông tin Pháp lý</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="seller-name" class="block text-sm font-medium text-gray-700 mb-2">Tên Doanh nghiệp/Cửa hàng <span class="text-red-500">*</span></label>
+                    <input type="text" id="seller-name" placeholder="Ví dụ: Công ty TNHH Thương mại ABC" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
+                           value="Admin Store Tech">
+                </div>
+                
+                <div>
+                    <label for="tax-code" class="block text-sm font-medium text-gray-700 mb-2">Mã số Thuế (MST)</label>
+                    <input type="text" id="tax-code" placeholder="Ví dụ: 0108999xxx" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
+                           value="0108999888">
+                </div>
+                
+                <div>
+                    <label for="legal-rep" class="block text-sm font-medium text-gray-700 mb-2">Người đại diện Pháp luật</label>
+                    <input type="text" id="legal-rep" placeholder="Nguyễn Văn A" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
+                           value="Trần Thị Bích">
+                </div>
+                
+                <div>
+                    <label for="seller-phone" class="block text-sm font-medium text-gray-700 mb-2">Số điện thoại Giao dịch</label>
+                    <input type="tel" id="seller-phone" placeholder="09xxxxxx" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
+                           value="0987123456">
+                </div>
+                
+                <div class="md:col-span-2">
+                    <label for="seller-address" class="block text-sm font-medium text-gray-700 mb-2">Địa chỉ Đăng ký/Xuất hóa đơn</label>
+                    <input type="text" id="seller-address" placeholder="Địa chỉ đầy đủ, Phường, Quận, Tỉnh/Thành phố" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
+                           value="22/4 Đường Hoàng Văn Thụ, Phường 4, Quận Tân Bình, TP. HCM">
+                </div>
+            </div>
+
+            ---
+            
+            <h3 class="text-xl font-bold text-teal-700 pb-2 border-b border-gray-100 mt-8">2. Thông tin Thanh toán/Ngân hàng</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="account-name" class="block text-sm font-medium text-gray-700 mb-2">Tên Chủ tài khoản</label>
+                    <input type="text" id="account-name" placeholder="Ghi không dấu, trùng với tên đăng ký" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
+                           value="TRAN THI BICH">
+                </div>
+                
+                <div>
+                    <label for="account-number" class="block text-sm font-medium text-gray-700 mb-2">Số Tài khoản Ngân hàng</label>
+                    <input type="text" id="account-number" placeholder="Ví dụ: 1010xxxxxxxx" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
+                           value="10101999888">
+                </div>
+
+                <div class="md:col-span-2">
+                    <label for="bank-name" class="block text-sm font-medium text-gray-700 mb-2">Tên Ngân hàng</label>
+                    <input type="text" id="bank-name" placeholder="Ví dụ: Ngân hàng TMCP Ngoại thương Việt Nam (Vietcombank)" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
+                           value="Ngân hàng TMCP Kỹ Thương Việt Nam (Techcombank)">
+                </div>
+
+            </div>
+
+            <div class="pt-6 border-t border-gray-200 text-right">
+                <button type="submit" class="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-bold shadow-lg transition">
+                    <i class="fas fa-check-circle mr-2"></i> Xác nhận và Cập nhật
+                </button>
+            </div>
+        </form>
+    </div>
+</section>

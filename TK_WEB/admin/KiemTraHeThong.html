@@ -1,0 +1,186 @@
+<section id="section-system-status" class="section " aria-label="Kiểm tra Trạng thái Hệ thống">
+    
+    <div class="flex items-center justify-between mb-6 mt-6 border-b pb-3 border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-900">Kiểm tra Trạng thái Hệ thống</h2>
+        <button class="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow-md transition" aria-label="Chạy kiểm tra ngay">
+            <i class="fas fa-redo-alt mr-2"></i> Chạy kiểm tra lại
+        </button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
+        
+        <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-green-600 hover:shadow-xl transition lg:col-span-2">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-gray-500">Trạng thái Tổng thể Hệ thống</div>
+                <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+            </div>
+            <div class="mt-2 text-3xl font-bold text-green-600">Hoạt Động Tốt</div>
+            <p class="text-sm text-gray-500 mt-1">Cập nhật: 11:45 AM, 09/11/2025</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-teal-600 hover:shadow-xl transition">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-gray-500">Giao diện (Frontend)</div>
+                <i class="fas fa-desktop text-teal-600 text-xl"></i>
+            </div>
+            <div class="mt-2 text-2xl font-bold text-green-600">UP</div>
+            <p class="text-sm text-gray-500 mt-1">100% hoạt động</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-teal-600 hover:shadow-xl transition">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-gray-500">API/Back-end</div>
+                <i class="fas fa-server text-teal-600 text-xl"></i>
+            </div>
+            <div class="mt-2 text-2xl font-bold text-green-600">UP</div>
+            <p class="text-sm text-gray-500 mt-1">0 sự cố</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-5 shadow-lg border-l-4 border-yellow-600 hover:shadow-xl transition">
+            <div class="flex items-center justify-between">
+                <div class="text-sm font-medium text-gray-500">Cơ sở dữ liệu (DB)</div>
+                <i class="fas fa-database text-yellow-600 text-xl"></i>
+            </div>
+            <div class="mt-2 text-2xl font-bold text-yellow-600">Degraded</div>
+            <p class="text-sm text-yellow-600 mt-1">Độ trễ cao</p>
+        </div>
+    </div>
+    
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <div class="lg:col-span-2 bg-white rounded-xl p-6 shadow-2xl">
+            <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-2">Trạng thái Từng Dịch vụ</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase">Tên Dịch vụ</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase">Loại</th>
+                            <th class="px-4 py-3 text-center text-xs font-bold text-gray-500 uppercase">Trạng thái</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase">Phản hồi (ms)</th>
+                            <th class="px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr class="hover:bg-gray-50 transition duration-100 cursor-pointer" onclick="editService('API Xử lý Đơn hàng', 'Dịch vụ chính', 'https://api.core.vn/orders')">
+                            <td class="px-4 py-3 text-sm font-medium text-gray-900">API Xử lý Đơn hàng</td>
+                            <td class="px-4 py-3 text-sm text-gray-500">Dịch vụ chính</td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">Hoạt động</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-800">55</td>
+                            <td class="px-4 py-3 text-sm text-center">
+                                <button class="text-teal-600 hover:text-teal-900 font-semibold text-sm">Sửa</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition duration-100 cursor-pointer" onclick="editService('API Thanh toán', 'Bên ngoài', 'https://api.payment.com/check')">
+                            <td class="px-4 py-3 text-sm font-medium text-gray-900">API Thanh toán (Payment Gateway)</td>
+                            <td class="px-4 py-3 text-sm text-gray-500">Bên ngoài</td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">Hoạt động</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-800">120</td>
+                            <td class="px-4 py-3 text-sm text-center">
+                                <button class="text-teal-600 hover:text-teal-900 font-semibold text-sm">Sửa</button>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-gray-50 transition duration-100 cursor-pointer" onclick="editService('Database (SQL Server)', 'Lưu trữ', 'tcp://db.internal.local:3306')">
+                            <td class="px-4 py-3 text-sm font-medium text-gray-900">Database (SQL Server)</td>
+                            <td class="px-4 py-3 text-sm text-gray-500">Lưu trữ</td>
+                            <td class="px-4 py-3 text-center">
+                                <span class="px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 text-xs font-semibold">Degraded</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-red-600 font-semibold">850</td>
+                            <td class="px-4 py-3 text-sm text-center">
+                                <button class="text-teal-600 hover:text-teal-900 font-semibold text-sm">Sửa</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4 text-center border-t pt-4">
+                 <button id="add-new-service-btn" class="px-4 py-2 bg-gray-100 text-teal-600 border border-teal-600 rounded-lg hover:bg-teal-50 font-semibold transition">
+                    <i class="fas fa-plus mr-2"></i> Thêm Dịch vụ Mới
+                </button>
+            </div>
+        </div>
+
+        <div class="lg:col-span-1 bg-teal-50 p-6 rounded-xl shadow-2xl border-2 border-teal-300">
+            <h3 id="form-title" class="text-xl font-bold text-teal-800 mb-4 border-b pb-2">Thêm Dịch vụ Mới</h3>
+            
+            <form id="service-management-form" class="space-y-4">
+                
+                <div>
+                    <label for="service-name" class="block text-sm font-medium text-gray-700 mb-1">Tên Dịch vụ</label>
+                    <input type="text" id="service-name" placeholder="Ví dụ: API Giỏ hàng" 
+                           class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition">
+                </div>
+                
+                <div>
+                    <label for="service-type" class="block text-sm font-medium text-gray-700 mb-1">Loại Dịch vụ</label>
+                    <select id="service-type" 
+                           class="w-full p-2 border border-gray-300 rounded-lg bg-white focus:ring-teal-500 focus:border-teal-500 transition">
+                        <option value="Dịch vụ chính">Dịch vụ chính</option>
+                        <option value="Lưu trữ">Lưu trữ (Database)</option>
+                        <option value="Bên ngoài">Bên ngoài (External API)</option>
+                        <option value="Hệ thống AI">Hệ thống AI</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="service-endpoint" class="block text-sm font-medium text-gray-700 mb-1">Endpoint/Địa chỉ kiểm tra</label>
+                    <input type="text" id="service-endpoint" placeholder="Ví dụ: https://api.mysite.com/health" 
+                           class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition">
+                </div>
+
+                <div>
+                    <label for="latency-threshold" class="block text-sm font-medium text-gray-700 mb-1">Ngưỡng cảnh báo độ trễ (ms)</label>
+                    <input type="number" id="latency-threshold" value="500" placeholder="milliseconds" 
+                           class="w-full p-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition">
+                </div>
+                
+                <div class="pt-2">
+                    <button type="submit" id="submit-btn" class="w-full py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-bold transition shadow-md">
+                        <i class="fas fa-plus mr-2"></i> Thêm Dịch vụ
+                    </button>
+                    <button type="button" id="delete-btn" class="w-full mt-2 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 font-bold transition shadow-md hidden">
+                        <i class="fas fa-trash-alt mr-2"></i> Xóa Dịch vụ
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    // JavaScript mô phỏng để điền dữ liệu vào form khi nhấn nút "Sửa"
+    function editService(name, type, endpoint) {
+        document.getElementById('form-title').innerText = 'Chỉnh sửa Dịch vụ: ' + name;
+        document.getElementById('service-name').value = name;
+        document.getElementById('service-type').value = type;
+        document.getElementById('service-endpoint').value = endpoint;
+        
+        // Thay đổi nút Submit thành Cập nhật
+        document.getElementById('submit-btn').innerHTML = '<i class="fas fa-edit mr-2"></i> Cập nhật Dịch vụ';
+        document.getElementById('submit-btn').classList.remove('bg-teal-600');
+        document.getElementById('submit-btn').classList.add('bg-orange-500', 'hover:bg-orange-600');
+        
+        // Hiển thị nút Xóa
+        document.getElementById('delete-btn').classList.remove('hidden');
+    }
+
+    // JavaScript mô phỏng để reset form khi nhấn "Thêm Dịch vụ Mới"
+    document.getElementById('add-new-service-btn').addEventListener('click', function() {
+        document.getElementById('form-title').innerText = 'Thêm Dịch vụ Mới';
+        document.getElementById('service-management-form').reset();
+        
+        document.getElementById('submit-btn').innerHTML = '<i class="fas fa-plus mr-2"></i> Thêm Dịch vụ';
+        document.getElementById('submit-btn').classList.remove('bg-orange-500', 'hover:bg-orange-600');
+        document.getElementById('submit-btn').classList.add('bg-teal-600');
+        
+        document.getElementById('delete-btn').classList.add('hidden');
+        
+        // Tùy chọn: Cuộn đến form
+        document.getElementById('service-management-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+</script>

@@ -1,0 +1,74 @@
+<section id="section-ai-training-form" class="section " aria-label="Form Đào tạo và Tinh chỉnh Mô hình AI">
+    
+    <div class="flex items-center justify-between mb-6 mt-6 border-b pb-3 border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-900">🔬 Đào tạo & Tinh chỉnh Mô hình AI</h2>
+    </div>
+
+    <div class="bg-white p-8 rounded-xl shadow-2xl border border-teal-100">
+        <form class="space-y-6">
+            
+            <h3 class="text-xl font-bold text-teal-700 pb-2 border-b border-gray-100">1. Chọn Mô hình & Dữ liệu</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="model-select" class="block text-sm font-medium text-gray-700 mb-2">Mô hình AI</label>
+                    <select id="model-select" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-teal-500 focus:border-teal-500 transition">
+                        <option value="rec">Mô hình Gợi ý Sản phẩm (Rec-v2.1.3)</option>
+                        <option value="chatbot">Mô hình Chatbot Hỗ trợ (NLP-Q&A-v3.0)</option>
+                        <option value="sentiment">Phân tích Cảm xúc (Sentiment-v1.1)</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="data-upload" class="block text-sm font-medium text-gray-700 mb-2">Dữ liệu Huấn luyện (JSON/CSV)</label>
+                    <input type="file" id="data-upload" accept=".json,.csv"
+                           class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+                </div>
+            </div>
+
+            ---
+            
+            <h3 class="text-xl font-bold text-teal-700 pb-2 border-b border-gray-100 mt-8">2. Tham số Huấn luyện</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label for="epochs" class="block text-sm font-medium text-gray-700 mb-2">Số lượng Epochs</label>
+                    <input type="number" id="epochs" value="10" min="1" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition">
+                    <p class="text-xs text-gray-500 mt-1">Số lần mô hình lặp lại qua toàn bộ tập dữ liệu.</p>
+                </div>
+                
+                <div>
+                    <label for="learning-rate" class="block text-sm font-medium text-gray-700 mb-2">Learning Rate</label>
+                    <input type="number" id="learning-rate" step="0.001" value="0.005" min="0" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition">
+                    <p class="text-xs text-gray-500 mt-1">Tốc độ điều chỉnh trọng số của mô hình.</p>
+                </div>
+
+                <div>
+                    <label for="batch-size" class="block text-sm font-medium text-gray-700 mb-2">Kích thước Batch Size</label>
+                    <input type="number" id="batch-size" value="32" min="1" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition">
+                    <p class="text-xs text-gray-500 mt-1">Số lượng mẫu được xử lý trước khi cập nhật mô hình.</p>
+                </div>
+            </div>
+
+            ---
+            
+            <h3 class="text-xl font-bold text-teal-700 pb-2 border-b border-gray-100 mt-8">3. Tùy chọn Triển khai</h3>
+
+            <div class="flex items-center space-x-4 p-3 bg-teal-50 rounded-lg border border-teal-300">
+                <input id="auto-deploy" type="checkbox" class="h-5 w-5 text-teal-600 border-gray-300 rounded focus:ring-teal-500">
+                <label for="auto-deploy" class="text-sm font-medium text-gray-700">
+                    **Tự động Triển khai nếu hiệu suất tăng:** Tự động đưa mô hình mới vào hoạt động nếu độ chính xác trên tập kiểm tra (validation set) tăng hơn 1%.
+                </label>
+            </div>
+            
+            <div class="text-right">
+                <button type="submit" class="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-bold shadow-lg transition">
+                    <i class="fas fa-magic mr-2"></i> Bắt đầu Huấn luyện Mô hình
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
