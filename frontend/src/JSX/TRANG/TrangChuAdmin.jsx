@@ -1,145 +1,151 @@
-import React, { useState } from 'react'; 
+import { Link } from 'react-router-dom';
 import BangChinh from '../ThanhPhan/Admin/BangChinh';
-// Giả định các import khác (như API, ThongBao, CSS) đã có sẵn trong môi trường của bạn
-// import { useNavigate } from "react-router-dom";
-// import '../../CSS/TrangChuAD.css';
-// import * as API from '../../JS/API/API';
-// import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
+import ChiTietDon from '../ThanhPhan/Admin/ChiTietDon';
+import DonHang from '../ThanhPhan/Admin/DonHang';
+import DanhSachSanPham from '../ThanhPhan/Admin/DanhSachSanPham';
+import ThemSanPham from '../ThanhPhan/Admin/ThemSanPham';
+import ChiTietSanPham from '../ThanhPhan/Admin/ChiTietSP';
+import DanhSachThuongHieu from '../ThanhPhan/Admin/DanhSachThuongHieu';
+import ThemThuongHieu from '../ThanhPhan/Admin/ThemThuongHieu';
+import ChiTietThuongHieu from '../ThanhPhan/Admin/ChiTietThuongHieu';
+import DanhSachKhachHang from '../ThanhPhan/Admin/DanhSachKhachHang';
+import BaoCao from '../ThanhPhan/Admin/BaoCao';
+import PhiVanChuyen from '../ThanhPhan/Admin/PhiVanChuyen';
+import MaGiamGia from '../ThanhPhan/Admin/MaGiamGia';
+import DanhSachMa from '../ThanhPhan/Admin/DanhSachMa';
+import HoTroKhachHang from '../ThanhPhan/Admin/HoTroKhachHang';
+import CaiDat from '../ThanhPhan/Admin/CaiDat';
+import ChietMaGG from '../ThanhPhan/Admin/ChiTietMaGiam';
+import { Routes, Route } from 'react-router-dom';
+function TrangChuAdmin() {
+    return(
+        <>
+    <header className="w-full bg-white shadow sticky top-0 z-50" aria-label="Top bar">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+            <div className="flex items-center space-x-3">
+                <button id="sidebarToggle" aria-label="Mở/đóng menu" className="md:hidden p-2 rounded-full hover:bg-gray-100 transition-colors">
+                    <i className="fas fa-bars"></i>
+                </button>
+                <Link to="" data-route="overview" className="flex items-center space-x-2" Style="text-decoration:none;">
+                    <div className="w-9 h-9 rounded-full bg-primary-500 flex items-center justify-center text-white">
+                        <i className="fas fa-mobile-alt"></i>
+                    </div>
+                    <span className="text-xl font-bold text-dark-900">TechMobile Admin</span>
+                </Link>
+            </div>
 
-const Dashboard = () => {
-    // 1. Khai báo state để quản lý việc hiển thị/ẩn dropdown
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    // const navigate = useNavigate(); // Giả sử dùng useNavigate nếu cần chuyển trang
-
-    // 2. Hàm xử lý khi click vào nút chỉnh sửa thông tin
-    const handleEditProfile = () => {
-        setIsDropdownOpen(false); // Đóng dropdown sau khi click
-        // Thêm logic chuyển hướng hoặc mở modal chỉnh sửa thông tin cá nhân
-        // Ví dụ: navigate('/admin/edit-profile');
-        console.log("Chuyển đến trang chỉnh sửa thông tin cá nhân");
-    };
-
-    // 3. Hàm xử lý khi click đăng xuất (có thể dùng hàm API.Logout hoặc tương tự)
-    const handleLogout = () => {
-        setIsDropdownOpen(false); // Đóng dropdown sau khi click
-        // Thêm logic đăng xuất
-        // Ví dụ: API.Logout().then(() => navigate('/admin/login'));
-        console.log("Thực hiện đăng xuất");
-        // Giả sử chuyển về trang đăng nhập admin
-        // navigate('/DangNhap/dn_ad.html'); 
-    };
-
-    return (
-        // Dùng class 'font-sans' (Tailwind default) và 'bg-gray-100'
-        <div className="font-sans bg-gray-100 min-h-screen">
-            {/* Sidebar - Dùng 'scrollbar-dark' đã định nghĩa bên trên */}
-            {/* Thêm link cho Font Awesome */}
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-            
-            <div className="fixed inset-y-0 left-0 w-72 bg-gray-900 text-gray-400 p-4 flex flex-col shadow-xl scrollbar-dark z-10">
-                <div className="text-white font-bold text-2xl pb-4 mb-4 border-b border-gray-700 flex items-center">
-                    <i className="fas fa-tools mr-3 text-blue-500"></i> {/* Icon cho Admin Panel */}
-                    <span className="text-lg">Admin Panel</span>
+            <div className="hidden md:flex items-center space-x-4">
+                <div className="relative">
+                    <input type="search" placeholder="Tìm kiếm trong quản trị" className="w-72 pl-10 pr-4 py-2 rounded-full bg-gray-100 focus:bg-white focus:outline-none border border-gray-200" aria-label="Tìm kiếm trong quản trị"/>
+                    <span className="absolute left-3 top-2 text-gray-500"><i className="fas fa-search"></i></span>
                 </div>
-                <ul className="flex flex-col flex-grow space-y-1">
-                    <li className="nav-item">
-                        <a href="admin.html" className="flex items-center text-white bg-blue-600 font-medium hover:bg-blue-700 p-3 rounded-lg transition duration-200">
-                            <i className="fas fa-tachometer-alt mr-3"></i> {/* Icon cho Dashboard */}
-                            Dashboard
-                        </a>
+                <button className="p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="Thông báo">
+                    <i className="fas fa-bell"></i>
+                </button>
+                <button className="p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="Tin nhắn">
+                    <i className="fas fa-envelope"></i>
+                </button>
+                <div className="flex items-center space-x-2" role="button" aria-label="Thông tin người dùng">
+                    <img src="https://picsum.photos/40?random=1" alt="Avatar quản trị viên" className="w-8 h-8 rounded-full object-cover" loading="lazy" />
+                    <span className="hidden sm:block font-medium">Admin</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div className="flex" id="layout">
+
+        <aside id="sidebar" className="hidden md:block w-64 bg-white border-r border-gray-200 h-screen sticky top-0" aria-label="Menu điều hướng">
+            <nav className="p-4" aria-label="Menu quản trị">
+                <ul className="space-y-2">
+                    <li>
+                        <Link to="/admin" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
+                            <i className="fas fa-chart-line w-5"></i><span className="ml-3">Tổng Quan</span>
+                        </Link>
                     </li>
-                    <li className="nav-item">
-                        <a href="#" className="flex items-center text-gray-300 hover:bg-gray-800 hover:text-white p-3 rounded-lg transition duration-200">
-                            <i className="fas fa-box-open mr-3"></i> {/* Icon cho Quản lý sản phẩm */}
-                            Quản lý sản phẩm
-                        </a>
+                    <li>
+                        <Link to="/admin/DonHang" data-route="orders" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Đơn hàng">
+                            <i className="fas fa-shopping-cart w-5"></i><span className="ml-3">Đơn Hàng</span>
+                        </Link>
                     </li>
-                    <li className="nav-item">
-                        <a href="#" className="flex items-center text-gray-300 hover:bg-gray-800 hover:text-white p-3 rounded-lg transition duration-200">
-                            <i className="fas fa-shopping-cart mr-3"></i> {/* Icon cho Quản lý đơn hàng */}
-                            Quản lý đơn hàng
-                        </a>
+                    <li>
+                        <Link to="/admin/sanpham" data-route="products" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Sản phẩm">
+                            <i className="fas fa-box w-5"></i><span className="ml-3">Sản Phẩm</span>
+                        </Link>
+                          <li>
+                        <Link to="/admin/thuonghieu" data-route="products" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Sản phẩm">
+                            <i className="fas fa-tags"></i><span className="ml-3">Thương hiệu</span>
+                        </Link>
                     </li>
-                    <li className="nav-item">
-                        <a href="#" className="flex items-center text-gray-300 hover:bg-gray-800 hover:text-white p-3 rounded-lg transition duration-200">
-                            <i className="fas fa-users mr-3"></i> {/* Icon cho Quản lý người dùng */}
-                            Quản lý người dùng
-                        </a>
                     </li>
-                    <li className="nav-item">
-                        <a href="#" className="flex items-center text-gray-300 hover:bg-gray-800 hover:text-white p-3 rounded-lg transition duration-200">
-                           <i className="fas fa-cog mr-3"></i> {/* Icon cho Cài đặt */}
-                           Cài đặt
-                        </a>
+                    <li>
+                        <Link to="/admin/khachhang" data-route="customers" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Khách hàng">
+                            <i className="fas fa-users w-5"></i><span className="ml-3">Khách Hàng</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/admin/baocao" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
+                            <i className="fas fa-chart-pie w-5"></i><span className="ml-3">Báo Cáo</span>
+                        </Link>
+                    </li>
+                     <li>
+                        <Link to="/admin/phivanchuyen" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
+                             <i className="fas fa-shipping-fast"></i><span className="ml-3">Phí vận chuyển</span>
+                        </Link>
+                    </li>
+                     <li>
+                        <Link to="/admin/danhsachma" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
+                             <i className="fas fa-tags"></i><span className="ml-3">Mã giảm giá</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/admin/hotro" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
+                             <i className="fas fa-headset"></i><span className="ml-3">Hỗ trợ khách hàng</span>
+                        </Link>
+                    </li>
+
+                   
+                    <li>
+                        <Link to="/admin/caidat" data-route="settings" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Cài đặt">
+                            <i className="fas fa-cog w-5"></i><span className="ml-3">Cài Đặt</span>
+                        </Link>
                     </li>
                 </ul>
-                {/* Logout Section đã được di chuyển vào dropdown */}
-                <div className="mt-auto pt-3 border-t border-gray-700">
-                    <button 
-                        onClick={handleLogout} 
-                        className="w-full text-center block bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white p-3 rounded-lg transition duration-200"
-                    >
-                        <i className="fas fa-sign-out-alt mr-2"></i> {/* Icon cho Đăng xuất */}
-                        Đăng xuất
-                    </button>
-                </div>
+            </nav>
+        </aside>
 
-            </div>
+   
+        <main className="flex-1 p-6 bg-gray-50 min-h-screen" role="main" aria-label="Nội dung quản trị">
+                <Routes>
+                    <Route index element={<BangChinh />} />
+                    <Route path="DonHang" element={<DonHang />} />
+                    <Route path="DonHang/ChiTietDon" element={<ChiTietDon />} />
+                    <Route path="sanpham" element={<DanhSachSanPham />} />
+                    <Route path="sanpham/ThemSanPham" element={<ThemSanPham />} />
+                    <Route path="sanpham/chitiet" element={<ChiTietSanPham />} />
+                    <Route path="thuonghieu" element={<DanhSachThuongHieu />} />
+                    <Route path="thuonghieu/ThemThuongHieu" element={<ThemThuongHieu />} />
+                    <Route path="thuonghieu/chitiet" element={<ChiTietThuongHieu />} />
+                    <Route path="khachhang" element={<DanhSachKhachHang />} />
+                    <Route path="baocao" element={<BaoCao />} />
+                    <Route path="phivanchuyen" element={<PhiVanChuyen />} />
+                    <Route path="danhsachma" element={<DanhSachMa />} />
+                    <Route path="danhsachma/magiamgia" element={<MaGiamGia />} />
+                    <Route path="hotro" element={<HoTroKhachHang />} />
+                    <Route path="caidat" element={<CaiDat />} />
+                    <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
+                </Routes>
+        </main>
+    </div>
 
-            {/* Main Content */}
-            <div className="ml-72 p-8 transition-all duration-300" id="main-content">
 
-                <header className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-800">Bảng điều khiển </h1>
-                    <div className="flex items-center space-x-6">
-                        
-                        {/* START: DROP DOWN MENU */}
-                        <div className="relative">
-                            {/* Nút bấm để mở/đóng dropdown */}
-                            <button 
-                                onClick={() => setIsDropdownOpen(!isDropdownOpen)} 
-                                className="flex items-center text-gray-800 text-decoration-none focus:outline-none"
-                            >
-                                <i className="fas fa-user-circle text-2xl mr-2"></i> {/* Icon cho Admin User */}
-                                <strong className="font-semibold">Super Admin</strong>
-                                {/* Icon mũi tên chỉ trạng thái dropdown */}
-                                <i className={`fas fa-caret-down ml-2 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`}></i>
-                            </button>
-                            
-                            {/* Dropdown Content */}
-                            {isDropdownOpen && (
-                                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20 border border-gray-200">
-                                    {/* Item Chỉnh sửa thông tin cá nhân */}
-                                    <button
-                                        onClick={handleEditProfile}
-                                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition duration-150"
-                                    >
-                                        <i className="fas fa-user-edit mr-2 text-blue-500"></i> Chỉnh sửa cá nhân
-                                    </button>
-                                    <div className="border-t border-gray-100"></div>
-                                    {/* Item Đăng xuất - CÓ THỂ BỎ NẾU DÙNG CÁI Ở SIDEBAR */}
-                                    <button
-                                        onClick={handleLogout}
-                                        className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 transition duration-150"
-                                    >
-                                        <i className="fas fa-sign-out-alt mr-2"></i> Đăng xuất
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                        {/* END: DROP DOWN MENU */}
-                    </div>
-                </header>
-                <main>
-                    <BangChinh/>
-                </main>
 
-        
-
-            </div>
-
+    <footer className="mt-12 bg-white border-t border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-600">
+            © 2025 TechMobile Admin. Tất cả quyền sở hữu thuộc về TechMobile.
         </div>
+    </footer>
+        </>
     );
 };
-
-export default Dashboard;
+export default TrangChuAdmin;

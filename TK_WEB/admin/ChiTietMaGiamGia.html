@@ -1,0 +1,168 @@
+<section id="section-discount-detail" class="p-4 sm:p-8 bg-gray-50 min-h-screen font-['Inter']">
+    
+    <!-- Header và Hành động --><div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 border-b pb-4 border-gray-200">
+        <div class="flex items-center space-x-3 mb-4 sm:mb-0">
+            <!-- Nút Quay lại --><a href="/admin/discounts" class="p-2 bg-white text-gray-700 border border-gray-300 rounded-full hover:bg-gray-100 transition duration-200" title="Quay lại Danh sách">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+            </a>
+            <h1 class="text-3xl font-bold text-gray-900 truncate">
+                Chi Tiết Mã Giảm Giá: <span class="text-teal-600">FLASH20</span>
+            </h1>
+        </div>
+
+        <div class="space-x-3 flex justify-end">
+            <!-- Nút Chỉnh sửa --><button class="flex items-center space-x-1 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 font-medium shadow-md transition" title="Chỉnh sửa mã">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                <span>Chỉnh Sửa</span>
+            </button>
+            <!-- Nút Xóa --><button class="flex items-center space-x-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 font-medium shadow-md transition" title="Xóa mã">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                <span>Xóa Mã</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Thông tin Cấu hình Cơ bản --><div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center space-x-2">
+            <!-- Icon Tag --><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 12.586a2 2 0 1 0 2.828 2.828l3.121-3.121a2 2 0 0 0 0-2.828l-3.121-3.121a2 2 0 0 0-2.828 0"/><path d="m15.5 5.5-2.072 2.072"/><path d="M12.586 12.586 7.05 18.12 3 22l4-4.05 5.536-5.536z"/></svg>
+            <span>Thông Tin Cơ Bản</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            
+            <!-- Mã Giảm Giá --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 12.586a2 2 0 1 0 2.828 2.828l3.121-3.121a2 2 0 0 0 0-2.828l-3.121-3.121a2 2 0 0 0-2.828 0"/><path d="m15.5 5.5-2.072 2.072"/><path d="M12.586 12.586 7.05 18.12 3 22l4-4.05 5.536-5.536z"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Mã Giảm Giá</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">FLASH20</p>
+                </div>
+            </div>
+
+            <!-- Loại & Giá Trị --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Loại & Giá Trị</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">20% (Giảm tối đa 150.000₫)</p>
+                </div>
+            </div>
+
+            <!-- Đơn Hàng Tối Thiểu --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Đơn Hàng Tối Thiểu</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">300.000₫</p>
+                </div>
+            </div>
+            
+            <!-- Mô Tả Mã --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm lg:col-span-2">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 12.586a2 2 0 1 0 2.828 2.828l3.121-3.121a2 2 0 0 0 0-2.828l-3.121-3.121a2 2 0 0 0-2.828 0"/><path d="m15.5 5.5-2.072 2.072"/><path d="M12.586 12.586 7.05 18.12 3 22l4-4.05 5.536-5.536z"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Mô Tả Mã</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">Giảm 20% tối đa 150K cho 100 khách hàng đầu tiên</p>
+                </div>
+            </div>
+
+            <!-- Trạng Thái Mã --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Trạng Thái Mã</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">
+                        <span class="px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">Đang hoạt động</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thông tin Thời gian Hiệu lực --><div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center space-x-2">
+            <!-- Icon Calendar --><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+            <span>Thời Gian Hiệu Lực</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <!-- Ngày Bắt Đầu --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Ngày Bắt Đầu</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">2025-11-01</p>
+                </div>
+            </div>
+            <!-- Ngày Kết Thúc --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Ngày Kết Thúc</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">2025-11-30</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thống kê Sử dụng & Giới hạn --><div class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4 flex items-center space-x-2">
+            <!-- Icon Usage --><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="12" cy="13" r="4"/><path d="M12 11h.01"/><path d="M12 15h.01"/></svg>
+            <span>Thống Kê & Giới Hạn</span>
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            
+            <!-- Số Lần Đã Dùng --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="12" cy="13" r="4"/><path d="M12 11h.01"/><path d="M12 15h.01"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Số Lần Đã Dùng</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">85 / 100</p>
+                </div>
+            </div>
+            
+            <!-- Doanh Thu Đã Tạo --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Doanh Thu Đã Tạo</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">15.750.000₫</p>
+                </div>
+            </div>
+            
+            <!-- Số Khách Hàng Đã Dùng --><div class="flex items-start space-x-4 p-4 border border-gray-100 rounded-lg bg-white shadow-sm">
+                <div class="text-teal-500 flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="12" cy="13" r="4"/><path d="M12 11h.01"/><path d="M12 15h.01"/></svg>
+                </div>
+                <div>
+                    <p class="text-xs font-medium text-gray-500 uppercase">Số Khách Hàng Đã Dùng</p>
+                    <p class="text-lg font-semibold text-gray-800 break-words">80 người</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thanh tiến trình sử dụng --><div class="mt-6 bg-white p-4 rounded-xl shadow-md border border-gray-100">
+            <div class="flex justify-between mb-2">
+                <span class="text-sm font-medium text-gray-700">Tiến độ sử dụng</span>
+                <span class="text-sm font-semibold text-red-500">85%</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                <div class="h-2.5 rounded-full transition-all duration-500 bg-red-500" style="width: 85%;"></div>
+            </div>
+            <p class="mt-2 text-xs text-red-500 flex items-center">
+                <span class="mr-1">⚠️</span> Mã giảm giá sắp đạt đến giới hạn sử dụng!
+            </p>
+        </div>
+    </div>
+    
+    <!-- Footer thông tin --><div class="pt-6 text-sm text-gray-500 border-t mt-8">
+        <p>Lưu ý: Dữ liệu này được làm mới theo thời gian thực từ hệ thống.</p>
+    </div>
+</section>

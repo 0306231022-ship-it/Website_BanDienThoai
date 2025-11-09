@@ -1,0 +1,99 @@
+<section id="section-brand-detail" class="section" aria-label="Chi tiết Thương hiệu">
+    
+    <div class="flex items-center justify-between mb-6 mt-6 border-b pb-3 border-gray-200">
+        <h2 class="text-2xl font-bold text-gray-900">🏷️ Chi Tiết Thương Hiệu: Apple</h2>
+        <div class="space-x-3">
+            <button class="px-5 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold shadow-md transition" aria-label="Xóa thương hiệu">
+                <i class="fas fa-trash-alt mr-2"></i> Xóa Thương Hiệu
+            </button>
+            <button id="edit-brand-btn" class="px-5 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-semibold shadow-md transition" aria-label="Chỉnh sửa thương hiệu">
+                <i class="fas fa-edit mr-2"></i> Chỉnh Sửa
+            </button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <div class="lg:col-span-1 bg-white p-6 rounded-xl shadow-2xl border border-teal-100 h-fit">
+            <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> Thông Tin Cơ Bản
+            </h3>
+            
+            <div class="text-center mb-6">
+                <img src="" alt="Logo Thương hiệu Apple" 
+                     class="w-32 h-32 object-contain mx-auto rounded-xl border-2 border-gray-200 p-2 bg-white shadow-inner">
+                <p class="mt-3 text-lg font-bold text-gray-800">Apple Inc.</p>
+            </div>
+
+            <div class="space-y-4">
+                <div>
+                    <p class="text-sm font-semibold text-gray-600">Mã định danh (ID)</p>
+                    <p class="text-base text-gray-900 font-mono">BR-001</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-600">Trạng thái</p>
+                    <span class="px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">Đang hoạt động</span>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-600">Ngày tạo</p>
+                    <p class="text-base text-gray-900">2023-01-15</p>
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-gray-600">Sản phẩm liên kết</p>
+                    <p class="text-base text-gray-900">45 sản phẩm</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+            
+            <div class="bg-white p-6 rounded-xl shadow-2xl border border-gray-100">
+                <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 flex items-center">
+                    <i class="fas fa-file-alt mr-2"></i> Mô Tả Chi Tiết
+                </h3>
+                <p class="text-gray-700 leading-relaxed">
+                    Apple Inc. là một tập đoàn công nghệ đa quốc gia của Mỹ chuyên thiết kế, phát triển và bán thiết bị điện tử tiêu dùng, phần mềm máy tính và các dịch vụ trực tuyến. Thương hiệu nổi tiếng với các dòng sản phẩm iPhone, iPad, Mac và Apple Watch, luôn dẫn đầu về sự đổi mới và thiết kế cao cấp.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-2xl border border-gray-100">
+                <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 flex items-center justify-between">
+                    <span><i class="fas fa-boxes mr-2"></i> Sản Phẩm Liên Quan (5)</span>
+                    <button class="text-sm text-teal-600 hover:text-teal-800 font-semibold">Xem tất cả</button>
+                </h3>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <img src="" alt="iPhone 17 Pro" class="h-10 w-10 object-cover rounded mr-3">
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900">iPhone 17 Pro Max</p>
+                                <p class="text-xs text-gray-500">Mã SKU: IP17P-512</p>
+                            </div>
+                        </div>
+                        <p class="text-sm font-bold text-teal-600">38,990,000₫</p>
+                        <button class="text-sm text-indigo-500 hover:text-indigo-700" title="Xem chi tiết sản phẩm"><i class="fas fa-eye"></i></button>
+                    </div>
+
+                    <div class="flex items-center justify-between p-3 border border-gray-100 rounded-lg hover:bg-gray-50 transition">
+                        <div class="flex items-center">
+                            <img src="" alt="Macbook Air M3" class="h-10 w-10 object-cover rounded mr-3">
+                            <div>
+                                <p class="text-sm font-semibold text-gray-900">Macbook Air M3</p>
+                                <p class="text-xs text-gray-500">Mã SKU: MBA-M3-8G</p>
+                            </div>
+                        </div>
+                        <p class="text-sm font-bold text-teal-600">28,500,000₫</p>
+                        <button class="text-sm text-indigo-500 hover:text-indigo-700" title="Xem chi tiết sản phẩm"><i class="fas fa-eye"></i></button>
+                    </div>
+
+                    <div class="text-center pt-3">
+                         <button class="text-sm font-medium text-gray-600 hover:text-teal-600">
+                             Tải thêm sản phẩm...
+                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

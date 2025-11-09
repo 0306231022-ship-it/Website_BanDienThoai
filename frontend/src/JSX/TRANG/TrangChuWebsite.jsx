@@ -17,6 +17,7 @@ import DiaChiCuaToi from '../ThanhPhan/NguoiDung/DiaChiCuaToi';
 import ThemDiaChi from '../ThanhPhan/NguoiDung/ThemDiaChi';
 import SanPhamYeuThich from '../ThanhPhan/NguoiDung/SanPhamYeuThich';
 
+
 function TrangChuWeb() {
     return (
         <div className="font-sans text-gray-800">
@@ -26,7 +27,7 @@ function TrangChuWeb() {
 
             <main>
                 <Routes>
-                    <Route path="/" element={<SanPhamTrangChu />} />
+                    <Route path="/*"  element={<SanPhamTrangChu />} />
                     <Route path="/san-pham" element={<SanPham />} />
                     <Route path="/ai-cong-nghe" element={<AI_CONGNGHE />} />
                     <Route path="/ben-vung" element={<BenVung />} />
