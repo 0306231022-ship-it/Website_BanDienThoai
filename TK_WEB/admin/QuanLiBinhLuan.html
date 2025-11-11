@@ -1,0 +1,133 @@
+       <div class="space-y-6">
+                <h2 class="text-3xl font-bold text-dark-900">Quản lí Bình Luận</h2>
+                <div class="bg-white p-4 sm:p-6 rounded-xl shadow-lg border border-gray-100">
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-6 border-b pb-4">
+                        <p class="text-lg font-semibold text-dark-800">Danh Sách Bình Luận (5)</p>
+                        <div class="flex space-x-3 mt-3 sm:mt-0">
+                            <button class="px-4 py-2 text-sm rounded-full bg-primary-500 text-white hover:bg-primary-600 transition-colors shadow-md" disabled>
+                                <i class="fas fa-filter mr-2"></i>Lọc (3 Chờ Duyệt) (Không có JS)
+                            </button>
+                            <a href="#" class="px-4 py-2 text-sm rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors">
+                                <i class="fas fa-sync-alt mr-2"></i>Làm mới
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Bảng Bình Luận (Static HTML) -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50 rounded-lg">
+                                <tr>
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16">ID</th>
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/5">Tác Giả & Sản Phẩm</th>
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/5">Nội Dung</th>
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Trạng Thái</th>
+                                    <th class="p-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Ngày Đăng</th>
+                                    <th class="p-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider w-24">Hành Động</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-100">
+                                <!-- Comment 1: Approved -->
+                                <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                    <td class="p-4 whitespace-nowrap text-sm text-dark-700 font-medium">101</td>
+                                    <td class="p-4 text-sm text-dark-900">
+                                        <p class="font-semibold">Nguyễn Văn A</p>
+                                        <p class="text-xs text-gray-500">Sản phẩm: iPhone 16 Pro Max</p>
+                                    </td>
+                                    <td class="p-4 text-sm text-gray-700 max-w-xs">
+                                        <div class="comment-content-snippet">Sản phẩm tuyệt vời, giao hàng nhanh chóng và đóng gói cẩn thận. Rất đáng tiền!</div>
+                                        <div class="text-xs text-yellow-500 mt-1">★★★★★</div>
+                                    </td>
+                                    <td class="p-4 whitespace-nowrap text-sm"><span class="px-3 py-1 text-xs font-semibold rounded-full bg-success/20 text-success border border-success/30">Đã Duyệt</span></td>
+                                    <td class="p-4 whitespace-nowrap text-sm text-gray-500">05/11/2025</td>
+                                    <td class="p-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                        <!-- Actions are disabled/static links -->
+                                        <button  class="text-gray-400 p-1.5" title="Đã duyệt"> <i class="fas fa-eye text-lg"></i></button>
+                                        <a href="#" class="text-primary-500 hover:text-primary-700 transition duration-150 p-1.5 rounded-full hover:bg-primary-100" title="Trả lời"><i class="fas fa-reply"></i></a>
+                                        <a href="#" class="text-danger hover:text-red-700 transition duration-150 p-1.5 rounded-full hover:bg-red-100" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Comment 2: Pending -->
+                                <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                    <td class="p-4 whitespace-nowrap text-sm text-dark-700 font-medium">102</td>
+                                    <td class="p-4 text-sm text-dark-900">
+                                        <p class="font-semibold">Lê Thị B</p>
+                                        <p class="text-xs text-gray-500">Sản phẩm: Samsung Galaxy S25 Ultra</p>
+                                    </td>
+                                    <td class="p-4 text-sm text-gray-700 max-w-xs">
+                                        <div class="comment-content-snippet">Máy đẹp, camera chụp nét, nhưng pin hơi yếu so với kỳ vọng. Cần tối ưu thêm.</div>
+                                        <div class="text-xs text-yellow-500 mt-1">★★★★☆</div>
+                                    </td>
+                                    <td class="p-4 whitespace-nowrap text-sm"><span class="px-3 py-1 text-xs font-semibold rounded-full bg-warning/20 text-warning border border-warning/30">Chờ Duyệt</span></td>
+                                    <td class="p-4 whitespace-nowrap text-sm text-gray-500">04/11/2025</td>
+                                    <td class="p-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                        <a href="#" class="text-success hover:text-green-700 transition duration-150 p-1.5 rounded-full hover:bg-green-100" title="Duyệt"><i class="fas fa-check-circle"></i></a>
+                                        <a href="#" class="text-primary-500 hover:text-primary-700 transition duration-150 p-1.5 rounded-full hover:bg-primary-100" title="Trả lời"><i class="fas fa-reply"></i></a>
+                                        <a href="#" class="text-danger hover:text-red-700 transition duration-150 p-1.5 rounded-full hover:bg-red-100" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+
+                                <!-- Comment 3: Pending -->
+                                <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                    <td class="p-4 whitespace-nowrap text-sm text-dark-700 font-medium">103</td>
+                                    <td class="p-4 text-sm text-dark-900">
+                                        <p class="font-semibold">Trần Minh C</p>
+                                        <p class="text-xs text-gray-500">Sản phẩm: Xiaomi 15 Pro</p>
+                                    </td>
+                                    <td class="p-4 text-sm text-gray-700 max-w-xs">
+                                        <div class="comment-content-snippet">Giá cả phải chăng, hiệu năng ổn định trong tầm giá. Rất hài lòng với quyết định mua.</div>
+                                        <div class="text-xs text-yellow-500 mt-1">★★★★☆</div>
+                                    </td>
+                                    <td class="p-4 whitespace-nowrap text-sm"><span class="px-3 py-1 text-xs font-semibold rounded-full bg-warning/20 text-warning border border-warning/30">Chờ Duyệt</span></td>
+                                    <td class="p-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                        <a href="#" class="text-success hover:text-green-700 transition duration-150 p-1.5 rounded-full hover:bg-green-100" title="Duyệt"><i class="fas fa-check-circle"></i></a>
+                                        <a href="#" class="text-primary-500 hover:text-primary-700 transition duration-150 p-1.5 rounded-full hover:bg-primary-100" title="Trả lời"><i class="fas fa-reply"></i></a>
+                                        <a href="#" class="text-danger hover:text-red-700 transition duration-150 p-1.5 rounded-full hover:bg-red-100" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+
+                                <!-- Comment 4: Rejected -->
+                                <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                    <td class="p-4 whitespace-nowrap text-sm text-dark-700 font-medium">104</td>
+                                    <td class="p-4 text-sm text-dark-900">
+                                        <p class="font-semibold">Phạm Hùng D</p>
+                                        <p class="text-xs text-gray-500">Sản phẩm: Oppo Find X8</p>
+                                    </td>
+                                    <td class="p-4 text-sm text-gray-700 max-w-xs">
+                                        <div class="comment-content-snippet">Đặt hàng 3 ngày rồi mà vẫn chưa thấy cập nhật trạng thái. Cần cải thiện khâu vận chuyển.</div>
+                                        <div class="text-xs text-yellow-500 mt-1">★★☆☆☆</div>
+                                    </td>
+                                    <td class="p-4 whitespace-nowrap text-sm"><span class="px-3 py-1 text-xs font-semibold rounded-full bg-danger/20 text-danger border border-danger/30">Đã Xóa</span></td>
+                                    <td class="p-4 whitespace-nowrap text-sm text-gray-500">02/11/2025</td>
+                                    <td class="p-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                        <button disabled class="text-gray-400 p-1.5" title="Đã xóa"><i class="fas fa-check-circle"></i></button>
+                                        <a href="#" class="text-primary-500 hover:text-primary-700 transition duration-150 p-1.5 rounded-full hover:bg-primary-100" title="Trả lời"><i class="fas fa-reply"></i></a>
+                                        <a href="#" class="text-danger hover:text-red-700 transition duration-150 p-1.5 rounded-full hover:bg-red-100" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+
+                                <!-- Comment 5: Pending -->
+                                <tr class="hover:bg-gray-50 border-b border-gray-100">
+                                    <td class="p-4 whitespace-nowrap text-sm text-dark-700 font-medium">105</td>
+                                    <td class="p-4 text-sm text-dark-900">
+                                        <p class="font-semibold">Vũ Thu E</p>
+                                        <p class="text-xs text-gray-500">Sản phẩm: Apple Watch Series 10</p>
+                                    </td>
+                                    <td class="p-4 text-sm text-gray-700 max-w-xs">
+                                        <div class="comment-content-snippet">Chiếc đồng hồ thông minh tốt nhất tôi từng dùng. Thiết kế sang trọng và nhiều tính năng hữu ích.</div>
+                                        <div class="text-xs text-yellow-500 mt-1">★★★★★</div>
+                                    </td>
+                                    <td class="p-4 whitespace-nowrap text-sm"><span class="px-3 py-1 text-xs font-semibold rounded-full bg-warning/20 text-warning border border-warning/30">Chờ Duyệt</span></td>
+                                    <td class="p-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                        <a href="#" class="text-success hover:text-green-700 transition duration-150 p-1.5 rounded-full hover:bg-green-100" title="Duyệt"><i class="fas fa-eye text-lg"></i></a>
+                                        <a href="#" class="text-primary-500 hover:text-primary-700 transition duration-150 p-1.5 rounded-full hover:bg-primary-100" title="Trả lời"><i class="fas fa-reply"></i></a>
+                                        <a href="#" class="text-danger hover:text-red-700 transition duration-150 p-1.5 rounded-full hover:bg-red-100" title="Xóa"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>

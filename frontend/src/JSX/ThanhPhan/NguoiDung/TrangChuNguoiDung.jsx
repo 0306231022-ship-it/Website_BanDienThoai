@@ -1,9 +1,16 @@
-import { Outlet, Link } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
+import HoSoCaNhan from './HoSoCaNhan';
+import LichSuDonHang from './LichSuDonHang';
+import XemDon from "./XemDonHang";
+import TheoGioi from "./TheoGioiDon";
+import DiaChiCuaToi from "./DiaChiCuaToi";
+import ThemDiaChi from './ThemDiaChi';
+import SanPhamYeuThich from "./SanPhamYeuThich";
+import ChinhSuaThongTin from './ChinhSuaThongTin'
 function TrangChuNguoiDung() {
     return (
         <>
-            {/* Toàn màn hình, nền sáng */}
             <main className="w-full min-h-screen bg-gray-50 py-16">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     
@@ -25,7 +32,7 @@ function TrangChuNguoiDung() {
 
                                 <nav className="space-y-2">
                                     <Link
-                                        to=""
+                                        to="/nguoi-dung"
                                         className="flex items-center gap-3 px-4 py-3 bg-primary-50 text-primary-600 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-user-circle w-5 text-center"></i>
@@ -33,7 +40,7 @@ function TrangChuNguoiDung() {
                                     </Link>
 
                                     <Link
-                                        to="/nguoi-dung"
+                                        to="/nguoi-dung/ho-so"
                                         className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-edit w-5 text-center"></i>
@@ -41,7 +48,7 @@ function TrangChuNguoiDung() {
                                     </Link>
 
                                     <Link
-                                        to="lich-su-don-hang"
+                                        to="/nguoi-dung/lich-su-mua"
                                         className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-box-open w-5 text-center"></i>
@@ -49,7 +56,7 @@ function TrangChuNguoiDung() {
                                     </Link>
 
                                     <Link
-                                        to="dia-chi-cua-toi"
+                                        to="/nguoi-dung/dia-chi-cua-toi"
                                         className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-map-marker-alt w-5 text-center"></i>
@@ -57,7 +64,7 @@ function TrangChuNguoiDung() {
                                     </Link>
 
                                     <Link
-                                        to="san-pham-yeu-thich"
+                                        to="/nguoi-dung/san-pham-yeu-thich"
                                         className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-lg font-medium transition-colors"
                                     >
                                         <i className="fas fa-heart w-5 text-center"></i>
@@ -76,11 +83,19 @@ function TrangChuNguoiDung() {
                                 </nav>
                             </div>
                         </aside>
-
                         {/* Phần nội dung chính */}
                         <section className="lg:col-span-3 space-y-8">
-                            
-                  <Outlet />
+                            <Routes>
+                                  <Route index element={<HoSoCaNhan />} />
+                                  <Route path="ho-so"  element={<HoSoCaNhan />} />
+                                  <Route path="ho-so/chinh-sua-thong-tin"  element={<ChinhSuaThongTin />} />
+                                  <Route path="lich-su-mua"  element={<LichSuDonHang />} />
+                                  <Route path="lich-su-mua/xem-chi-tiet"  element={<XemDon />} />
+                                  <Route path="lich-su-mua/theo-gioi"  element={<TheoGioi />} />
+                                  <Route path="dia-chi-cua-toi"  element={<DiaChiCuaToi />} />
+                                  <Route path="dia-chi-cua-toi/them-dia-chi"  element={<ThemDiaChi />} />
+                                  <Route path="san-pham-yeu-thich"  element={<SanPhamYeuThich />} />
+                            </Routes>
                         </section>
                     </div>
                 </div>
@@ -88,5 +103,4 @@ function TrangChuNguoiDung() {
         </>
     );
 }
-
 export default TrangChuNguoiDung;

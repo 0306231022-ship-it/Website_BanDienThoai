@@ -4,11 +4,11 @@
     <base target="_self">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tài Khoản Của Tôi - TechMobile</title> 
-    <meta name="description" content="Quản lý tài khoản, đơn hàng và thông tin cá nhân tại TechMobile.">
+    <title>Theo Dõi Đơn Hàng - TechMobile</title> 
+    <meta name="description" content="Quản lý tài khoản, đơn hàng và tra cứu trạng thái đơn hàng tại TechMobile.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         // Giữ nguyên config từ file gốc (bao gồm cả hiệu ứng fadeInUp)
         tailwind.config = {
@@ -32,29 +32,18 @@
                             900: '#0f172a',
                         },
                         accent: {
-                            100: '#f0fdf4', // Thêm màu accent-100 cho tag
-                            400: '#34d399',
-                            500: '#10b981',
-                            700: '#047857', // Thêm màu accent-700 cho tag
+                            100: '#f0fdf4',
+                            500: '#10b981', // Emerald Green (cho trạng thái hoàn thành)
+                            700: '#047857',
                         }
                     },
                     keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        glow: {
-                            '0%': { boxShadow: '0 0 20px rgba(14, 165, 233, 0.3)' },
-                            '100%': { boxShadow: '0 0 30px rgba(14, 165, 233, 0.6)' },
-                        },
                         fadeInUp: {
                             '0%': { opacity: '0', transform: 'translateY(20px)' },
                             '100%': { opacity: '1', transform: 'translateY(0px)' }
                         }
                     },
                     animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'glow': 'glow 2s ease-in-out infinite alternate',
                         'fade-in-up-0': 'fadeInUp 0.5s ease-out forwards',
                         'fade-in-up-1': 'fadeInUp 0.5s ease-out 100ms forwards',
                         'fade-in-up-2': 'fadeInUp 0.5s ease-out 200ms forwards',
@@ -69,9 +58,24 @@
         [class*="animate-fade-in-up"] {
             opacity: 0;
         }
+
+        /* Tùy chỉnh cho Timeline */
+        .timeline-step {
+            position: relative;
+        }
+        /* Chỉnh lại vị trí đường dọc cho Timeline */
+        .timeline-line {
+            position: absolute;
+            /* Căn chỉnh tương ứng với w-8 h-8 của icon và pl-6 */
+            left: 17px; 
+            top: 25px; 
+            bottom: 0;
+            width: 2px;
+            background-color: #e5e7eb; /* dark-200 */
+        }
     </style>
 </head>
-<body class="min-h-screen bg-white font-inter">
+<body class="min-h-screen bg-dark-50 font-inter">
 
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="container mx-auto px-4">
@@ -82,35 +86,23 @@
                     </div>
                     <span class="text-2xl font-bold text-dark-900">TechMobile</span>
                 </div>
-
                 <nav class="hidden md:flex items-center space-x-8">
-                    <a href="mobile-phone-ecommerce-2025.html" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</a>
                     <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Sản Phẩm</a>
-                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">AI & Công Nghệ</a>
-                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Bền Vững</a>
                     <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Hỗ Trợ</a>
                 </nav>
-
                 <div class="flex items-center space-x-4">
-                    <div class="hidden md:flex items-center bg-dark-50 rounded-full px-4 py-2">
-                        <i class="fas fa-search text-dark-600 mr-2"></i>
-                        <input type="text" placeholder="Tìm kiếm điện thoại..." class="bg-transparent outline-none text-dark-900">
-                    </div>
                     <a href="cart.html" class="p-2 text-dark-600 hover:text-primary-500 transition-colors relative">
                         <i class="fas fa-shopping-cart"></i>
                     </a>
                     <a href="user-profile.html" class="p-2 text-primary-500 transition-colors">
                         <i class="fas fa-user"></i>
                     </a>
-                    <button class="md:hidden p-2 text-dark-600">
-                        <i class="fas fa-bars"></i>
-                    </button>
                 </div>
             </div>
         </div>
     </header>
-
-    <main class="bg-dark-50 py-16">
+    <main class="py-16">
         <div class="container mx-auto px-4">
             
             <h1 class="text-3xl md:text-4xl font-bold text-dark-900 mb-12 animate-fade-in-up-0">
@@ -129,7 +121,7 @@
                             </div>
                         </div>
                         <nav class="space-y-2">
-                            <a href="#" class="flex items-center gap-3 px-4 py-3 bg-primary-50 text-primary-600 rounded-lg font-medium transition-colors">
+                            <a href="#" class="flex items-center gap-3 px-4 py-3 text-dark-600 hover:bg-dark-50 hover:text-dark-900 rounded-lg font-medium transition-colors">
                                 <i class="fas fa-user-circle w-5 text-center"></i>
                                 <span>Tổng Quan</span>
                             </a>
@@ -137,7 +129,7 @@
                                 <i class="fas fa-edit w-5 text-center"></i>
                                 <span>Thông Tin Cá Nhân</span>
                             </a>
-                            <a href="#" class="flex items-center gap-3 px-4 py-3 text-dark-600 hover:bg-dark-50 hover:text-dark-900 rounded-lg font-medium transition-colors">
+                            <a href="#" class="flex items-center gap-3 px-4 py-3 bg-primary-50 text-primary-600 rounded-lg font-medium transition-colors">
                                 <i class="fas fa-box-open w-5 text-center"></i>
                                 <span>Lịch Sử Đơn Hàng</span>
                             </a>
@@ -157,91 +149,10 @@
                         </nav>
                     </div>
                 </aside>
-
-                <section class="lg:col-span-3 space-y-8">
+                
+         
                     
-                    <div class="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-2">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-dark-900">Thông Tin Cá Nhân</h2>
-                            <button class="text-primary-500 hover:text-primary-600 font-medium transition-colors">
-                                <i class="fas fa-edit mr-2"></i>Chỉnh sửa
-                            </button>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-dark-600">Họ và Tên</label>
-                                <p class="mt-1 text-lg text-dark-900 font-medium">Nguyễn Văn A</p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-dark-600">Email</label>
-                                <p class="mt-1 text-lg text-dark-900 font-medium">nguyenvana@email.com</p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-dark-600">Số Điện Thoại</label>
-                                <p class="mt-1 text-lg text-dark-900 font-medium">090****123</p>
-                            </div>
-                            <div>
-                                <label class_name="block text-sm font-medium text-dark-600">Địa Chỉ Mặc Định</label>
-                                <p class="mt-1 text-lg text-dark-900 font-medium">123 Nguyễn Văn Linh, Q.7...</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-3">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-dark-900">Đơn Hàng Gần Đây</h2>
-                            <a href="#" class="text-primary-500 hover:text-primary-600 font-medium transition-colors">
-                                Xem tất cả <i class="fas fa-arrow-right ml-1"></i>
-                            </a>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border border-dark-100 rounded-lg">
-                                <div class="flex-1">
-                                    <p class="text-sm text-dark-600">Mã đơn hàng</p>
-                                    <p class="font-bold text-primary-500">#TECH2025-456</p>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-sm text-dark-600">Ngày đặt</p>
-                                    <p class="font-medium text-dark-900">05/11/2025</p>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-sm text-dark-600">Tổng cộng</p>
-                                    <p class="font-medium text-dark-900">12.990.000₫</p>
-                                </div>
-                                <div class="flex-1">
-                                    <span class="inline-block bg-accent-100 text-accent-700 px-3 py-1 rounded-full text-sm font-medium">
-                                        Đã Giao Hàng
-                                    </span>
-                                </div>
-                                <a href="#" class="text-dark-600 hover:text-primary-500">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </div>
-                            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 border border-dark-100 rounded-lg">
-                                <div class="flex-1">
-                                    <p class="text-sm text-dark-600">Mã đơn hàng</p>
-                                    <p class="font-bold text-primary-500">#TECH2025-123</p>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-sm text-dark-600">Ngày đặt</p>
-                                    <p class="font-medium text-dark-900">28/10/2025</p>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-sm text-dark-600">Tổng cộng</p>
-                                    <p class="font-medium text-dark-900">24.990.000₫</p>
-                                </div>
-                                <div class="flex-1">
-                                    <span class="inline-block bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">
-                                        Đang Vận Chuyển
-                                    </span>
-                                </div>
-                                <a href="#" class="text-dark-600 hover:text-primary-500">
-                                    <i class="fas fa-chevron-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                </div>
             </div>
         </div>
     </main>
@@ -314,6 +225,5 @@
             </div>
         </div>
     </footer>
-
-</body>
+    </body>
 </html>

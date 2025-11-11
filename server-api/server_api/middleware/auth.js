@@ -1,41 +1,25 @@
-import userModel from '../models/userModel.js';
-import jsonwebToken from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
-const {verify} = jsonwebToken;
-const JWT_SECRET = process.env.JWT_SECRET;
-export default async function auth(req, res, next) {
-    const authHeader = req.headers.authorization;
+const JWT_SECRET = "secretkey";
 
-    if(!authHeader || !authHeader.startsWith('Bearer ')){
-        return res.status(401).json({
-            message : "Authorization required"
-        })
+function authMiddleware(req, res, next) {
+    const token = req.cookies.token; 
+    if (!token) {
+        return res.json({
+            ThanhCong:false,
+            message:'Vui lòng đăng nhập trước khi sử dụng!'
+        });
+    }else{
+        try {
+             const decoded = jwt.verify(token, JWT_SECRET);
+             req.user = decoded; 
+             next();
+         } catch (err) {
+             return res.json({
+                ThanhCong:false,
+                message: "Token không hợp lệ hoặc hết hạn" 
+            });
+        }
     }
-
-    const token = authHeader.split(' ')[1];
-    if(await userModel.isTokenRevoked(token)){
-         return res.status(401).json({
-            message : "Invalid or expried token"
-        })
-    }
-
-    const {id} = verify(token, JWT_SECRET);
-    if(!id){
-          return res.status(401).json({
-            message : "Invalid or expried token"
-        })
-    }
-
-    const user = userModel.findId(id);
-    if(!user){
-        return res.status(401).json({
-            message : "User not found"
-        })
-    }
-
-    req.userId = id;
-    req.username = user.username;
-    req.is_admin = user.is_admin;
-    req.token = token;
-    next();
 }
+export default authMiddleware;

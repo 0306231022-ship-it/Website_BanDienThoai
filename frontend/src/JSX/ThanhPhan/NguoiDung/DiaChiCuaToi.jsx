@@ -10,7 +10,7 @@ function DiaChiCuaToi() {
                     <div class="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-2">
                         <div class="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6">
                             <h2 class="text-2xl font-bold text-dark-900">Địa Chỉ Của Tôi</h2>
-                            <Link to="/nguoi-dung/them-dia-chi" class="w-full md:w-auto bg-primary-500 hover:bg-primary-600 text-white px-5 py-3 rounded-lg font-medium transition-colors transform hover:scale-105">
+                            <Link to="/nguoi-dung/dia-chi-cua-toi/them-dia-chi" class="w-full md:w-auto bg-primary-500 hover:bg-primary-600 text-white px-5 py-3 rounded-lg font-medium transition-colors transform hover:scale-105">
                                 <i class="fas fa-plus mr-2"></i>Thêm Địa Chỉ Mới
                             </Link>
                         </div>

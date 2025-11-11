@@ -1,7 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { useState } from 'react';
+import * as fun from '../../JS/FUNCTONS/function';
+import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
+import * as API from '../../JS/API/API';
 function AdminLogin() {
+    const [email,setEmail]=useState('');
+    const [passWord,setPassWord]=useState('');
+    const [xacnhan,setXacNhan]=useState(false);
+    const DangNhap=async()=>{
+        const DuLieu={
+            email:email,
+            passWord:passWord,
+            xacnhan:xacnhan
+        };
+        const kiemtra=fun.KiemTraRong(DuLieu);
+        if(!kiemtra){
+            ThongBao.ThongBao_CanhBao('Vui lòng điền đầy đủ thông tin');
+            return;
+        }else{
+            const ketqua=await API.CallAPI(DuLieu,{url : 3});
+            alert(JSON.stringify(ketqua))
+        }
+
+    }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-md w-full space-y-8">
@@ -31,6 +53,7 @@ function AdminLogin() {
                                 required
                                 className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-lg focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm"
                                 placeholder="Email hoặc Tên đăng nhập"
+                                onChange={(e)=>{setEmail(e.target.value)}}
                             />
                         </div>
                         {/* Input Mật khẩu */}
@@ -43,6 +66,7 @@ function AdminLogin() {
                                 required
                                 className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-lg focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm"
                                 placeholder="Mật khẩu"
+                                onChange={(e)=>{setPassWord(e.target.value)}}
                             />
                         </div>
                     </div>
@@ -54,6 +78,7 @@ function AdminLogin() {
                                 id="remember-me"
                                 name="remember-me"
                                 type="checkbox"
+                                onChange={(e) => { setXacNhan(e.target.checked); }}
                                 className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                             />
                             <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
@@ -71,7 +96,8 @@ function AdminLogin() {
                     {/* Nút Đăng nhập */}
                     <div>
                         <button
-                            type="submit"
+                            type="button"
+                            onClick={DangNhap}
                             className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-300 shadow-lg shadow-teal-300/50"
                         >
                             <span className="absolute left-0 inset-y-0 flex items-center pl-3">

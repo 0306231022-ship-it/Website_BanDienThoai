@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UIProvider } from "./REDUCER/TrangChuWeb";
 import TrangChuAdmin from '../src/JSX/TRANG/TrangChuAdmin.jsx';
-
+import AdminLogin from '../src/JSX/TRANG/DangNhapAdmin.jsx';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -16,9 +16,8 @@ root.render(
         <Routes>
           {/* Trang chủ website */}
           <Route path="/*" element={<TrangChuWeb />} />
-
-          {/* Trang admin */}
           <Route path="/admin/*" element={<TrangChuAdmin />} />
+          <Route path="/DangNhap-admin" element={<AdminLogin/>} />
         </Routes>
       </BrowserRouter>
     </UIProvider>

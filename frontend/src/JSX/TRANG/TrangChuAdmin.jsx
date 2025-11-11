@@ -16,8 +16,28 @@ import DanhSachMa from '../ThanhPhan/Admin/DanhSachMa';
 import HoTroKhachHang from '../ThanhPhan/Admin/HoTroKhachHang';
 import CaiDat from '../ThanhPhan/Admin/CaiDat';
 import ChietMaGG from '../ThanhPhan/Admin/ChiTietMaGiam';
+import BinhLuan from '../ThanhPhan/Admin/DanhSachBinhLuan';
+import Xem from '../ThanhPhan/Admin/XemBinhLuan';
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as API from '../../JS/API/API';
+import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
 function TrangChuAdmin() {
+    const navigate = useNavigate();
+  /*  useEffect(()=>{
+        const kiemtra=async()=>{
+            const url={
+                DiaChi:2
+            };
+            const ketqua=await API.CallAPI(undefined,url);
+            if(!ketqua.ThanhCong){
+                navigate('/DangNhap-admin')
+                ThongBao.ThongBao_CanhBao(ketqua.message)
+            }
+        };
+        kiemtra();
+    })*/
     return(
         <>
     <header className="w-full bg-white shadow sticky top-0 z-50" aria-label="Top bar">
@@ -98,6 +118,11 @@ function TrangChuAdmin() {
                              <i className="fas fa-tags"></i><span className="ml-3">Mã giảm giá</span>
                         </Link>
                     </li>
+                      <li>
+                        <Link to="/admin/BinhLuan" className="flex items-center p-3 rounded-lg " aria-label="Quản lí bình luận">
+                            <i className="fas fa-comment-dots w-5"></i><span className="ml-3">Quản lí Bình Luận</span>
+                        </Link>
+                    </li>
                     <li>
                         <Link to="/admin/hotro" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
                              <i className="fas fa-headset"></i><span className="ml-3">Hỗ trợ khách hàng</span>
@@ -133,6 +158,8 @@ function TrangChuAdmin() {
                     <Route path="danhsachma/magiamgia" element={<MaGiamGia />} />
                     <Route path="hotro" element={<HoTroKhachHang />} />
                     <Route path="caidat" element={<CaiDat />} />
+                    <Route path="BinhLuan" element={<BinhLuan />} />
+                     <Route path="BinhLuan/xem" element={< Xem />} />
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                 </Routes>
         </main>

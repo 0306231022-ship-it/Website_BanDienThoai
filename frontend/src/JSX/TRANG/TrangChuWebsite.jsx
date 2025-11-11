@@ -10,21 +10,12 @@ import BenVung from '../ThanhPhan/Website/BenVung';
 import HoTro from '../ThanhPhan/Website/HoTro';
 import GioHang from '../ThanhPhan/Website/GioHang';
 import TrangChuNguoiDung from '../ThanhPhan/NguoiDung/TrangChuNguoiDung';
-import HoSoCaNhan from '../ThanhPhan/NguoiDung/HoSoCaNhan';
-import ChinhSuaThongTin from '../ThanhPhan/NguoiDung/ChinhSuaThongTin';
-import LichSuDonHang from '../ThanhPhan/NguoiDung/LichSuDonHang';
-import DiaChiCuaToi from '../ThanhPhan/NguoiDung/DiaChiCuaToi';
-import ThemDiaChi from '../ThanhPhan/NguoiDung/ThemDiaChi';
-import SanPhamYeuThich from '../ThanhPhan/NguoiDung/SanPhamYeuThich';
-
-
 function TrangChuWeb() {
     return (
         <div className="font-sans text-gray-800">
             <header className="bg-white shadow-sm sticky top-0 z-50">
                 <Menu />
             </header>
-
             <main>
                 <Routes>
                     <Route path="/*"  element={<SanPhamTrangChu />} />
@@ -33,17 +24,7 @@ function TrangChuWeb() {
                     <Route path="/ben-vung" element={<BenVung />} />
                     <Route path="/ho-tro" element={<HoTro />} />
                     <Route path="/gio-hang" element={<GioHang />} />
-                    <Route path="/nguoi-dung" element={<TrangChuNguoiDung />} />
-
-                        <Route path="/nguoi-dung" element={<TrangChuNguoiDung />}>
-        <Route index element={<HoSoCaNhan />} /> 
-        <Route path="ho-so" element={<HoSoCaNhan />} />
-        <Route path="chinh-sua-thong-tin" element={<ChinhSuaThongTin />} /> {/* /nguoi-dung/chinh-sua-thong-tin */}
-        <Route path="lich-su-don-hang" element={<LichSuDonHang />} />
-        <Route path="dia-chi-cua-toi" element={<DiaChiCuaToi />} />
-        <Route path="them-dia-chi" element={<ThemDiaChi />} />
-        <Route path="san-pham-yeu-thich" element={<SanPhamYeuThich />} />
-    </Route>
+                    <Route path="/nguoi-dung/*" element={<TrangChuNguoiDung />} />
                 </Routes>
             </main>
 

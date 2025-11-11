@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 function LichSuDonHang() {
     return (
         <>
@@ -48,8 +49,8 @@ function LichSuDonHang() {
                                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 pt-4 border-t border-dark-100">
                                     <span className="text-lg">Tổng cộng: <span className="text-xl font-bold text-dark-900">12.990.000₫</span></span>
                                     <div className="flex gap-2">
-                                        <button className="bg-dark-100 hover:bg-dark-200 text-dark-800 px-4 py-2 rounded-lg font-medium transition-colors">Mua Lại</button>
-                                        <button className="bg-dark-800 hover:bg-dark-900 text-white px-4 py-2 rounded-lg font-medium transition-colors">Xem Chi Tiết</button>
+                                        <Link to="/nguoi-dung/lich-su-mua/theo-gioi" className="bg-dark-100 hover:bg-dark-200 text-dark-800 px-4 py-2 rounded-lg font-medium transition-colors">Mua Lại</Link>
+                                        <Link to="/nguoi-dung/lich-su-mua/xem-chi-tiet" className="bg-dark-800 hover:bg-dark-900 text-white px-4 py-2 rounded-lg font-medium transition-colors">Xem Chi Tiết</Link>
                                     </div>
                                 </div>
                             </div>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Đơn Hàng #TECH2025-456 - TechMobile</title> 
+    <meta name="description" content="Xem chi tiết đơn hàng #TECH2025-456 đã đặt tại TechMobile.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Giữ nguyên config từ file gốc
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                        },
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        accent: {
+                            100: '#f0fdf4', 
+                            400: '#34d399',
+                            500: '#10b981',
+                            700: '#047857', 
+                        },
+                        yellow: {
+                            100: '#fefce8',
+                            700: '#a16207'
+                        },
+                        red: {
+                            50: '#fef2f2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        }
+                    },
+                    keyframes: {
+                        // Thêm keyframes cho các bước theo dõi đơn hàng
+                        'step-complete': {
+                            '0%': { transform: 'scale(0.5)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0px)' }
+                        }
+                    },
+                    animation: {
+                        'fade-in-up-0': 'fadeInUp 0.5s ease-out forwards',
+                        'fade-in-up-1': 'fadeInUp 0.5s ease-out 100ms forwards',
+                        'fade-in-up-2': 'fadeInUp 0.5s ease-out 200ms forwards',
+                        'step-1': 'step-complete 0.3s ease-out 300ms forwards',
+                        'step-2': 'step-complete 0.3s ease-out 600ms forwards',
+                        'step-3': 'step-complete 0.3s ease-out 900ms forwards',
+                        'step-4': 'step-complete 0.3s ease-out 1200ms forwards',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Đảm bảo các item bắt đầu ở trạng thái ẩn để hiệu ứng hoạt động */
+        [class*="animate-fade-in-up"] { opacity: 0; }
+        .timeline-step.complete .timeline-icon {
+            opacity: 0; /* Ẩn ban đầu để chạy animation */
+            animation-fill-mode: forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white font-inter">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between py-4">
+                <div class="flex items-center space-x-2">
+                    <div class="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-mobile-alt text-white text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-dark-900">TechMobile</span>
+                </div>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="mobile-phone-ecommerce-2025.html" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Sản Phẩm</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">AI & Công Nghệ</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Bền Vững</a>
+                    <a href="#" class="text-dark-900 hover:text-primary-500 font-medium transition-colors">Hỗ Trợ</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center bg-dark-50 rounded-full px-4 py-2">
+                        <i class="fas fa-search text-dark-600 mr-2"></i>
+                        <input type="text" placeholder="Tìm kiếm điện thoại..." class="bg-transparent outline-none text-dark-900">
+                    </div>
+                    <a href="cart.html" class="p-2 text-dark-600 hover:text-primary-500 transition-colors relative">
+                        <i class="fas fa-shopping-cart"></i>
+                    </a>
+                    <a href="user-profile.html" class="p-2 text-primary-500 transition-colors">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <button class="md:hidden p-2 text-dark-600">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="bg-dark-50 py-12 md:py-16">
+        <div class="container mx-auto px-4">
+            
+            <nav class="text-sm text-dark-600 mb-6 animate-fade-in-up-0">
+                <a href="user-order-history.html" class="hover:text-primary-500">Lịch Sử Đơn Hàng</a> / 
+                <span class="font-medium text-dark-900">Chi Tiết #TECH2025-456</span>
+            </nav>
+
+            <h1 class="text-3xl md:text-4xl font-bold text-dark-900 mb-8 animate-fade-in-up-0">
+                Chi Tiết Đơn Hàng <span class="text-primary-500">#TECH2025-456</span>
+            </h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+                
+                <div class="lg:col-span-2 space-y-8">
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 animate-fade-in-up-1 border border-dark-100">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-dark-900">Trạng Thái Đơn Hàng</h2>
+                            <span class="bg-accent-100 text-accent-700 px-3 py-1 rounded-full text-sm font-bold shadow-sm">
+                                Đã Giao Hàng
+                            </span>
+                        </div>
+                        
+                        <div class="relative pt-4 pb-2">
+                            <div class="absolute left-3 md:left-5 top-0 bottom-0 w-0.5 bg-dark-100"></div>
+
+                            <div class="timeline-step complete flex items-start mb-6">
+                                <div class="timeline-icon w-6 h-6 md:w-10 md:h-10 rounded-full bg-accent-500 text-white flex items-center justify-center text-xs md:text-sm z-10 animate-step-1">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="ml-4 md:ml-6 pt-1">
+                                    <p class="font-bold text-dark-900">Đặt hàng thành công</p>
+                                    <p class="text-sm text-dark-600">05/11/2025 09:30 AM</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-step complete flex items-start mb-6">
+                                <div class="timeline-icon w-6 h-6 md:w-10 md:h-10 rounded-full bg-accent-500 text-white flex items-center justify-center text-xs md:text-sm z-10 animate-step-2">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="ml-4 md:ml-6 pt-1">
+                                    <p class="font-bold text-dark-900">Đã Xác Nhận & Đang Đóng Gói</p>
+                                    <p class="text-sm text-dark-600">05/11/2025 11:00 AM</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-step complete flex items-start mb-6">
+                                <div class="timeline-icon w-6 h-6 md:w-10 md:h-10 rounded-full bg-accent-500 text-white flex items-center justify-center text-xs md:text-sm z-10 animate-step-3">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="ml-4 md:ml-6 pt-1">
+                                    <p class="font-bold text-dark-900">Đang Vận Chuyển (Giao hàng dự kiến: 07/11/2025)</p>
+                                    <p class="text-sm text-dark-600">06/11/2025 08:00 AM</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-step complete flex items-start">
+                                <div class="timeline-icon w-6 h-6 md:w-10 md:h-10 rounded-full bg-accent-500 text-white flex items-center justify-center text-xs md:text-sm z-10 animate-step-4">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                                <div class="ml-4 md:ml-6 pt-1">
+                                    <p class="font-bold text-dark-900">Đã Giao Hàng Thành Công</p>
+                                    <p class="text-sm text-dark-600">07/11/2025 02:00 PM</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-dark-100">
+                            <p class="text-sm text-dark-600 flex items-center gap-2">
+                                <i class="fas fa-truck text-primary-500"></i>
+                                Đơn vị vận chuyển: **Viettel Post** | Mã vận đơn: **VT202500456**
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 animate-fade-in-up-2 border border-dark-100">
+                        <h2 class="text-xl font-bold text-dark-900 mb-6">Danh Sách Sản Phẩm (1)</h2>
+                        
+                        <div class="flex flex-col md:flex-row items-start md:items-center gap-4 border border-dark-100 p-4 rounded-xl">
+                            <img src="https://picsum.photos/300/300?random=2" alt="Sản phẩm" class="w-20 h-20 rounded-lg object-cover flex-shrink-0">
+                            <div class="flex-1">
+                                <p class="font-bold text-dark-900">AI Phone Pro 2025 (256GB, Xanh Ngân Hà)</p>
+                                <p class="text-sm text-dark-600 mt-1">Số lượng: 1 | Đơn giá: 12.990.000₫</p>
+                                <p class="text-sm text-dark-600">Bảo hành: 12 tháng chính hãng</p>
+                            </div>
+                            <div class="flex flex-col items-start md:items-end space-y-2 pt-2 md:pt-0">
+                                <p class="font-bold text-dark-900 whitespace-nowrap">12.990.000₫</p>
+                                
+                                <button class="bg-primary-500 hover:bg-primary-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors shadow-md">
+                                    <i class="fas fa-star mr-1"></i> Bình Luận & Đánh Giá
+                                </button>
+                                
+                            </div>
+                        </div>
+                        </div>
+
+                </div>
+
+                <div class="lg:col-span-1 space-y-8">
+                    
+                    <div class="bg-white rounded-2xl shadow-lg p-6 animate-fade-in-up-1 border border-dark-100">
+                        <h2 class="text-xl font-bold text-dark-900 mb-6">Thanh Toán</h2>
+                        <div class="space-y-3 text-dark-700">
+                            <div class="flex justify-between">
+                                <span>Tạm tính (1 sản phẩm)</span>
+                                <span>12.990.000₫</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Phí vận chuyển</span>
+                                <span>30.000₫</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Mã giảm giá</span>
+                                <span class="text-red-600">- 500.000₫</span>
+                            </div>
+                        </div>
+                        <div class="border-t border-dark-100 mt-4 pt-4 flex justify-between items-center">
+                            <span class="text-lg font-bold text-dark-900">TỔNG CỘNG</span>
+                            <span class="text-2xl font-extrabold text-primary-500">12.520.000₫</span>
+                        </div>
+                        <p class="text-sm text-dark-600 mt-3">Hình thức: **Thanh toán khi nhận hàng (COD)**</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-lg p-6 animate-fade-in-up-2 border border-dark-100">
+                        <h2 class="text-xl font-bold text-dark-900 mb-6 flex items-center gap-2">
+                            <i class="fas fa-map-marker-alt text-dark-600 text-lg"></i> Thông Tin Giao Hàng
+                        </h2>
+                        <div class="space-y-4 text-dark-800">
+                            <div>
+                                <p class="font-bold">Người nhận:</p>
+                                <p>Nguyễn Văn A - 0987 654 321</p>
+                            </div>
+                            <div>
+                                <p class="font-bold">Địa chỉ:</p>
+                                <p>Số 456, Đường Hai Bà Trưng, Phường 1, Quận 3, TP. Hồ Chí Minh</p>
+                            </div>
+                            <div>
+                                <p class="font-bold">Ghi chú:</p>
+                                <p class="text-sm italic text-dark-600">Gọi điện trước 30 phút khi giao hàng.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4 animate-fade-in-up-2">
+                         <button class="w-full bg-dark-800 hover:bg-dark-900 text-white py-3 rounded-xl font-medium transition-colors shadow-lg">
+                            Yêu Cầu Hóa Đơn VAT
+                        </button>
+                        <a href="user-order-history.html" class="block w-full text-center bg-dark-100 hover:bg-dark-200 text-dark-800 py-3 rounded-xl font-medium transition-colors">
+                            <i class="fas fa-arrow-left mr-2"></i> Trở Lại Lịch Sử
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-mobile-alt text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold">TechMobile</span>
+                    </div>
+                    <p class="text-dark-300">
+                        Đi đầu trong công nghệ di động với các sản phẩm AI, bền vững và đột phá.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-lg font-bold">Sản Phẩm</h3>
+                    <ul class="space-y-2 text-dark-300">
+                        <li><a href="#" class="hover:text-white transition-colors">AI Series</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Foldable</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Eco Series</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Phụ Kiện</a></li>
+                </ul>
+            </div>
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold">Hỗ Trợ</h3>
+                <ul class="space-y-2 text-dark-300">
+                    <li><a href="#" class="hover:text-white transition-colors">Trung Tâm Hỗ Trợ</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Bảo Hành</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Hướng Dẫn Mua Hàng</a></li>
+                <li><a href="#" class="hover:text-white transition-colors">Liên Hệ</a></li>
+            </ul>
+        </div>
+        <div class="space-y-4">
+            <h3 class="text-lg font-bold">Liên Hệ</h3>
+            <div class="space-y-2 text-dark-300">
+                <div class="flex items-center">
+                    <i class="fas fa-map-marker-alt mr-3"></i>
+                <span>123 Nguyễn Văn Linh, Quận 7, TP.HCM</span>
+            </div>
+            <div class="flex items-center">
+                <i class="fas fa-phone mr-3"></i>
+            <span>1900 1234</span>
+        </div>
+        <div class="flex items-center">
+            <i class="fas fa-envelope mr-3"></i>
+            <span>info@techmobile.vn</span>
+        </div>
+    </div>
+</div>
+            </div>
+            <div class="border-t border-dark-800 mt-12 pt-8 text-center text-dark-300">
+                <p>&copy; 2025 TechMobile. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

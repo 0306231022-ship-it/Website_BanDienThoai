@@ -2,13 +2,14 @@
 function DiaChi(code) {
   switch (code) {
     case 1: return 'http://localhost:3001/api/users/login';
+    case 2: return 'http://localhost:3001/api/admin/kiemtra'
+    case 3: return 'http://localhost:3001/api/admin/DangNhap'
     default: return 'http://localhost:5000/unknown';
   }
 }
 
 export async function CallAPI(dulieu = null, yeucau) {
   const DuongDan = DiaChi(yeucau.DiaChi);
-
   const bodyData = {
     data: dulieu || {}
   };
