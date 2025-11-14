@@ -3,14 +3,24 @@ import {execute} from '../config/db.js';
 
 export default class adminModel{
     //dữ liệu test
-    static async kiemtra(){
-       try {
-        const [ketqua]= await execute('SELECT * FROM nguoidung WHERE EMAIL=? AND MATKHAU=? LIMIT 1',['147.nnh.2048ae@gmail.com','147/nnh.2048aeNNH'])
+    static async LayTT_ID(adminId){
+        console.log(adminId)
+     try {
+        const [ketqua]= await execute('SELECT * FROM nguoidung WHERE IDND=? LIMIT 1',[adminId])
         return ketqua[0] ?? null
        } catch (error) {
          throw new Error('Database query failed: ' + error.message);
        }
     }
+    static async login(Data){
+        try {
+            const [ketqua]=await execute('SELECT * FROM nguoidung WHERE email=?',[Data]);
+            return ketqua[0] ?? null
+        } catch (error) {
+            throw new Error('Database query failed: ' + error.message);
+        }
+    }
+ 
 
 
     //

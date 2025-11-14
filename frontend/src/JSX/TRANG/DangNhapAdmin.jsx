@@ -1,28 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import * as fun from '../../JS/FUNCTONS/function';
-import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
-import * as API from '../../JS/API/API';
+import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
 function AdminLogin() {
     const [email,setEmail]=useState('');
     const [passWord,setPassWord]=useState('');
     const [xacnhan,setXacNhan]=useState(false);
+    const { login } = useAppContext();
     const DangNhap=async()=>{
         const DuLieu={
             email:email,
             passWord:passWord,
             xacnhan:xacnhan
         };
-        const kiemtra=fun.KiemTraRong(DuLieu);
-        if(!kiemtra){
-            ThongBao.ThongBao_CanhBao('Vui lòng điền đầy đủ thông tin');
-            return;
-        }else{
-            const ketqua=await API.CallAPI(DuLieu,{url : 3});
-            alert(JSON.stringify(ketqua))
-        }
-
+        login(DuLieu,1);
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

@@ -1,42 +1,53 @@
-import React, { createContext, useReducer, useContext } from "react";
-
-// 1. Tạo Context
+import React, { createContext, useContext } from "react";
+import { useState } from "react";
+import * as fun from '../JS/FUNCTONS/function';
+import * as API from '../JS/API/API';
+import * as ThongBao from '../JS/FUNCTONS/ThongBao';
+import { useNavigate } from "react-router-dom";
 const AppContext = createContext();
-
-// 2. Định nghĩa state ban đầu
-const initialState = {
-  Trang: "TrangChu",       // Trang hiện tại
-  // bạn có thể thêm các state khác nếu muốn
-  cart: [],
-  theme: "light"
-};
-
-// 3. Định nghĩa reducer
-function ChuyenTrangReducer(state, action) {
-  switch (action.type) {
-    case "SET_TRANG": // dùng để chuyển trang
-      return { ...state, Trang: action.payload };
-
-    case "ADD_TO_CART":
-      return { ...state, cart: [...state.cart, action.payload] };
-
-    case "REMOVE_FROM_CART":
-      return { ...state, cart: state.cart.filter(item => item.id !== action.payload) };
-
-    case "TOGGLE_THEME":
-      return { ...state, theme: state.theme === "light" ? "dark" : "light" };
-
-    default:
-      return state;
-  }
-}
 
 // 4. Tạo Provider
 export function AppProvider({ children }) {
-  const [state, dispatch] = useReducer(ChuyenTrangReducer, initialState);
+  const [admin,setadmin]=useState([]);
+  const [user,setuser]=useState([]);
+  const navigate = useNavigate();
+  const kiemtra=async()=>{
+    setadmin([])
+    const token = localStorage.getItem("token");
+    const url={
+      DiaChi:2
+    };
+    const ketqua=await API.CallAPI(token,undefined,url);
+    if(!ketqua.ThanhCong){
+       navigate('/DangNhap-admin')
+        ThongBao.ThongBao_CanhBao(ketqua.message)
+    }else{
+      setadmin(ketqua.DuLieu)
+    }
+  };
+      
+
+  const login =async (DuLieu,Loai)=>{
+    const kiemtra=fun.KiemTraRong(DuLieu);
+    if(!kiemtra){
+      ThongBao.ThongBao_CanhBao('Vui lòng điền đầy đủ thông tin');
+      return;
+    }else{
+       const ketqua=await API.CallAPI(undefined,DuLieu,{DiaChi : 3});
+       if(ketqua.ThanhCong){
+         localStorage.setItem("token", ketqua.token);
+         Loai===1 ? setadmin(ketqua.DuLieu) : setuser(ketqua.DuLieu);
+         ThongBao.ThongBao_ThanhCong(ketqua.message);
+         navigate('/admin');
+       }else{
+        ThongBao.ThongBao_Loi(ketqua.message)
+       }
+    }
+  }
+
 
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={{ login , admin , user , kiemtra }}>
       {children}
     </AppContext.Provider>
   );

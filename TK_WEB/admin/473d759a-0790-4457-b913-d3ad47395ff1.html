@@ -4,7 +4,7 @@
     <base target="_self">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechMobile Admin Dashboard - 2025</title>
+    <title>Chỉnh Sửa Hồ Sơ - TechMobile Admin</title>
     <meta name="description" content="Bảng quản trị admin cho cửa hàng điện thoại TechMobile 2025 với giao diện hiện đại, responsive và tối ưu UX." />
     <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='%230ea5e9'/><stop offset='1' stop-color='%23036b9a'/></linearGradient></defs><rect width='32' height='32' rx='6' fill='url(%23g)'/><text x='16' y='21' font-family='Arial' font-size='14' text-anchor='middle' fill='white'>TM</text></svg>" />
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,7 +22,7 @@
                             50: '#f0f9ff',
                             100: '#e0f2fe',
                             200: '#bae6fd',
-                            500: '#0ea5e9',
+                            500: '#0ea5e9', // Indigo-500 cũ
                             600: '#0284c7',
                             700: '#0369a1'
                         },
@@ -37,9 +37,16 @@
                             50: '#f8fafc',
                             100: '#f1f5f9'
                         },
-                        success: '#10b981',
-                        warning: '#f59e0b',
-                        danger: '#ef4444'
+                        success: '#10b981', // green-600
+                        warning: '#f59e0b', // yellow-500
+                        danger: '#ef4444', // red-600
+                        // Định nghĩa lại các màu cụ thể để khớp với form chỉnh sửa:
+                        'indigo-500': '#6366f1',
+                        'indigo-600': '#4f46e5',
+                        'indigo-700': '#4338ca',
+                        'indigo-200': '#e0e7ff',
+                        'green-600': '#059669', // Sử dụng green-600 cho nút Lưu
+                        'red-600': '#dc2626'   // Sử dụng red-600 cho nút Hủy
                     },
                     animation: {
                         'float': 'float 6s ease-in-out infinite',
@@ -58,7 +65,7 @@
         /* Small helper for active nav highlight in sidebar (no external CSS required) */
         .active-link { color: white; background: linear-gradient(135deg, rgba(14,165,233,1) 0%, rgba(37,99,235,1) 100%); }
         [x-cloak] { display: none !important; }
-                body {
+        body {
             font-family: 'Inter', sans-serif;
             background-color: #f7f7f7;
             min-height: 100vh;
@@ -82,7 +89,6 @@
     </style>
 </head>
 <body class="min-h-screen bg-gray-50 text-gray-800 font-inter">
-    <!-- Header -->
     <header class="w-full bg-white shadow sticky top-0 z-50" aria-label="Top bar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
             <div class="flex items-center space-x-3">
@@ -116,10 +122,8 @@
         </div>
     </header>
 
-    <!-- Layout -->
     <div class="flex" id="layout">
-        <!-- Sidebar -->
-        <aside id="sidebar" class="hidden md:block w-64 bg-white border-r border-gray-200 h-screen sticky top-0" aria-label="Menu điều hướng">
+        <aside id="sidebar" class="hidden md:block w-64 bg-white border-r border-gray-200 h-screen sticky top-16" aria-label="Menu điều hướng">
             <nav class="p-4" aria-label="Menu quản trị">
                 <ul class="space-y-2">
                     <li>
@@ -136,8 +140,8 @@
                         <a href="#" data-route="products" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Sản phẩm">
                             <i class="fas fa-box w-5"></i><span class="ml-3">Sản Phẩm</span>
                         </a>
-                          <li>
-                        <a href="#" data-route="products" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Sản phẩm">
+                        <li>
+                        <a href="#" data-route="brands" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Thương hiệu">
                             <i class="fas fa-tags"></i><span class="ml-3">Thương hiệu</span>
                         </a>
                     </li>
@@ -152,28 +156,32 @@
                             <i class="fas fa-chart-pie w-5"></i><span class="ml-3">Báo Cáo</span>
                         </a>
                     </li>
-                     <li>
-                        <a href="#" data-route="reports" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                             <i class="fas fa-shipping-fast"></i><span class="ml-3">Phí vận chuyển</span>
-                        </a>
-                    </li>
-                     <li>
-                        <a href="#" data-route="reports" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                             <i class="fas fa-tags"></i><span class="ml-3">Mã giảm giá</span>
+                    <li>
+                        <a href="#" data-route="shipping" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Phí vận chuyển">
+                            <i class="fas fa-shipping-fast"></i><span class="ml-3">Phí vận chuyển</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#" data-route="reports" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                             <i class="fas fa-headset"></i><span class="ml-3">Hỗ trợ khách hàng</span>
+                        <a href="#" data-route="discount" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Mã giảm giá">
+                            <i class="fas fa-tags"></i><span class="ml-3">Mã giảm giá</span>
                         </a>
                     </li>
-                       <li>
-                        <a href="#" class="flex items-center p-3 rounded-lg " aria-label="Quản lí bình luận">
+                    <li>
+                        <a href="#" data-route="support" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Hỗ trợ khách hàng">
+                            <i class="fas fa-headset"></i><span class="ml-3">Hỗ trợ khách hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-route="comments" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Quản lí bình luận">
                             <i class="fas fa-comment-dots w-5"></i><span class="ml-3">Quản lí Bình Luận</span>
                         </a>
                     </li>
-
-                   
+                    <li>
+                        <a href="#" data-route="profile-edit" class="flex items-center p-3 rounded-lg active-link" aria-label="Chỉnh sửa hồ sơ">
+                            <i class="fas fa-user-edit w-5"></i><span class="ml-3">Chỉnh Sửa Hồ Sơ</span>
+                        </a>
+                    </li>
+                    
                     <li>
                         <a href="#" data-route="settings" class="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Cài đặt">
                             <i class="fas fa-cog w-5"></i><span class="ml-3">Cài Đặt</span>
@@ -183,20 +191,16 @@
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-1 p-6 bg-gray-50 min-h-screen" role="main" aria-label="Nội dung quản trị">
- 
+    
         </main>
-    </div>
+        </div>
 
 
-    <!-- Footer -->
     <footer class="mt-12 bg-white border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-600">
             © 2025 TechMobile Admin. Tất cả quyền sở hữu thuộc về TechMobile.
         </div>
     </footer>
-
-  
 </body>
 </html>

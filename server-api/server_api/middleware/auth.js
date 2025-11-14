@@ -1,25 +1,22 @@
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "secretkey";
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ message: "Không có token" });
+  }
 
-function authMiddleware(req, res, next) {
-    const token = req.cookies.token; 
-    if (!token) {
-        return res.json({
-            ThanhCong:false,
-            message:'Vui lòng đăng nhập trước khi sử dụng!'
-        });
-    }else{
-        try {
-             const decoded = jwt.verify(token, JWT_SECRET);
-             req.user = decoded; 
-             next();
-         } catch (err) {
-             return res.json({
-                ThanhCong:false,
-                message: "Token không hợp lệ hoặc hết hạn" 
-            });
-        }
+  const token = authHeader.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ message: "Token sai định dạng" });
+  }
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Token không hợp lệ hoặc hết hạn" });
     }
-}
+    req.user = decoded;
+    next();
+  });
+};
+
 export default authMiddleware;

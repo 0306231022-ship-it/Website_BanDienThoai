@@ -8,7 +8,7 @@ function DiaChi(code) {
   }
 }
 
-export async function CallAPI(dulieu = null, yeucau) {
+export async function CallAPI(token=null,dulieu = null, yeucau) {
   const DuongDan = DiaChi(yeucau.DiaChi);
   const bodyData = {
     data: dulieu || {}
@@ -20,7 +20,10 @@ export async function CallAPI(dulieu = null, yeucau) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(bodyData)
   };
-
+  if(token){
+      options.headers['Authorization'] = `Bearer ${token}`;
+  }
+ 
   try {
     const response = await fetch(DuongDan, options);
     const ketqua = await response.json();

@@ -4,7 +4,6 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
-import userRoutes from './routers/userRouter.js';
 import adminRouter from './routers/adminRouter.js';
 
 const app = express();
@@ -28,7 +27,6 @@ app.use(session({
 app.get('/', (req, res) => res.json({ message: 'Server API running' }));
 
 // --- Mount routers ---
-app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRouter);
 
 // --- 404 handler ---

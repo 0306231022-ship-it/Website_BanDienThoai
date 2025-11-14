@@ -17,27 +17,26 @@ import HoTroKhachHang from '../ThanhPhan/Admin/HoTroKhachHang';
 import CaiDat from '../ThanhPhan/Admin/CaiDat';
 import ChietMaGG from '../ThanhPhan/Admin/ChiTietMaGiam';
 import BinhLuan from '../ThanhPhan/Admin/DanhSachBinhLuan';
+import XemThongTinWebsite from '../ThanhPhan/Admin/XemCaiDat';
+import HoSo from '../ThanhPhan/Admin/HoSoAdmin';
 import Xem from '../ThanhPhan/Admin/XemBinhLuan';
+import ChinhSua from '../ThanhPhan/Admin/ChinhSuaThongTinAD';
 import { Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import * as API from '../../JS/API/API';
-import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
+import { useEffect, useState } from 'react'; 
+import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
+
 function TrangChuAdmin() {
-    const navigate = useNavigate();
-  /*  useEffect(()=>{
-        const kiemtra=async()=>{
-            const url={
-                DiaChi:2
-            };
-            const ketqua=await API.CallAPI(undefined,url);
-            if(!ketqua.ThanhCong){
-                navigate('/DangNhap-admin')
-                ThongBao.ThongBao_CanhBao(ketqua.message)
-            }
-        };
+    const { kiemtra } = useAppContext();
+    const [isMenuOpen, setIsMenuOpen] = useState(false); // State quản lý menu dropdown
+
+    useEffect(()=>{
         kiemtra();
-    })*/
+    })
+
+    const toggleMenu = () => {
+        setIsMenuOpen(!isMenuOpen);
+    };
+
     return(
         <>
     <header className="w-full bg-white shadow sticky top-0 z-50" aria-label="Top bar">
@@ -65,9 +64,38 @@ function TrangChuAdmin() {
                 <button className="p-2 rounded-full hover:bg-gray-100 transition-colors" aria-label="Tin nhắn">
                     <i className="fas fa-envelope"></i>
                 </button>
-                <div className="flex items-center space-x-2" role="button" aria-label="Thông tin người dùng">
-                    <img src="https://picsum.photos/40?random=1" alt="Avatar quản trị viên" className="w-8 h-8 rounded-full object-cover" loading="lazy" />
-                    <span className="hidden sm:block font-medium">Admin</span>
+                {/* Khu vực avatar Admin với menu xổ xuống */}
+                <div className="relative">
+                    <div 
+                        className="flex items-center space-x-2 cursor-pointer p-1 rounded-full hover:bg-gray-100 transition-colors" 
+                        role="button" 
+                        aria-label="Thông tin người dùng"
+                        onClick={toggleMenu} // Thêm sự kiện onClick để ẩn/hiện menu
+                        aria-expanded={isMenuOpen}
+                    >
+                        <img src="https://picsum.photos/40?random=1" alt="Avatar quản trị viên" className="w-8 h-8 rounded-full object-cover" loading="lazy" />
+                        <span className="hidden sm:block font-medium">Admin</span>
+                        <i className={`fas fa-caret-down transition-transform ${isMenuOpen ? 'rotate-180' : 'rotate-0'}`}></i> {/* Icon mũi tên xoay */}
+                    </div>
+
+                    {/* Menu Dropdown */}
+                    {isMenuOpen && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-10 border border-gray-200" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                            <Link to="/admin/hoso" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" onClick={() => setIsMenuOpen(false)}>
+                                <i className="fas fa-user-circle mr-2"></i> Hồ Sơ
+                            </Link>
+                            <Link to="/admin/caidat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" onClick={() => setIsMenuOpen(false)}>
+                                <i className="fas fa-cog mr-2"></i> Cài Đặt
+                            </Link>
+                            <div className="border-t border-gray-100 my-1"></div>
+                            <button className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" onClick={() => {
+                                // Thêm logic đăng xuất tại đây
+                                setIsMenuOpen(false);
+                            }}>
+                                <i className="fas fa-sign-out-alt mr-2"></i> Đăng Xuất
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
@@ -92,7 +120,7 @@ function TrangChuAdmin() {
                         <Link to="/admin/sanpham" data-route="products" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Sản phẩm">
                             <i className="fas fa-box w-5"></i><span className="ml-3">Sản Phẩm</span>
                         </Link>
-                          <li>
+                            <li>
                         <Link to="/admin/thuonghieu" data-route="products" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Sản phẩm">
                             <i className="fas fa-tags"></i><span className="ml-3">Thương hiệu</span>
                         </Link>
@@ -108,30 +136,30 @@ function TrangChuAdmin() {
                             <i className="fas fa-chart-pie w-5"></i><span className="ml-3">Báo Cáo</span>
                         </Link>
                     </li>
-                     <li>
+                        <li>
                         <Link to="/admin/phivanchuyen" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                             <i className="fas fa-shipping-fast"></i><span className="ml-3">Phí vận chuyển</span>
+                                <i className="fas fa-shipping-fast"></i><span className="ml-3">Phí vận chuyển</span>
                         </Link>
                     </li>
-                     <li>
+                        <li>
                         <Link to="/admin/danhsachma" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                             <i className="fas fa-tags"></i><span className="ml-3">Mã giảm giá</span>
+                                <i className="fas fa-tags"></i><span className="ml-3">Mã giảm giá</span>
                         </Link>
                     </li>
-                      <li>
-                        <Link to="/admin/BinhLuan" className="flex items-center p-3 rounded-lg " aria-label="Quản lí bình luận">
-                            <i className="fas fa-comment-dots w-5"></i><span className="ml-3">Quản lí Bình Luận</span>
+                        <li>
+                        <Link to="/admin/BinhLuan" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Quản lí bình luận">
+                                <i className="fas fa-comment-dots w-5"></i><span className="ml-3">Quản lí Bình Luận</span>
                         </Link>
                     </li>
                     <li>
                         <Link to="/admin/hotro" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                             <i className="fas fa-headset"></i><span className="ml-3">Hỗ trợ khách hàng</span>
+                                <i className="fas fa-headset"></i><span className="ml-3">Hỗ trợ khách hàng</span>
                         </Link>
                     </li>
 
-                   
+                    
                     <li>
-                        <Link to="/admin/caidat" data-route="settings" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Cài đặt">
+                        <Link to="/admin/xemThongTin" data-route="settings" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Cài đặt">
                             <i className="fas fa-cog w-5"></i><span className="ml-3">Cài Đặt</span>
                         </Link>
                     </li>
@@ -139,7 +167,7 @@ function TrangChuAdmin() {
             </nav>
         </aside>
 
-   
+    
         <main className="flex-1 p-6 bg-gray-50 min-h-screen" role="main" aria-label="Nội dung quản trị">
                 <Routes>
                     <Route index element={<BangChinh />} />
@@ -159,7 +187,10 @@ function TrangChuAdmin() {
                     <Route path="hotro" element={<HoTroKhachHang />} />
                     <Route path="caidat" element={<CaiDat />} />
                     <Route path="BinhLuan" element={<BinhLuan />} />
-                     <Route path="BinhLuan/xem" element={< Xem />} />
+                    <Route path="BinhLuan/xem" element={< Xem />} />
+                    <Route path="hoso" element={<HoSo />} />
+                     <Route path="hoso/ChinhSuaThongTinAdmin" element={<ChinhSua />} />
+                    <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                 </Routes>
         </main>
