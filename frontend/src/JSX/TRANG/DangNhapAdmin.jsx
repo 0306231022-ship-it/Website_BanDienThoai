@@ -1,9 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link , useNavigate} from 'react-router-dom';
 import { useState } from 'react';
+import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
 import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
 function AdminLogin() {
     const [email,setEmail]=useState('');
+    const navigate = useNavigate();
     const [passWord,setPassWord]=useState('');
     const [xacnhan,setXacNhan]=useState(false);
     const { login } = useAppContext();
@@ -13,7 +15,13 @@ function AdminLogin() {
             passWord:passWord,
             xacnhan:xacnhan
         };
-        login(DuLieu,1);
+       const ketqua= await login(DuLieu);
+       if(ketqua.ThanhCong){
+            localStorage.setItem("token", ketqua.token);
+            localStorage.setItem('DuLieu', JSON.stringify(ketqua.DuLieu));
+            ThongBao.ThongBao_ThanhCong(ketqua.message);
+            navigate('/admin');
+       }
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">

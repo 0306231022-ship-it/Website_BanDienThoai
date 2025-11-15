@@ -3,8 +3,6 @@ const { hash, compare } = pkg;
 import jwt from 'jsonwebtoken';
 import adminModel from '../models/adminModel.js';
 
-
-
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
@@ -47,6 +45,13 @@ export default class adminController{
                         message:'Tài khoảng đã ngừng hoạt động!'
                     });
                 }else{
+                    if(DangNhap.LOAIND!==1){
+                        res.json({
+                            ThanhCong:false,
+                            message:'Bạn đăng nhập với vai trò khác. Vui lòng kiểm tra lại!'
+                        });
+                        return;
+                    }
                      const token =await adminController.generateToken(DangNhap);
                      const { MATKHAU, ...KetQua } = DangNhap;
                      res.json({
@@ -66,6 +71,29 @@ export default class adminController{
             res.json({
                 ThanhCong:false,
                 message:'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin'
+            })
+        }
+    }
+    static async DangXuat(req,res){
+         const token = req.user.token;
+         const decode = jwt.decode(token);
+         const exp= decode && decode.exp ? new Date(decode.exp*1000):null;
+         if(!exp){
+            return res.status(400).json({
+                success : false,
+                message : 'Invalid token'
+            });
+        }
+        const result = await adminModel.removeToken(token, exp);
+        if(result){
+            return res.json({
+                ThanhCong:true,
+                message:'Bạn đã đăng xuát thành công!'
+            })
+        }else{
+            return res.json({
+                ThanhCong:false,
+                message:'Bạn đã đăng xuất thất bại. Vui long kiểm tra lại hệ thống!'
             })
         }
     }

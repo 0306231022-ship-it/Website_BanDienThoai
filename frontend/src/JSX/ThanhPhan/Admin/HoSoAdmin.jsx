@@ -1,5 +1,17 @@
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import dayjs from 'dayjs';
+import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 function HoSo(){
+    const [admin,setadmin]=useState({})
+    const {DangXuat}=useAppContext();
+    useEffect(() => {
+    const DuLieu = localStorage.getItem('DuLieu');
+      if (DuLieu) {
+        setadmin(JSON.parse(DuLieu));
+      }
+    }, []);
+
     return(
         <>
           <div className="container mx-auto max-w-4xl">
@@ -21,17 +33,17 @@ function HoSo(){
                 </div>
 
                 <div className="flex-1 text-center md:text-left">
-                    <h2 className="text-4xl font-extrabold text-indigo-700 leading-tight">Admin TechMobile</h2>
+                    <h2 className="text-4xl font-extrabold text-indigo-700 leading-tight">{admin.HOTEN}</h2>
                     <p className="text-xl text-gray-600 font-semibold mt-1 mb-4">Quản trị viên cấp cao</p>
                     
                     <div className="space-y-3">
                         <p className="flex items-center justify-center md:justify-start text-gray-700">
                             <i className="fas fa-envelope w-5 mr-3 text-indigo-500"></i>
-                            <span className="truncate">admin@techmobile.com</span>
+                            <span className="truncate">{admin.EMAIL}</span>
                         </p>
                         <p className="flex items-center justify-center md:justify-start text-gray-700">
                             <i className="fas fa-phone w-5 mr-3 text-indigo-500"></i>
-                            0901 234 567
+                            {admin.SDT}
                         </p>
                         <p className="flex items-center justify-center md:justify-start text-gray-700">
                             <i className="fas fa-map-marker-alt w-5 mr-3 text-indigo-500"></i>
@@ -39,7 +51,7 @@ function HoSo(){
                         </p>
                         <p className="flex items-center justify-center md:justify-start text-gray-700">
                             <i className="fas fa-birthday-cake w-5 mr-3 text-indigo-500"></i>
-                            <span className="font-medium">Ngày sinh:</span> 25/08/1990
+                            <span className="font-medium">Ngày sinh:</span> {admin.NGAYTHAMGIA ? dayjs(admin.NGAYSINH).format('DD/MM/YYYY') : ''}
                         </p>
                         </div>
                 </div>
@@ -53,12 +65,12 @@ function HoSo(){
                 
                 <div className="p-4 bg-white rounded-lg shadow border border-gray-200">
                     <p className="text-sm font-medium text-gray-500">Ngày tham gia</p>
-                    <p className="text-lg font-semibold text-gray-800 mt-1">01/01/2023</p>
+                    <p className="text-lg font-semibold text-gray-800 mt-1">  {admin.NGAYTHAMGIA ? dayjs(admin.NGAYTHAMGIA).format('DD/MM/YYYY') : ''}</p>
                 </div>
                 
                 <div className="p-4 bg-white rounded-lg shadow border border-gray-200">
                     <p className="text-sm font-medium text-gray-500">Đăng nhập gần nhất</p>
-                    <p className="text-lg font-semibold text-gray-800 mt-1">14/11/2025 18:30:00</p>
+                    <p className="text-lg font-semibold text-gray-800 mt-1">{admin.DANGNHAPLANCUOI ? dayjs(admin.DANGNHAPLANCUOI).format('DD/MM/YYYY') : ''}</p>
                 </div>
                 
                 <div className="p-4 bg-white rounded-lg shadow border border-gray-200">
@@ -75,14 +87,14 @@ function HoSo(){
 
         <div className="p-6 border-t border-gray-100 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 justify-end">
             <Link to="/admin/hoso/ChinhSuaThongTinAdmin"
-                href="#" 
                 className="px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition-colors transform hover:scale-[1.02] text-center" 
-                role="button"
+            
             >
                 <i className="fas fa-pen mr-2"></i> Chỉnh Sửa Hồ Sơ
             </Link>
             <button
                 type="button"
+                onClick={DangXuat}
                 className="px-6 py-3 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 transition-colors transform hover:scale-[1.02] text-center" 
             >
                 <i className="fas fa-sign-out-alt mr-2"></i> Đăng Xuất

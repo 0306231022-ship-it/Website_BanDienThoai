@@ -1,5 +1,5 @@
 import React, { createContext, useContext } from "react";
-import { useState } from "react";
+// { useState } from "react";
 import * as fun from '../JS/FUNCTONS/function';
 import * as API from '../JS/API/API';
 import * as ThongBao from '../JS/FUNCTONS/ThongBao';
@@ -8,11 +8,8 @@ const AppContext = createContext();
 
 // 4. Tạo Provider
 export function AppProvider({ children }) {
-  const [admin,setadmin]=useState([]);
-  const [user,setuser]=useState([]);
   const navigate = useNavigate();
   const kiemtra=async()=>{
-    setadmin([])
     const token = localStorage.getItem("token");
     const url={
       DiaChi:2
@@ -21,8 +18,6 @@ export function AppProvider({ children }) {
     if(!ketqua.ThanhCong){
        navigate('/DangNhap-admin')
         ThongBao.ThongBao_CanhBao(ketqua.message)
-    }else{
-      setadmin(ketqua.DuLieu)
     }
   };
       
@@ -35,19 +30,41 @@ export function AppProvider({ children }) {
     }else{
        const ketqua=await API.CallAPI(undefined,DuLieu,{DiaChi : 3});
        if(ketqua.ThanhCong){
-         localStorage.setItem("token", ketqua.token);
-         Loai===1 ? setadmin(ketqua.DuLieu) : setuser(ketqua.DuLieu);
-         ThongBao.ThongBao_ThanhCong(ketqua.message);
-         navigate('/admin');
+        return ketqua;
        }else{
         ThongBao.ThongBao_Loi(ketqua.message)
        }
     }
   }
+const DangXuat = async () => {
+    const kiemtra = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn đăng xuất không?');
+    if (!kiemtra) return;
+
+    try {
+        const token = localStorage.getItem("token");
+        const ketqua = await API.CallAPI(token, undefined, { DiaChi: 4 });
+
+        // luôn xóa localStorage, dù API thành công hay không
+        localStorage.removeItem('token');
+        localStorage.removeItem('DuLieu');
+
+        if (ketqua?.ThanhCong) {
+            ThongBao.ThongBao_ThanhCong(ketqua.message);
+        } else {
+            ThongBao.ThongBao_Loi(ketqua?.message || 'Đăng xuất thất bại');
+        }
+
+        navigate('/DangNhap-admin');
+    } catch (error) {
+        console.error(error);
+        ThongBao.ThongBao_Loi('Đã xảy ra lỗi khi đăng xuất');
+    }
+}
+
 
 
   return (
-    <AppContext.Provider value={{ login , admin , user , kiemtra }}>
+    <AppContext.Provider value={{ login , kiemtra , DangXuat }}>
       {children}
     </AppContext.Provider>
   );

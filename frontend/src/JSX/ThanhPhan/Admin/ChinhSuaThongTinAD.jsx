@@ -120,7 +120,6 @@ function ChinhSua(){
                                 <i className="fas fa-times-circle mr-2"></i> Hủy Bỏ
                             </Link>
                             <button 
-                                type="submit" 
                                 className="px-6 py-3 bg-green-600 action-button text-white rounded-lg shadow-md hover:bg-green-700"
                             >
                                 <i className="fas fa-save mr-2"></i> Lưu Thay Đổi

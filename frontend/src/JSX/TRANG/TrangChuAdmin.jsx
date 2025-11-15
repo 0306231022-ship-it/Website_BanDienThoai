@@ -25,14 +25,15 @@ import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react'; 
 import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
 
+
 function TrangChuAdmin() {
-    const { kiemtra } = useAppContext();
-    const [isMenuOpen, setIsMenuOpen] = useState(false); // State quản lý menu dropdown
-
-    useEffect(()=>{
-        kiemtra();
-    })
-
+    const { kiemtra , DangXuat  } = useAppContext();
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [admin,setadmin]=useState({})
+    useEffect(() => {
+         kiemtra();
+         setadmin(JSON.parse(localStorage.getItem('DuLieu')))
+    }, [kiemtra]);
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -74,7 +75,7 @@ function TrangChuAdmin() {
                         aria-expanded={isMenuOpen}
                     >
                         <img src="https://picsum.photos/40?random=1" alt="Avatar quản trị viên" className="w-8 h-8 rounded-full object-cover" loading="lazy" />
-                        <span className="hidden sm:block font-medium">Admin</span>
+                        <span className="font-medium">{admin.HOTEN}</span>
                         <i className={`fas fa-caret-down transition-transform ${isMenuOpen ? 'rotate-180' : 'rotate-0'}`}></i> {/* Icon mũi tên xoay */}
                     </div>
 
@@ -88,10 +89,8 @@ function TrangChuAdmin() {
                                 <i className="fas fa-cog mr-2"></i> Cài Đặt
                             </Link>
                             <div className="border-t border-gray-100 my-1"></div>
-                            <button className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" onClick={() => {
-                                // Thêm logic đăng xuất tại đây
-                                setIsMenuOpen(false);
-                            }}>
+                            <button className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-red-50" role="menuitem" 
+                               onClick={() => {DangXuat();setIsMenuOpen(false);}}>
                                 <i className="fas fa-sign-out-alt mr-2"></i> Đăng Xuất
                             </button>
                         </div>
