@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import adminModel from '../models/adminModel.js';
 import CaiDatModel from '../models/CaiDatWebsite.js';
 
+
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
@@ -112,6 +113,22 @@ export default class adminController{
         }
 
     }
-
-    
+    static async updateWebsite(req,res){
+         const dulieu = req.body.Dulieu;
+         const dsAnh = req.files.map(file => "/uploads/" + file.filename);
+         const logo = dsAnh[0] || null;
+         const ketqua= await CaiDatModel.UpdateWebsite(dulieu,logo);
+         console.log(ketqua)
+         if(ketqua){
+            return res.json({
+                ThanhCong:true,
+                message:'Cập nhật website thành công!'
+            })
+         }else{
+            return res.json({
+                ThanhCong:false,
+                message:'Cập nhật thất bại vui lòng kiểm tra lại thông tin'
+            });
+         }
+    }
 }

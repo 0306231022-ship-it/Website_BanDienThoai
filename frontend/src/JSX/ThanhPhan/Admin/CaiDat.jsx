@@ -1,7 +1,35 @@
 import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import * as fun from '../../../JS/FUNCTONS/function';
+import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
+import * as API from '../../../JS/API/API';
 function CaiDat() {
-
+    const [value,setvalue]=useState({
+        TenWebsite:"",
+        Email:"",
+        DiaChi:"",
+        LinkFace:"",
+        LinkIns:"",
+        Zalo:""
+    });
+    const [file,setfile]=useState([])
+    const Update=async()=>{
+        const kiemtra= await fun.KiemTraRong(value)
+        if(!kiemtra){
+            ThongBao.ThongBao_CanhBao('vui lòng nhập đầy đủ thông tin!')
+            return;
+        }
+        if(!file){
+            ThongBao.ThongBao_CanhBao('vui lòng nhập đầy đủ thông tin 464!')
+            return;
+        }
+        const ketqua= await API.CallAPI_file(value,file,{DiaChi:6});
+        if(ketqua.ThanhCong){
+            ThongBao.ThongBao_ThanhCong(ketqua.message)
+        }else{
+            ThongBao.ThongBao_Loi(ketqua.message)
+        }
+    }
     return (
         <>
             <section id="section-settings" className="section" aria-label="Cài đặt website">
@@ -41,7 +69,12 @@ function CaiDat() {
                                     id="site-name"
                                     placeholder="Ví dụ: Cửa hàng Di Động XYZ"
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                                    defaultValue="Admin Store Pro"
+                                    onChange={(e)=>{
+                                        setvalue({
+                                            ...value,
+                                            TenWebsite:e.target.value
+                                        })
+                                    }}
                                 />
                             </div>
 
@@ -54,7 +87,12 @@ function CaiDat() {
                                     id="contact-email"
                                     placeholder="Ví dụ: info@yourwebsite.com"
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                                    defaultValue="support@adminstore.vn"
+                                    onChange={(e)=>{
+                                        setvalue({
+                                            ...value,
+                                            Email:e.target.value
+                                        })
+                                    }}
                                 />
                             </div>
 
@@ -67,7 +105,12 @@ function CaiDat() {
                                     id="address"
                                     placeholder="Ví dụ: 123 Đường Nguyễn Huệ, Quận 1, TP.HCM"
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                                    defaultValue="456 Đường Lạc Long Quân, P.10, Q.Tân Bình, TP.HCM"
+                                    onChange={(e)=>{
+                                        setvalue({
+                                            ...value,
+                                            DiaChi:e.target.value
+                                        })
+                                    }}
                                 />
                             </div>
                         </div>
@@ -84,7 +127,12 @@ function CaiDat() {
                                     id="social-facebook"
                                     placeholder="https://facebook.com/yourpage"
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                                    defaultValue="https://facebook.com/adminstoreshop"
+                                    onChange={(e)=>{
+                                        setvalue({
+                                            ...value,
+                                            LinkFace:e.target.value
+                                        })
+                                    }}
                                 />
                             </div>
 
@@ -97,7 +145,12 @@ function CaiDat() {
                                     id="social-instagram"
                                     placeholder="https://instagram.com/youraccount"
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                                    defaultValue="https://instagram.com/adminstore_official"
+                                    onChange={(e)=>{
+                                        setvalue({
+                                            ...value,
+                                            LinkIns:e.target.value
+                                        })
+                                    }}
                                 />
                             </div>
 
@@ -110,7 +163,12 @@ function CaiDat() {
                                     id="social-zalo"
                                     placeholder="090 123 4567"
                                     className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                                    defaultValue="0901234567"
+                                    onChange={(e)=>{
+                                        setvalue({
+                                            ...value,
+                                            Zalo:e.target.value
+                                        })
+                                    }}
                                 />
                             </div>
 
@@ -123,6 +181,7 @@ function CaiDat() {
                                     id="logo-upload"
                                     className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
                                     accept="image/*"
+                                   onChange={(e) => setfile([...e.target.files])}
                                 />
                             </div>
                         </div>
@@ -138,6 +197,7 @@ function CaiDat() {
 
                             <button
                                 type="button"
+                                onClick={(e)=>{Update()}}
                                 className="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-bold shadow-lg transition"
                             >
                                 <i className="fas fa-upload mr-2"></i> Cập nhật và Lưu Thay đổi
