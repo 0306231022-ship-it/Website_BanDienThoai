@@ -5,6 +5,7 @@ function DiaChi(code) {
     case 2: return 'http://localhost:3001/api/admin/kiemtra'
     case 3: return 'http://localhost:3001/api/admin/DangNhap'
     case 4: return 'http://localhost:3001/api/admin/DangXuat'
+    case 5: return 'http://localhost:3001/api/admin/ThongTinWebsite'
     default: return 'http://localhost:5000/unknown';
   }
 }

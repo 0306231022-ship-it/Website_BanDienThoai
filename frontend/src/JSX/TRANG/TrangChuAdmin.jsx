@@ -27,13 +27,14 @@ import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
 
 
 function TrangChuAdmin() {
-    const { kiemtra , DangXuat  } = useAppContext();
+    const { kiemtra , DangXuat , TTwebsite , GetTTwebsite } = useAppContext();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [admin,setadmin]=useState({})
     useEffect(() => {
          kiemtra();
+         GetTTwebsite();
          setadmin(JSON.parse(localStorage.getItem('DuLieu')))
-    }, [kiemtra]);
+    }, [kiemtra,GetTTwebsite]);
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -50,7 +51,7 @@ function TrangChuAdmin() {
                     <div className="w-9 h-9 rounded-full bg-primary-500 flex items-center justify-center text-white">
                         <i className="fas fa-mobile-alt"></i>
                     </div>
-                    <span className="text-xl font-bold text-dark-900">TechMobile Admin</span>
+                    <span className="text-xl font-bold text-dark-900">{TTwebsite.TenWebsite} Admin</span>
                 </Link>
             </div>
 
@@ -75,7 +76,7 @@ function TrangChuAdmin() {
                         aria-expanded={isMenuOpen}
                     >
                         <img src="https://picsum.photos/40?random=1" alt="Avatar quản trị viên" className="w-8 h-8 rounded-full object-cover" loading="lazy" />
-                        <span className="font-medium">{admin.HOTEN}</span>
+                        <span className="font-medium">{admin?.HOTEN}</span>
                         <i className={`fas fa-caret-down transition-transform ${isMenuOpen ? 'rotate-180' : 'rotate-0'}`}></i> {/* Icon mũi tên xoay */}
                     </div>
 
@@ -199,7 +200,7 @@ function TrangChuAdmin() {
 
     <footer className="mt-12 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-600">
-            © 2025 TechMobile Admin. Tất cả quyền sở hữu thuộc về TechMobile.
+             &copy; {new Date().getFullYear()} TechMobile Admin. Tất cả quyền sở hữu thuộc về TechMobile.
         </div>
     </footer>
         </>

@@ -1,16 +1,13 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-//import { useEffect } from 'react';
+import { useEffect } from 'react';
+import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 //import * as API from '../../../JS/API/API.js';
 function Menu() {
-    //demo gọi API
-    /* useEffect(() => {
-        const fetchData = async () => {
-            const response = await API.CallAPI({ username: 'testuser' }, { DiaChi: 1  });
-            alert(JSON.stringify(response));
-        };
-        fetchData();
-    });*/
+    const {GetTTwebsite,TTwebsite}= useAppContext();
+     useEffect(() => {
+        GetTTwebsite();
+    });
     const cartCount = 3; 
 
     return (
@@ -25,7 +22,7 @@ function Menu() {
                             <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
                                 <i className="fas fa-mobile-alt text-white text-xl"></i>
                             </div>
-                            <span className="text-2xl font-bold text-dark-900">TechMobile</span>
+                            <span className="text-2xl font-bold text-dark-900">{TTwebsite.TenWebsite}</span>
                         </Link>
                         <nav className="hidden md:flex items-center space-x-8">
                             <Link  to="/" className="text-dark-900 hover:text-primary-500 font-medium transition-colors">Trang Chủ</Link>

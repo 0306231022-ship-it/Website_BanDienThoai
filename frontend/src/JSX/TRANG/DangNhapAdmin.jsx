@@ -61,7 +61,7 @@ function AdminLogin() {
                             <input
                                 id="password"
                                 name="password"
-                                type="password"
+                                type={xacnhan ? "text" : "password"} 
                                 required
                                 className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-lg focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm"
                                 placeholder="Mật khẩu"
@@ -81,7 +81,7 @@ function AdminLogin() {
                                 className="h-4 w-4 text-teal-600 focus:ring-teal-500 border-gray-300 rounded"
                             />
                             <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                                Ghi nhớ đăng nhập
+                               {xacnhan ? 'Ẩn mật khẩu':'Hiện mật khẩu'} 
                             </label>
                         </div>
 
@@ -109,7 +109,7 @@ function AdminLogin() {
                 
                 {/* Footer thông tin */}
                 <div className="text-center text-xs text-gray-500">
-                    <p>&copy; {new Date().getFullYear()} Admin Console. All rights reserved.</p>
+                    <p>copy;& {new Date().getFullYear()} Admin Console. All rights reserved.</p>
                 </div>
             </div>
         </div>

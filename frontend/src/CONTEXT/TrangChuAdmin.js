@@ -1,5 +1,4 @@
-import React, { createContext, useContext } from "react";
-// { useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 import * as fun from '../JS/FUNCTONS/function';
 import * as API from '../JS/API/API';
 import * as ThongBao from '../JS/FUNCTONS/ThongBao';
@@ -9,6 +8,14 @@ const AppContext = createContext();
 // 4. Tạo Provider
 export function AppProvider({ children }) {
   const navigate = useNavigate();
+  const [TTwebsite,setWebsite]=useState([])
+  const GetTTwebsite=async()=>{
+    const ketqqua=await API.CallAPI(undefined,undefined,{DiaChi: 5});
+    if(ketqqua.ThanhCong){
+      setWebsite(ketqqua.DuLieu)
+    }
+  }
+  //hàm kiểm tra đăng nhập
   const kiemtra=async()=>{
     const token = localStorage.getItem("token");
     const url={
@@ -16,12 +23,11 @@ export function AppProvider({ children }) {
     };
     const ketqua=await API.CallAPI(token,undefined,url);
     if(!ketqua.ThanhCong){
+       ThongBao.ThongBao_CanhBao(ketqua.message)
        navigate('/DangNhap-admin')
-        ThongBao.ThongBao_CanhBao(ketqua.message)
     }
   };
-      
-
+  //hàm đăng nhập
   const login =async (DuLieu,Loai)=>{
     const kiemtra=fun.KiemTraRong(DuLieu);
     if(!kiemtra){
@@ -36,24 +42,20 @@ export function AppProvider({ children }) {
        }
     }
   }
+  //hàm đăng xuất
 const DangXuat = async () => {
     const kiemtra = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn đăng xuất không?');
     if (!kiemtra) return;
-
     try {
         const token = localStorage.getItem("token");
         const ketqua = await API.CallAPI(token, undefined, { DiaChi: 4 });
-
-        // luôn xóa localStorage, dù API thành công hay không
         localStorage.removeItem('token');
         localStorage.removeItem('DuLieu');
-
         if (ketqua?.ThanhCong) {
             ThongBao.ThongBao_ThanhCong(ketqua.message);
         } else {
             ThongBao.ThongBao_Loi(ketqua?.message || 'Đăng xuất thất bại');
         }
-
         navigate('/DangNhap-admin');
     } catch (error) {
         console.error(error);
@@ -64,7 +66,7 @@ const DangXuat = async () => {
 
 
   return (
-    <AppContext.Provider value={{ login , kiemtra , DangXuat }}>
+    <AppContext.Provider value={{ login , kiemtra , DangXuat , GetTTwebsite , TTwebsite}}>
       {children}
     </AppContext.Provider>
   );

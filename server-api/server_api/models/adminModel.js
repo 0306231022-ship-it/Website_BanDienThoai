@@ -23,11 +23,12 @@ export default class adminModel{
     static async removeToken(token, exp){
         try {
             const [ketqua]=await execute(' INSERT INTO revoked_tokens (token, expires_at)VALUES (?, ?)',[token,exp]);
-            return ketqua[0] ?? null
+             return ketqua; 
         } catch (error) {
             throw new Error('Database query failed: ' + error.message);
         } 
     }
+    //đã sử phía trên
     static async isTokenRevoked(token){
         try {
             const [rows] = await execute('SELECT id FROM revoked_tokens WHERE token = ? LIMIT 1', [token])

@@ -2,6 +2,7 @@ import pkg from 'bcrypt';
 const { hash, compare } = pkg;
 import jwt from 'jsonwebtoken';
 import adminModel from '../models/adminModel.js';
+import CaiDatModel from '../models/CaiDatWebsite.js';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
@@ -96,6 +97,20 @@ export default class adminController{
                 message:'Bạn đã đăng xuất thất bại. Vui long kiểm tra lại hệ thống!'
             })
         }
+    }
+    static async LayWebsite(req,res){
+        const kq= await  CaiDatModel.GetTTWebsite();
+        if(kq){
+            res.json({
+                ThanhCong:true,
+                DuLieu:kq
+            })
+        }else{
+            res.json({
+                ThanhCong: false,
+            })
+        }
+
     }
 
     

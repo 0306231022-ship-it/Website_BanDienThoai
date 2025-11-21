@@ -1,20 +1,11 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import * as API from '../../../JS/API/API';
+import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 function Footer() {
-    //demo backend
+    const {GetTTwebsite,TTwebsite}= useAppContext();
     useEffect(() => {
-        // Test API khi component Footer được gắn vào DOM
-        const testAPI = async () => {
-            const yeucau = {
-                DiaChi: 1
-            };
-            const response = await API.CallAPI(undefined, yeucau);
-            console.log('Kết quả từ API:', response);
-        };
-        testAPI();  
-
+        GetTTwebsite();
     });
     return (
        <footer class="bg-dark-900 text-white py-12">
@@ -25,19 +16,19 @@ function Footer() {
                         <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
                             <i class="fas fa-mobile-alt text-white"></i>
                         </div>
-                        <span class="text-xl font-bold">TechMobile</span>
+                        <span class="text-xl font-bold">{TTwebsite.TenWebsite}</span>
                     </div>
                     <p class="text-dark-300">
                         Đi đầu trong công nghệ di động với các sản phẩm AI, bền vững và đột phá.
                     </p>
                     <div class="flex space-x-4">
-                        <Link to="" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <Link to={`${TTwebsite.LinkFacebook}`} class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
                         <i class="fab fa-facebook-f"></i>
                         </Link>
                         <Link to="" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
                         <i class="fab fa-twitter"></i>
                         </Link>
-                        <Link to="" class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
+                        <Link to={`${TTwebsite.LinkInstagram}`}  class="w-10 h-10 bg-dark-800 rounded-full flex items-center justify-center hover:bg-primary-500 transition-colors">
                         <i class="fab fa-instagram"></i>
                         </Link>
                     </div>
@@ -65,21 +56,21 @@ function Footer() {
             <div class="space-y-2 text-dark-300">
                 <div class="flex items-center">
                     <i class="fas fa-map-marker-alt mr-3"></i>
-                <span>123 Nguyễn Văn Linh, Quận 7, TP.HCM</span>
+                <span>{TTwebsite.DiaChi}</span>
             </div>
             <div class="flex items-center">
                 <i class="fas fa-phone mr-3"></i>
-            <span>1900 1234</span>
+            <span>{TTwebsite.Zalo}</span>
         </div>
         <div class="flex items-center">
             <i class="fas fa-envelope mr-3"></i>
-            <span>info@techmobile.vn</span>
+            <span>{TTwebsite.Email}</span>
         </div>
     </div>
 </div>
             </div>
             <div class="border-t border-dark-800 mt-12 pt-8 text-center text-dark-300">
-                <p>&copy; 2025 TechMobile. Tất cả quyền được bảo lưu.</p>
+                <p>&copy; {new Date().getFullYear()} TechMobile. Tất cả quyền được bảo lưu.</p>
             </div>
         </div>
     </footer>

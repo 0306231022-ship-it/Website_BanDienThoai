@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 function CaiDat() {
 
     return (
@@ -17,7 +18,7 @@ function CaiDat() {
                         </Link>
 
                         <button
-                            type="submit"
+                            type="button"
                             className="px-5 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-semibold shadow-md transition"
                             aria-label="Lưu cấu hình"
                         >
@@ -27,7 +28,7 @@ function CaiDat() {
                 </div>
 
                 <div className="bg-white p-8 rounded-xl shadow-2xl border border-teal-100">
-                    <form className="space-y-6">
+                    
                         <h3 className="text-xl font-bold text-teal-700 pb-2 border-b border-gray-100">1. Thông tin Chung</h3>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -126,7 +127,7 @@ function CaiDat() {
                             </div>
                         </div>
 
-                        {/* Khu vực nút hành động */}
+                      
                         <div className="pt-6 border-t border-gray-200 flex justify-end gap-3">
                             <button
                                 type="button"
@@ -136,13 +137,13 @@ function CaiDat() {
                             </button>
 
                             <button
-                                type="submit"
+                                type="button"
                                 className="px-6 py-3 bg-teal-600 text-white rounded-lg hover:bg-teal-700 font-bold shadow-lg transition"
                             >
                                 <i className="fas fa-upload mr-2"></i> Cập nhật và Lưu Thay đổi
                             </button>
                         </div>
-                    </form>
+                   
                 </div>
             </section>
         </>
