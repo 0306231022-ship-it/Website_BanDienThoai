@@ -10,6 +10,7 @@ export function AppProvider({ children }) {
   const navigate = useNavigate();
   const [TTwebsite,setWebsite]=useState([])
   const GetTTwebsite=async()=>{
+    setWebsite([])
     const ketqqua=await API.CallAPI(undefined,undefined,{DiaChi: 5});
     if(ketqqua.ThanhCong){
       setWebsite(ketqqua.DuLieu)

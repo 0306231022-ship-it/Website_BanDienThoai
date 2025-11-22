@@ -118,7 +118,6 @@ export default class adminController{
          const dsAnh = req.files.map(file => "/uploads/" + file.filename);
          const logo = dsAnh[0] || null;
          const ketqua= await CaiDatModel.UpdateWebsite(dulieu,logo);
-         console.log(ketqua)
          if(ketqua){
             return res.json({
                 ThanhCong:true,

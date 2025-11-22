@@ -8,20 +8,25 @@ import adminRouter from './routers/adminRouter.js';
 
 const app = express();
 
-// --- CORS setup phải đầu tiên ---
+// --- CORS setup ---
 app.use(cors({
-  origin: 'http://localhost:3000', // frontend React
+  origin: 'http://localhost:3000',
   credentials: true
 }));
 
 app.use(bodyParser.json());
-app.use(cookieParser()); // ✅ bật cookie-parser sau CORS
+app.use(cookieParser());
 app.use(session({
-  secret: 'secret-key',        
+  secret: 'secret-key',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }     
+  cookie: { secure: false }
 }));
+
+// ===================================================================
+// 🚀 Serve thư mục hình ảnh trước 404
+// ===================================================================
+app.use("/uploads", express.static("uploads"));
 
 // --- Test route ---
 app.get('/', (req, res) => res.json({ message: 'Server API running' }));
@@ -35,15 +40,13 @@ app.use((req, res) => res.status(404).json({ message: 'Endpoint not found' }));
 // --- Error handler ---
 app.use((err, req, res, next) => {
   console.error(err.stack);
+
   if (res.headersSent) return next(err);
-  if (process.env.NODE_ENV === 'production') return res.status(500).json({ message: 'Something went wrong!' });
 
   res.status(500).json({
     message: err.message,
-    code: err.code,
     url: req.originalUrl,
-    body: req.body,
-    stack: err.stack,
+    body: req.body
   });
 });
 

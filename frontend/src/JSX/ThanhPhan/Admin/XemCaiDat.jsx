@@ -1,5 +1,8 @@
+//Tạm thời xong nhiệm vụ
 import { Link } from "react-router-dom";
+import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 function XemThongTinWebsite() {
+    const { TTwebsite } = useAppContext();
     return (
         <>
             <section id="section-view-settings" className="section" aria-label="Xem thông tin website">
@@ -21,16 +24,16 @@ function XemThongTinWebsite() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                             <div>
                                 <p className="text-sm text-gray-500 mb-1">Tên Website</p>
-                                <p className="text-lg font-semibold text-gray-900">Admin Store Pro</p>
+                                <p className="text-lg font-semibold text-gray-900">{TTwebsite.TenWebsite}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500 mb-1">Email Liên hệ</p>
-                                <p className="text-lg font-semibold text-gray-900">support@adminstore.vn</p>
+                                <p className="text-lg font-semibold text-gray-900">{TTwebsite.Email}</p>
                             </div>
                             <div className="md:col-span-2">
                                 <p className="text-sm text-gray-500 mb-1">Địa chỉ Trụ sở Chính</p>
                                 <p className="text-lg font-semibold text-gray-900">
-                                    456 Đường Lạc Long Quân, P.10, Q.Tân Bình, TP.HCM
+                                    {TTwebsite.DiaChi}
                                 </p>
                             </div>
                         </div>
@@ -44,35 +47,35 @@ function XemThongTinWebsite() {
                                 <p className="text-sm text-gray-500 mb-1">
                                     <i className="fab fa-facebook-square text-blue-600 mr-2"></i>Facebook
                                 </p>
-                                <a 
-                                    href="https://facebook.com/adminstoreshop" 
+                                <Link 
+                                    to={`${TTwebsite.LinkFacebook}`}
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="text-teal-600 font-semibold hover:underline"
                                 >
-                                    https://facebook.com/adminstoreshop
-                                </a>
+                                   {TTwebsite.LinkFacebook}
+                                </Link>
                             </div>
 
                             <div>
                                 <p className="text-sm text-gray-500 mb-1">
                                     <i className="fab fa-instagram text-pink-600 mr-2"></i>Instagram
                                 </p>
-                                <a 
-                                    href="https://instagram.com/adminstore_official" 
+                                <Link 
+                                    to={`${TTwebsite.LinkInstagram}`}
                                     target="_blank" 
                                     rel="noopener noreferrer"
                                     className="text-teal-600 font-semibold hover:underline"
                                 >
-                                    https://instagram.com/adminstore_official
-                                </a>
+                                    {TTwebsite.LinkInstagram}
+                                </Link>
                             </div>
 
                             <div>
                                 <p className="text-sm text-gray-500 mb-1">
                                     <i className="fas fa-phone-alt text-green-500 mr-2"></i>Hotline/Zalo
                                 </p>
-                                <p className="text-lg font-semibold text-gray-900">090 123 4567</p>
+                                <p className="text-lg font-semibold text-gray-900">{TTwebsite.Zalo}</p>
                             </div>
 
                             <div>
@@ -80,7 +83,7 @@ function XemThongTinWebsite() {
                                     <i className="fas fa-image text-gray-500 mr-2"></i>Logo Hiện tại
                                 </p>
                                 <img 
-                                    src="/images/logo-adminstore.png" 
+                                    src={`http://localhost:3001${TTwebsite.LoGo}`} 
                                     alt="Logo Website" 
                                     className="w-40 h-40 object-contain rounded-lg border border-gray-200 shadow-sm"
                                 />

@@ -1,3 +1,4 @@
+//Tạm thời xong nhiệm vụ
 import { Link } from 'react-router-dom';
 import BangChinh from '../ThanhPhan/Admin/BangChinh';
 import ChiTietDon from '../ThanhPhan/Admin/ChiTietDon';
@@ -24,8 +25,6 @@ import ChinhSua from '../ThanhPhan/Admin/ChinhSuaThongTinAD';
 import { Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react'; 
 import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
-
-
 function TrangChuAdmin() {
     const { kiemtra , DangXuat , TTwebsite , GetTTwebsite } = useAppContext();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +33,8 @@ function TrangChuAdmin() {
          kiemtra();
          GetTTwebsite();
          setadmin(JSON.parse(localStorage.getItem('DuLieu')))
-    }, [kiemtra,GetTTwebsite]);
+         //eslint-disable-next-line react-hooks/exhaustive-deps 
+    }, []);
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
@@ -49,7 +49,7 @@ function TrangChuAdmin() {
                 </button>
                 <Link to="" data-route="overview" className="flex items-center space-x-2" Style="text-decoration:none;">
                     <div className="w-9 h-9 rounded-full flex items-center justify-center">
-                        <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" />
+                        <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" className='w-9 h-9 rounded-full' />
                     </div>
                     <span className="text-xl font-bold text-dark-900">{TTwebsite.TenWebsite} Admin</span>
                 </Link>
@@ -72,7 +72,7 @@ function TrangChuAdmin() {
                         className="flex items-center space-x-2 cursor-pointer p-1 rounded-full hover:bg-gray-100 transition-colors" 
                         role="button" 
                         aria-label="Thông tin người dùng"
-                        onClick={toggleMenu} // Thêm sự kiện onClick để ẩn/hiện menu
+                        onClick={toggleMenu} 
                         aria-expanded={isMenuOpen}
                     >
                         <img src="https://picsum.photos/40?random=1" alt="Avatar quản trị viên" className="w-8 h-8 rounded-full object-cover" loading="lazy" />
@@ -189,18 +189,15 @@ function TrangChuAdmin() {
                     <Route path="BinhLuan" element={<BinhLuan />} />
                     <Route path="BinhLuan/xem" element={< Xem />} />
                     <Route path="hoso" element={<HoSo />} />
-                     <Route path="hoso/ChinhSuaThongTinAdmin" element={<ChinhSua />} />
+                    <Route path="hoso/ChinhSuaThongTinAdmin" element={<ChinhSua />} />
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                 </Routes>
         </main>
     </div>
-
-
-
     <footer className="mt-12 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-600">
-             &copy; {new Date().getFullYear()} TechMobile Admin. Tất cả quyền sở hữu thuộc về TechMobile.
+             &copy; {new Date().getFullYear()} {TTwebsite.TenWebsite} Admin. Tất cả quyền sở hữu thuộc về {TTwebsite.TenWebsite}.
         </div>
     </footer>
         </>

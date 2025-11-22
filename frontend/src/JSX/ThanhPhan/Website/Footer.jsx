@@ -6,15 +6,16 @@ function Footer() {
     const {GetTTwebsite,TTwebsite}= useAppContext();
     useEffect(() => {
         GetTTwebsite();
-    });
+        //eslint-disable-next-line react-hooks/exhaustive-deps 
+    },[]);
     return (
        <footer class="bg-dark-900 text-white py-12">
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="space-y-4">
                     <div class="flex items-center space-x-2">
-                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
-                            <i class="fas fa-mobile-alt text-white"></i>
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center">
+                             <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" className='w-8 h-8 rounded-full' />
                         </div>
                         <span class="text-xl font-bold">{TTwebsite.TenWebsite}</span>
                     </div>

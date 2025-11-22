@@ -7,7 +7,8 @@ function Menu() {
     const {GetTTwebsite,TTwebsite}= useAppContext();
      useEffect(() => {
         GetTTwebsite();
-    });
+        //eslint-disable-next-line react-hooks/exhaustive-deps 
+    },[]);
     const cartCount = 3; 
 
     return (
@@ -19,8 +20,8 @@ function Menu() {
                 
                         {/* Biến Logo thành Link về Trang chủ */}
                         <Link  to="/" className="flex items-center space-x-2">
-                            <div className="w-10 h-10 bg-primary-500 rounded-lg flex items-center justify-center">
-                                <i className="fas fa-mobile-alt text-white text-xl"></i>
+                            <div className="w-10 h-10  rounded-lg flex items-center justify-center">
+                               <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" className='w-10 h-10 rounded-full' />
                             </div>
                             <span className="text-2xl font-bold text-dark-900">{TTwebsite.TenWebsite}</span>
                         </Link>
