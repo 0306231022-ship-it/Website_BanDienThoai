@@ -13,10 +13,8 @@ import TrangChuNguoiDung from '../ThanhPhan/NguoiDung/TrangChuNguoiDung';
 function TrangChuWeb() {
     return (
         <div className="font-sans text-gray-800">
-            <header className="bg-white shadow-sm sticky top-0 z-50">
-                <Menu />
-            </header>
-            <main>
+            <Menu />
+            <main className="pt-40 p-5 mt-5">
                 <Routes>
                     <Route path="/*"  element={<SanPhamTrangChu />} />
                     <Route path="/san-pham" element={<SanPham />} />
@@ -27,7 +25,6 @@ function TrangChuWeb() {
                     <Route path="/nguoi-dung/*" element={<TrangChuNguoiDung />} />
                 </Routes>
             </main>
-
             <footer className="bg-text text-gray-400 pt-12 pb-8 bg-gray-800">
                 <Footer />
             </footer>
