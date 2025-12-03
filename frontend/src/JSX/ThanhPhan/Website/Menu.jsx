@@ -21,7 +21,9 @@ function Menu() {
         }
     }
     // Giả sử số lượng sản phẩm trong giỏ hàng là 3 (bạn có thể thay đổi giá trị này tùy ý)
-    const cartCount = 3; 
+    const cartCount = 3;
+
+
 
     return (
         <>
@@ -101,6 +103,7 @@ function Menu() {
                 <li className="nav-item"><Link to="#" className="nav-link text-white font-bold text-lg relative hover:text-yellow-300 transition duration-200">AI & Công nghệ</Link></li>
                 <li className="nav-item"><Link to="#" className="nav-link text-white font-bold text-lg relative hover:text-yellow-300 transition duration-200">Bền vững</Link></li>
                 <li className="nav-item"><Link to="#" className="nav-link text-white font-bold text-lg relative hover:text-yellow-300 transition duration-200">Hỗ trợ</Link></li>
+                <li className="nav-item"><Link to="#" className="nav-link text-white font-bold text-lg relative hover:text-yellow-300 transition duration-200">Tin tức</Link></li>
             </ul>
         </nav>
     </header>

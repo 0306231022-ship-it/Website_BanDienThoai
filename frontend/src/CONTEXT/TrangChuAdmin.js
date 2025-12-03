@@ -9,12 +9,18 @@ const AppContext = createContext();
 export function AppProvider({ children }) {
   const navigate = useNavigate();
   const [TTwebsite,setWebsite]=useState([])
+  const [err,setErr]=useState(false);
   const GetTTwebsite=async()=>{
     setWebsite([])
     const ketqqua=await API.CallAPI(undefined,undefined,{DiaChi: 5});
+    if(ketqqua.status===false){
+      navigate('/500');
+      return;
+    }
     if(ketqqua.ThanhCong){
       setWebsite(ketqqua.DuLieu)
     }
+ 
   }
   //hàm kiểm tra đăng nhập
   const kiemtra=async()=>{
@@ -27,6 +33,9 @@ export function AppProvider({ children }) {
        ThongBao.ThongBao_CanhBao(ketqua.message)
        navigate('/DangNhap-admin')
     }
+    if(ketqua.status===false ){
+      setErr(true);
+    }
   };
   //hàm đăng nhập
   const login =async (DuLieu,Loai)=>{
@@ -36,11 +45,7 @@ export function AppProvider({ children }) {
       return;
     }else{
        const ketqua=await API.CallAPI(undefined,DuLieu,{DiaChi : 3});
-       if(ketqua.ThanhCong){
-        return ketqua;
-       }else{
-        ThongBao.ThongBao_Loi(ketqua.message)
-       }
+       return ketqua;
     }
   }
   //hàm đăng xuất
@@ -67,7 +72,7 @@ const DangXuat = async () => {
 
 
   return (
-    <AppContext.Provider value={{ login , kiemtra , DangXuat , GetTTwebsite , TTwebsite}}>
+    <AppContext.Provider value={{ login , kiemtra , DangXuat , GetTTwebsite , TTwebsite , err }}>
       {children}
     </AppContext.Provider>
   );
