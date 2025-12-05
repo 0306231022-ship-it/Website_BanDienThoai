@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiệu ứng Loading - Website_BanDienThoai</title>
+    <style>
+        /* 1. Phần bao bọc toàn màn hình để căn giữa */
+        .loading-overlay {
+            position: fixed; /* Cố định trên màn hình, đè lên nội dung khác */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9); /* Nền trắng mờ */
+            display: flex;
+            justify-content: center; /* Căn giữa ngang */
+            align-items: center; /* Căn giữa dọc */
+            z-index: 9999; /* Đảm bảo luôn nằm trên cùng */
+        }
+
+        /* 2. Khung chứa chính của hiệu ứng xoay */
+        .spinner-wrapper {
+            position: relative;
+            width: 150px;  /* Kích thước tổng thể của vòng xoay */
+            height: 150px;
+            /* Để dễ hình dung, hãy tưởng tượng đây là một cái hộp vuông vô hình */
+        }
+
+        /* 3. Định dạng cho Logo bên trong */
+        .spinner-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Kỹ thuật căn giữa tuyệt đối chính xác */
+            width: 60px; /* Kích thước logo (nhỏ hơn vòng xoay) */
+            height: auto;
+            z-index: 10; /* Logo nằm trên các vòng xoay */
+        }
+
+        /* --- Định nghĩa các vòng tròn xoay bằng pseudo-elements (::before và ::after) --- */
+
+        /* Vòng tròn đỏ chung */
+        .spinner-wrapper::before,
+        .spinner-wrapper::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%; /* Tạo hình tròn */
+            border-style: solid;
+            background: transparent;
+        }
+
+        /* Vòng tròn đỏ NHOÀI (xoay xuôi chiều kim đồng hồ) */
+        .spinner-wrapper::before {
+            top: 0; left: 0; right: 0; bottom: 0; /* Chiếm toàn bộ wrapper */
+            border-width: 4px; /* Độ dày viền */
+            /* Mẹo: Chỉ tô màu 2 cạnh đối diện để thấy nó xoay */
+            border-color: #dc3545 transparent #dc3545 transparent; /* Màu đỏ chính */
+            animation: spin-clockwise 1.5s linear infinite; /* Tốc độ 1.5s */
+        }
+
+        /* Vòng tròn đỏ TRONG (xoay ngược chiều kim đồng hồ - tạo hiệu ứng đẹp mắt) */
+        .spinner-wrapper::after {
+            top: 15px; left: 15px; right: 15px; bottom: 15px; /* Nhỏ hơn vòng ngoài một chút */
+            border-width: 4px;
+            /* Tô màu 2 cạnh khác với vòng trên */
+            border-color: transparent #ff0000 transparent #ff0000; /* Màu đỏ tươi hơn chút */
+            animation: spin-counter-clockwise 2s linear infinite; /* Tốc độ chậm hơn (2s) và ngược chiều */
+        }
+
+        /* --- Định nghĩa chuyển động (Keyframes) --- */
+
+        /* Xoay xuôi */
+        @keyframes spin-clockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Xoay ngược */
+        @keyframes spin-counter-clockwise {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(-360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="loading-overlay">
+        <div class="spinner-wrapper">
+           
+        </div>
+    </div>
+
+
+</body>
+</html>

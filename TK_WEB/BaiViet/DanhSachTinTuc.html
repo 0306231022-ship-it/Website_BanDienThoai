@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNews - Tailwind Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#007bff', // Màu thương hiệu tùy chỉnh
+                    }
+                }
+            }
+        }
+    </script>                          
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+  <section class="max-w-7xl mx-auto mt-20 mb-20 px-4">
+        
+        <div class="flex justify-between items-end mb-8 border-b-2 border-gray-100 pb-2">
+            <h2 class="text-2xl md:text-3xl font-bold uppercase text-gray-800 relative">
+                Tin Tức Công Nghệ
+                <span class="absolute -bottom-2.5 left-0 w-20 h-1 bg-primary rounded"></span>
+            </h2>
+            <a href="#" class="text-gray-500 hover:text-primary font-medium text-sm flex items-center gap-1 transition-colors">
+                Xem tất cả <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+            <article class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group h-full flex flex-col">
+                <div class="relative overflow-hidden aspect-video">
+                    <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2023/09/danh-gia-iphone-15-pro-max-1.jpg" 
+                         alt="Đánh giá iPhone 15" 
+                         class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <span class="absolute top-3 left-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded shadow-md">
+                        ĐÁNH GIÁ
+                    </span>
+                </div>
+                
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex items-center text-gray-400 text-xs mb-3 gap-4">
+                        <span><i class="fa-regular fa-calendar mr-1"></i> 20/05/2024</span>
+                        <span><i class="fa-regular fa-user mr-1"></i> Admin</span>
+                    </div>
+                    
+                    <h3 class="font-bold text-lg text-gray-800 mb-3 hover:text-primary transition-colors line-clamp-2">
+                        <a href="#">Đánh giá chi tiết iPhone 15 Pro Max sau 6 tháng sử dụng: Vẫn là vua?</a>
+                    </h3>
+                    
+                    <p class="text-gray-500 text-sm mb-4 line-clamp-3">
+                        Sau nửa năm ra mắt, liệu hiệu năng và thời lượng pin của iPhone 15 Pro Max có còn giữ vững phong độ đỉnh cao hay đã có dấu hiệu xuống cấp?
+                    </p>
+                    
+                    <a href="#" class="mt-auto text-primary font-semibold text-sm hover:underline">
+                        Đọc tiếp <i class="fa-solid fa-angle-right ml-1"></i>
+                    </a>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group h-full flex flex-col">
+                <div class="relative overflow-hidden aspect-video">
+                    <img src="https://cdn.sforum.vn/sforum/wp-content/uploads/2024/01/galaxy-ai-samsung-s24-series-thumb.jpg" 
+                         alt="Mẹo Samsung" 
+                         class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <span class="absolute top-3 left-3 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded shadow-md">
+                        MẸO HAY
+                    </span>
+                </div>
+                
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex items-center text-gray-400 text-xs mb-3 gap-4">
+                        <span><i class="fa-regular fa-calendar mr-1"></i> 19/05/2024</span>
+                        <span><i class="fa-regular fa-user mr-1"></i> Tuấn Anh</span>
+                    </div>
+                    
+                    <h3 class="font-bold text-lg text-gray-800 mb-3 hover:text-primary transition-colors line-clamp-2">
+                        5 tính năng AI cực đỉnh trên Samsung S24 Ultra mà bạn chưa biết
+                    </h3>
+                    
+                    <p class="text-gray-500 text-sm mb-4 line-clamp-3">
+                        Khám phá ngay các tính năng ẩn giúp bạn dịch thuật trực tiếp, chỉnh sửa ảnh thần thánh và tóm tắt văn bản chỉ trong một nốt nhạc.
+                    </p>
+                    
+                    <a href="#" class="mt-auto text-primary font-semibold text-sm hover:underline">
+                        Đọc tiếp <i class="fa-solid fa-angle-right ml-1"></i>
+                    </a>
+                </div>
+            </article>
+
+            <article class="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group h-full flex flex-col">
+                <div class="relative overflow-hidden aspect-video">
+                    <img src="https://cdn.tgdd.vn/Files/2024/04/28/1526135/thumb_1280x720-800-resize.jpg" 
+                         alt="So sánh chip" 
+                         class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500">
+                    <span class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded shadow-md">
+                        TIN TỨC
+                    </span>
+                </div>
+                
+                <div class="p-5 flex flex-col flex-grow">
+                    <div class="flex items-center text-gray-400 text-xs mb-3 gap-4">
+                        <span><i class="fa-regular fa-calendar mr-1"></i> 18/05/2024</span>
+                        <span><i class="fa-regular fa-user mr-1"></i> TechNews</span>
+                    </div>
+                    
+                    <h3 class="font-bold text-lg text-gray-800 mb-3 hover:text-primary transition-colors line-clamp-2">
+                        Snapdragon 8 Gen 4 lộ diện: Hiệu năng vượt trội Apple A18 Pro?
+                    </h3>
+                    
+                    <p class="text-gray-500 text-sm mb-4 line-clamp-3">
+                        Điểm số Geekbench rò rỉ cho thấy thế hệ chip mới của Qualcomm sẽ là một con quái vật thực sự về hiệu năng đa nhân.
+                    </p>
+                    
+                    <a href="#" class="mt-auto text-primary font-semibold text-sm hover:underline">
+                        Đọc tiếp <i class="fa-solid fa-angle-right ml-1"></i>
+                    </a>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+</body>
+</html>

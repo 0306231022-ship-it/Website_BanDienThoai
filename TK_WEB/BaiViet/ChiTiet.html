@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết iPhone 15 Pro Max - Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#d70018',
+                        secondary: '#f3f3f3',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-white font-sans text-gray-800">
+
+    <div class="bg-gray-100 py-3">
+        <div class="max-w-7xl mx-auto px-4 text-sm text-gray-500">
+            <a href="#" class="hover:text-primary">Trang chủ</a> <i class="fa-solid fa-angle-right mx-2 text-xs"></i>
+            <a href="#" class="hover:text-primary">Điện thoại</a> <i class="fa-solid fa-angle-right mx-2 text-xs"></i>
+            <a href="#" class="hover:text-primary">iPhone (Apple)</a> <i class="fa-solid fa-angle-right mx-2 text-xs"></i>
+            <span class="text-gray-800 font-medium">iPhone 15 Pro Max</span>
+        </div>
+    </div>
+
+    <section class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+            
+            <div class="md:col-span-5">
+                <div class="border rounded-xl p-4 mb-4 relative overflow-hidden group bg-white shadow-sm">
+                    <img id="main-image" src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png" 
+                         alt="iPhone 15 Pro Max" class="w-full h-auto object-contain transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute top-4 left-4 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full animate-pulse">
+                        GIẢM 5 TRIỆU
+                    </div>
+                </div>
+
+                <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                    <button onclick="changeImage(this)" class="w-20 h-20 border-2 border-primary rounded-lg p-1 cursor-pointer flex-shrink-0">
+                        <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png" class="w-full h-full object-contain">
+                    </button>
+                    <button onclick="changeImage(this)" class="w-20 h-20 border border-gray-200 hover:border-primary rounded-lg p-1 cursor-pointer flex-shrink-0 transition-colors">
+                        <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_4.png" class="w-full h-full object-contain">
+                    </button>
+                    <button onclick="changeImage(this)" class="w-20 h-20 border border-gray-200 hover:border-primary rounded-lg p-1 cursor-pointer flex-shrink-0 transition-colors">
+                        <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_1.png" class="w-full h-full object-contain">
+                    </button>
+                    <button onclick="changeImage(this)" class="w-20 h-20 border border-gray-200 hover:border-primary rounded-lg p-1 cursor-pointer flex-shrink-0 transition-colors">
+                        <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_2.png" class="w-full h-full object-contain">
+                    </button>
+                </div>
+                
+                <div class="mt-6 grid grid-cols-2 gap-4 text-sm">
+                    <div class="flex items-center gap-2 border p-2 rounded text-gray-600">
+                        <i class="fa-solid fa-shield-halved text-primary"></i> BH 12 tháng
+                    </div>
+                    <div class="flex items-center gap-2 border p-2 rounded text-gray-600">
+                        <i class="fa-solid fa-rotate text-primary"></i> 1 đổi 1 trong 30 ngày
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-7">
+                <h1 class="text-2xl md:text-3xl font-bold mb-2">iPhone 15 Pro Max 256GB Chính hãng VN/A</h1>
+                
+                <div class="flex items-center gap-2 mb-4 text-sm">
+                    <div class="text-yellow-400">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                    </div>
+                    <span class="text-gray-500">(128 đánh giá)</span>
+                    <span class="text-gray-300">|</span>
+                    <span class="text-primary font-medium">Kho: Còn hàng</span>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg mb-6 flex items-end gap-3">
+                    <span class="text-3xl font-bold text-primary">29.990.000₫</span>
+                    <span class="text-gray-500 text-lg line-through decoration-1">34.990.000₫</span>
+                    <span class="bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded">-15%</span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block font-bold mb-2 text-sm uppercase">Chọn phiên bản:</label>
+                    <div class="flex flex-wrap gap-3">
+                        <button class="px-4 py-2 border-2 border-primary bg-red-50 text-primary font-bold rounded-lg text-sm relative">
+                            256GB
+                            <span class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] px-1 rounded">HOT</span>
+                        </button>
+                        <button class="px-4 py-2 border border-gray-300 hover:border-gray-400 rounded-lg text-sm text-gray-600">512GB</button>
+                        <button class="px-4 py-2 border border-gray-300 hover:border-gray-400 rounded-lg text-sm text-gray-600">1TB</button>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label class="block font-bold mb-2 text-sm uppercase">Chọn màu sắc:</label>
+                    <div class="flex gap-3">
+                        <button class="w-10 h-10 rounded-full bg-gray-300 border-2 border-primary ring-2 ring-offset-2 ring-transparent hover:ring-gray-200 focus:outline-none"></button> <button class="w-10 h-10 rounded-full bg-slate-700 border border-gray-300 hover:opacity-80"></button> <button class="w-10 h-10 rounded-full bg-black border border-gray-300 hover:opacity-80"></button> <button class="w-10 h-10 rounded-full bg-gray-100 border border-gray-300 hover:opacity-80"></button> </div>
+                </div>
+
+                <div class="border border-green-500 rounded-lg p-4 mb-6 bg-green-50">
+                    <h3 class="font-bold text-green-700 mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-gift"></i> KHUYẾN MÃI
+                    </h3>
+                    <ul class="text-sm space-y-2 text-gray-700 list-disc pl-5">
+                        <li>Thu cũ đổi mới: Trợ giá đến <strong>2 triệu</strong>.</li>
+                        <li>Giảm thêm <strong>500K</strong> khi thanh toán qua Kredivo.</li>
+                        <li>Tặng gói bảo hành rơi vỡ 6 tháng.</li>
+                    </ul>
+                </div>
+
+                <div class="flex gap-4 mb-4">
+                    <button class="flex-1 bg-primary hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg text-lg uppercase shadow-lg shadow-red-500/30 transition-all">
+                        Mua ngay
+                        <span class="block text-xs font-normal normal-case">Giao hàng tận nơi hoặc nhận tại cửa hàng</span>
+                    </button>
+                    <button class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg uppercase shadow-lg shadow-blue-500/30 transition-all flex flex-col items-center justify-center">
+                        Trả góp 0%
+                        <span class="text-xs font-normal normal-case">Duyệt hồ sơ trong 5 phút</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12">
+            
+            <div class="lg:col-span-8">
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <h2 class="text-xl font-bold mb-4 uppercase border-b border-gray-200 pb-2">Đặc điểm nổi bật</h2>
+                    <div class="prose max-w-none text-gray-700">
+                        <p class="mb-4">
+                            <strong>iPhone 15 Pro Max</strong> thiết kế khung viền từ titan chuẩn hàng không vũ trụ cực nhẹ, bền bỉ. Nút Action hoàn toàn mới giúp bạn kích hoạt nhanh tính năng yêu thích.
+                        </p>
+                        <p class="mb-4">
+                            Sức mạnh đến từ <strong>chip A17 Pro</strong> mang lại hiệu năng đồ họa đỉnh cao, chiến mượt mọi tựa game nặng nhất hiện nay như Genshin Impact, Resident Evil Village.
+                        </p>
+                        <img src="https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-titan-1-1.jpg" class="w-full rounded-lg mb-4">
+                        <p>
+                            Camera zoom quang học 5x - xa nhất từ trước đến nay trên iPhone, giúp bạn bắt trọn khoảnh khắc từ khoảng cách xa với độ chi tiết kinh ngạc.
+                        </p>
+                    </div>
+                    <button class="mt-4 text-primary font-semibold hover:underline block mx-auto">
+                        Xem thêm nội dung <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4">
+                <div class="border rounded-xl p-4 sticky top-4">
+                    <h2 class="text-lg font-bold mb-4">Thông số kỹ thuật</h2>
+                    <table class="w-full text-sm">
+                        <tbody class="divide-y">
+                            <tr class="py-2">
+                                <td class="py-3 text-gray-500">Màn hình:</td>
+                                <td class="py-3 font-medium">6.7 inch, Super Retina XDR</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 text-gray-500">Camera sau:</td>
+                                <td class="py-3 font-medium">48MP + 12MP + 12MP</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 text-gray-500">Camera trước:</td>
+                                <td class="py-3 font-medium">12MP</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 text-gray-500">Chipset:</td>
+                                <td class="py-3 font-medium">Apple A17 Pro</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 text-gray-500">RAM:</td>
+                                <td class="py-3 font-medium">8 GB</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 text-gray-500">Dung lượng pin:</td>
+                                <td class="py-3 font-medium">4422 mAh, Sạc nhanh 20W</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 text-gray-500">Hệ điều hành:</td>
+                                <td class="py-3 font-medium">iOS 17</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="w-full border border-gray-300 rounded py-2 mt-4 hover:bg-gray-50 transition-colors text-sm font-medium">
+                        Xem cấu hình chi tiết
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function changeImage(element) {
+            // Lấy đường dẫn ảnh từ thẻ img con của button được click
+            const newSrc = element.querySelector('img').src;
+            
+            // Gán vào ảnh chính
+            const mainImage = document.getElementById('main-image');
+            
+            // Hiệu ứng mờ nhẹ khi đổi
+            mainImage.style.opacity = '0';
+            setTimeout(() => {
+                mainImage.src = newSrc;
+                mainImage.style.opacity = '1';
+            }, 200);
+
+            // Xử lý border active
+            // (Đoạn này bạn có thể viết thêm logic remove class border-primary ở các nút khác)
+        }
+    </script>
+</body>
+</html>

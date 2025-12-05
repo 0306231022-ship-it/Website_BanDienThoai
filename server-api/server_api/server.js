@@ -7,8 +7,6 @@ import cookieParser from 'cookie-parser';
 import adminRouter from './routers/adminRouter.js';
 
 const app = express();
-
-// --- CORS setup ---
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
@@ -30,8 +28,6 @@ app.use("/uploads", express.static("uploads"));
 
 // --- Test route ---
 app.get('/', (req, res) => res.json({ message: 'Server API running' }));
-
-// --- Mount routers ---
 app.use('/api/admin', adminRouter);
 
 // --- 404 handler ---

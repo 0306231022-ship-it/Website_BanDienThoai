@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import * as fun from '../../../JS/FUNCTONS/function';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
-import * as API from '../../../JS/API/API';
 import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
+import {useAPIContext} from '../../../JS/API/API';
 function CaiDat() {
     const { TTwebsite, GetTTwebsite } = useAppContext();
+    const { CallAPI_file } = useAPIContext();
     const [value, setvalue] = useState({
         TenWebsite: "",
         Email: "",
@@ -65,13 +66,14 @@ function CaiDat() {
             ThongBao.ThongBao_CanhBao('Vui lòng chọn logo!');
             return;
         }
-        const ketqua = await API.CallAPI_file(value, file, { DiaChi: 6 });
+        const ketqua = await CallAPI_file(value, file, { DiaChi: 6 });
         if (ketqua.ThanhCong) {
             ThongBao.ThongBao_ThanhCong(ketqua.message);
         } else {
             ThongBao.ThongBao_Loi(ketqua.message);
         }
     };
+
     return (
         <section id="section-settings" className="section" aria-label="Cài đặt website">
             <div className="flex items-center justify-between mb-6 mt-6 border-b pb-3 border-gray-200">

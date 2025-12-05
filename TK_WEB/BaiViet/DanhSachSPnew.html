@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm mới nhập - Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#d70018', // Màu đỏ đặc trưng
+                        secondary: '#f3f3f3',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-secondary font-sans p-5">
+
+    <section class="max-w-7xl mx-auto">
+        <div class="text-center mb-10 relative">
+            <h2 class="text-2xl md:text-3xl font-bold uppercase text-gray-800 inline-block relative pb-3">
+                Điện Thoại Mới Về Hàng
+                <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-primary rounded"></span>
+            </h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            
+            <div class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative flex flex-col">
+                <div class="absolute top-3 left-3 bg-gradient-to-r from-pink-500 to-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm animate-pulse">
+                    MỚI NHẬP
+                </div>
+
+                <div class="h-64 p-4 flex items-center justify-center overflow-hidden">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3.png" 
+                         alt="iPhone 15" 
+                         class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">
+                </div>
+
+                <div class="p-4 flex-grow flex flex-col items-center text-center">
+                    <span class="bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-1 rounded mb-2">
+                        256GB | 8GB RAM
+                    </span>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2 line-clamp-2 hover:text-primary cursor-pointer">
+                        iPhone 15 Pro Max 256GB Chính hãng VN/A
+                    </h3>
+                    
+                    <div class="mt-auto mb-4">
+                        <span class="text-primary font-bold text-xl">29.990.000₫</span>
+                        <span class="text-gray-400 text-sm line-through ml-2">34.990.000₫</span>
+                    </div>
+
+                    <a href="#" class="w-full bg-primary hover:bg-red-800 text-white font-bold py-2 px-4 rounded transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i> Mua ngay
+                    </a>
+                </div>
+            </div>
+
+            <div class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative flex flex-col">
+                <div class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">
+                    HOT
+                </div>
+                <div class="h-64 p-4 flex items-center justify-center overflow-hidden">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-s24-ultra-grey_1.png" 
+                         alt="Samsung S24" 
+                         class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-4 flex-grow flex flex-col items-center text-center">
+                    <span class="bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-1 rounded mb-2">
+                        512GB | 12GB RAM
+                    </span>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2 line-clamp-2 hover:text-primary cursor-pointer">
+                        Samsung Galaxy S24 Ultra 5G AI
+                    </h3>
+                    <div class="mt-auto mb-4">
+                        <span class="text-primary font-bold text-xl">26.500.000₫</span>
+                        <span class="text-gray-400 text-sm line-through ml-2">30.000.000₫</span>
+                    </div>
+                    <a href="#" class="w-full bg-primary hover:bg-red-800 text-white font-bold py-2 px-4 rounded transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i> Mua ngay
+                    </a>
+                </div>
+            </div>
+
+            <div class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative flex flex-col">
+                <div class="absolute top-3 left-3 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">
+                    GIẢM SỐC
+                </div>
+                <div class="h-64 p-4 flex items-center justify-center overflow-hidden">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra_1.png" 
+                         alt="Xiaomi 14" 
+                         class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-4 flex-grow flex flex-col items-center text-center">
+                    <span class="bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-1 rounded mb-2">
+                        512GB | 16GB RAM
+                    </span>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2 line-clamp-2 hover:text-primary cursor-pointer">
+                        Xiaomi 14 Ultra 5G Chính hãng
+                    </h3>
+                    <div class="mt-auto mb-4">
+                        <span class="text-primary font-bold text-xl">24.990.000₫</span>
+                    </div>
+                    <a href="#" class="w-full bg-primary hover:bg-red-800 text-white font-bold py-2 px-4 rounded transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i> Mua ngay
+                    </a>
+                </div>
+            </div>
+
+            <div class="group bg-white rounded-xl shadow-md overflow-hidden hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 relative flex flex-col">
+                 <div class="absolute top-3 left-3 bg-gradient-to-r from-pink-500 to-yellow-400 text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm animate-pulse">
+                    MỚI NHẬP
+                </div>
+                <div class="h-64 p-4 flex items-center justify-center overflow-hidden">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-oppo-reno-12-pro_1.png" 
+                         alt="Oppo Reno" 
+                         class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="p-4 flex-grow flex flex-col items-center text-center">
+                    <span class="bg-gray-100 text-gray-500 text-xs font-semibold px-2 py-1 rounded mb-2">
+                        256GB | 12GB RAM
+                    </span>
+                    <h3 class="font-bold text-gray-800 text-lg mb-2 line-clamp-2 hover:text-primary cursor-pointer">
+                        OPPO Reno12 Pro 5G
+                    </h3>
+                    <div class="mt-auto mb-4">
+                        <span class="text-primary font-bold text-xl">18.990.000₫</span>
+                        <span class="text-gray-400 text-sm line-through ml-2">19.990.000₫</span>
+                    </div>
+                    <a href="#" class="w-full bg-primary hover:bg-red-800 text-white font-bold py-2 px-4 rounded transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-shopping"></i> Mua ngay
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>

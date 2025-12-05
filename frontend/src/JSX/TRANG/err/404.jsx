@@ -22,7 +22,6 @@ function Trang404() {
                 </h1>
             </div>
 
-        
             <h2 class="text-3xl font-bold text-gray-800 mb-4">
                 Oops! Trang không tồn tại
             </h2>

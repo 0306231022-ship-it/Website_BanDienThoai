@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import adminModel from '../models/adminModel.js';
 import CaiDatModel from '../models/CaiDatWebsite.js';
 
-
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
@@ -95,12 +94,12 @@ export default class adminController{
         }else{
             return res.json({
                 ThanhCong:false,
-                message:'Bạn đã đăng xuất thất bại. Vui long kiểm tra lại hệ thống!'
+                message:'Bạn đã đăng xuất thất bại. Vui lòng kiểm tra lại hệ thống!'
             })
         }
     }
     static async LayWebsite(req,res){
-        const kq= await  CaiDatModel.GetTTWebsite();
+        const kq= await CaiDatModel.GetTTWebsite();
         if(kq){
             res.json({
                 ThanhCong:true,
