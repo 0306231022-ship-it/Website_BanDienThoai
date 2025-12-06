@@ -47,4 +47,16 @@ export function resetGiaTri(obj) {
         }
     }
 }
-
+export function appendFormData(formData, data, parentKey = "") {
+  for (let key in data) {
+    if (data.hasOwnProperty(key)) {
+      const fieldKey = parentKey ? `${parentKey}[${key}]` : key;
+      
+      if (typeof data[key] === "object" && data[key] !== null) {
+        appendFormData(formData, data[key], fieldKey);
+      } else {
+        formData.append(fieldKey, data[key]);
+      }
+    }
+  }
+}

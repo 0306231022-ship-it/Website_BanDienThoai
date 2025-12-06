@@ -10,11 +10,9 @@ export function AppProvider({ children }) {
   const {CallAPI}= useAPIContext();
   const navigate = useNavigate();
   const [TTwebsite,setWebsite]=useState([])
-  const [err,setErr]=useState(false);
   const GetTTwebsite=async()=>{
     setWebsite([])
     const ketqqua=await CallAPI(undefined,undefined,{DiaChi: 5,});
-    
     if(ketqqua.status===false){
       navigate('/500');
       return;
@@ -34,9 +32,6 @@ export function AppProvider({ children }) {
     if(!ketqua.ThanhCong){
        ThongBao.ThongBao_CanhBao(ketqua.message)
        navigate('/DangNhap-admin')
-    }
-    if(ketqua.status===false ){
-      setErr(true);
     }
   };
   //hàm đăng nhập
@@ -74,7 +69,7 @@ const DangXuat = async () => {
 
 
   return (
-    <AppContext.Provider value={{ login , kiemtra , DangXuat , GetTTwebsite , TTwebsite , err }}>
+    <AppContext.Provider value={{ login , kiemtra , DangXuat , GetTTwebsite , TTwebsite ,}}>
       {children}
     </AppContext.Provider>
   );

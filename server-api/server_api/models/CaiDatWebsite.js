@@ -5,11 +5,10 @@ export default class CaiDatModel{
             const [ketqua]= await execute('SELECT * FROM caidatwebsite LIMIT 1',[]);
             return ketqua[0] ?? null;
         } catch (error) {
-             throw new Error('Database query failed: ' + error.message);
+            return null;
         }
     }
- static async UpdateWebsite(DATA, dsanh) {
-   const dulieu=JSON.parse(DATA);
+ static async UpdateWebsite(dulieu, dsanh) {
     try {
         const [ketqua] = await execute(
             `UPDATE caidatwebsite 
@@ -36,7 +35,7 @@ export default class CaiDatModel{
         );
        return ketqua.affectedRows > 0 ? ketqua : null;
     } catch (error) {
-        throw new Error('Database query failed: ' + error.message);
+       return null;
     }
 }
 

@@ -5,14 +5,26 @@ import cors from 'cors';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import adminRouter from './routers/adminRouter.js';
+import multer from "multer";
 
 const app = express();
+
+// ===================================================================
+// 1️⃣ CORS
+// ===================================================================
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
 }));
 
+// ===================================================================
+// 2️⃣ Body parser cho JSON (chỉ dùng cho request JSON, KHÔNG phải form-data)
+// ===================================================================
 app.use(bodyParser.json());
+
+// ===================================================================
+// 3️⃣ Cookies & session
+// ===================================================================
 app.use(cookieParser());
 app.use(session({
   secret: 'secret-key',
@@ -21,19 +33,22 @@ app.use(session({
   cookie: { secure: false }
 }));
 
-// ===================================================================
-// 🚀 Serve thư mục hình ảnh trước 404
-// ===================================================================
+export const upload = multer();
+
 app.use("/uploads", express.static("uploads"));
 
-// --- Test route ---
 app.get('/', (req, res) => res.json({ message: 'Server API running' }));
+
 app.use('/api/admin', adminRouter);
 
-// --- 404 handler ---
+// ===================================================================
+// 8️⃣ 404 handler
+// ===================================================================
 app.use((req, res) => res.status(404).json({ message: 'Endpoint not found' }));
 
-// --- Error handler ---
+// ===================================================================
+// 9️⃣ Error handler
+// ===================================================================
 app.use((err, req, res, next) => {
   console.error(err.stack);
 
@@ -46,6 +61,9 @@ app.use((err, req, res, next) => {
   });
 });
 
+// ===================================================================
+// 🔟 Start server
+// ===================================================================
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

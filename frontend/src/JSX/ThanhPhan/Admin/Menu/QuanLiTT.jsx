@@ -81,7 +81,7 @@ function QuanLiTT() {
 
                     
                     <li>
-                        <Link to="/admin/xemThongTin" data-route="settings" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Cài đặt">
+                        <Link to="/admin/CaiDat" data-route="settings" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Cài đặt">
                             <i className="fas fa-cog w-5"></i><span className="ml-3">Cài Đặt</span>
                         </Link>
                     </li>

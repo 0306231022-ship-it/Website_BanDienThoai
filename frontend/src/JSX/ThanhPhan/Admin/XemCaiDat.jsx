@@ -11,7 +11,7 @@ function XemThongTinWebsite() {
                     <Link 
                         className="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow-md transition"
                         aria-label="Chỉnh sửa cấu hình"
-                        to="/admin/caidat"
+                        to="/admin/CaiDat/caidatwebsite"
                     >
                         <i className="fas fa-edit mr-2"></i> Chỉnh Sửa
                     </Link>

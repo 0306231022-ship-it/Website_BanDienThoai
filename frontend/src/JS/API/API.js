@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import * as fun from '../FUNCTONS/function';
 const APIContext = createContext();
 export function APIProvider({ children }) {
   const [loading, setLoading]=useState(true);
@@ -44,7 +45,7 @@ export function APIProvider({ children }) {
   async function CallAPI_file(DuLieu = null, file, yeucau) {
     const DuongDan = DiaChi(yeucau?.DiaChi || 0);
     const DataForm = new FormData();
-    DataForm.append("Dulieu", JSON.stringify(DuLieu || {}));
+    fun.appendFormData(DataForm, { Dulieu: DuLieu });
     file.forEach((f) => {
       DataForm.append("images", f);
     });
@@ -58,7 +59,6 @@ export function APIProvider({ children }) {
       const ketqua = await response.json();
       return ketqua;
     } catch (error) {
-      console.error("Lỗi khi gọi CallAPI_file:", error); // Thêm log để dễ debug
       return {
         status: false,
         message: 'Lỗi khi truyền dữ liệu lên server!'

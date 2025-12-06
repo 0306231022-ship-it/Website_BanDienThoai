@@ -30,7 +30,10 @@ function QuanLiTTCaNhan() {
                 <ul className="space-y-2">
                     <li>
                         <Link to="/admin/CaiDat" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
-                            <i className="fas fa-chart-line w-5"></i><span className="ml-3">Tổng Quan</span>
+                            <i className="fas fa-cogs mr-2"></i><span className="ml-3"> website</span>
+                        </Link>
+                          <Link to="/admin" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
+                            <i className="fas fa-arrow-left mr-2"></i><span className="ml-3"> Quay lại </span>
                         </Link>
                     </li>
            
@@ -56,7 +59,7 @@ function QuanLiTTCaNhan() {
                     <Route path="danhsachma" element={<DanhSachMa />} />
                     <Route path="danhsachma/magiamgia" element={<MaGiamGia />} />
                     <Route path="hotro" element={<HoTroKhachHang />} />
-                    <Route path="caidat" element={<CaiDat />} />
+                    <Route path="caidatwebsite" element={<CaiDat />} />
                     <Route path="BinhLuan" element={<BinhLuan />} />
                     <Route path="BinhLuan/xem" element={< Xem />} />
                     <Route path="hoso" element={<HoSo />} />

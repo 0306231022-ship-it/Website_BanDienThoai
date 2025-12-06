@@ -3,6 +3,7 @@ const { hash, compare } = pkg;
 import jwt from 'jsonwebtoken';
 import adminModel from '../models/adminModel.js';
 import CaiDatModel from '../models/CaiDatWebsite.js';
+import { validationResult } from "express-validator";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
@@ -34,7 +35,6 @@ export default class adminController{
      }
      static async DangNhap(req,res){
        const duLieuDangNhap = req.body;
-        //Lấy dữ liệu mật khẩu mã hóa mới truy vấn
        const DangNhap= await adminModel.login(duLieuDangNhap.data.email)
        if(DangNhap){
             //Dữ liệu thành công sẽ lưu vào localStorage
