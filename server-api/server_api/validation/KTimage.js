@@ -1,5 +1,4 @@
 import { body } from "express-validator";
-// Middleware để kiểm tra file ảnh upload cho cài đặt website
 export const validateImages = [
   body("images")
     .custom((value, { req }) => {

@@ -32,11 +32,10 @@ function QuanLiTTCaNhan() {
                         <Link to="/admin/CaiDat" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
                             <i className="fas fa-cogs mr-2"></i><span className="ml-3"> website</span>
                         </Link>
-                          <Link to="/admin" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
+                        <Link to="/admin" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
                             <i className="fas fa-arrow-left mr-2"></i><span className="ml-3"> Quay lại </span>
                         </Link>
                     </li>
-           
                 </ul>
             </nav>
         </aside>

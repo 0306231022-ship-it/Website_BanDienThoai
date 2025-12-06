@@ -3,11 +3,13 @@ import adminController from "../controllers/adminController.js";
 import authMiddleware from "../middleware/auth.js";
 import upload from "../middleware/upload.js";
 import { body, validationResult } from "express-validator";
-import {validateImages } from "../middleware/KTimage.js";
+import {validateImages } from "../validation/KTimage.js";
 
 const adminRouter = Router();
 
-adminRouter.post('/DangNhap', adminController.DangNhap);
+adminRouter.post('/DangNhap',[
+
+], adminController.DangNhap);
 adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
 adminRouter.post('/kiemtra', authMiddleware, adminController.kiemtra);
 adminRouter.post('/DangXuat', authMiddleware, adminController.DangXuat);
@@ -44,10 +46,7 @@ adminRouter.post(
       .matches(/^(0|\+84)[0-9]{9}$/)
       .withMessage("Số điện thoại không hợp lệ"),
      validateImages,
-    
   ],
-
-  // Middleware kiểm tra validation + file upload
   (req, res, next) => {
     const errors = validationResult(req);
 
@@ -58,9 +57,6 @@ adminRouter.post(
         errors: errors.array(),
       });
     }
-
-    
-  
     next();
   },
 

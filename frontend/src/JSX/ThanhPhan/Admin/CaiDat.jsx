@@ -83,7 +83,7 @@ function CaiDat() {
             ThongBao.ThongBao_CanhBao('Vui lòng điền đầy đủ thông tin bắt buộc!');
             return;
         }
-        const ketqua = await CallAPI_file(value, file, { DiaChi: 6 });
+        const ketqua = await CallAPI_file(value, file, { url: '/admin/updateWebsite' });
         if (ketqua.ThanhCong) {
             ThongBao.ThongBao_ThanhCong(ketqua.message);
             await GetTTwebsite();

@@ -3,19 +3,9 @@ import * as fun from '../FUNCTONS/function';
 const APIContext = createContext();
 export function APIProvider({ children }) {
   const [loading, setLoading]=useState(true);
-  function DiaChi(code) {
-    switch (code) {
-      case 1: return 'http://localhost:3001/api/users/login';
-      case 2: return 'http://localhost:3001/api/admin/kiemtra';
-      case 3: return 'http://localhost:3001/api/admin/DangNhap';
-      case 4: return 'http://localhost:3001/api/admin/DangXuat';
-      case 5: return 'http://localhost:3001/api/admin/ThongTinWebsite';
-      case 6: return 'http://localhost:3001/api/admin/updateWebsite';
-      default:return 'http://localhost:5000/unknown';
-    }
-  }
+  let URL='http://localhost:3001/api';
   async function CallAPI(token = null, dulieu = null, yeucau) {
-    const DuongDan = DiaChi(yeucau?.DiaChi || 0);
+    const DuongDan = URL + yeucau.url;
     const bodyData = {
       data: dulieu || {}
     };
@@ -33,7 +23,6 @@ export function APIProvider({ children }) {
       const ketqua = await response.json();
       return ketqua;
     } catch (error) {
-      console.error("Lỗi khi gọi CallAPI:", error); // Thêm log để dễ debug
       return {
         status: false,
         message: 'Lỗi khi truyền dữ liệu lên server!'
@@ -43,7 +32,7 @@ export function APIProvider({ children }) {
     }
   }
   async function CallAPI_file(DuLieu = null, file, yeucau) {
-    const DuongDan = DiaChi(yeucau?.DiaChi || 0);
+    const DuongDan = URL + yeucau.url;
     const DataForm = new FormData();
     fun.appendFormData(DataForm, { Dulieu: DuLieu });
     file.forEach((f) => {
@@ -76,5 +65,3 @@ export function APIProvider({ children }) {
 export function useAPIContext() {
   return useContext(APIContext);
 }
-
-

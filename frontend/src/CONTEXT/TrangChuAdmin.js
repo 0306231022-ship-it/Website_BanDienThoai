@@ -12,7 +12,7 @@ export function AppProvider({ children }) {
   const [TTwebsite,setWebsite]=useState([])
   const GetTTwebsite=async()=>{
     setWebsite([])
-    const ketqqua=await CallAPI(undefined,undefined,{DiaChi: 5,});
+    const ketqqua=await CallAPI(undefined,undefined,{url:'/admin/ThongTinWebsite'});
     if(ketqqua.status===false){
       navigate('/500');
       return;
@@ -25,10 +25,7 @@ export function AppProvider({ children }) {
   //hàm kiểm tra đăng nhập
   const kiemtra=async()=>{
     const token = localStorage.getItem("token");
-    const url={
-      DiaChi:2
-    };
-    const ketqua=await CallAPI(token,undefined,url);
+    const ketqua=await CallAPI(token,undefined,{url:'/admin/kiemtra'});
     if(!ketqua.ThanhCong){
        ThongBao.ThongBao_CanhBao(ketqua.message)
        navigate('/DangNhap-admin')
@@ -41,7 +38,7 @@ export function AppProvider({ children }) {
       ThongBao.ThongBao_CanhBao('Vui lòng điền đầy đủ thông tin');
       return;
     }else{
-       const ketqua=await CallAPI(undefined,DuLieu,{DiaChi : 3});
+       const ketqua=await CallAPI(undefined,DuLieu,{url:'/admin/DangNhap'});
        return ketqua;
     }
   }
@@ -51,7 +48,7 @@ const DangXuat = async () => {
     if (!kiemtra) return;
     try {
         const token = localStorage.getItem("token");
-        const ketqua = await CallAPI(token, undefined, { DiaChi: 4 });
+        const ketqua = await CallAPI(token, undefined, { url:'/admin/DangXuat' });
         localStorage.removeItem('token');
         localStorage.removeItem('DuLieu');
         if (ketqua?.ThanhCong) {
