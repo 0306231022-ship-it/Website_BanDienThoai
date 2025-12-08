@@ -86,7 +86,7 @@ function HoSo(){
         </div>
 
         <div className="p-6 border-t border-gray-100 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 justify-end">
-            <Link to="/admin/hoso/ChinhSuaThongTinAdmin"
+            <Link to="/admin/CaiDat/HoSo/ChinhSuaThongTinAdmin"
                 className="px-6 py-3 bg-yellow-500 text-white font-semibold rounded-lg shadow-md hover:bg-yellow-600 transition-colors transform hover:scale-[1.02] text-center" 
             
             >

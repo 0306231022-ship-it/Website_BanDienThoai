@@ -70,7 +70,7 @@ function TrangChuAdmin() {
                     {/* Menu Dropdown */}
                     {isMenuOpen && (
                         <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-10 border border-gray-200" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                            <Link to="/admin/hoso" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" onClick={() => setIsMenuOpen(false)}>
+                            <Link to="/admin/CaiDat/HoSo" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" onClick={() => setIsMenuOpen(false)}>
                                 <i className="fas fa-user-circle mr-2"></i> Hồ Sơ
                             </Link>
                             <Link to="/admin/CaiDat" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" onClick={() => setIsMenuOpen(false)}>

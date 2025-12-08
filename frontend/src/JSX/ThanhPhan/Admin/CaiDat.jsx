@@ -17,7 +17,6 @@ function CaiDat() {
         LinkIns: "",
         Zalo: ""
     });
-
     const [file, setfile] = useState([]); 
     const [previewURL, setPreviewURL] = useState(''); 
     const [err, seterr] = useState({}); 
@@ -52,8 +51,6 @@ function CaiDat() {
             }
         };
     }, [previewURL]);
-
-    
     const handleFileChange = (e) => {
         const files = e.target.files;
         if (files.length > 0) {
@@ -74,13 +71,22 @@ function CaiDat() {
         const input = document.getElementById('logo-upload');
         if (input) input.value = ''; 
     };
-
-
     const Update = async () => {
         seterr({});
+        //kiểm tra dữ liệu trước khi gửi lên server
         const ketquaRong = fun.KiemTraRong(value);
         if (!ketquaRong) {
             ThongBao.ThongBao_CanhBao('Vui lòng điền đầy đủ thông tin bắt buộc!');
+            return;
+        }
+        if (!fun.validatePhone(value.Zalo)) {
+            seterr(prev => ({ ...prev, Zalo: 'Số điện thoại không hợp lệ!' }));
+            ThongBao.ThongBao_CanhBao('Số điện thoại không hợp lệ!');
+            return;
+        }
+        if(!fun.validateEmail(value.Email)) {
+            seterr(prev => ({ ...prev, Email: 'Địa chỉ email không hợp lệ!' }));
+            ThongBao.ThongBao_CanhBao('Địa chỉ email không hợp lệ!');
             return;
         }
         const ketqua = await CallAPI_file(value, file, { url: '/admin/updateWebsite' });
@@ -88,8 +94,7 @@ function CaiDat() {
             ThongBao.ThongBao_ThanhCong(ketqua.message);
             await GetTTwebsite();
             handleDeleteImage(); 
-        } 
-        
+        }
         if (ketqua.Validate) {
             const newErrors = {};
             ketqua.errors.forEach(item => {
@@ -107,28 +112,6 @@ function CaiDat() {
             ThongBao.ThongBao_CanhBao('Vui lòng kiểm tra lại thông tin nhập!');
         }
     };
-
-    // Hàm tiện ích để cập nhật state value nhanh gọn
-    const handleChange = (e) => {
-        const { id, value: inputValue } = e.target;
-        // Map id của input sang key của state (nếu id đặt khác tên state thì cần sửa lại logic này)
-        // Ở đây mình set cứng theo logic cũ của bạn
-        let keyName = "";
-        if (id === "site-name") keyName = "TenWebsite";
-        else if (id === "contact-email") keyName = "Email";
-        else if (id === "address") keyName = "DiaChi";
-        else if (id === "social-facebook") keyName = "LinkFace";
-        else if (id === "social-instagram") keyName = "LinkIns";
-        else if (id === "social-zalo") keyName = "Zalo";
-
-        if (keyName) {
-            setvalue(prev => ({ ...prev, [keyName]: inputValue }));
-            if (err[keyName]) {
-                seterr(prev => ({ ...prev, [keyName]: undefined }));
-            }
-        }
-    };
-
     return (
         <section id="section-settings" className="section" aria-label="Cài đặt website">
             {/* --- Header --- */}
@@ -171,7 +154,12 @@ function CaiDat() {
                                 ${err.TenWebsite 
                                     ? "border-red-500 focus:border-red-500 focus:ring-red-500" 
                                     : "border-gray-300 focus:border-teal-500 focus:ring-teal-500"}`}
-                            onChange={handleChange}
+                            onChange={(e) =>{
+                                setvalue(prev => ({ ...prev, TenWebsite: e.target.value }));
+                                if (err.TenWebsite) {
+                                    seterr(prev => ({ ...prev, TenWebsite: undefined }));
+                                }
+                            }}
                         />
                         {err.TenWebsite && <p className="text-red-500 text-sm mt-1">{err.TenWebsite}</p>}
                     </div>
@@ -187,8 +175,13 @@ function CaiDat() {
                             type="email"
                             placeholder="example@gmail.com"
                             className={`w-full p-3 border rounded-lg transition 
-                                ${err.Email ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-teal-500 focus:border-teal-500"}`}
-                            onChange={handleChange}
+                            ${err.Email ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-teal-500 focus:border-teal-500"}`}
+                            onChange={(e) => {
+                                setvalue(prev => ({ ...prev, Email: e.target.value }));
+                                if (err.Email) {
+                                    seterr(prev => ({ ...prev, Email: undefined }));
+                                }
+                            }}
                         />
                          {err.Email && <p className="text-red-500 text-sm mt-1">{err.Email}</p>}
                     </div>
@@ -204,7 +197,12 @@ function CaiDat() {
                             type="text"
                             placeholder="Số nhà, đường, phường/xã..."
                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                setvalue(prev => ({ ...prev, DiaChi: e.target.value }));
+                                if (err.DiaChi) {
+                                    seterr(prev => ({ ...prev, DiaChi: undefined }));
+                                }
+                            }}
                         />
                     </div>
                 </div>
@@ -223,7 +221,12 @@ function CaiDat() {
                             type="url"
                             placeholder="https://facebook.com/..."
                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                setvalue(prev => ({ ...prev, LinkFace: e.target.value }));
+                                if (err.LinkFace) {
+                                    seterr(prev => ({ ...prev, LinkFace: undefined }));
+                                }
+                            }}
                         />
                     </div>
 
@@ -238,7 +241,12 @@ function CaiDat() {
                             type="url"
                             placeholder="https://instagram.com/..."
                             className="w-full p-3 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition"
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                setvalue(prev => ({ ...prev, LinkIns: e.target.value }));  
+                                if (err.LinkIns) {
+                                    seterr(prev => ({ ...prev, LinkIns: undefined }));
+                                }
+                            }}
                         />
                     </div>
 
@@ -250,11 +258,21 @@ function CaiDat() {
                         <input
                             id="social-zalo"
                             value={value.Zalo}
-                            type="tel"
+                            type="text"
+                            maxLength={10}
                             placeholder="0909xxxxxx"
                             className={`w-full p-3 border rounded-lg transition 
                                 ${err.Zalo ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-teal-500 focus:border-teal-500"}`}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                const onlyNumber = e.target.value.replace(/\D/g, "");
+                                setvalue(prev => ({ 
+                                     ...prev, 
+                                    Zalo: onlyNumber 
+                                }));
+                                 if (err.Zalo) {
+                                     seterr(prev => ({ ...prev, Zalo: undefined }));
+                                }
+                            }}
                         />
                         {err.Zalo && <p className="text-red-500 text-sm mt-1">{err.Zalo}</p>}
                     </div>

@@ -14,8 +14,7 @@ adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
 adminRouter.post('/kiemtra', authMiddleware, adminController.kiemtra);
 adminRouter.post('/DangXuat', authMiddleware, adminController.DangXuat);
 
-adminRouter.post(
-  "/updateWebsite",
+adminRouter.post("/updateWebsite",
   upload.array("images", 10),
   [
     body("Dulieu.TenWebsite")
@@ -62,6 +61,27 @@ adminRouter.post(
 
   adminController.updateWebsite
 );
+adminRouter.post('/ChinhSuaTenWebsite',[
+   body("Dulieu.name")
+      .notEmpty()
+      .withMessage("Dữ liệu không được bỏ trống")
+      .isLength({ max: 255 })
+      .withMessage("tên website không được quá 255 kí tự")
+],
+(req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
+        Validate: true,
+        errors: errors.array(),
+      });
+    }
+    next();
+  },authMiddleware
+);
+
+
+
 
 
 

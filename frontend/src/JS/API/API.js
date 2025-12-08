@@ -2,66 +2,60 @@ import React, { createContext, useContext, useState } from "react";
 import * as fun from '../FUNCTONS/function';
 const APIContext = createContext();
 export function APIProvider({ children }) {
-  const [loading, setLoading]=useState(true);
-  let URL='http://localhost:3001/api';
-  async function CallAPI(token = null, dulieu = null, yeucau) {
-    const DuongDan = URL + yeucau.url;
-    const bodyData = {
-      data: dulieu || {}
-    };
-    let options = {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(bodyData)
-    };
-    if (token) {
-      options.headers['Authorization'] = `Bearer ${token}`;
+    const [loading, setLoading] = useState(false);
+    let URL = 'http://localhost:3001/api';
+    /**
+     * Hàm duy nhất xử lý gọi API, hỗ trợ cả dữ liệu form và upload file.
+     * @param {object | null} dulieu là 1 obj sau đó hàm sẽ chuyển về FROMDATA thông qua appendFormData
+     * @param {object} yeucau - Đối tượng chứa thông tin yêu cầu (chứa thuộc tính 'url' , 'token' , 'fileArray' , 'PhuongThuc').
+     * @returns {object} Kết quả trả về từ API hoặc đối tượng lỗi.
+     */
+    async function CallAPI( dulieu = null, yeucau) {
+        setLoading(true);
+        const DuongDan = URL + yeucau.url;
+        const DataForm = new FormData();
+        fun.appendFormData(DataForm, { Dulieu: dulieu });
+        if (yeucau.fileArray && Array.isArray(yeucau.fileArray) && yeucau.fileArray.length > 0) {
+            yeucau.fileArray.forEach((f) => {
+                DataForm.append("images", f); 
+            });
+        }
+        let options = {
+            method: yeucau.PhuongThuc===1 ? 'POST' : 'GET',
+            credentials: 'include',
+            headers: {}
+        };
+        if (yeucau.token) {
+            options.headers['Authorization'] = `Bearer ${yeucau.token}`;
+        }
+        options.body = DataForm;
+        try {
+            const response = await fetch(DuongDan, options)
+            if (!response.ok) {
+                const errorText = await response.text();
+                return {
+                    status: false,
+                    message: `Lỗi HTTP ${response.status} từ Server: ${errorText.substring(0, 50)}...`
+                };
+            }
+            const ketqua = await response.json();
+            return ketqua;
+        } catch (error) {
+            console.error('Lỗi fetch hoặc parsing JSON:', error);
+            return {
+                status: false,
+                message: 'Lỗi khi truyền dữ liệu lên server hoặc lỗi mạng!'
+            };
+        } finally {
+            setLoading(false);
+        }
     }
-    try {
-      const response = await fetch(DuongDan, options);
-      const ketqua = await response.json();
-      return ketqua;
-    } catch (error) {
-      return {
-        status: false,
-        message: 'Lỗi khi truyền dữ liệu lên server!'
-      };
-    }finally{
-      setLoading(false);
-    }
-  }
-  async function CallAPI_file(DuLieu = null, file, yeucau) {
-    const DuongDan = URL + yeucau.url;
-    const DataForm = new FormData();
-    fun.appendFormData(DataForm, { Dulieu: DuLieu });
-    file.forEach((f) => {
-      DataForm.append("images", f);
-    });
-    let options = {
-      method: 'POST',
-      credentials: 'include',
-      body: DataForm
-    };
-    try {
-      const response = await fetch(DuongDan, options);
-      const ketqua = await response.json();
-      return ketqua;
-    } catch (error) {
-      return {
-        status: false,
-        message: 'Lỗi khi truyền dữ liệu lên server!'
-      };
-    }finally{
-      setLoading(false);
-    }
-  }
-  return (
-    <APIContext.Provider value={{ CallAPI, CallAPI_file, loading }}>
-      {children}
-    </APIContext.Provider>
-  );
+    return (
+        <APIContext.Provider value={{ CallAPI, loading }}>
+            {children}
+        </APIContext.Provider>
+    );
 }
 export function useAPIContext() {
-  return useContext(APIContext);
+    return useContext(APIContext);
 }

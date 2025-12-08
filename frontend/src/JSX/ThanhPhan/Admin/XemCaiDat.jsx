@@ -1,99 +1,178 @@
-//Tạm thời xong nhiệm vụ
 import { Link } from "react-router-dom";
-import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
+import { useAppContext } from "../../../CONTEXT/TrangChuAdmin";
+import { useState } from "react";
+import TenWebsite from "./CaiDatWebsite/TenWebsite";
+
 function XemThongTinWebsite() {
     const { TTwebsite } = useAppContext();
+    const [modalOpen, setModalOpen] = useState(false);
+
     return (
         <>
-            <section id="section-view-settings" className="section" aria-label="Xem thông tin website">
-                <div className="flex items-center justify-between mb-6 mt-6 border-b pb-3 border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900">Thông Tin Website</h2>
-                    <Link 
-                        className="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow-md transition"
-                        aria-label="Chỉnh sửa cấu hình"
-                        to="/admin/CaiDat/caidatwebsite"
-                    >
-                        <i className="fas fa-edit mr-2"></i> Chỉnh Sửa
-                    </Link>
+            <section id="section-view-settings" className="section" aria-label="Thông tin website">
+                <div className="flex items-center justify-between mb-8 mt-6 border-b pb-3 border-gray-200">
+                    <h2 className="text-3xl font-extrabold text-gray-900">⚙️ Thông Tin Website</h2>
                 </div>
 
-                <div className="bg-white p-8 rounded-xl shadow-2xl border border-blue-100 space-y-8">
-                    {/* Thông tin chung */}
+              
+                <div className="bg-white p-8 rounded-xl shadow-xl border border-gray-200 space-y-10">
+
+                    {/* =============== 1. Thông tin chung ================= */}
                     <div>
-                        <h3 className="text-xl font-bold text-blue-700 pb-2 border-b border-gray-100">1. Thông tin Chung</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                            <div>
-                                <p className="text-sm text-gray-500 mb-1">Tên Website</p>
-                                <p className="text-lg font-semibold text-gray-900">{TTwebsite.TenWebsite}</p>
-                            </div>
-                            <div>
-                                <p className="text-sm text-gray-500 mb-1">Email Liên hệ</p>
-                                <p className="text-lg font-semibold text-gray-900">{TTwebsite.Email}</p>
-                            </div>
-                            <div className="md:col-span-2">
-                                <p className="text-sm text-gray-500 mb-1">Địa chỉ Trụ sở Chính</p>
+                        <h3 className="text-xl font-bold text-blue-700 pb-3 border-b border-gray-200">
+                            1. Thông tin Chung
+                        </h3>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-5">
+
+                            {/* ==== Tên Website ==== */}
+                            <button
+                                type="button"
+                                onClick={() => setModalOpen(true)}
+                                className="text-left group bg-gray-50 p-4 rounded-lg border hover:border-blue-300 transition"
+                            >
+                                <p className="text-sm text-gray-500 mb-1 flex items-center gap-2">
+                                    <i className="fas fa-pen text-gray-400 opacity-0 group-hover:opacity-100 group-hover:text-blue-500 transition"></i>
+                                    Tên Website
+                                </p>
                                 <p className="text-lg font-semibold text-gray-900">
+                                    {TTwebsite.TenWebsite}
+                                </p>
+                            </button>
+
+                            {/* ==== Email ==== */}
+                            <div className="group bg-gray-50 p-4 rounded-lg border hover:border-blue-300 transition">
+                                <p className="text-sm text-gray-500 mb-1 flex items-center gap-2">
+                                    <i className="fas fa-pen text-gray-300 opacity-0 group-hover:opacity-100 transition"></i>
+                                    Email Liên hệ
+                                </p>
+                                <p className="text-lg font-semibold text-gray-900">
+                                    {TTwebsite.Email}
+                                </p>
+                            </div>
+
+                            {/* ==== Địa chỉ ==== */}
+                            <div className="md:col-span-2 group bg-gray-50 p-4 rounded-lg border hover:border-blue-300 transition">
+                                <p className="text-sm text-gray-500 mb-1 flex items-center gap-2">
+                                    <i className="fas fa-pen text-gray-300 opacity-0 group-hover:opacity-100 transition"></i>
+                                    Địa chỉ trụ sở chính
+                                </p>
+
+                                <p className="text-lg font-semibold text-gray-900 whitespace-pre-line">
                                     {TTwebsite.DiaChi}
                                 </p>
                             </div>
+
                         </div>
                     </div>
 
-                    {/* Liên kết mạng xã hội */}
+                    {/* =============== 2. Liên kết mạng xã hội ================= */}
                     <div>
-                        <h3 className="text-xl font-bold text-blue-700 pb-2 border-b border-gray-100">2. Liên kết Mạng xã hội</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                            <div>
-                                <p className="text-sm text-gray-500 mb-1">
-                                    <i className="fab fa-facebook-square text-blue-600 mr-2"></i>Facebook
+                        <h3 className="text-xl font-bold text-blue-700 pb-3 border-b border-gray-200">
+                            2. Liên Kết Mạng Xã Hội
+                        </h3>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-5">
+
+                            {/* Facebook */}
+                            <div className="group bg-gray-50 p-4 rounded-lg border hover:border-blue-300 transition">
+                                <p className="text-sm text-gray-500 mb-1 flex items-center gap-2">
+                                    <i className="fas fa-pen text-gray-300 opacity-0 group-hover:opacity-100"></i>
+                                    <i className="fab fa-facebook text-blue-600"></i>
+                                    Facebook
                                 </p>
-                                <Link 
-                                    to={`${TTwebsite.LinkFacebook}`}
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-teal-600 font-semibold hover:underline"
+                                <Link
+                                    to={TTwebsite.LinkFacebook}
+                                    target="_blank"
+                                    className="text-blue-600 font-semibold hover:underline break-all"
                                 >
-                                   {TTwebsite.LinkFacebook}
+                                    {TTwebsite.LinkFacebook}
                                 </Link>
                             </div>
 
-                            <div>
-                                <p className="text-sm text-gray-500 mb-1">
-                                    <i className="fab fa-instagram text-pink-600 mr-2"></i>Instagram
+                            {/* Instagram */}
+                            <div className="group bg-gray-50 p-4 rounded-lg border hover:border-blue-300 transition">
+                                <p className="text-sm text-gray-500 mb-1 flex items-center gap-2">
+                                    <i className="fas fa-pen text-gray-300 opacity-0 group-hover:opacity-100"></i>
+                                    <i className="fab fa-instagram text-pink-600"></i>
+                                    Instagram
                                 </p>
-                                <Link 
-                                    to={`${TTwebsite.LinkInstagram}`}
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-teal-600 font-semibold hover:underline"
+                                <Link
+                                    to={TTwebsite.LinkInstagram}
+                                    target="_blank"
+                                    className="text-pink-600 font-semibold hover:underline break-all"
                                 >
                                     {TTwebsite.LinkInstagram}
                                 </Link>
                             </div>
 
-                            <div>
-                                <p className="text-sm text-gray-500 mb-1">
-                                    <i className="fas fa-phone-alt text-green-500 mr-2"></i>Hotline/Zalo
+                            {/* Hotline/Zalo */}
+                            <div className="group bg-gray-50 p-4 rounded-lg border hover:border-blue-300 transition">
+                                <p className="text-sm text-gray-500 mb-1 flex items-center gap-2">
+                                    <i className="fas fa-pen text-gray-300 opacity-0 group-hover:opacity-100"></i>
+                                    <i className="fas fa-phone text-green-600"></i>
+                                    Hotline / Zalo
                                 </p>
-                                <p className="text-lg font-semibold text-gray-900">{TTwebsite.Zalo}</p>
+                                <p className="text-lg font-semibold text-gray-900">
+                                    {TTwebsite.Zalo}
+                                </p>
                             </div>
 
-                            <div>
-                                <p className="text-sm text-gray-500 mb-1">
-                                    <i className="fas fa-image text-gray-500 mr-2"></i>Logo Hiện tại
+                            {/* Logo */}
+                            <div className="group bg-gray-50 p-4 rounded-lg border hover:border-blue-300 transition">
+                                <p className="text-sm text-gray-500 mb-2 flex items-center gap-2">
+                                    <i className="fas fa-pen text-gray-300 opacity-0 group-hover:opacity-100"></i>
+                                    <i className="fas fa-image text-gray-500"></i>
+                                    Logo Website
                                 </p>
-                                <img 
-                                    src={`http://localhost:3001${TTwebsite.LoGo}`} 
-                                    alt="Logo Website" 
-                                    className="w-40 h-40 object-contain rounded-lg border border-gray-200 shadow-sm"
+
+                                <img
+                                    alt="123"
+                                    src={`http://localhost:3001${TTwebsite.LoGo}`}
+                                    className="w-32 h-32 object-contain rounded-lg border shadow"
                                 />
                             </div>
+
                         </div>
                     </div>
+
+                    {/* ================= ghi chú ================= */}
+                    <div className="mt-3 p-5 bg-yellow-50 border-l-4 border-yellow-500 rounded-lg">
+                        <h4 className="font-bold text-yellow-800 mb-2">Ghi chú</h4>
+                        <p className="text-gray-800 leading-relaxed whitespace-pre-line">
+                            {TTwebsite.MoTaWebstite}
+                        </p>
+                    </div>
+
                 </div>
             </section>
+
+            {/* ===================== MODAL ===================== */}
+            {
+                modalOpen && (
+                    <div className="fixed inset-0 bg-black/40 flex justify-center items-center z-50 backdrop-blur-sm">
+                        <div className="bg-white p-7 rounded-xl shadow-2xl w-[90%] max-w-lg relative animate-fadeIn border">
+
+                            {/* Nút X */}
+                            <button
+                                onClick={() => setModalOpen(false)}
+                                className="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl"
+                            >
+                                <i className="fas fa-times"></i>
+                            </button>
+
+                            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                                Chỉnh sửa Tên Website
+                            </h3>
+
+                            <TenWebsite />
+                        </div>
+                    </div>
+                )
+            }
         </>
     );
 }
 
 export default XemThongTinWebsite;
+

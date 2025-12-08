@@ -32,6 +32,10 @@ function QuanLiTTCaNhan() {
                         <Link to="/admin/CaiDat" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
                             <i className="fas fa-cogs mr-2"></i><span className="ml-3"> website</span>
                         </Link>
+                         <Link to="/admin/CaiDat/HoSo" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
+                            <i className="fas fa-cogs mr-2"></i><span className="ml-3">Hồ sơ </span>
+                        </Link>
+
                         <Link to="/admin" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
                             <i className="fas fa-arrow-left mr-2"></i><span className="ml-3"> Quay lại </span>
                         </Link>
@@ -44,6 +48,11 @@ function QuanLiTTCaNhan() {
         <main className="flex-1 p-6 bg-gray-50 min-h-screen" role="main" aria-label="Nội dung quản trị">
                 <Routes>
                     <Route index element={<XemThongTinWebsite />} />
+                    <Route path="caidatwebsite" element={<CaiDat />} />
+                    <Route path="HoSo" element={<HoSo />} />
+                    <Route path="HoSo/ChinhSuaThongTinAdmin" element={<ChinhSua />} />
+
+
                     <Route path="DonHang" element={<DonHang />} />
                     <Route path="DonHang/ChiTietDon" element={<ChiTietDon />} />
                     <Route path="sanpham" element={<DanhSachSanPham />} />
@@ -58,11 +67,11 @@ function QuanLiTTCaNhan() {
                     <Route path="danhsachma" element={<DanhSachMa />} />
                     <Route path="danhsachma/magiamgia" element={<MaGiamGia />} />
                     <Route path="hotro" element={<HoTroKhachHang />} />
-                    <Route path="caidatwebsite" element={<CaiDat />} />
+                   
                     <Route path="BinhLuan" element={<BinhLuan />} />
                     <Route path="BinhLuan/xem" element={< Xem />} />
-                    <Route path="hoso" element={<HoSo />} />
-                    <Route path="hoso/ChinhSuaThongTinAdmin" element={<ChinhSua />} />
+                    
+                    
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                 </Routes>
