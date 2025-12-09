@@ -3,27 +3,41 @@ import { Link , useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
 import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
+import { useAPIContext } from '../../JS/API/API';
+import  Loading from '../../JS/FUNCTONS/loading';
 function AdminLogin() {
     const [email,setEmail]=useState('');
     const navigate = useNavigate();
     const [passWord,setPassWord]=useState('');
     const [xacnhan,setXacNhan]=useState(false);
+    const [err,seterr]=useState({})
     const { login } = useAppContext();
-    const DangNhap=async()=>{
-        const DuLieu={
-            email:email,
-            passWord:passWord,
-            xacnhan:xacnhan
-        };
-       const ketqua= await login(DuLieu);
-       if(ketqua.ThanhCong){
-            localStorage.setItem("token", ketqua.token);
-            localStorage.setItem('DuLieu', JSON.stringify(ketqua.DuLieu));
-            ThongBao.ThongBao_ThanhCong(ketqua.message);
-            navigate('/admin');
-       }else{
-            ThongBao.ThongBao_Loi(ketqua.message);
-       }
+    const { loading } = useAPIContext();
+ const DangNhap = async () => {
+  const obj = {
+    email,
+    passWord,
+  };
+  const ketqua = await login(obj);
+  if (!ketqua) return;
+  if (ketqua.validation) {
+    ketqua.errors.forEach(Err => {
+      seterr(prev => ({
+        ...prev,
+        [Err.path]: Err.msg
+      }));
+    });
+  } else if (ketqua.ThanhCong) {
+    localStorage.setItem("token", ketqua.token);
+    localStorage.setItem("DuLieu", JSON.stringify(ketqua.DuLieu));
+    ThongBao.ThongBao_ThanhCong(ketqua.message);
+    navigate('/admin');
+  } else {
+    ThongBao.ThongBao_CanhBao(ketqua.message);
+  }
+};
+    if(loading){
+        return <Loading/>
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -44,16 +58,31 @@ function AdminLogin() {
                         <div>
                             <label htmlFor="email-address" className="sr-only">Email hoặc Tên đăng nhập</label>
                             <input id="email-address" name="email" type="text"  required
-                                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-lg focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm"
+                                 className={ "appearance-none rounded-none relative block w-full px-3 py-3 border placeholder-gray-500 text-gray-900 rounded-t-lg focus:outline-none sm:text-sm " +
+                                    (err.email
+                                         ? "border-red-500 focus:border-red-500"
+                                         : "border-gray-300 focus:ring-teal-500 focus:border-teal-500"
+                                    )}
                                 placeholder="Email hoặc Tên đăng nhập"
                                 onChange={(e)=>{setEmail(e.target.value)}}/>
+                            {
+                                err.email && <p className='text-red-700'>(*) {err.email}</p>
+                            }
                         </div>
                         <div>
                             <label htmlFor="password" className="sr-only">Mật khẩu</label>
                             <input  id="password"   name="password" type={xacnhan ? "text" : "password"} required
-                                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-lg focus:outline-none focus:ring-teal-500 focus:border-teal-500 focus:z-10 sm:text-sm"
+                                className={ "appearance-none rounded-none relative block w-full px-3 py-3 border placeholder-gray-500 text-gray-900 rounded-t-lg focus:outline-none sm:text-sm " +
+                                    (err.passWord
+                                         ? "border-red-500 focus:border-red-500"
+                                         : "border-gray-300 focus:ring-teal-500 focus:border-teal-500"
+                                    )}
                                 placeholder="Mật khẩu"
                                 onChange={(e)=>{setPassWord(e.target.value)}}/>
+                            {
+                                err.passWord && <p className='text-red-700'>(*) {err.passWord}</p>
+                            }
+            
                         </div>
                     </div>
                     <div className="flex items-center justify-between">

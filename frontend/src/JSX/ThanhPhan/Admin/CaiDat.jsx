@@ -8,7 +8,7 @@ import { useAPIContext } from '../../../JS/API/API';
 
 function CaiDat() {
     const { TTwebsite, GetTTwebsite } = useAppContext();
-    const { CallAPI_file } = useAPIContext();
+    const { CallAPI } = useAPIContext();
     const [value, setvalue] = useState({
         TenWebsite: "",
         Email: "",
@@ -89,7 +89,7 @@ function CaiDat() {
             ThongBao.ThongBao_CanhBao('Địa chỉ email không hợp lệ!');
             return;
         }
-        const ketqua = await CallAPI_file(value, file, { url: '/admin/updateWebsite' });
+        const ketqua = await CallAPI(value, { url: '/admin/updateWebsite', fileArray : file, PhuongThuc:1 });
         if (ketqua.ThanhCong) {
             ThongBao.ThongBao_ThanhCong(ketqua.message);
             await GetTTwebsite();

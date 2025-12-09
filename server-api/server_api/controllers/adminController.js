@@ -33,48 +33,70 @@ export default class adminController{
             })
          }
      }
-     static async DangNhap(req,res){
-       const duLieuDangNhap = req.body;
-       const DangNhap= await adminModel.login(duLieuDangNhap.data.email)
-       if(DangNhap){
-            //Dữ liệu thành công sẽ lưu vào localStorage
-            const isMath =await compare(duLieuDangNhap.data.passWord, DangNhap.MATKHAU);
-           if(isMath){
-                if(DangNhap.TRANGTHAI!==1){
-                    res.json({
-                        ThanhCong:false,
-                        message:'Tài khoảng đã ngừng hoạt động!'
-                    });
-                }else{
-                    if(DangNhap.LOAIND!==1){
-                        res.json({
-                            ThanhCong:false,
-                            message:'Bạn đăng nhập với vai trò khác. Vui lòng kiểm tra lại!'
-                        });
-                        return;
-                    }
-                     const token =await adminController.generateToken(DangNhap);
-                     const { MATKHAU, ...KetQua } = DangNhap;
-                     res.json({
-                        ThanhCong:true,
-                        message:'Bạn đã đăng nhập thành công!',
-                        token:token,
-                        DuLieu:KetQua
-                     }) 
-                }
-            }else{
-                res.json({
-                    ThanhCong:false,
-                    message:'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin'
-                })
-            }
-        }else{
-            res.json({
-                ThanhCong:false,
-                message:'Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin'
-            })
+    static async DangNhap(req, res) {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                validation: true,
+                errors: errors.array() 
+            });
         }
+        const dulieu = req.body; 
+        if (!dulieu || !dulieu.email) {
+            return res.status(400).json({ 
+                ThanhCong: false, 
+                message: 'Vui lòng kiểm tra lại dữ liệu!' 
+            });
+        }
+        try {
+             const DangNhap = await adminModel.login(dulieu.email);
+              if (DangNhap) {
+                 const isMatch = await compare(dulieu.passWord, DangNhap.MATKHAU);
+                 if (isMatch) {
+                    if (DangNhap.TRANGTHAI !== 1) {
+                        return res.json({
+                            ThanhCong: false,
+                            message: 'Tài khoản đã ngừng hoạt động!'
+                        });
+                    }
+                    const token = await adminController.generateToken(DangNhap);
+                    const { MATKHAU, ...KetQua } = DangNhap;
+                    return res.json({
+                         ThanhCong: true,
+                         message: 'Bạn đã đăng nhập thành công!',
+                         token: token,
+                         DuLieu: KetQua
+                    });
+
+                }else{
+                    return res.json({
+                        ThanhCong: false,
+                        message: 'Đăng nhập thất bại. Mật khẩu không đúng.'
+                    });
+                }
+
+              }else{
+                 return res.json({
+                    ThanhCong: false,
+                    message: 'Đăng nhập thất bại. Tài khoản không tồn tại.'
+                });
+              }
+
+        } catch (error) {
+            console.error("Lỗi trong quá trình đăng nhập:", error);
+        return res.status(500).json({
+            ThanhCong: false,
+            message: 'Lỗi máy chủ trong quá trình xử lý đăng nhập.'
+        });
     }
+}
+
+       
+       
+
+    
+
+
     static async DangXuat(req,res){
          const token = req.user.token;
          const decode = jwt.decode(token);

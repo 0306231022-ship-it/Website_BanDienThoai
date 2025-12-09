@@ -14,10 +14,8 @@
             return false;
         }
     }
-
     return true; 
 }
-
 export function resetGiaTri(obj) {
     if (typeof obj !== "object" || obj === null) return;
     for (const key in obj) {
@@ -34,18 +32,33 @@ export function resetGiaTri(obj) {
         }
     }
 }
-// Hàm chuyển đổi object thành FormData, bao gồm cả object lồng nhau
-export function appendFormData(formData, data, parentKey = "") {
-  for (let key in data) {
-    if (data.hasOwnProperty(key)) {
-      const fieldKey = parentKey ? `${parentKey}[${key}]` : key;
-      if (typeof data[key] === "object" && data[key] !== null) {
-        appendFormData(formData, data[key], fieldKey);
-      } else {
-        formData.append(fieldKey, data[key]);
+export function objectToFormData(obj, formData = new FormData(), parentKey = '') {
+  for (const key in obj) {
+    if (Object.hasOwnProperty.call(obj, key)) { 
+      const propName = parentKey ? `${parentKey}[${key}]` : key;
+      const value = obj[key];
+      if (value instanceof File || value instanceof Blob) {
+        formData.append(propName, value, value.name);
+      } else if (value && typeof value === 'object' && !Array.isArray(value)) {
+        objectToFormData(value, formData, propName);
+      } else if (Array.isArray(value)) {
+        value.forEach((item, index) => {
+          formData.append(`${propName}[]`, item);
+        });
+      } else if (value !== null && value !== undefined) {
+        formData.append(propName, value);
       }
+     
     }
   }
+  return formData;
+}
+//hàm kiểm ta fromdata rỗng 
+export function isFormDataEmpty(formData) {
+  for (const pair of formData.entries()) {
+    return false; 
+  }
+  return true; 
 }
 // Hàm kiểm tra định dạng số điện thoại Việt Nam
 export const validatePhone = (value) => {

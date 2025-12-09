@@ -21,7 +21,7 @@ function TenWebsite() {
         seterr('Vui lòng kiểm tra lại dữ liệu');
         return;
     }
-    const ketqua= await CallAPI(undefined,{name:name},{url:'/admin/ChinhSuaTenWebsite'});
+    const ketqua= await CallAPI({name:name},{url:'/admin/ChinhSuaTenWebsite', PhuongThuc:1});
     if (ketqua.ThanhCong) {
         reset();
         ThongBao.ThongBao_ThanhCong(ketqua.message);

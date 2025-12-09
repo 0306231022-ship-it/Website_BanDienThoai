@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
-
+// Chỉnh sửa lại file nha
 const authMiddleware = (req, res, next) => {
+  //xem thử localStỏe có lưu token hay không.
   const authHeader = req.headers.authorization;
   if (!authHeader) {
     return res.json({

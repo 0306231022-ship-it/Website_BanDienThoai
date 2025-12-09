@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from "react";
-import * as fun from '../FUNCTONS/function';
 const APIContext = createContext();
 export function APIProvider({ children }) {
     const [loading, setLoading] = useState(false);
@@ -13,13 +12,6 @@ export function APIProvider({ children }) {
     async function CallAPI( dulieu = null, yeucau) {
         setLoading(true);
         const DuongDan = URL + yeucau.url;
-        const DataForm = new FormData();
-        fun.appendFormData(DataForm, { Dulieu: dulieu });
-        if (yeucau.fileArray && Array.isArray(yeucau.fileArray) && yeucau.fileArray.length > 0) {
-            yeucau.fileArray.forEach((f) => {
-                DataForm.append("images", f); 
-            });
-        }
         let options = {
             method: yeucau.PhuongThuc===1 ? 'POST' : 'GET',
             credentials: 'include',
@@ -28,8 +20,8 @@ export function APIProvider({ children }) {
         if (yeucau.token) {
             options.headers['Authorization'] = `Bearer ${yeucau.token}`;
         }
-        options.body = DataForm;
-        try {
+        options.body = dulieu;
+         try {
             const response = await fetch(DuongDan, options)
             if (!response.ok) {
                 const errorText = await response.text();
