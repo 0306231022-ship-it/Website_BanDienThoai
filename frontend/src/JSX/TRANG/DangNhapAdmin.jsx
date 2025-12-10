@@ -1,4 +1,4 @@
-//đã hoàn thành
+//Vẫn đang lỗi
 import { Link , useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
@@ -13,29 +13,38 @@ function AdminLogin() {
     const [err,seterr]=useState({})
     const { login } = useAppContext();
     const { loading } = useAPIContext();
- const DangNhap = async () => {
-  const obj = {
-    email,
-    passWord,
-  };
-  const ketqua = await login(obj);
-  if (!ketqua) return;
-  if (ketqua.validation) {
-    ketqua.errors.forEach(Err => {
-      seterr(prev => ({
-        ...prev,
-        [Err.path]: Err.msg
-      }));
-    });
-  } else if (ketqua.ThanhCong) {
-    localStorage.setItem("token", ketqua.token);
-    localStorage.setItem("DuLieu", JSON.stringify(ketqua.DuLieu));
-    ThongBao.ThongBao_ThanhCong(ketqua.message);
-    navigate('/admin');
-  } else {
-    ThongBao.ThongBao_CanhBao(ketqua.message);
-  }
-};
+    const DangNhap=async()=>{
+        const obj={
+            email:email,
+            passWord:passWord,
+        };
+       const ketqua= await login(obj);
+       if(ketqua?.Status){
+          navigate('/500');
+          return;
+       };
+       if(ketqua?.ThatBai){
+        ThongBao.ThongBao_Loi(ketqua.message);
+        return;
+       };
+       if(ketqua?.validation){
+             ketqua.errors.forEach(Err => {
+                seterr(prev=>{
+                    return{
+                        ...prev,
+                        [Err.path]: Err.msg
+                    }
+                })
+            });
+            return;
+        };
+        if(ketqua?.ThanhCong){
+            localStorage.setItem("token", ketqua.token);
+            localStorage.setItem('DuLieu', JSON.stringify(ketqua.DuLieu));
+            ThongBao.ThongBao_ThanhCong(ketqua?.message);
+            navigate('/admin');
+        }
+    }
     if(loading){
         return <Loading/>
     }

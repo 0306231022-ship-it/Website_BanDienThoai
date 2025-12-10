@@ -35,7 +35,7 @@ export function APIProvider({ children }) {
         } catch (error) {
             console.error('Lỗi fetch hoặc parsing JSON:', error);
             return {
-                status: false,
+                Status: true,
                 message: 'Lỗi khi truyền dữ liệu lên server hoặc lỗi mạng!'
             };
         } finally {

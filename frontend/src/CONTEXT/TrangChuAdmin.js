@@ -9,7 +9,6 @@ const AppContext = createContext();
 export function AppProvider({ children }) {
   const {CallAPI}= useAPIContext();
   const navigate = useNavigate();
-  const [err,seterr]=useState({});
   const [TTwebsite,setWebsite]=useState([])
   const GetTTwebsite=async()=>{
     setWebsite([])
@@ -20,8 +19,8 @@ export function AppProvider({ children }) {
     }
     if(ketqqua.ThanhCong){
       setWebsite(ketqqua.DuLieu)
-    }
- 
+    };
+  
   }
   //hàm kiểm tra đăng nhập
   const kiemtra=async()=>{
@@ -34,24 +33,18 @@ export function AppProvider({ children }) {
   };
   //hàm đăng nhập
 const login = async (DuLieu) => {
-  if (!fun.KiemTraRong(DuLieu)) {
+  const kiemtra=fun.KiemTraRong(DuLieu);
+  if (!kiemtra) {
     ThongBao.ThongBao_CanhBao('Vui lòng điền đầy đủ thông tin');
     return;
   }
-
   if (!fun.validateEmail(DuLieu.email)) {
-    seterr(prev => ({ ...prev, email: 'Lỗi định dạng email' }));
     ThongBao.ThongBao_CanhBao('Email không hợp lệ');
     return;
   }
-
-  try {
-    const ketqua = await CallAPI(DuLieu, { url: '/admin/DangNhap', PhuongThuc: 1 });
-    return ketqua;
-  } catch (error) {
-    ThongBao.ThongBao_CanhBao('Đăng nhập thất bại, vui lòng thử lại');
-    return null;
-  }
+   const formdata=fun.objectToFormData(DuLieu);
+   const ketqqua=await CallAPI(formdata,{PhuongThuc:1,url :'/admin/DangNhap' });
+   return ketqqua;
 };
 
   //hàm đăng xuất
@@ -78,7 +71,7 @@ const DangXuat = async () => {
 
 
   return (
-    <AppContext.Provider value={{ login , err, kiemtra , DangXuat , GetTTwebsite , TTwebsite ,}}>
+    <AppContext.Provider value={{ login , kiemtra , DangXuat , GetTTwebsite , TTwebsite ,}}>
       {children}
     </AppContext.Provider>
   );

@@ -34,18 +34,18 @@ export default class adminController{
          }
      }
     static async DangNhap(req, res) {
+        const dulieu = req.body;
+         if (!dulieu) {
+            return res.status(400).json({ 
+                ThanhCong: false, 
+                message: 'Vui lòng kiểm tra lại dữ liệu!' 
+            });
+        } 
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.json({
                 validation: true,
                 errors: errors.array() 
-            });
-        }
-        const dulieu = req.body; 
-        if (!dulieu || !dulieu.email) {
-            return res.status(400).json({ 
-                ThanhCong: false, 
-                message: 'Vui lòng kiểm tra lại dữ liệu!' 
             });
         }
         try {
@@ -55,7 +55,7 @@ export default class adminController{
                  if (isMatch) {
                     if (DangNhap.TRANGTHAI !== 1) {
                         return res.json({
-                            ThanhCong: false,
+                            ThatBai: true,
                             message: 'Tài khoản đã ngừng hoạt động!'
                         });
                     }
@@ -70,33 +70,25 @@ export default class adminController{
 
                 }else{
                     return res.json({
-                        ThanhCong: false,
+                        ThatBai:true,
                         message: 'Đăng nhập thất bại. Mật khẩu không đúng.'
                     });
                 }
 
               }else{
                  return res.json({
-                    ThanhCong: false,
+                    ThatBai:true,
                     message: 'Đăng nhập thất bại. Tài khoản không tồn tại.'
                 });
               }
 
         } catch (error) {
             console.error("Lỗi trong quá trình đăng nhập:", error);
-        return res.status(500).json({
-            ThanhCong: false,
-            message: 'Lỗi máy chủ trong quá trình xử lý đăng nhập.'
+        return res.json({
+            Status: true,
         });
     }
 }
-
-       
-       
-
-    
-
-
     static async DangXuat(req,res){
          const token = req.user.token;
          const decode = jwt.decode(token);
