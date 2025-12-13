@@ -1,4 +1,4 @@
-//Vẫn đang lỗi
+//Vẫn đang lỗi, sửa lại hàm DangNhap
 import { Link , useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import * as ThongBao from '../../JS/FUNCTONS/ThongBao';

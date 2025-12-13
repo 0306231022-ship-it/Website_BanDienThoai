@@ -13,7 +13,7 @@ export function AppProvider({ children }) {
   const GetTTwebsite=async()=>{
     setWebsite([])
     const ketqqua=await CallAPI(undefined,{url:'/admin/ThongTinWebsite' , PhuongThuc:1});
-    if(ketqqua.status===false){
+    if(ketqqua.Status){
       navigate('/500');
       return;
     }

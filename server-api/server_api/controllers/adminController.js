@@ -17,26 +17,10 @@ export default class adminController{
             {expiresIn:JWT_EXPIRES_IN}
         );
     }
-     static async kiemtra(req, res) {
-         const adminId = req.user.id;
-         const TruyVan=adminModel.LayTT_ID(adminId);
-         if(TruyVan){
-            res.json({
-                ThanhCong:true,
-                message:'Bạn đã đăng nhập!',
-                DuLieu:TruyVan
-            })
-         }else{
-            res.json({
-                ThanhCong:false,
-                message:'Lỗi.....'
-            })
-         }
-     }
     static async DangNhap(req, res) {
         const dulieu = req.body;
          if (!dulieu) {
-            return res.status(400).json({ 
+            return res.json({ 
                 ThanhCong: false, 
                 message: 'Vui lòng kiểm tra lại dữ liệu!' 
             });
@@ -67,28 +51,42 @@ export default class adminController{
                          token: token,
                          DuLieu: KetQua
                     });
-
                 }else{
                     return res.json({
                         ThatBai:true,
                         message: 'Đăng nhập thất bại. Mật khẩu không đúng.'
                     });
                 }
-
               }else{
                  return res.json({
                     ThatBai:true,
                     message: 'Đăng nhập thất bại. Tài khoản không tồn tại.'
                 });
               }
-
         } catch (error) {
             console.error("Lỗi trong quá trình đăng nhập:", error);
-        return res.json({
-            Status: true,
-        });
+            return res.json({
+                Status: true,
+            });
+        }
     }
-}
+    //bên dưới chưa sửa
+    static async kiemtra(req, res) {
+         const adminId = req.user.id;
+         const TruyVan=adminModel.LayTT_ID(adminId);
+         if(TruyVan){
+            res.json({
+                ThanhCong:true,
+                message:'Bạn đã đăng nhập!',
+                DuLieu:TruyVan
+            })
+         }else{
+            res.json({
+                ThanhCong:false,
+                message:'Lỗi.....'
+            })
+         }
+     }
     static async DangXuat(req,res){
          const token = req.user.token;
          const decode = jwt.decode(token);

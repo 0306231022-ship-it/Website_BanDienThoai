@@ -1,10 +1,10 @@
-//Tạm thời hoàn thành chức năng cài đặt website cơ bản
+//Cần sửa lại hình ảnh, sử lí lỗi validate do đã sửa lại cấu trúc API.js
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import * as fun from '../../../JS/FUNCTONS/function'; 
-import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
-import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
-import { useAPIContext } from '../../../JS/API/API';
+import * as fun from '../../../../JS/FUNCTONS/function'; 
+import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+import { useAppContext } from '../../../../CONTEXT/TrangChuAdmin';
+import { useAPIContext } from '../../../../JS/API/API';
 
 function CaiDat() {
     const { TTwebsite, GetTTwebsite } = useAppContext();
@@ -119,7 +119,7 @@ function CaiDat() {
                 <h2 className="text-2xl font-bold text-gray-900">Cài Đặt Website Cơ Bản</h2>
                 <div className="flex gap-3">
                     <Link
-                        to="/admin/CaiDat"
+                        to="/admin/CaiDat/web"
                         className="px-5 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 font-semibold shadow-md transition flex items-center"
                     >
                         <i className="fas fa-arrow-left mr-2"></i> Quay lại

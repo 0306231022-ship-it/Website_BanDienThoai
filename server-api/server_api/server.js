@@ -41,9 +41,6 @@ app.get('/', (req, res) => res.json({ message: 'Server API running' }));
 
 app.use('/api/admin', adminRouter);
 
-// ===================================================================
-// 8️⃣ 404 handler
-// ===================================================================
 app.use((req, res) => res.status(404).json({ message: 'Endpoint not found' }));
 
 // ===================================================================
@@ -60,10 +57,6 @@ app.use((err, req, res, next) => {
     body: req.body
   });
 });
-
-// ===================================================================
-// 🔟 Start server
-// ===================================================================
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

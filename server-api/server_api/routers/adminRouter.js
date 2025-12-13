@@ -9,11 +9,11 @@ import {UserValidate } from '../validation/KTDangNhap.js';
 const adminRouter = Router();
 const upload = multer();
 
-adminRouter.post('/DangNhap',  upload.none(), UserValidate, adminController.DangNhap
-);
+adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
+adminRouter.post('/DangNhap',  upload.none(), UserValidate, adminController.DangNhap);
 
 // --- 2. Các Router Không Cần File/Form Data ---
-adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
+
 adminRouter.post('/kiemtra', authMiddleware, adminController.kiemtra);
 adminRouter.post('/DangXuat', authMiddleware, adminController.DangXuat);
 

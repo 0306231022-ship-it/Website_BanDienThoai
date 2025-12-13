@@ -13,13 +13,13 @@ import PhiVanChuyen from '../PhiVanChuyen';
 import MaGiamGia from '../MaGiamGia';
 import DanhSachMa from '../DanhSachMa';
 import HoTroKhachHang from '../HoTroKhachHang';
-import CaiDat from '../CaiDat';
+import CaiDat from '../CaiDatWebsite/CaiDat';
 import ChietMaGG from '../ChiTietMaGiam';
 import BinhLuan from '../DanhSachBinhLuan';
-import XemThongTinWebsite from '../XemCaiDat';
-import HoSo from '../HoSoAdmin';
+import XemThongTinWebsite from '../CaiDatWebsite/XemCaiDat';
+import HoSo from '../ThongTinCaNhan/HoSoAdmin';
 import Xem from '../XemBinhLuan';
-import ChinhSua from '../ChinhSuaThongTinAD';
+import ChinhSua from '../ThongTinCaNhan/ChinhSuaThongTinAD';
 import { Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 function QuanLiTT() {
