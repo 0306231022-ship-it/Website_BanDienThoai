@@ -4,7 +4,16 @@ import HoSo from "../ThongTinCaNhan/HoSoAdmin";
 import XemCaiDat from "../CaiDatWebsite/XemCaiDat";
 import CaiDat from "../CaiDatWebsite/CaiDat";
 import ChinhSua from "../ThongTinCaNhan/ChinhSuaThongTinAD";
+import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
+import { useAPIContext } from "../../../../JS/API/API";
+import { useEffect } from "react";
+import Loading from "../../../../JS/FUNCTONS/loading";
 function QuanLiTTCaNhan() {
+    const { TTwebsite , GetTTwebsite } = useAppContext();
+    const {loading}= useAPIContext();
+
+
+
     /**
      * const quizzes = [
   { question: "2 + 2 = ?", answer: "4" },
@@ -36,8 +45,8 @@ result.forEach(q => console.log(q.question));
             </div>
                 <div className="p-4 rounded-xl bg-gray-50 border border-gray-200 shadow-inner space-y-3 mb-8">
                     <div className="flex items-center text-blue-600 font-bold space-x-2">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Meta_Platforms_Inc._logo.svg/512px-Meta_Platforms_Inc._logo.svg.png" alt="Meta Logo" className="w-5 h-5" />
-                        <span>Tên website</span>
+                         <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" className='w-5 h-5 rounded-full' />
+                        <span>{TTwebsite.TenWebsite}</span>
                     </div>
 
                     <h3 className="font-semibold text-gray-800">Trung tâm cài đặt</h3>
@@ -49,24 +58,15 @@ result.forEach(q => console.log(q.question));
                     <nav className="space-y-2 text-sm mt-2">
                         
                         <Link to="/admin/CaiDat/hoAD" className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 hover:bg-gray-100 p-1.5 rounded-lg transition duration-150">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
+                            <i class="fa-solid fa-user-circle"></i>
                             <span>Thông tin cá nhân</span>
                         </Link >
                           <Link to="/admin/CaiDat/web" className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 hover:bg-gray-100 p-1.5 rounded-lg transition duration-150">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
+                            <i className="fa-solid fa-globe"></i>
                             <span>Thông tin website</span>
                         </Link >
                         <Link to="/admin" className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 hover:bg-gray-100 p-1.5 rounded-lg transition duration-150">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
+                            <i className="fa-solid fa-arrow-left"></i>
                             <span>Quay lại</span>
                         </Link >
 

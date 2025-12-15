@@ -1,99 +1,160 @@
+//load dữ liệu thành công, tiếp tục nghiên cứu chỉnh sửa các thông tin website
+// Đang lỗi vè modal
 import { useState } from "react";
-import ChinhSua from "./ChinhSuaTatCa";
 import { Link } from 'react-router-dom';
+import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
+import { useAPIContext } from "../../../../JS/API/API";
+import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
+import Loading from "../../../../JS/FUNCTONS/loading";
+import ChinhSuaImgaeVaTen from "./modal/ChinhSuaNameLoGo";
+
 function XemCaiDat(){
-    const [open,setopen]=useState(false)
+    const { TTwebsite} = useAppContext();
+    const {loading}= useAPIContext();
+    const {modalState,MoModal,DongModal,CapNhatTieuDe,TieuDe} = useModalContext();
+ 
+ 
+    
+    if(loading){
+        return <Loading/>
+    }
+    
     return(
         <>
-            <div className="p-6">
-                <header className="bg-white p-6 rounded-lg">
-                       <h2 className="text-2xl font-bold mb-1">Trang thông tin website.</h2>
-                       <p className="text-gray-600 mb-6 gap-4">
-                        <span>Cài đặt và chỉnh sửa thông tin của website</span>
-                         <Link to="" className="text-blue-600 hover:underline font-medium">Tìm hiểu thêm</Link>
-                        </p>
+            <div className="p-6 min-h-screen">
+                <header className="bg-white p-6 rounded-xl shadow-md mb-8 border border-gray-100">
+                    <div className="flex items-center mb-1">
+                        <i className="fa-solid fa-circle-info text-indigo-600 text-3xl mr-3"></i> 
+                        <h2 className="text-2xl font-extrabold text-gray-900">Trang Thông Tin Website</h2>
+                    </div>
+                    <p className="text-gray-500 mt-2">
+                        Quản lý và chỉnh sửa các thông tin cơ bản, liên hệ, và mạng xã hội của website.
+                        <Link to="" className="text-indigo-600 hover:text-indigo-700 hover:underline font-medium ml-2 transition">
+                            Tìm hiểu thêm
+                        </Link>
+                    </p>
                 </header>
-                <main className="bg-white p-6 rounded-lg mt-4 ">
-                    <h3 className="text-lg font-semibold mb-2">Trang cá nhân</h3>
-                    <button className="flex items-center justify-between w-full p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition duration-150 ease-in-out group -mx-3">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-10 h-10 rounded-full bg-gray-300 overflow-hidden flex-shrink-0">
-                                <svg className="w-full h-full text-gray-500" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                </svg>
+                <main className="bg-white p-6 rounded-xl shadow-md mt-6 border border-gray-100">
+                    <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3">📋 Thông tin chính</h3>
+                    <button 
+                        onClick={() => MoModal('Logo&Name', { 
+                            LoGo: TTwebsite.LoGo, 
+                            TenWebsite: TTwebsite.TenWebsite
+                        })} 
+                        className="flex items-center justify-between w-full p-3 rounded-xl hover:bg-indigo-50 cursor-pointer transition duration-200 ease-in-out group"
+                    >
+                        <div className="flex items-center space-x-4">
+                            <img 
+                                src={`http://localhost:3001${TTwebsite.LoGo}`} 
+                                alt="Logo" 
+                                className='w-12 h-12 rounded-full object-cover border-2 border-indigo-200 shadow-inner' 
+                            />
+                            <div className='text-left'>
+                                <p className="font-bold text-gray-900 text-lg group-hover:text-indigo-800">{TTwebsite.TenWebsite}</p>
+                                <p className="text-sm text-gray-500">Tên và Logo Website</p>
                             </div>
-                            <div>
-                                <p className="font-medium text-gray-800">Nguyễn Ngọc Hiếu</p>
-                                <p className="text-sm text-gray-500 flex items-center">
-                                    <svg className="w-4 h-4 mr-1 text-blue-600" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12c0 5.09 3.73 9.35 8.63 10.05v-7.39H7.9v-2.66h2.73v-2.02c0-2.7 1.6-4.18 4.07-4.18 1.15 0 2.14.08 2.42.12v2.81h-1.66c-1.32 0-1.57.63-1.57 1.55v1.94h3.12l-.5 3.06h-2.62v7.39C18.27 21.35 22 17.09 22 12c0-5.52-4.48-10-10-10z"/>
-                                    </svg>
-                                    Facebook
+                        </div>
+                        <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-400 group-hover:text-indigo-600"></i>
+                    </button>
+                </main>
+                <main className="bg-white p-6 rounded-xl shadow-md mt-6 border border-gray-100">
+                    <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-4">
+                        <i className="fa-solid fa-globe text-indigo-600 mr-2"></i> Mô Tả Thông Tin Website
+                    </h3>
+                    <button 
+                        onClick={() => MoModal("SuaMoTa", { MoTaWebstite: TTwebsite.MoTaWebstite })}
+                        className="flex items-start justify-between w-full py-4 px-3 rounded-xl transition duration-200 ease-in-out 
+                                   group hover:bg-indigo-50 hover:shadow-md border border-transparent hover:border-indigo-200"
+                    >
+                        <div className="flex items-start space-x-4">
+                            <i className="fa-solid fa-file-lines w-6 h-6 text-indigo-500 mt-0.5 flex-shrink-0"></i>
+                            <div className="text-left">
+                                <p className="font-semibold text-gray-900 mb-1">Chi tiết mô tả:</p> 
+                                <p className="text-sm text-gray-600 leading-relaxed max-w-lg">
+                                    {TTwebsite.MoTaWebstite || "Chưa có mô tả. Nhấn vào để thêm/sửa mô tả website."}
                                 </p>
                             </div>
                         </div>
-                        
-                        <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-400 group-hover:text-indigo-600 flex-shrink-0 ml-4 mt-0.5"></i>
                     </button>
                 </main>
-
-                <hr className="border-gray-300 my-6"/>
-
-                <main className="bg-white p-6 rounded-lg mt-4">
-                    <h3 className="text-lg font-semibold mb-3">Thông tin cá nhân</h3>
-                    <button className="flex justify-between items-center w-full py-3 px-1 rounded-lg hover:bg-gray-50 transition duration-150 ease-in-out group -mx-1">
-                        <div>
-                            <p className=" text-left font-medium text-gray-800 group-hover:text-blue-600">Thông tin liên hệ</p>
-                            <p className="text-sm text-gray-500 mt-1 text-left"> dc01.nnh.2048ae@gmail.com, +84398004970</p>
+                <main className="bg-white p-6 rounded-xl shadow-md mt-6 border border-gray-100">
+                    <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3">🔗 Liên kết mạng xã hội</h3>
+                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
+                        <div className='flex flex-col items-start text-left'>
+                            <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
+                                <i className="fa-brands fa-facebook-f text-blue-700 w-5 mr-3"></i> Facebook
+                            </p>
+                            <Link to={`${TTwebsite.LinkFacebook}`} target="_blank" className="text-sm text-gray-500 mt-1 pl-8 hover:underline">
+                                {TTwebsite.LinkFacebook || "Chưa thiết lập"}
+                            </Link>
                         </div>
-                        <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-600 ml-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
                     </button>
-                    <button className="flex justify-between items-center w-full py-3 px-1 rounded-lg hover:bg-gray-50 transition duration-150 ease-in-out group -mx-1">
-                        <div>
-                            <p className=" text-left font-medium text-gray-800 group-hover:text-blue-600">Ngày sinh</p>
-                            <p className="text-sm text-gray-500 mt-1 text-left">07/06/2005</p>
+                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
+                        <div className='flex flex-col items-start text-left'>
+                            <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
+                                <i className="fa-brands fa-instagram bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent w-5 mr-3"></i> Instagram
+                            </p>
+                            <Link to={`${TTwebsite.LinkInstagram}`} target="_blank" className="text-sm text-gray-500 mt-1 pl-8 hover:underline">
+                                {TTwebsite.LinkInstagram || "Chưa thiết lập"}
+                            </Link>
                         </div>
-                        <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-600 ml-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                </main>
-
-                 <hr className="border-gray-300 my-6"/>
-
-                   <main className="bg-white p-6 rounded-lg mt-4">
-                    <h3 className="text-lg font-semibold mb-3">Địa chỉ liên hệ</h3>
-
-            
-                    <button className="flex justify-between items-center w-full py-3 px-1 rounded-lg hover:bg-gray-50 transition duration-150 ease-in-out group -mx-1">
-                        <div>
-                            <p className=" text-left font-medium text-gray-800 group-hover:text-blue-600">Địa chỉ</p>
-                            <p className="text-sm text-gray-500 mt-1 text-left"> dc01.nnh.2048ae@gmail.com, +84398004970</p>
-                        </div>
-                        <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-600 ml-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                    </button>
-                    <button className="flex justify-between items-center w-full py-3 px-1 rounded-lg hover:bg-gray-50 transition duration-150 ease-in-out group -mx-1">
-                        <div>
-                            <p className=" text-left font-medium text-gray-800 group-hover:text-blue-600">Ngày sinh</p>
-                            <p className="text-sm text-gray-500 mt-1 text-left">07/06/2005</p>
-                        </div>
-                        <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-600 ml-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
+                        <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
                     </button>
                 </main>
+                
 
+                <main className="bg-white p-6 rounded-xl shadow-md mt-6 mb-8 border border-gray-100">
+                    <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3"><i className="fa-solid fa-square-phone text-green-600 w-5 mr-3"></i> Thông tin liên hệ</h3>
+                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
+                        <div className='flex flex-col items-start text-left'>
+                            <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
+                                <i className="text-red-600 fa-solid fa-location-dot w-5 mr-3"></i> Địa chỉ
+                            </p>
+                            <p className="text-sm text-gray-500 mt-1 pl-8">{TTwebsite.DiaChi || "Chưa thiết lập"}</p>
+                        </div>
+                        <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
+                    </button>
+                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
+                        <div className='flex flex-col items-start text-left'>
+                            <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
+                                <i className="fa-solid fa-envelope text-blue-600 w-5 mr-3"></i> Email
+                            </p>
+                            <p className="text-sm text-gray-500 mt-1 pl-8">{TTwebsite.Email || "Chưa thiết lập"}</p>
+                        </div>
+                        <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
+                    </button>
+                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
+                        <div className='flex flex-col items-start text-left'>
+                            <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
+                                <i className="fa-solid fa-phone text-green-600 w-5 mr-3"></i> Số điện thoại / Zalo
+                            </p>
+                            <p className="text-sm text-gray-500 mt-1 pl-8">{TTwebsite.Zalo || "Chưa thiết lập"}</p>
+                        </div>
+                        <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
+                    </button>
+                </main>
             </div>
             {
-                open && < ChinhSua/> 
-      
-            }
+                modalState.isOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                         <div className="relative bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
+                             <button className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
+                                <i className="fa-solid fa-xmark text-white"></i>
+                            </button>
+                             <h2 className="text-xl font-semibold mb-4">124</h2>
+                             <p className="text-gray-600 mb-6">
+                                <ChinhSuaImgaeVaTen DuLieu={modalState.DuLieu}/>
+                             </p>
+                             <div className="flex justify-end gap-3">
+                                 <button className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">Hủy</button>
+                                 <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"> Xác nhận</button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            } 
         </>
     )
 };

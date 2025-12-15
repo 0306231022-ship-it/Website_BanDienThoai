@@ -2,7 +2,10 @@ function Chung(){
     return(
         <>
         
-                <h3 className="text-xl font-bold text-gray-800 mt-10 mb-6">Cài đặt được sử dụng nhiều nhất</h3>
+                <h3 className="text-xl font-bold text-gray-800 mt-10 mb-6">
+                    <i className="fas fa-cog mr-2"></i>
+                    Cài đặt được sử dụng nhiều nhất
+                </h3>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
