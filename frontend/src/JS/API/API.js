@@ -12,6 +12,7 @@ export function APIProvider({ children }) {
     async function CallAPI( dulieu = null, yeucau) {
         setLoading(true);
         const DuongDan = URL + yeucau.url;
+     
         let options = {
             method: yeucau.PhuongThuc===1 ? 'POST' : 'GET',
             credentials: 'include',

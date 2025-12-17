@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react'; 
 import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
 import { useAPIContext } from '../../JS/API/API';
+import { AppProvider } from '../../CONTEXT/QuanLiModal';
 import Loading from '../../JS/FUNCTONS/loading';
 import QuanLiTT from '../ThanhPhan/Admin/Menu/QuanLiTT';
 import QuanLiTTCaNhan from '../ThanhPhan/Admin/Menu/QuanLiTTCaNhan';
@@ -89,11 +90,12 @@ function TrangChuAdmin() {
     </header>
 
     <div className="flex" id="layout">
+    <AppProvider>
         <Routes>
             <Route path="/" index element={<QuanLiTT/>} />
             <Route path="/CaiDat/*" element={<QuanLiTTCaNhan/>} />
-            {/* Thêm các Route khác tại đây khi cần */}
         </Routes>
+    </AppProvider>
     </div>
     <footer className="mt-12 bg-white border-t border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-6 text-sm text-gray-600">

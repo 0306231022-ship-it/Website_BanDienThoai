@@ -11,7 +11,20 @@ const upload = multer();
 
 adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
 adminRouter.post('/DangNhap',  upload.none(), UserValidate, adminController.DangNhap);
-
+adminRouter.post('/ChinhSuaTen', upload.none(),  [
+    body('Ten')
+    .notEmpty()
+    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+    .isLength({max:255})
+    .withMessage('Vượt quá kí tự cho phép!'),
+],
+(req, res, next) => {
+     const errors = validationResult(req);
+     if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+}, adminController.CapNhatTen);
 // --- 2. Các Router Không Cần File/Form Data ---
 
 adminRouter.post('/kiemtra', authMiddleware, adminController.kiemtra);

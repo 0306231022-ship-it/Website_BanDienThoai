@@ -5,7 +5,7 @@ export default class adminModel{
         const [ketqua]= await execute('SELECT * FROM nguoidung WHERE IDND=? LIMIT 1',[adminId])
         return ketqua[0] ?? null
        } catch (error) {
-         throw new Error('Database query failed: ' + error.message);
+         return false
        }
     }
     static async login(Data){
@@ -17,7 +17,7 @@ export default class adminModel{
             }
             
         } catch (error) {
-            throw new Error('Database query failed: ' + error.message);
+            return false;
         }
     }
     static async removeToken(token, exp){

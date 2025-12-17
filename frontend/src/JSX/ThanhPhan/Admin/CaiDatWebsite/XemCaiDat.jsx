@@ -1,24 +1,20 @@
 //load dữ liệu thành công, tiếp tục nghiên cứu chỉnh sửa các thông tin website
 // Đang lỗi vè modal
-import { useState } from "react";
 import { Link } from 'react-router-dom';
 import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
 import { useAPIContext } from "../../../../JS/API/API";
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 import Loading from "../../../../JS/FUNCTONS/loading";
 import ChinhSuaImgaeVaTen from "./modal/ChinhSuaNameLoGo";
-
+import ChinhSuaTen from './modal/Conmodal/ChinhSuaName';
+import Trang404 from "../../../TRANG/err/404";
 function XemCaiDat(){
     const { TTwebsite} = useAppContext();
     const {loading}= useAPIContext();
-    const {modalState,MoModal,DongModal,CapNhatTieuDe,TieuDe} = useModalContext();
- 
- 
-    
+    const {modalState,MoModal,DongModal} = useModalContext();
     if(loading){
         return <Loading/>
     }
-    
     return(
         <>
             <div className="p-6 min-h-screen">
@@ -40,7 +36,7 @@ function XemCaiDat(){
                         onClick={() => MoModal('Logo&Name', { 
                             LoGo: TTwebsite.LoGo, 
                             TenWebsite: TTwebsite.TenWebsite
-                        })} 
+                        },"Quản lí định danh website")} 
                         className="flex items-center justify-between w-full p-3 rounded-xl hover:bg-indigo-50 cursor-pointer transition duration-200 ease-in-out group"
                     >
                         <div className="flex items-center space-x-4">
@@ -62,7 +58,7 @@ function XemCaiDat(){
                         <i className="fa-solid fa-globe text-indigo-600 mr-2"></i> Mô Tả Thông Tin Website
                     </h3>
                     <button 
-                        onClick={() => MoModal("SuaMoTa", { MoTaWebstite: TTwebsite.MoTaWebstite })}
+                        onClick={() => MoModal("SuaMoTa", { MoTaWebstite: TTwebsite.MoTaWebstite },"Quản lí định danh website")}
                         className="flex items-start justify-between w-full py-4 px-3 rounded-xl transition duration-200 ease-in-out 
                                    group hover:bg-indigo-50 hover:shadow-md border border-transparent hover:border-indigo-200"
                     >
@@ -140,17 +136,23 @@ function XemCaiDat(){
                 modalState.isOpen && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
                          <div className="relative bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
-                             <button className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
+                             <button onClick={DongModal} className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
                                 <i className="fa-solid fa-xmark text-white"></i>
                             </button>
-                             <h2 className="text-xl font-semibold mb-4">124</h2>
+                             <h2 className="text-black font-semibold mb-4">{modalState.TieuDe}</h2>
                              <p className="text-gray-600 mb-6">
-                                <ChinhSuaImgaeVaTen DuLieu={modalState.DuLieu}/>
+                                {(() => {
+                                    switch(modalState.TrangThaiTrang){
+                                        case 'Logo&Name' :
+                                            return  <ChinhSuaImgaeVaTen/>;
+                                        case 'SuaTen' :
+                                            return <ChinhSuaTen DuLieu={modalState.DuLieu.TenWebsite}/>
+                                        default :
+                                        return <Trang404/>
+                                    }
+                                })()}
                              </p>
-                             <div className="flex justify-end gap-3">
-                                 <button className="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300">Hủy</button>
-                                 <button className="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"> Xác nhận</button>
-                            </div>
+                         
                         </div>
                     </div>
                 )

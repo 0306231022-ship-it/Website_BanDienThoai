@@ -4,34 +4,34 @@ export function AppProvider({ children }) {
     const [modalState, setModalState] = useState({
         isOpen: false,
         DuLieu: {},
-        TrangThaiTrang: "" 
+        TrangThaiTrang: "",
+        TieuDe:'' 
     });
-    const [TieuDe,setTieuDe] =useState({
-        isTieuDe:false,
-        TieuDe:''
-    })
-    const MoModal = (dataType, currentData) => {
+    const MoModal = (dataType, currentData, tieude) => {
         setModalState({
             isOpen: true,
             DuLieu: currentData, 
-            TrangThaiTrang: dataType 
+            TrangThaiTrang: dataType,
+            TieuDe:tieude 
         });
     }
     const DongModal = () => {
         setModalState({
             isOpen: false,
             DuLieu: {},
-            TrangThaiTrang: ""
+            TrangThaiTrang: "",
+            TieuDe:""
         });
     };
-    const CapNhatTieuDe=(is,td)=>{
-        setTieuDe({
-            isTieuDe:is,
-            TieuDe:td || ''
-        })
-    };
+    const ChinhSuaModel=(moi)=>{
+        setModalState(prev=>({
+            ...prev,
+            TrangThaiTrang:moi
+        }))
+
+    }
   return (
-    <MoDalContext.Provider value={{modalState,MoModal,DongModal,CapNhatTieuDe,TieuDe}}>
+    <MoDalContext.Provider value={{modalState,MoModal,DongModal,ChinhSuaModel}}>
       {children}
     </MoDalContext.Provider>
   );

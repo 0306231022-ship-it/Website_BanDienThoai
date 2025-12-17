@@ -1,109 +1,72 @@
-import { useState } from "react";
-import { useModalContext } from '../../../../../CONTEXT/QuanLiModal';
+import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
+
 function ChinhSuaImgaeVaTen() {
-  const [view, setView] = useState("list");
-  const {CapNhatTieuDe , modalState } = useModalContext();
+  const { modalState, ChinhSuaModel } = useModalContext();
+
   return (
-    <div className="relative overflow-hidden">
-      <div className={`transition-transform duration-300 ease-in-out
-          ${view === "list" ? "translate-x-0" : "-translate-x-full"}`}
-      >
-        <div className="flex flex-col items-center pt-10 pb-6 px-6">
+    <div className="w-full bg-white rounded-3xl p-6">
+      
+      {/* --- PHẦN 1: HIỂN THỊ LOGO CHÍNH --- */}
+      <div className="flex flex-col items-center mb-10 pt-4">
+        <div className="relative group">
+          <div className="absolute inset-0 bg-blue-100 rounded-full scale-110 opacity-50 group-hover:scale-125 transition-transform duration-500"></div>
           <img
             src={`http://localhost:3001${modalState.DuLieu.LoGo}`}
             alt="Logo"
-            className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mb-3"
+            className="relative w-28 h-28 rounded-full object-cover border-4 border-white shadow-xl"
           />
-          <h2 className="text-lg font-semibold text-gray-900">
-            {modalState.DuLieu.TenWebsite}
-          </h2>
         </div>
+        <h2 className="mt-4 text-xl font-black text-gray-800 tracking-tight">
+          Thiết lập nhận diện
+        </h2>
+        <p className="text-gray-400 text-xs font-medium uppercase tracking-widest mt-1">
+          Website Identity
+        </p>
+      </div>
+      <div className="space-y-3">
+        
 
-        <div className="px-4 pb-6">
-          <div className="border rounded-2xl overflow-hidden divide-y">
-
-            <button
-              onClick={() => {
-                setView("name");
-                CapNhatTieuDe({ isTieuDe: false , TieuDe : '' });
-}}
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-gray-50"
-            >
-              <span className="font-medium">Tên website</span>
-              <i className="fa-solid fa-chevron-right text-gray-400"></i>
-            </button>
-
-            <button
-              onClick={() => setView("username")}
-              className="w-full flex items-center justify-between px-4 py-4 hover:bg-gray-50"
-            >
-              <span className="font-medium">Logo website</span>
-              <i className="fa-solid fa-chevron-right text-gray-400"></i>
-            </button>
-
+        <button 
+          onClick={() => ChinhSuaModel('SuaTen')}
+          className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-2xl transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-11 h-11 bg-white shadow-sm text-blue-600 rounded-xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
+              <i className="fa-solid fa-font text-lg"></i>
+            </div>
+            <div className="text-left">
+              <span className="block text-xs font-bold text-gray-400 uppercase tracking-tight">Tên website</span>
+              <span className="text-[15px] font-bold text-gray-700">{modalState.DuLieu.TenWebsite}</span>
+            </div>
           </div>
-        </div>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
+            <i className="fa-solid fa-chevron-right text-gray-300"></i>
+          </div>
+        </button>
+
+        {/* Mục: Logo Website */}
+        <button 
+          className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-purple-50 border border-gray-100 rounded-2xl transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-11 h-11 bg-white shadow-sm text-purple-600 rounded-xl flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors">
+              <i className="fa-solid fa-image text-lg"></i>
+            </div>
+            <div className="text-left">
+              <span className="block text-xs font-bold text-gray-400 uppercase tracking-tight">Logo thương hiệu</span>
+              <span className="text-[15px] font-bold text-gray-700">Thay đổi hình ảnh</span>
+            </div>
+          </div>
+          <div className="w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
+            <i className="fa-solid fa-chevron-right text-gray-300"></i>
+          </div>
+        </button>
+
       </div>
 
-      {/* ===== VIEW EDIT NAME ===== */}
-      <div
-        className={`absolute top-0 left-0 w-full transition-transform duration-300
-          ${view === "name" ? "translate-x-0" : "translate-x-full"}`}
-      >
-        <Header title="Chỉnh sửa tên" onBack={() => setView("list")} />
-
-        <FormInput
-          label="Tên"
-          defaultValue={DuLieu.TenWebsite}
-          onSave={() => setView("list")}
-        />
-      </div>
-
-      {/* ===== VIEW EDIT USERNAME ===== */}
-      <div
-        className={`absolute top-0 left-0 w-full transition-transform duration-300
-          ${view === "username" ? "translate-x-0" : "translate-x-full"}`}
-      >
-        <Header title="Chỉnh sửa tên người dùng" onBack={() => setView("list")} />
-
-        <FormInput
-          label="Tên người dùng"
-          defaultValue="nguyenvana"
-          onSave={() => setView("list")}
-        />
-      </div>
-
+      
     </div>
   );
 }
 
-/* ===== COMPONENT PHỤ ===== */
-
-const Header = ({ title, onBack }) => (
-  <div className="flex items-center gap-3 px-4 py-4 border-b">
-    <button onClick={onBack} className="text-xl">
-      ←
-    </button>
-    <h3 className="font-semibold">{title}</h3>
-  </div>
-);
-
-const FormInput = ({ label, defaultValue, onSave }) => (
-  <div className="p-4">
-    <label className="block text-sm text-gray-600 mb-1">{label}</label>
-    <input
-      defaultValue={defaultValue}
-      className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-
-    <button
-      onClick={onSave}
-      className="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
-    >
-      Lưu
-    </button>
-  </div>
-);
-
 export default ChinhSuaImgaeVaTen;
-

@@ -3,4 +3,4 @@
 06/12/2025: lỗi khi áp dụng validate, đã hoàn thành
 09/12/2025: validate đăng nhập , nghiên cứu chống XSS 
 ===========================
-Chức năng còn lỗi là đăng nhâp, 
+Nghiên cứu lại phần loading, phần quay lại từ modal đổi tên

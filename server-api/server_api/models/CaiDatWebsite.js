@@ -8,6 +8,15 @@ export default class CaiDatModel{
             return null;
         }
     }
+    static async updateTen(DuLieu){
+        try {
+            const [ketqua]=await execute('UPDATE caidatwebsite SET TenWebsite=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
+            return ketqua.affectedRows > 0 ? true : false;
+
+        } catch (error) {
+            return 1;
+        }
+    }
  static async UpdateWebsite(dulieu, dsanh) {
     try {
         const [ketqua] = await execute(

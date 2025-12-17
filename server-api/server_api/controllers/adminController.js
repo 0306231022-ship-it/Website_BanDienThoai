@@ -17,6 +17,7 @@ export default class adminController{
             {expiresIn:JWT_EXPIRES_IN}
         );
     }
+    //Cần sử lí triệt để lỗi đăng nhập 
     static async DangNhap(req, res) {
         const dulieu = req.body;
          if (!dulieu) {
@@ -69,6 +70,40 @@ export default class adminController{
                 Status: true,
             });
         }
+    }
+    static async CapNhatTen(req,res){
+         const { Ten } = req.body;
+         if (!Ten) {
+            return res.json({ 
+                ThanhCong: false, 
+                message: 'Vui lòng kiểm tra lại dữ liệu!' 
+            });
+        } 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                validation: true,
+                errors: errors.array() 
+            });
+        }
+        const CaiDat= CaiDatModel.updateTen(Ten);
+        if(CaiDat===1){
+            return res.json({
+                Status: true,
+            })
+        };
+        if(CaiDat){
+            return res.json({
+                 ThanhCong:true,
+                 message:'Cập nhật tên website thành công!'
+            })
+        };
+        if(!CaiDat){
+            return res.json({
+                ThatBai:true,
+                message:'Cập nhật tên website thất bại!'
+            })
+        };
     }
     //bên dưới chưa sửa
     static async kiemtra(req, res) {
