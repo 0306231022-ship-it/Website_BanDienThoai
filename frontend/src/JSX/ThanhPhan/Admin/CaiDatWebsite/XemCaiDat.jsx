@@ -1,20 +1,14 @@
-//load dữ liệu thành công, tiếp tục nghiên cứu chỉnh sửa các thông tin website
-// Đang lỗi vè modal
+
 import { Link } from 'react-router-dom';
 import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
-import { useAPIContext } from "../../../../JS/API/API";
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
-import Loading from "../../../../JS/FUNCTONS/loading";
 import ChinhSuaImgaeVaTen from "./modal/ChinhSuaNameLoGo";
 import ChinhSuaTen from './modal/Conmodal/ChinhSuaName';
+import ChinhSuaLoGo from './modal/Conmodal/ChinhSuaLoGo';
 import Trang404 from "../../../TRANG/err/404";
 function XemCaiDat(){
     const { TTwebsite} = useAppContext();
-    const {loading}= useAPIContext();
-    const {modalState,MoModal,DongModal} = useModalContext();
-    if(loading){
-        return <Loading/>
-    }
+    const {modalState,MoModal,DongModal,ChinhSuaModel} = useModalContext();
     return(
         <>
             <div className="p-6 min-h-screen">
@@ -36,7 +30,7 @@ function XemCaiDat(){
                         onClick={() => MoModal('Logo&Name', { 
                             LoGo: TTwebsite.LoGo, 
                             TenWebsite: TTwebsite.TenWebsite
-                        },"Quản lí định danh website")} 
+                        })} 
                         className="flex items-center justify-between w-full p-3 rounded-xl hover:bg-indigo-50 cursor-pointer transition duration-200 ease-in-out group"
                     >
                         <div className="flex items-center space-x-4">
@@ -139,14 +133,20 @@ function XemCaiDat(){
                              <button onClick={DongModal} className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
                                 <i className="fa-solid fa-xmark text-white"></i>
                             </button>
-                             <h2 className="text-black font-semibold mb-4">{modalState.TieuDe}</h2>
+                            {
+                                modalState.TrangThaiTrang!==modalState.TrangThaiTrangTruoc && (
+                                  <button  onClick={()=>{ChinhSuaModel(modalState.TrangThaiTrangTruoc)}} class="btn-back"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>
+                                )
+                            }
                              <p className="text-gray-600 mb-6">
                                 {(() => {
                                     switch(modalState.TrangThaiTrang){
                                         case 'Logo&Name' :
                                             return  <ChinhSuaImgaeVaTen/>;
                                         case 'SuaTen' :
-                                            return <ChinhSuaTen DuLieu={modalState.DuLieu.TenWebsite}/>
+                                            return <ChinhSuaTen/> ;
+                                        case 'SuaAnh' :
+                                            return <ChinhSuaLoGo/>
                                         default :
                                         return <Trang404/>
                                     }

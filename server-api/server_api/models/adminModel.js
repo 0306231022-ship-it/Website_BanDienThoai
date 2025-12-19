@@ -13,7 +13,7 @@ export default class adminModel{
             const [update] = await execute('UPDATE nguoidung SET DANGNHAPLANCUOI = NOW() WHERE EMAIL = ?',[Data]);
             if (update.affectedRows > 0) {
                 const [ketqua]=await execute('SELECT * FROM nguoidung WHERE email=?',[Data]);
-                return ketqua[0] ?? null
+                return ketqua[0] ?? null;
             }
             
         } catch (error) {

@@ -2,11 +2,8 @@ import '../../../CSS/Menu.css';
 import { Link } from "react-router-dom";
 import { useEffect} from 'react';
 import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
-import Loading from '../../../JS/FUNCTONS/loading';
-import { useAPIContext } from '../../../JS/API/API';
 function Menu() {
     const {GetTTwebsite,TTwebsite}= useAppContext();
-    const {loading}= useAPIContext();
      useEffect(() => {
         GetTTwebsite(); 
         //eslint-disable-next-line react-hooks/exhaustive-deps 
@@ -25,9 +22,6 @@ function Menu() {
     }
     // Giả sử số lượng sản phẩm trong giỏ hàng là 3 (bạn có thể thay đổi giá trị này tùy ý)
     const cartCount = 3;
-    if(loading || TTwebsite.length===0){
-        return <Loading/>;
-    }
 
 
 

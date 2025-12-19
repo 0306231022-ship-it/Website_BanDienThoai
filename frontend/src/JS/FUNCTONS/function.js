@@ -1,3 +1,4 @@
+ //Kiểm tra giá trị rổng của obj
  export function KiemTraRong(obj) {
     if (typeof obj !== "object" || obj === null) return false;
     for (const key in obj) {
@@ -16,6 +17,7 @@
     }
     return true; 
 }
+//reset giá trị obj
 export function resetGiaTri(obj) {
     if (typeof obj !== "object" || obj === null) return;
     for (const key in obj) {
@@ -32,6 +34,7 @@ export function resetGiaTri(obj) {
         }
     }
 }
+
 export function objectToFormData(obj, formData = new FormData(), parentKey = '') {
   for (const key in obj) {
     if (Object.hasOwnProperty.call(obj, key)) { 
@@ -53,7 +56,7 @@ export function objectToFormData(obj, formData = new FormData(), parentKey = '')
   }
   return formData;
 }
-//hàm kiểm ta fromdata rỗng 
+//hàm kiểm tra fromdata rỗng 
 export function isFormDataEmpty(formData) {
   for (const pair of formData.entries()) {
     return false; 

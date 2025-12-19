@@ -25,6 +25,17 @@ adminRouter.post('/ChinhSuaTen', upload.none(),  [
     }
     next();
 }, adminController.CapNhatTen);
+adminRouter.post('/ChinhLoGo',pload.array("files", 5), validateImages,
+(req, res, next) => {      
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.json({
+        Validate: true,
+        errors: errors.array()
+      });
+    }
+    next();
+  },)
 // --- 2. Các Router Không Cần File/Form Data ---
 
 adminRouter.post('/kiemtra', authMiddleware, adminController.kiemtra);

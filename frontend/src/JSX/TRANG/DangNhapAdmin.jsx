@@ -1,31 +1,24 @@
-//Vẫn đang lỗi, sửa lại hàm DangNhap
 import { Link , useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import * as ThongBao from '../../JS/FUNCTONS/ThongBao';
 import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
-import { useAPIContext } from '../../JS/API/API';
-import  Loading from '../../JS/FUNCTONS/loading';
 function AdminLogin() {
     const [email,setEmail]=useState('');
     const navigate = useNavigate();
     const [passWord,setPassWord]=useState('');
     const [xacnhan,setXacNhan]=useState(false);
     const [err,seterr]=useState({})
+    const [Loi,setLoi]=useState("");
     const { login } = useAppContext();
-    const { loading } = useAPIContext();
     const DangNhap=async()=>{
         const obj={
             email:email,
             passWord:passWord,
         };
        const ketqua= await login(obj);
-       if(ketqua?.Status){
-          navigate('/500');
-          return;
-       };
-       if(ketqua?.ThatBai){
-        ThongBao.ThongBao_Loi(ketqua.message);
-        return;
+       if(ketqua.Status){
+            setLoi(ketqua.message);
+            return;
        };
        if(ketqua?.validation){
              ketqua.errors.forEach(Err => {
@@ -44,9 +37,6 @@ function AdminLogin() {
             ThongBao.ThongBao_ThanhCong(ketqua?.message);
             navigate('/admin');
         }
-    }
-    if(loading){
-        return <Loading/>
     }
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -91,8 +81,15 @@ function AdminLogin() {
                             {
                                 err.passWord && <p className='text-red-700'>(*) {err.passWord}</p>
                             }
+                            {Loi && (
+                                <div className="flex items-center gap-2 animate-shake">
+                                    <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
+                                    <p className="text-[12px] text-red-600 font-bold">{Loi}</p>
+                                </div>
+                        )}
             
                         </div>
+                 
                     </div>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center">

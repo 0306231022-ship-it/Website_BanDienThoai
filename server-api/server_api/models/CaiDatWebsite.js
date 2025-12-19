@@ -12,7 +12,6 @@ export default class CaiDatModel{
         try {
             const [ketqua]=await execute('UPDATE caidatwebsite SET TenWebsite=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
             return ketqua.affectedRows > 0 ? true : false;
-
         } catch (error) {
             return 1;
         }

@@ -1,18 +1,17 @@
 import React, { createContext, useContext, useState } from "react";
 import * as fun from '../JS/FUNCTONS/function';
-import {useAPIContext} from '../JS/API/API';
+import * as API from '../JS/API/API';
 import * as ThongBao from '../JS/FUNCTONS/ThongBao';
 import { useNavigate } from "react-router-dom";
 const AppContext = createContext();
 
 // 4. Tạo Provider
 export function AppProvider({ children }) {
-  const {CallAPI}= useAPIContext();
   const navigate = useNavigate();
   const [TTwebsite,setWebsite]=useState([])
   const GetTTwebsite=async()=>{
     setWebsite([])
-    const ketqqua=await CallAPI(undefined,{url:'/admin/ThongTinWebsite' , PhuongThuc:1});
+    const ketqqua=await API.CallAPI(undefined,{url:'/admin/ThongTinWebsite' , PhuongThuc:1});
     if(ketqqua.Status){
       navigate('/500');
       return;
@@ -25,25 +24,30 @@ export function AppProvider({ children }) {
   //hàm kiểm tra đăng nhập
   const kiemtra=async()=>{
     const token = localStorage.getItem("token");
-    const ketqua=await CallAPI(undefined,{url:'/admin/kiemtra' , token : token , PhuongThuc:1});
+    const ketqua=await API.CallAPI(undefined,{url:'/admin/kiemtra' , token : token , PhuongThuc:1});
     if(!ketqua.ThanhCong){
        ThongBao.ThongBao_CanhBao(ketqua.message)
        navigate('/DangNhap-admin')
     }
   };
-  //hàm đăng nhập
 const login = async (DuLieu) => {
   const kiemtra=fun.KiemTraRong(DuLieu);
   if (!kiemtra) {
-    ThongBao.ThongBao_CanhBao('Vui lòng điền đầy đủ thông tin');
-    return;
+    return {
+      Status: true,
+      message: 'Vui lòng nhập đầy đủ thông tin!'
+    }
   }
   if (!fun.validateEmail(DuLieu.email)) {
-    ThongBao.ThongBao_CanhBao('Email không hợp lệ');
-    return;
+    return {
+      validation : true,
+      errors: [
+        { path: "email", msg: "Email không hợp lệ!" },
+      ]
+    }
   }
    const formdata=fun.objectToFormData(DuLieu);
-   const ketqqua=await CallAPI(formdata,{PhuongThuc:1,url :'/admin/DangNhap' });
+   const ketqqua=await API.CallAPI(formdata,{PhuongThuc:1,url :'/admin/DangNhap' });
    return ketqqua;
 };
 
@@ -53,7 +57,7 @@ const DangXuat = async () => {
     if (!kiemtra) return;
     try {
         const token = localStorage.getItem("token");
-        const ketqua = await CallAPI(undefined, { url:'/admin/DangXuat' , token : token , PhuongThuc:1 });
+        const ketqua = await API.CallAPI(undefined, { url:'/admin/DangXuat' , token : token , PhuongThuc:1 });
         localStorage.removeItem('token');
         localStorage.removeItem('DuLieu');
         if (ketqua?.ThanhCong) {

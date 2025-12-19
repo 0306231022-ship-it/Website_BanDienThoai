@@ -2,16 +2,13 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react'; 
 import {useAppContext} from '../../CONTEXT/TrangChuAdmin';
-import { useAPIContext } from '../../JS/API/API';
 import { AppProvider } from '../../CONTEXT/QuanLiModal';
-import Loading from '../../JS/FUNCTONS/loading';
 import QuanLiTT from '../ThanhPhan/Admin/Menu/QuanLiTT';
 import QuanLiTTCaNhan from '../ThanhPhan/Admin/Menu/QuanLiTTCaNhan';
 import { Routes, Route } from 'react-router-dom';
 
 function TrangChuAdmin() {
     const { kiemtra , DangXuat , TTwebsite , GetTTwebsite } = useAppContext();
-    const {loading}= useAPIContext();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [admin,setadmin]=useState({})
     useEffect(() => {
@@ -23,9 +20,7 @@ function TrangChuAdmin() {
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
-    if(loading){
-        return <Loading/>;
-    }
+
 
     return(
         <>

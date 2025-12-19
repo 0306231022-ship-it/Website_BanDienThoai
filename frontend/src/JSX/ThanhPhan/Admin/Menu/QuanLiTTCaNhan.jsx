@@ -5,12 +5,9 @@ import XemCaiDat from "../CaiDatWebsite/XemCaiDat";
 import CaiDat from "../CaiDatWebsite/CaiDat";
 import ChinhSua from "../ThongTinCaNhan/ChinhSuaThongTinAD";
 import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
-import { useAPIContext } from "../../../../JS/API/API";
-import { useEffect } from "react";
-import Loading from "../../../../JS/FUNCTONS/loading";
 function QuanLiTTCaNhan() {
-    const { TTwebsite , GetTTwebsite } = useAppContext();
-    const {loading}= useAPIContext();
+    const { TTwebsite } = useAppContext();
+
 
 
 

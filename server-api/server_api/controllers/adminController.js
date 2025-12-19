@@ -17,12 +17,11 @@ export default class adminController{
             {expiresIn:JWT_EXPIRES_IN}
         );
     }
-    //Cần sử lí triệt để lỗi đăng nhập 
     static async DangNhap(req, res) {
         const dulieu = req.body;
          if (!dulieu) {
             return res.json({ 
-                ThanhCong: false, 
+                Status:true, 
                 message: 'Vui lòng kiểm tra lại dữ liệu!' 
             });
         } 
@@ -35,39 +34,54 @@ export default class adminController{
         }
         try {
              const DangNhap = await adminModel.login(dulieu.email);
-              if (DangNhap) {
+             //xử lí mã lỗi không truy vấn được
+             if(DangNhap===false){
+                return res.json({
+                    Status:true,
+                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
+                })
+             }
+             //Xử lí tình huống không tồn tại người dùng
+             if(DangNhap===null){
+                return res.json({
+                    Status:true,
+                    message:'Tài khoản người dùng không tồn tại!'
+                })
+             }
+             //Xử lí tình huống đã có tài khoản trong hệ thống
+             if(DangNhap){
+                //Xử lí tình huống sai mật khẩu
                  const isMatch = await compare(dulieu.passWord, DangNhap.MATKHAU);
-                 if (isMatch) {
+                 //xử lí trường hợp mật khẩu đúng
+                  if (isMatch) {
+                    //xử lí sự tồn tại của hệ thống
                     if (DangNhap.TRANGTHAI !== 1) {
                         return res.json({
-                            ThatBai: true,
-                            message: 'Tài khoản đã ngừng hoạt động!'
-                        });
-                    }
-                    const token = await adminController.generateToken(DangNhap);
-                    const { MATKHAU, ...KetQua } = DangNhap;
+                            Status:true,
+                            message:'Tài khoản đã ngùng hoạt động!'
+                        })
+                    };
+                     const token = await adminController.generateToken(DangNhap);
+                     const { MATKHAU, ...KetQua } = DangNhap;
                     return res.json({
                          ThanhCong: true,
                          message: 'Bạn đã đăng nhập thành công!',
                          token: token,
                          DuLieu: KetQua
                     });
-                }else{
+                  }else{
+                    //xử lí trường hợp mật khẩu sai
                     return res.json({
-                        ThatBai:true,
-                        message: 'Đăng nhập thất bại. Mật khẩu không đúng.'
-                    });
-                }
-              }else{
-                 return res.json({
-                    ThatBai:true,
-                    message: 'Đăng nhập thất bại. Tài khoản không tồn tại.'
-                });
-              }
+                        Status:true,
+                        message:'Email hoặc hoặc mật khẩu sai!'
+                    })
+                  }
+             }
         } catch (error) {
             console.error("Lỗi trong quá trình đăng nhập:", error);
             return res.json({
                 Status: true,
+                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
             });
         }
     }
@@ -75,7 +89,7 @@ export default class adminController{
          const { Ten } = req.body;
          if (!Ten) {
             return res.json({ 
-                ThanhCong: false, 
+                Status:true, 
                 message: 'Vui lòng kiểm tra lại dữ liệu!' 
             });
         } 
@@ -90,6 +104,7 @@ export default class adminController{
         if(CaiDat===1){
             return res.json({
                 Status: true,
+                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
             })
         };
         if(CaiDat){

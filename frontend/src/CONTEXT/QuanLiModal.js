@@ -5,14 +5,14 @@ export function AppProvider({ children }) {
         isOpen: false,
         DuLieu: {},
         TrangThaiTrang: "",
-        TieuDe:'' 
+        TrangThaiTrangTruoc:""
     });
-    const MoModal = (dataType, currentData, tieude) => {
+    const MoModal = (dataType, currentData) => {
         setModalState({
             isOpen: true,
             DuLieu: currentData, 
             TrangThaiTrang: dataType,
-            TieuDe:tieude 
+            TrangThaiTrangTruoc:dataType,
         });
     }
     const DongModal = () => {
@@ -20,7 +20,7 @@ export function AppProvider({ children }) {
             isOpen: false,
             DuLieu: {},
             TrangThaiTrang: "",
-            TieuDe:""
+            TrangThaiTrangTruoc:""
         });
     };
     const ChinhSuaModel=(moi)=>{
@@ -28,10 +28,15 @@ export function AppProvider({ children }) {
             ...prev,
             TrangThaiTrang:moi
         }))
-
+    }
+    const CapNhatTrangTruoc=(TrangThai)=>{
+      setModalState(prev=>({
+        ...prev,
+        TrangThaiTrangTruoc:TrangThai
+      }))
     }
   return (
-    <MoDalContext.Provider value={{modalState,MoModal,DongModal,ChinhSuaModel}}>
+    <MoDalContext.Provider value={{modalState,MoModal,DongModal,ChinhSuaModel,CapNhatTrangTruoc}}>
       {children}
     </MoDalContext.Provider>
   );
