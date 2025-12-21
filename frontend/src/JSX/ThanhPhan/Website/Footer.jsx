@@ -15,7 +15,7 @@ function Footer() {
                 <div class="space-y-4">
                     <div class="flex items-center space-x-2">
                         <div class="w-8 h-8 rounded-lg flex items-center justify-center">
-                             <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" className='w-8 h-8 rounded-full' />
+                             <img src={`http://localhost:3001/${TTwebsite.LoGo}`} alt="Logo" className='w-8 h-8 rounded-full' />
                         </div>
                         <span class="text-xl font-bold">{TTwebsite.TenWebsite}</span>
                     </div>

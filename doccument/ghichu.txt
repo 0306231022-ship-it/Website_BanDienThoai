@@ -1,6 +1,11 @@
 03/12/2025: đã trả về mã lỗi 500 những chưa trả về mã lỗi 404, tiếp tục nghiên cứu loading
 05/12/2025: xử lí xong trang 404, tách giao diện admin
 06/12/2025: lỗi khi áp dụng validate, đã hoàn thành
-09/12/2025: validate đăng nhập , nghiên cứu chống XSS 
+09/12/2025: validate đăng nhập  
 ===========================
 Nghiên cứu lại phần loading, phần quay lại từ modal đổi tên
+Chưa sử lí controller upload ảnh
+=========================
+20/12/2025 : hoàn thành chức năng đăng nhập admin
+
+Cả tên và logo chưa xử lí lỗi validate 

@@ -32,7 +32,7 @@ function TrangChuAdmin() {
                 </button>
                 <Link to="" data-route="overview" className="flex items-center space-x-2" Style="text-decoration:none;">
                     <div className="w-9 h-9 rounded-full flex items-center justify-center">
-                        <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" className='w-9 h-9 rounded-full' />
+                        <img src={`http://localhost:3001/${TTwebsite.LoGo}`} alt="Logo" className='w-9 h-9 rounded-full' />
                     </div>
                     <span className="text-xl font-bold text-dark-900">{TTwebsite.TenWebsite} Admin</span>
                 </Link>

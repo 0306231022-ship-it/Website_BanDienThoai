@@ -42,7 +42,7 @@ result.forEach(q => console.log(q.question));
             </div>
                 <div className="p-4 rounded-xl bg-gray-50 border border-gray-200 shadow-inner space-y-3 mb-8">
                     <div className="flex items-center text-blue-600 font-bold space-x-2">
-                         <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" className='w-5 h-5 rounded-full' />
+                         <img src={`http://localhost:3001/${TTwebsite.LoGo}`} alt="Logo" className='w-5 h-5 rounded-full' />
                         <span>{TTwebsite.TenWebsite}</span>
                     </div>
 

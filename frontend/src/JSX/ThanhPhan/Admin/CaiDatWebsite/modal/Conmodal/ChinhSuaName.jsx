@@ -1,57 +1,66 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { useModalContext } from '../../../../../../CONTEXT/QuanLiModal';
 import * as API from '../../../../../../JS/API/API';
 import * as fun from '../../../../../../JS/FUNCTONS/function';
+import { useAppContext } from '../../../../../../CONTEXT/TrangChuAdmin';
+
 function ChinhSuaTen() {
   const { modalState } = useModalContext();
+  const { GetTTwebsite} =useAppContext();
   const tenCu = modalState?.DuLieu?.TenWebsite || "";
   const [ten, setTen] = useState(tenCu);
   const [err, setErr] = useState('');
-  const [errValidate,seterr]=useState({})
+  const [errValidate, seterr] = useState({}); 
   const [ok, setOk] = useState('');
   const [loading, setLoading] = useState(false);
+
   const handleUpdate = async () => {
     setLoading(true);
     setErr('');
     setOk('');
-    if(ten === tenCu){
+    seterr({}); 
+
+   /* if (ten === tenCu) {
       setErr('Bạn chưa thay đổi nội dung cần cập nhật!');
       setLoading(false);
       return;
     };
-    if(!ten || !ten.trim()){
+
+    if (!ten || !ten.trim()) {
       setErr('Vui lòng nhập dữ liệu!');
       setLoading(false)
       return;
     }
+
     if (ten.length > 255) {
       setErr('Nội dung không được vượt quá 255 ký tự!');
       setLoading(false);
       return;
-    }
+    }*/
+
     try {
       const DuLieu = fun.objectToFormData({ Ten: ten });
       const ketqua = await API.CallAPI(DuLieu, { PhuongThuc: 1, url: '/admin/ChinhSuaTen' });
-      if(ketqua.Status){
+      if (ketqua.Status) {
         setErr(ketqua.message);
         setLoading(false);
         return;
       };
-      if(ketqua.validation){
-         ketqua.errors.forEach(Err => {
-                seterr(prev=>{
-                    return{
-                        ...prev,
-                        [Err.path]: Err.msg
-                    }
-                })
-            });
-            setLoading(false);
-          return;
+      if (ketqua.Validate) {
+       
+        const errorsFromServer = {};
+        ketqua.errors.forEach(Err => {
+          errorsFromServer[Err.path] = Err.msg;
+        });
+        seterr(errorsFromServer);
+        setLoading(false);
+        return;
       };
-      if(ketqua.ThanhCong){
+
+      if (ketqua.ThanhCong) {
         setLoading(false);
         setOk(ketqua.message);
+        GetTTwebsite();
         return;
       }
     } catch (error) {
@@ -60,6 +69,7 @@ function ChinhSuaTen() {
       setLoading(false);
     }
   };
+
   return (
     <div className="w-full bg-white animate-fadeIn">
       <div className="p-8">
@@ -81,11 +91,9 @@ function ChinhSuaTen() {
                 onChange={(e) => setTen(e.target.value)}
                 disabled={loading}
                 className={`w-full px-5 py-4 rounded-2xl outline-none transition-all font-medium text-lg shadow-sm
-                  ${err ? "bg-red-50 border-2 border-red-500 text-red-900" 
+                  ${(err || errValidate.Ten) ? "bg-red-50 border-2 border-red-500 text-red-900" 
                         : "bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white text-gray-800"}
                   ${loading ? "opacity-50 cursor-not-allowed" : ""}
-                  ${errValidate.Ten ? "bg-red-50 border-2 border-red-500 text-red-900" 
-                      : "bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white text-gray-800"}
                   `}
                 placeholder="Nhập tên website mới..."
               />
@@ -100,8 +108,14 @@ function ChinhSuaTen() {
                 </button>
               )}
             </div>
+
             <div className="min-h-[20px] px-1">
-              {err ? (
+              {errValidate.Ten ? (
+                 <div className="flex items-center gap-2 animate-shake">
+                    <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
+                    <p className="text-[12px] text-red-600 font-bold">{errValidate.Ten}</p>
+                 </div>
+              ) : err ? (
                 <div className="flex items-center gap-2 animate-shake">
                   <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
                   <p className="text-[12px] text-red-600 font-bold">{err}</p>
@@ -141,4 +155,5 @@ function ChinhSuaTen() {
     </div>
   );
 }
+
 export default ChinhSuaTen;

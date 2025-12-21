@@ -5,6 +5,7 @@ import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 import ChinhSuaImgaeVaTen from "./modal/ChinhSuaNameLoGo";
 import ChinhSuaTen from './modal/Conmodal/ChinhSuaName';
 import ChinhSuaLoGo from './modal/Conmodal/ChinhSuaLoGo';
+import SuaMoTa from './modal/SuaMoTa';
 import Trang404 from "../../../TRANG/err/404";
 function XemCaiDat(){
     const { TTwebsite} = useAppContext();
@@ -35,7 +36,7 @@ function XemCaiDat(){
                     >
                         <div className="flex items-center space-x-4">
                             <img 
-                                src={`http://localhost:3001${TTwebsite.LoGo}`} 
+                                src={`http://localhost:3001/${TTwebsite.LoGo}`} 
                                 alt="Logo" 
                                 className='w-12 h-12 rounded-full object-cover border-2 border-indigo-200 shadow-inner' 
                             />
@@ -52,7 +53,7 @@ function XemCaiDat(){
                         <i className="fa-solid fa-globe text-indigo-600 mr-2"></i> Mô Tả Thông Tin Website
                     </h3>
                     <button 
-                        onClick={() => MoModal("SuaMoTa", { MoTaWebstite: TTwebsite.MoTaWebstite },"Quản lí định danh website")}
+                        onClick={() => MoModal("SuaMoTa", { MoTaWebstite: TTwebsite.MoTaWebstite })}
                         className="flex items-start justify-between w-full py-4 px-3 rounded-xl transition duration-200 ease-in-out 
                                    group hover:bg-indigo-50 hover:shadow-md border border-transparent hover:border-indigo-200"
                     >
@@ -146,7 +147,10 @@ function XemCaiDat(){
                                         case 'SuaTen' :
                                             return <ChinhSuaTen/> ;
                                         case 'SuaAnh' :
-                                            return <ChinhSuaLoGo/>
+                                            return <ChinhSuaLoGo/>;
+                                        case 'SuaMoTa' :
+                                            return <SuaMoTa/>
+                                            
                                         default :
                                         return <Trang404/>
                                     }

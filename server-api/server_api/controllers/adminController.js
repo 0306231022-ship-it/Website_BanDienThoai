@@ -120,6 +120,42 @@ export default class adminController{
             })
         };
     }
+    static async ChinhSuaLoGo(req,res){
+        const files = req.files;
+        const pathFile = files[0].path.replace(/\\/g, '/');
+        if(!pathFile){
+            return res.json({
+                Status:true,
+                message:'Lỗi tải ảnh!'
+            })
+        };
+         const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                validation: true,
+                errors: errors.array() 
+            });
+        }
+        const ketqua= CaiDatModel.updateHinhAnh(pathFile);
+        if(ketqua===1){
+            return res.json({
+                Status : true,
+                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
+            })
+        };
+        if(ketqua){
+            return res.json({
+                ThanhCong:true,
+                message:'Cập nhật thành công!'
+            })
+        };
+        if(!ketqua){
+            return res.json({
+                Status:true,
+                message:'Cập nhật thất bại!'
+            })
+        };
+    }
     //bên dưới chưa sửa
     static async kiemtra(req, res) {
          const adminId = req.user.id;

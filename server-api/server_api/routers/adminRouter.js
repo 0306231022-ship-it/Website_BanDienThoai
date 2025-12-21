@@ -15,7 +15,7 @@ adminRouter.post('/ChinhSuaTen', upload.none(),  [
     body('Ten')
     .notEmpty()
     .withMessage('Vui lòng nhập đầy đủ thông tin!')
-    .isLength({max:255})
+    .isLength({max:50})
     .withMessage('Vượt quá kí tự cho phép!'),
 ],
 (req, res, next) => {
@@ -35,7 +35,7 @@ adminRouter.post('/ChinhLoGo',pload.array("files", 5), validateImages,
       });
     }
     next();
-  },)
+  },adminController.ChinhSuaLoGo)
 // --- 2. Các Router Không Cần File/Form Data ---
 
 adminRouter.post('/kiemtra', authMiddleware, adminController.kiemtra);

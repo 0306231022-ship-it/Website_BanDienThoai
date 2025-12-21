@@ -16,6 +16,15 @@ export default class CaiDatModel{
             return 1;
         }
     }
+    static async updateHinhAnh(DuLieu){
+        try {
+            const [ketqua]= await execute('UPDATE caidatwebsite SET LoGo=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
+            return ketqua.affectedRows >0 ? true : false;
+        } catch (error) {
+            return 1;
+        }
+    }
+    //Chưa sửa bên dưới 
  static async UpdateWebsite(dulieu, dsanh) {
     try {
         const [ketqua] = await execute(

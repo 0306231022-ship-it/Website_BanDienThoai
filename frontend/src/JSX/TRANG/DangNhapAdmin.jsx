@@ -65,7 +65,7 @@ function AdminLogin() {
                                 placeholder="Email hoặc Tên đăng nhập"
                                 onChange={(e)=>{setEmail(e.target.value)}}/>
                             {
-                                err.email && <p className='text-red-700'>(*) {err.email}</p>
+                                err.email && <p className='text-red-700'><i class="fa-solid text-red-500 fa-triangle-exclamation"></i> {err.email}</p>
                             }
                         </div>
                         <div>
@@ -79,7 +79,7 @@ function AdminLogin() {
                                 placeholder="Mật khẩu"
                                 onChange={(e)=>{setPassWord(e.target.value)}}/>
                             {
-                                err.passWord && <p className='text-red-700'>(*) {err.passWord}</p>
+                                err.passWord && <p className='text-red-700'><i class="fa-solid text-red-500 fa-triangle-exclamation"></i> {err.passWord}</p>
                             }
                             {Loi && (
                                 <div className="flex items-center gap-2 animate-shake">

@@ -1,4 +1,3 @@
-//Hoàn thành nhiệm vụ 
 import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
 function ChinhSuaImgaeVaTen() {
   const { modalState, ChinhSuaModel } = useModalContext();
@@ -7,7 +6,7 @@ function ChinhSuaImgaeVaTen() {
       <div className="flex flex-col items-center mb-10 pt-4">
         <div className="relative group">
           <div className="absolute inset-0 bg-blue-100 rounded-full scale-110 opacity-50 group-hover:scale-125 transition-transform duration-500"></div>
-          <img src={`http://localhost:3001${modalState.DuLieu.LoGo}`} alt="Logo" className="relative w-28 h-28 rounded-full object-cover border-4 border-white shadow-xl" />
+          <img src={`http://localhost:3001/${modalState.DuLieu.LoGo}`} alt="Logo" className="relative w-28 h-28 rounded-full object-cover border-4 border-white shadow-xl" />
         </div>
         <h2 className="mt-4 text-xl font-black text-gray-800 tracking-tight">Thiết lập nhận diện</h2>
         <p className="text-gray-400 text-xs font-medium uppercase tracking-widest mt-1">Website Identity</p>

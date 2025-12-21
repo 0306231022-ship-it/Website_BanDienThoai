@@ -44,7 +44,7 @@ function Menu() {
             
             <div className="logo leading-tight flex items-center">
                 <span className="logo-icon text-3xl text-red-700 mr-2">
-                     <img src={`http://localhost:3001${TTwebsite.LoGo}`} alt="Logo" className='w-10 h-10 rounded-full' />
+                     <img src={`http://localhost:3001/${TTwebsite.LoGo}`} alt="Logo" className='w-10 h-10 rounded-full' />
                 </span>
                 <div>
                     <p className="logo-main-text text-3xl font-bold text-red-700 m-0">{TTwebsite.TenWebsite}</p>
