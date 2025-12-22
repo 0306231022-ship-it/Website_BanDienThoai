@@ -24,6 +24,57 @@ export default class CaiDatModel{
             return 1;
         }
     }
+    static async updateMoTa(DuLieu){
+        try {
+            const [ketqua]= await execute('UPDATE caidatwebsite SET MoTaWebstite=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
+            return ketqua.affectedRows >0 ? true : false;
+        } catch (error) {
+            return 1;
+        }
+    }
+    static async updateLinkFaceBook(DuLieu){
+        try {
+            const [ketqua]= await execute('UPDATE caidatwebsite SET LinkFacebook=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
+            return ketqua.affectedRows >0 ? true : false;
+        } catch (error) {
+            return 1;
+        }
+    }
+     static async updateLinkIns(DuLieu){
+        try {
+            const [ketqua]= await execute('UPDATE caidatwebsite SET LinkInstagram=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
+            return ketqua.affectedRows >0 ? true : false;
+        } catch (error) {
+            return 1;
+        }
+    }
+     static async updateDiaChi(DuLieu){
+        try {
+            const [ketqua]= await execute('UPDATE caidatwebsite SET DiaChi=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
+            return ketqua.affectedRows >0 ? true : false;
+        } catch (error) {
+            return 1;
+        }
+    }
+    static async updateEmail(DuLieu){
+        try {
+            const [ketqua]= await execute('UPDATE caidatwebsite SET Email=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
+            return ketqua.affectedRows >0 ? true : false;
+        } catch (error) {
+            return 1;
+        }
+    }
+    static async updateSoDienThoai(DuLieu){
+        try {
+            const [ketqua]= await execute('UPDATE caidatwebsite SET Zalo=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
+            return ketqua.affectedRows >0 ? true : false;
+        } catch (error) {
+            return 1;
+        }
+    }
+
+    
+
     //Chưa sửa bên dưới 
  static async UpdateWebsite(dulieu, dsanh) {
     try {

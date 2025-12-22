@@ -156,6 +156,186 @@ export default class adminController{
             })
         };
     }
+    static async CapNhatMoTa(req,res){
+         const { MoTa } = req.body;
+         if (!MoTa) {
+            return res.json({ 
+                Status:true, 
+                message: 'Vui lòng kiểm tra lại dữ liệu!' 
+            });
+        } 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                validation: true,
+                errors: errors.array() 
+            });
+        }
+         const CaiDat= CaiDatModel.updateMoTa(MoTa);
+        if(CaiDat===1){
+            return res.json({
+                Status: true,
+                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
+            })
+        };
+        if(CaiDat){
+            return res.json({
+                 ThanhCong:true,
+                 message:'Cập nhật mô tả website thành công!'
+            })
+        };
+        if(!CaiDat){
+            return res.json({
+                ThatBai:true,
+                message:'Cập nhật mô tả website thất bại!'
+            })
+        };
+
+    }
+    static async CapNhatLinkFaceBook(req,res){
+          const { FacebookUrl } = req.body;
+         if (!FacebookUrl) {
+            return res.json({ 
+                Status:true, 
+                message: 'Vui lòng kiểm tra lại dữ liệu!' 
+            });
+        } 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                validation: true,
+                errors: errors.array() 
+            });
+        }
+         const CaiDat= CaiDatModel.updateLinkFaceBook(FacebookUrl);
+        if(CaiDat===1){
+            return res.json({
+                Status: true,
+                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
+            })
+        };
+        if(CaiDat){
+            return res.json({
+                 ThanhCong:true,
+                 message:'Cập nhật link FaceBook thành công!'
+            })
+        };
+        if(!CaiDat){
+            return res.json({
+                ThatBai:true,
+                message:'Cập nhật link FaceBook thất bại!'
+            })
+        };
+
+    }
+    static async  CapNhatIns(req,res){
+          const { InstagramUrl } = req.body;
+         if (!InstagramUrl) {
+            return res.json({ 
+                Status:true, 
+                message: 'Vui lòng kiểm tra lại dữ liệu!' 
+            });
+        } 
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                validation: true,
+                errors: errors.array() 
+            });
+        }
+         const CaiDat= CaiDatModel.updateLinkIns(InstagramUrl);
+        if(CaiDat===1){
+            return res.json({
+                Status: true,
+                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
+            })
+        };
+        if(CaiDat){
+            return res.json({
+                 ThanhCong:true,
+                 message:'Cập nhật link Instagram thành công!'
+            })
+        };
+        if(!CaiDat){
+            return res.json({
+                ThatBai:true,
+                message:'Cập nhật link Instagram thất bại!'
+            })
+        };
+
+    }
+    static async CapNhatDiaChi(req, res) {
+    try {
+        const { DiaChi } = req.body;
+        const result = await CaiDatModel.updateDiaChi(DiaChi);
+        if (result) {
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật địa chỉ mới thành công!'
+            });
+        }
+        
+        return res.json({
+            ThatBai: true,
+            message: 'Không có thay đổi nào được thực hiện.'
+        });
+
+    } catch (error) {
+        return res.json({
+            Status: true,
+            message: 'Lỗi máy chủ, vui lòng thử lại sau!'
+        });
+    }
+}
+   static async CapNhatEmail(req, res) {
+    try {
+        const { Email } = req.body;
+        const result = await CaiDatModel.updateEmail(Email);
+
+        if (result) {
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật Email hệ thống thành công!'
+            });
+        }
+        
+        return res.json({
+            ThatBai: true,
+            message: 'Email mới trùng với Email cũ hoặc cập nhật thất bại.'
+        });
+
+    } catch (error) {
+        return res.json({
+            Status: true,
+            message: 'Lỗi máy chủ khi cập nhật Email!'
+        });
+    }
+}
+    static async CapNhatSoDienThoai(req, res) {
+    try {
+        const { SoDienThoai } = req.body;
+        const result = await CaiDatModel.updateSoDienThoai(SoDienThoai);
+
+        if (result) {
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật số điện thoại thành công!'
+            });
+        }
+        
+        return res.json({
+            ThatBai: true,
+            message: 'Số điện thoại này đã tồn tại hoặc cập nhật thất bại.'
+        });
+
+    } catch (error) {
+        return res.json({
+            Status: true,
+            message: 'Lỗi máy chủ khi cập nhật Hotline!'
+        });
+    }
+}
+
     //bên dưới chưa sửa
     static async kiemtra(req, res) {
          const adminId = req.user.id;

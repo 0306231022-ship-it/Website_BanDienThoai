@@ -6,6 +6,11 @@ import ChinhSuaImgaeVaTen from "./modal/ChinhSuaNameLoGo";
 import ChinhSuaTen from './modal/Conmodal/ChinhSuaName';
 import ChinhSuaLoGo from './modal/Conmodal/ChinhSuaLoGo';
 import SuaMoTa from './modal/SuaMoTa';
+import SuaLinkFacebook from './modal/ChinhSuaLinkFaceBook';
+import SuaLinkInstagram from './modal/ChinhSuaLinkIns';
+import SuaDiaChi from './modal/ChinhSuaDiaChi';
+import SuaEmail from './modal/ChinhSuaEmail';
+import SuaSoDienThoai from './modal/ChinhSuaZalo';
 import Trang404 from "../../../TRANG/err/404";
 function XemCaiDat(){
     const { TTwebsite} = useAppContext();
@@ -71,7 +76,7 @@ function XemCaiDat(){
                 </main>
                 <main className="bg-white p-6 rounded-xl shadow-md mt-6 border border-gray-100">
                     <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3">🔗 Liên kết mạng xã hội</h3>
-                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
+                    <button onClick={() => MoModal("SuaFaceBook", { LinkFacebook: TTwebsite.LinkFacebook })} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="fa-brands fa-facebook-f text-blue-700 w-5 mr-3"></i> Facebook
@@ -82,7 +87,7 @@ function XemCaiDat(){
                         </div>
                         <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
                     </button>
-                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
+                    <button  onClick={() => MoModal("SuaLinkIns", {LinkInstagram : TTwebsite.LinkInstagram })} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="fa-brands fa-instagram bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent w-5 mr-3"></i> Instagram
@@ -98,7 +103,7 @@ function XemCaiDat(){
 
                 <main className="bg-white p-6 rounded-xl shadow-md mt-6 mb-8 border border-gray-100">
                     <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3"><i className="fa-solid fa-square-phone text-green-600 w-5 mr-3"></i> Thông tin liên hệ</h3>
-                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
+                    <button onClick={() => MoModal("SuaDiaChi", { DiaChi: TTwebsite.DiaChi })} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="text-red-600 fa-solid fa-location-dot w-5 mr-3"></i> Địa chỉ
@@ -107,7 +112,7 @@ function XemCaiDat(){
                         </div>
                         <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
                     </button>
-                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
+                    <button  onClick={() => MoModal("SuaEmail", {Email : TTwebsite.Email })} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="fa-solid fa-envelope text-blue-600 w-5 mr-3"></i> Email
@@ -116,7 +121,7 @@ function XemCaiDat(){
                         </div>
                         <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
                     </button>
-                    <button className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
+                    <button onClick={() => MoModal("Suazalo", {zalo : TTwebsite.Zalo })}  className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="fa-solid fa-phone text-green-600 w-5 mr-3"></i> Số điện thoại / Zalo
@@ -144,13 +149,22 @@ function XemCaiDat(){
                                     switch(modalState.TrangThaiTrang){
                                         case 'Logo&Name' :
                                             return  <ChinhSuaImgaeVaTen/>;
-                                        case 'SuaTen' :
+                                        case 'SuaTen':
                                             return <ChinhSuaTen/> ;
                                         case 'SuaAnh' :
                                             return <ChinhSuaLoGo/>;
                                         case 'SuaMoTa' :
-                                            return <SuaMoTa/>
-                                            
+                                            return <SuaMoTa/>;
+                                        case 'SuaFaceBook' :
+                                            return <SuaLinkFacebook/>
+                                        case 'SuaLinkIns' :
+                                            return <SuaLinkInstagram/>
+                                        case 'SuaDiaChi' :
+                                            return <SuaDiaChi/>
+                                        case 'SuaEmail' :
+                                            return <SuaEmail/>
+                                        case 'Suazalo' :
+                                            return <SuaSoDienThoai/>
                                         default :
                                         return <Trang404/>
                                     }

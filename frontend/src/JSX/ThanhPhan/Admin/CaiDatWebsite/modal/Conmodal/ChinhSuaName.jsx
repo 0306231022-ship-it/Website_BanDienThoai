@@ -8,7 +8,7 @@ function ChinhSuaTen() {
   const { modalState } = useModalContext();
   const { GetTTwebsite} =useAppContext();
   const tenCu = modalState?.DuLieu?.TenWebsite || "";
-  const [ten, setTen] = useState(tenCu);
+  const [ten, setTen] = useState('');
   const [err, setErr] = useState('');
   const [errValidate, seterr] = useState({}); 
   const [ok, setOk] = useState('');
@@ -20,7 +20,7 @@ function ChinhSuaTen() {
     setOk('');
     seterr({}); 
 
-   /* if (ten === tenCu) {
+    if (ten === tenCu) {
       setErr('Bạn chưa thay đổi nội dung cần cập nhật!');
       setLoading(false);
       return;
@@ -36,7 +36,7 @@ function ChinhSuaTen() {
       setErr('Nội dung không được vượt quá 255 ký tự!');
       setLoading(false);
       return;
-    }*/
+    }
 
     try {
       const DuLieu = fun.objectToFormData({ Ten: ten });
@@ -129,7 +129,7 @@ function ChinhSuaTen() {
                 <div className="flex items-start gap-2">
                   <i className="fa-solid fa-circle-info text-blue-400 mt-1 text-[10px]"></i>
                   <p className="text-[12px] text-gray-400 leading-relaxed">
-                    Tên hiện tại là <strong className="text-gray-600">"{tenCu}"</strong>.
+                    Tên hiện tại là <strong className="text-gray-600">"{ten}"</strong>.
                   </p>
                 </div>
               )}

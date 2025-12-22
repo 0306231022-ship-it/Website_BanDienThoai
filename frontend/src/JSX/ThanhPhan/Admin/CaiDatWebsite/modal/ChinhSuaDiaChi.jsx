@@ -4,16 +4,16 @@ import * as fun from '../../../../../JS/FUNCTONS/function';
 import * as API from '../../../../../JS/API/API';
 import { useAppContext } from '../../../../../CONTEXT/TrangChuAdmin';
 
-function SuaMoTa() {
-    const [MoTa, setMoTa] = useState('');
+function SuaDiaChi() {
     const { modalState } = useModalContext();
+    const [DiaChi, setDiaChi] = useState('');
+    const [Loading, setLoading] = useState(false);
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
-    const [Loading, setLoading] = useState(false);
     const { GetTTwebsite} =useAppContext();
 
     const Reset = () => {
-        setMoTa('');
+        setDiaChi('');
         seterr('');
         setok('');
         setLoading(false);
@@ -23,20 +23,16 @@ function SuaMoTa() {
         seterr('');
         setok('');
 
-        if (!MoTa) {
-            seterr('Vui lòng nhập dữ liệu!');
-            return;
-        }
-        if (MoTa.length > 255) {
-            seterr('Vượt quá kí tự cho phép!');
+        if (!DiaChi) {
+            seterr('Vui lòng nhập địa chỉ cụ thể!');
             return;
         }
 
         setLoading(true);
-        const DuLieu = fun.objectToFormData({ MoTa: MoTa });
+        const DuLieu = fun.objectToFormData({ DiaChi: DiaChi });
 
         try {
-            const KetQua = await API.CallAPI(DuLieu, { url: '/admin/ChinhSuaMoTa', PhuongThuc: 1 });
+            const KetQua = await API.CallAPI(DuLieu, { url: '/admin/ChinhSuaDiaChi', PhuongThuc: 1 });
 
             if (KetQua.Status) {
                 seterr(KetQua.message);
@@ -47,7 +43,7 @@ function SuaMoTa() {
                 GetTTwebsite();
             }
         } catch (error) {
-            seterr('Không thể kết nối đến hệ thống, Vui lòng thử lại sau!');
+            seterr('Lỗi kết nối máy chủ!');
         } finally {
             setLoading(false);
         }
@@ -57,38 +53,40 @@ function SuaMoTa() {
         <div className="w-full max-w-lg bg-white rounded-[2rem] overflow-hidden">
             <div className="p-8">
                 <div className="space-y-6">
+                    {/* ĐỊA CHỈ CŨ */}
                     <div className="space-y-2">
                         <div className="flex items-center gap-2 px-1">
-                            <i className="fa-solid fa-clock-rotate-left text-[10px] text-gray-400"></i>
-                            <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Mô tả trước đó</label>
+                            <i className="fa-solid fa-map-location-dot text-[10px] text-red-500"></i>
+                            <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Địa chỉ hiện tại</label>
                         </div>
-                        <div className="bg-gray-50/50 border border-gray-100 rounded-2xl p-4 text-gray-500 text-sm italic leading-relaxed">
-                            "{modalState.DuLieu.MoTaWebstite}"
+                        <div className="bg-red-50/30 border border-red-100 rounded-2xl p-4 text-red-600/70 text-sm leading-relaxed">
+                            {modalState.DuLieu.DiaChi || "Chưa cập nhật địa chỉ"}
                         </div>
                     </div>
-                    <div className="space-y-3">
-                        <div className="flex justify-between items-end px-1">
-                            <label className="text-[11px] font-bold text-blue-600 uppercase tracking-[0.15em]">Thông tin hiển thị mới</label>
-                        </div>
 
+                    {/* Ô NHẬP LIỆU */}
+                    <div className="space-y-3">
+                        <label className="px-1 text-[11px] font-bold text-red-600 uppercase tracking-[0.15em]">Địa chỉ mới</label>
+                        
                         <div className="relative group">
-                            <textarea
+                            <textarea 
                                 rows="3"
-                                value={MoTa}
-                                onChange={(e) => setMoTa(e.target.value)}
-                                maxLength={255}
+                                value={DiaChi}
+                                onChange={(e) => setDiaChi(e.target.value)}
                                 disabled={Loading}
-                                className={`w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl outline-none transition-all font-medium text-gray-800 placeholder:text-gray-300 focus:border-blue-500 focus:bg-white focus:shadow-[0_0_20px_rgba(59,130,246,0.1)] resize-none
-                                    ${err ? 'border-red-500 bg-red-50 text-red-900' : ''} 
+                                className={`w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl outline-none transition-all font-medium text-gray-800 placeholder:text-gray-300 focus:border-red-500 focus:bg-white focus:shadow-[0_0_20px_rgba(239,68,68,0.1)] resize-none
+                                    ${err ? 'border-red-500 bg-red-50' : ''} 
                                     ${Loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                placeholder="Nhập mô tả website mới..."
+                                placeholder="Số nhà, tên đường, phường/xã, quận/huyện..."
                             ></textarea>
                         </div>
+
+                        {/* THÔNG BÁO */}
                         <div className="min-h-[24px] px-1">
                             {Loading ? (
-                                <div className="flex items-center gap-2 text-blue-500">
+                                <div className="flex items-center gap-2 text-red-500">
                                     <i className="fas fa-spinner fa-spin text-xs"></i>
-                                    <p className="text-[12px] font-medium">Hệ thống đang xử lý...</p>
+                                    <p className="text-[12px] font-medium">Đang lưu vị trí...</p>
                                 </div>
                             ) : err ? (
                                 <div className="flex items-center gap-2 text-red-500">
@@ -101,23 +99,20 @@ function SuaMoTa() {
                                     <p className="text-[12px] font-bold">{ok}</p>
                                 </div>
                             ) : (
-                                <div className="flex items-start gap-2 text-blue-500/60">
-                                    <i className="fa-solid fa-circle-info mt-1 text-[10px]"></i>
-                                    <p className="text-[12px] font-medium leading-relaxed">
-                                        Nội dung đang nhập: <span className="text-gray-700 font-bold">"{MoTa || 'Trống'}"</span>
-                                    </p>
-                                </div>
+                                <p className="text-[11px] text-gray-400 italic font-medium leading-relaxed">Lưu ý: Địa chỉ này sẽ hiển thị ở chân trang (Footer) và trang Liên hệ.</p>
                             )}
                         </div>
                     </div>
+
+                    {/* NÚT BẤM */}
                     <div className="grid grid-cols-5 gap-3 pt-2">
                         <button
                             onClick={Reset}
                             disabled={Loading}
-                            className="col-span-2 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-600 font-bold py-4 rounded-2xl transition-all active:scale-[0.95]"
+                            className="col-span-2 flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 text-gray-600 font-bold py-4 rounded-2xl transition-all"
                         >
-                            <i className="fa-solid fa-rotate-left"></i>
-                            Làm mới
+                            <i className="fa-solid fa-arrow-rotate-left"></i>
+                            Đặt lại
                         </button>
 
                         <button
@@ -125,20 +120,14 @@ function SuaMoTa() {
                             disabled={Loading}
                             className={`col-span-3 flex items-center justify-center gap-3 font-bold py-4 rounded-2xl transition-all shadow-lg text-white
                                 ${Loading 
-                                    ? "bg-blue-400 cursor-not-allowed" 
-                                    : "bg-blue-600 hover:bg-blue-700 hover:shadow-[0_10px_25px_rgba(37,99,235,0.3)] active:scale-[0.95] shadow-blue-100"
+                                    ? "bg-red-300 cursor-not-allowed" 
+                                    : "bg-red-600 hover:bg-red-700 hover:shadow-[0_10px_25px_rgba(239,68,68,0.3)] active:scale-[0.95]"
                                 }`}
                         >
                             {Loading ? (
-                                <>
-                                    <i className="fas fa-spinner fa-spin"></i>
-                                    Đang cập nhật
-                                </>
+                                <><i className="fas fa-spinner fa-spin"></i> Đang cập nhật</>
                             ) : (
-                                <>
-                                    <i className="fa-solid fa-cloud-arrow-up"></i>
-                                    Cập nhật ngay
-                                </>
+                                <><i className="fa-solid fa-location-arrow"></i> Cập nhật ngay</>
                             )}
                         </button>
                     </div>
@@ -148,4 +137,4 @@ function SuaMoTa() {
     );
 }
 
-export default SuaMoTa;
+export default SuaDiaChi;
