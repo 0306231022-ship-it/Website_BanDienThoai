@@ -2,8 +2,6 @@ import Chung from "../CaiDatWebsite/Chung";
 import { Routes, Route ,Link } from 'react-router-dom';
 import HoSo from "../ThongTinCaNhan/HoSoAdmin";
 import XemCaiDat from "../CaiDatWebsite/XemCaiDat";
-import CaiDat from "../CaiDatWebsite/CaiDat";
-import ChinhSua from "../ThongTinCaNhan/ChinhSuaThongTinAD";
 import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
 function QuanLiTTCaNhan() {
     const { TTwebsite } = useAppContext();
@@ -102,8 +100,6 @@ result.forEach(q => console.log(q.question));
                     <Route index element={<Chung/>}/>
                     <Route path="/hoAD" element={<HoSo/>}/>
                     <Route path="/web" element={<XemCaiDat/>} />
-                    <Route path="/CaiTT" element={<CaiDat/>} />
-                    <Route path="/ChinhSua" element={<ChinhSua/>} />
                 </Routes>
             </div>
         </div>

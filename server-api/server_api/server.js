@@ -8,19 +8,15 @@ import adminRouter from './routers/adminRouter.js';
 import multer from "multer";
 
 const app = express();
-
+//chấp nhận client vào server
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true
 }));
 app.use(express.urlencoded({ extended: true }));
+//cấu hình cookies
 app.use(cookieParser());
-app.use(session({
-  secret: 'secret-key',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}));
+app.use(express.json());
 
 export const upload = multer();
 app.use("/uploads", express.static("uploads"));

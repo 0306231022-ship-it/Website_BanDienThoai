@@ -17,74 +17,6 @@ export default class adminController{
             {expiresIn:JWT_EXPIRES_IN}
         );
     }
-    static async DangNhap(req, res) {
-        const dulieu = req.body;
-         if (!dulieu) {
-            return res.json({ 
-                Status:true, 
-                message: 'Vui lòng kiểm tra lại dữ liệu!' 
-            });
-        } 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.json({
-                validation: true,
-                errors: errors.array() 
-            });
-        }
-        try {
-             const DangNhap = await adminModel.login(dulieu.email);
-             //xử lí mã lỗi không truy vấn được
-             if(DangNhap===false){
-                return res.json({
-                    Status:true,
-                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-                })
-             }
-             //Xử lí tình huống không tồn tại người dùng
-             if(DangNhap===null){
-                return res.json({
-                    Status:true,
-                    message:'Tài khoản người dùng không tồn tại!'
-                })
-             }
-             //Xử lí tình huống đã có tài khoản trong hệ thống
-             if(DangNhap){
-                //Xử lí tình huống sai mật khẩu
-                 const isMatch = await compare(dulieu.passWord, DangNhap.MATKHAU);
-                 //xử lí trường hợp mật khẩu đúng
-                  if (isMatch) {
-                    //xử lí sự tồn tại của hệ thống
-                    if (DangNhap.TRANGTHAI !== 1) {
-                        return res.json({
-                            Status:true,
-                            message:'Tài khoản đã ngùng hoạt động!'
-                        })
-                    };
-                     const token = await adminController.generateToken(DangNhap);
-                     const { MATKHAU, ...KetQua } = DangNhap;
-                    return res.json({
-                         ThanhCong: true,
-                         message: 'Bạn đã đăng nhập thành công!',
-                         token: token,
-                         DuLieu: KetQua
-                    });
-                  }else{
-                    //xử lí trường hợp mật khẩu sai
-                    return res.json({
-                        Status:true,
-                        message:'Email hoặc hoặc mật khẩu sai!'
-                    })
-                  }
-             }
-        } catch (error) {
-            console.error("Lỗi trong quá trình đăng nhập:", error);
-            return res.json({
-                Status: true,
-                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-            });
-        }
-    }
     static async CapNhatTen(req,res){
          const { Ten } = req.body;
          if (!Ten) {
@@ -336,23 +268,7 @@ export default class adminController{
     }
 }
 
-    //bên dưới chưa sửa
-    static async kiemtra(req, res) {
-         const adminId = req.user.id;
-         const TruyVan=adminModel.LayTT_ID(adminId);
-         if(TruyVan){
-            res.json({
-                ThanhCong:true,
-                message:'Bạn đã đăng nhập!',
-                DuLieu:TruyVan
-            })
-         }else{
-            res.json({
-                ThanhCong:false,
-                message:'Lỗi.....'
-            })
-         }
-     }
+ 
     static async DangXuat(req,res){
          const token = req.user.token;
          const decode = jwt.decode(token);

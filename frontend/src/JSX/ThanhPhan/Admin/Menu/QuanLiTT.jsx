@@ -13,13 +13,11 @@ import PhiVanChuyen from '../PhiVanChuyen';
 import MaGiamGia from '../MaGiamGia';
 import DanhSachMa from '../DanhSachMa';
 import HoTroKhachHang from '../HoTroKhachHang';
-import CaiDat from '../CaiDatWebsite/CaiDat';
 import ChietMaGG from '../ChiTietMaGiam';
 import BinhLuan from '../DanhSachBinhLuan';
 import XemThongTinWebsite from '../CaiDatWebsite/XemCaiDat';
 import HoSo from '../ThongTinCaNhan/HoSoAdmin';
 import Xem from '../XemBinhLuan';
-import ChinhSua from '../ThongTinCaNhan/ChinhSuaThongTinAD';
 import { Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 function QuanLiTT() {
@@ -107,11 +105,9 @@ function QuanLiTT() {
                     <Route path="danhsachma" element={<DanhSachMa />} />
                     <Route path="danhsachma/magiamgia" element={<MaGiamGia />} />
                     <Route path="hotro" element={<HoTroKhachHang />} />
-                    <Route path="caidat" element={<CaiDat />} />
                     <Route path="BinhLuan" element={<BinhLuan />} />
                     <Route path="BinhLuan/xem" element={< Xem />} />
                     <Route path="hoso" element={<HoSo />} />
-                    <Route path="hoso/ChinhSuaThongTinAdmin" element={<ChinhSua />} />
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                 </Routes>

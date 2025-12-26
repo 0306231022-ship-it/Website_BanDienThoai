@@ -1,14 +1,24 @@
 import { Link } from "react-router-dom";
-
+import {useADContext} from '../../../../CONTEXT/QuanLiCaNhanAdmin';
+import { useAppContext } from "../../../../CONTEXT/TrangChuAdmin";
+import {}
+import { useEffect } from "react";
 function HoSo() {
+    const { TTCaNhan , GetTTCaNhan} = useADContext();
+    const { TTwebsite , GetTTwebsite} =  useAppContext();
+
+    useEffect(() => {
+        GetTTwebsite();
+        GetTTCaNhan();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
     return (
         <>
             <div className="p-6 min-h-screen">
                 
-                {/* 1. HEADER - Tiêu đề trang */}
+                
                 <header className="bg-white p-6 rounded-xl shadow-md mb-8 border border-gray-100">
                     <div className="flex items-center mb-1">
-                        {/* Icon và tiêu đề được làm nổi bật */}
                         <i className="fa-solid fa-user-circle text-indigo-600 text-3xl mr-3"></i> 
                         <h2 className="text-2xl font-extrabold text-gray-900">Trang Cá Nhân và Thông Tin Tài Khoản</h2>
                     </div>
@@ -21,24 +31,24 @@ function HoSo() {
 
                 {/* 2. TRANG CÁ NHÂN */}
                 <main className="bg-white p-6 rounded-xl shadow-md mt-6 border border-gray-100">
-                    <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3">👤 Trang cá nhân</h3>
+                    <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3"><i className="fa-solid fa-circle-user"></i> Trang cá nhân</h3>
                     
                     {/* Mục chi tiết Trang cá nhân */}
                     <button className="flex items-center justify-between w-full py-3 px-3 rounded-xl hover:bg-indigo-50 cursor-pointer transition duration-200 ease-in-out group">
                         <div className="flex items-center space-x-4">
-                            {/* Avatar */}
+                            
                             <div className="w-12 h-12 rounded-full bg-indigo-100 overflow-hidden flex-shrink-0 border-2 border-indigo-300">
-                                {/* Thay SVG bằng Font Awesome hoặc giữ SVG nếu đây là placeholder chuẩn */}
-                                <i className="fa-solid fa-user-circle text-indigo-500 text-3xl flex justify-center items-center h-full"></i>
+                                <img src={`http://localhost:3001/${TTCaNhan?.AVATAR}`} alt="Avatar quản trị viên"
+                                    className="w-12 h-12 rounded-full object-cover" loading="lazy"/>
                             </div>
                             
                             <div className='text-left'>
                                 {/* Tên người dùng */}
-                                <p className="font-bold text-gray-900 text-lg group-hover:text-indigo-800">Nguyễn Ngọc Hiếu</p>
+                                <p className="font-bold text-gray-900 text-lg group-hover:text-indigo-800">{TTCaNhan?.HOTEN}</p>
                                 
                                 {/* Nguồn/Loại tài khoản */}
-                                <p className="text-sm text-gray-500 flex items-center mt-1">
-                                    <i className="fa-brands fa-facebook-f text-blue-600 w-4 h-4 mr-2"></i> Facebook
+                                <p className="text-sm text-gray-500 flex items-center mt-1 gap-3">
+                                  <img src={`http://localhost:3001/${TTwebsite?.LoGo}`} alt="Logo" className="w-9 h-9 rounded-full"/>  {TTwebsite.TenWebsite}
                                 </p>
                             </div>
                         </div>
@@ -49,7 +59,7 @@ function HoSo() {
                     {/* Có thể thêm nút "Thêm tài khoản" ở đây nếu cần */}
                 </main>
 
-                {/* Thay thế <hr> bằng khoảng trống nhẹ */}
+    
                 <div className="my-8"></div> 
 
                 {/* 3. THÔNG TIN CÁ NHÂN */}
@@ -103,6 +113,50 @@ function HoSo() {
                 </main>
 
             </div>
+                {
+                modalState.isOpen && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                         <div className="relative bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
+                             <button onClick={DongModal} className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
+                                <i className="fa-solid fa-xmark text-white"></i>
+                            </button>
+                            {
+                                modalState.TrangThaiTrang!==modalState.TrangThaiTrangTruoc && (
+                                  <button  onClick={()=>{ChinhSuaModel(modalState.TrangThaiTrangTruoc)}} class="btn-back"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>
+                                )
+                            }
+                             <p className="text-gray-600 mb-6">
+                                {(() => {
+                                    switch(modalState.TrangThaiTrang){
+                                        case 'Logo&Name' :
+                                            return  <ChinhSuaImgaeVaTen/>;
+                                        case 'SuaTen':
+                                            return <ChinhSuaTen/> ;
+                                        case 'SuaAnh' :
+                                            return <ChinhSuaLoGo/>;
+                                        case 'SuaMoTa' :
+                                            return <SuaMoTa/>;
+                                        case 'SuaFaceBook' :
+                                            return <SuaLinkFacebook/>
+                                        case 'SuaLinkIns' :
+                                            return <SuaLinkInstagram/>
+                                        case 'SuaDiaChi' :
+                                            return <SuaDiaChi/>
+                                        case 'SuaEmail' :
+                                            return <SuaEmail/>
+                                        case 'Suazalo' :
+                                            return <SuaSoDienThoai/>
+                                        default :
+                                        return <Trang404/>
+                                    }
+                                })()}
+                             </p>
+                         
+                        </div>
+                    </div>
+                )
+            } 
+
         </>
     );
 };
