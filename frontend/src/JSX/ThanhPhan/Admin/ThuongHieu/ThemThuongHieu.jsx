@@ -25,7 +25,7 @@ function ThemThuongHieu() {
     };
     const Them=async()=>{
         // Kiểm tra dữ liệu nhập
-        const kiemtra=fun.KiemTraRong(dulieu);
+         const kiemtra=fun.KiemTraRong(dulieu);
         if(!kiemtra.Status){
             kiemtra.ErrorKeys.forEach((key)=>{
                 if(key==='TenTT'){ 
@@ -40,39 +40,50 @@ function ThemThuongHieu() {
             });
             return;
         }
+        const img = dulieu.img;
         delete dulieu.img;
         const formdata=fun.objectToFormData(dulieu);
         try {
              dispatch({type:'SET_LOADING',payload:true});
-             const ketqqua=await API.CallAPI(formdata,{PhuongThuc:1,url :'/admin/ThemThuongHieu', fileArray:[dulieu.img] });
+             const ketqqua=await API.CallAPI(formdata,{PhuongThuc:1,url :'/admin/ThemThuongHieu', fileArray:[img] });
              if(ketqqua.Status){
                 dispatch({type:'SET_ERR_HT',payload:{ err:ketqqua.message}});
                 return;
              };
-             alert(JSON.stringify(ketqqua));
-
+             if(ketqqua.Validate){
+                let err={};
+                ketqqua.errors.forEach(Err => {
+                    err[Err.path]=Err.msg;
+                });
+                dispatch({type:'SET_ERR',payload:err});
+                return;
+             }
+             if(ketqqua.ThanhCong){
+                fun.resetGiaTri(dulieu);
+                setLogoPreview(null);
+                dispatch({type:'SET_LOADING',payload:false});
+                dispatch({type:'SET_ERR',payload:{}});
+                dispatch({type:'SET_ERR_HT',payload:{ err:''}});
+                dispatch({type:'SET_HT',payload:{ ThanhCong:ketqqua.message}});
+                return;
+             }   
         } catch (error) {
-            
+            console.error('Lỗi khi thêm thương hiệu:', error);
+            dispatch({type:'SET_ERR_HT',payload:{ err:'Đã xảy ra lỗi hệ thống, Vui lòng thử lại sau!'}});
         } finally{
             dispatch({type:'SET_LOADING',payload:false});
         }
-       /* const ketqqua=await API.CallAPI(formdata,{PhuongThuc:1,url :'/admin/ThemThuongHieu' });
-        if(ketqqua.ThanhCong){
-           
-            fun.resetGiaTri(dulieu);
-            setLogoPreview(null);
-            dispatch({type:'SET_LOADING',payload:false});
-            dispatch({type:'SET_ERR',payload:{}});
-        }else{
-            if(ketqqua.validation){
-                const err={};   
-                Object.keys(ketqqua.validation).forEach(key => {
-                    err[key] = ketqqua.validation[key][0];
-                });
-                dispatch({type:'SET_ERR',payload:err});
-            }
-        }*/
-
+    }
+    const resetGiaTri=()=>{
+        setdulieu({
+            TenTT: '',
+            MoTa: '',
+            img: null
+        });
+        setLogoPreview(null);
+        dispatch({type:'SET_ERR',payload:{}});
+        dispatch({type:'SET_ERR_HT',payload:{ err:''}});
+        dispatch({type:'SET_HT',payload:{ ThanhCong:''}});
     }
 
     return (
@@ -81,14 +92,15 @@ function ThemThuongHieu() {
                 <i className="fas fa-tags mr-2 text-sm text-yellow-500"></i> Thêm Thương Hiệu Mới
             </h3>
 
-            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
-                {/* Tên thương hiệu */}
+            <header className="space-y-5">
+        
                 <div>
                     <label htmlFor="brand-name" className="block text-sm font-semibold text-gray-700 mb-1">
                         Tên Thương hiệu <span className="text-red-700">(*)</span>
                     </label>
                     <input
                         onChange={(e) => {setdulieu({ ...dulieu, TenTT: e.target.value });}}
+                        value={dulieu.TenTT}
                         type="text"
                         id="brand-name"
                         placeholder="Ví dụ: Apple, Samsung, Xiaomi"
@@ -110,7 +122,7 @@ function ThemThuongHieu() {
                 </div>
 
                 {/* Upload Logo */}
-                <div className={`border-2 border-dashed border-teal-300 p-5 rounded-xl bg-teal-50/50 transition hover:bg-teal-100 ${state.err.img ? 'border-red-500' : ''}`}>
+                <div className={`border-2 border-dashed border-teal-300 p-5 rounded-xl bg-teal-50/50 transition hover:bg-teal-100 ${state.err.img || state.err.files ? 'border-red-500' : ''}`}>
                     <label className="block text-base font-bold text-teal-800 mb-3"><i className="fas fa-image text-teal-600"></i> Logo Thương hiệu <span className="text-red-700">(*)</span></label>
 
                     <input
@@ -123,11 +135,10 @@ function ThemThuongHieu() {
 
                     <div className="mt-2 mb-4 flex items-center gap-4">
                         {logoPreview ? (
-                            <img
-                                src={logoPreview}
-                                alt="Xem trước Logo"
-                                className="w-20 h-20 object-contain rounded-lg border border-gray-200 bg-white shadow-sm"
-                            />
+                           <div className="relative">
+                                <img src={logoPreview} alt="Xem trước Logo"  className="w-20 h-20 object-contain rounded-lg border border-gray-200 bg-white shadow-sm"/>
+                                <button className="absolute top-1 right-1 rounded-full bg-red-600 text-white w-6 h-6 flex items-center justify-center hover:bg-red-800"onClick={() => setLogoPreview(null)} >x </button>
+                            </div>
                         ) : (
                             <div className="w-20 h-20 flex items-center justify-center bg-white border border-gray-200 rounded-lg text-gray-300">
                                 <i className="fas fa-image text-2xl"></i>
@@ -151,6 +162,9 @@ function ThemThuongHieu() {
                 {
                     state.err.err && <p className="text-red-600 text-sm mt-1"><i className="fa-solid fa-triangle-exclamation"></i> {state.err.err}</p>
                 }
+                {
+                    state.ThanhCong && <p className="text-green-600 text-sm mt-1"><i className="fa-solid fa-circle-check"></i> {state.ThanhCong}</p>
+                }
 
                 {/* Nút hành động */}
                 <div className="flex gap-3 pt-4 border-t border-gray-100">
@@ -158,14 +172,9 @@ function ThemThuongHieu() {
                         {state.loading ? (<> <i className="fas fa-spinner fa-spin mr-2"></i> Lưu Thương Hiệu </>) : (<> <i className="fas fa-floppy-disk mr-2"></i>Lưu Thương Hiệu</>)}
                     </button>
                     
-                    <button
-                        type="button"
-                        className="py-3 px-6 bg-gray-100 text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 font-bold text-sm transition duration-200"
-                    >
-                        Hủy
-                    </button>
+                    <button onClick={()=>{resetGiaTri()}} type="button" className="py-3 px-6 bg-gray-100 text-gray-600 rounded-xl hover:bg-red-50 hover:text-red-600 font-bold text-sm transition duration-200">Hủy</button>
                 </div>
-            </form>
+            </header>
         </div>
     );
 }

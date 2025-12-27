@@ -81,7 +81,7 @@ adminRouter.post('/ChinhSuaTenUS', upload.none(),  [
     next();
 }, CanhanADController.CapNhatTen);
 //=========================================
-adminRouter.post('/ThemThuongHieu', pload.array("files", 5), validateImages, validateThemTH,ThuongHieuController.ThemThuongHieu);
+adminRouter.post('/ThemThuongHieu', pload.array("files", 2), validateThemTH,validateImages,ThuongHieuController.ThemThuongHieu);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers )

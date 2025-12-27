@@ -89,9 +89,6 @@ function DanhSachThuongHieu() {
                                             <Link to="chitiet" className="p-2.5 text-indigo-600 hover:bg-indigo-50 rounded-xl transition-all active:scale-90" title="Xem chi tiết">
                                                 <i className="fas fa-eye text-lg"></i>
                                             </Link>
-                                            <button className="p-2.5 text-blue-600 hover:bg-blue-50 rounded-xl transition-all active:scale-90" title="Chỉnh sửa">
-                                                <i className="fas fa-edit text-lg"></i>
-                                            </button>
                                             <button className="p-2.5 text-red-500 hover:bg-red-50 rounded-xl transition-all active:scale-90" title="Xóa">
                                                 <i className="fas fa-trash-alt text-lg"></i>
                                             </button>

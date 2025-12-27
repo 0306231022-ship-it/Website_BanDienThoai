@@ -9,3 +9,6 @@ Chưa sử lí controller upload ảnh
 20/12/2025 : hoàn thành chức năng đăng nhập admin
 
 Cả tên và logo chưa xử lí lỗi validate 
+
+==========================
+xử lí validate hình ảnh chưa được 

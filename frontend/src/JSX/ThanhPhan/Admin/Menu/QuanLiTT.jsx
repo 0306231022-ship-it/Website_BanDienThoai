@@ -6,7 +6,7 @@ import ThemSanPham from '../ThemSanPham';
 import ChiTietSanPham from '../ChiTietSP';
 import DanhSachThuongHieu from '../ThuongHieu/DanhSachThuongHieu';
 import ThemThuongHieu from '../ThuongHieu/ThemThuongHieu';
-import ChiTietThuongHieu from '../ChiTietThuongHieu';
+import ChiTietThuongHieu from '../ThuongHieu/ChiTietThuongHieu';
 import DanhSachKhachHang from '../DanhSachKhachHang';
 import BaoCao from '../BaoCao';
 import PhiVanChuyen from '../PhiVanChuyen';

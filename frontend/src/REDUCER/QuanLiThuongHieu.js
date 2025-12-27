@@ -2,6 +2,7 @@ export const khoiTao = {
   loading: false,   
   TimKiem: null,
   err: {},
+  ThanhCong:'',
 };
 
 export function QuanLiThuongHieu(state, action) {
@@ -16,6 +17,11 @@ export function QuanLiThuongHieu(state, action) {
         ...state,
         err: { ...state.err, ...action.payload } // merge object
         };
+    case 'SET_HT':
+      return {
+        ...state,
+        ThanhCong: action.payload.ThanhCong
+      };
     default:
       return state;
   }
