@@ -57,21 +57,19 @@ export function AppADProvider({ children }) {
        const kiemtra = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn đăng xuất không?');
        if (!kiemtra) return;
        try {
-           const token = localStorage.getItem("token");
-           const ketqua = await API.CallAPI(undefined, { url:'/admin/DangXuat' , token : token , PhuongThuc:1 });
-           localStorage.removeItem('token');
-           localStorage.removeItem('DuLieu');
+           const ketqua = await API.CallAPI(undefined, { url:'/admin/DangXuat' , PhuongThuc:1 });
            if (ketqua?.ThanhCong) {
                ThongBao.ThongBao_ThanhCong(ketqua.message);
                setTTCaNhan(null);
                setislogin(false);
+               navigate('/DangNhap-admin');
            } else {
                ThongBao.ThongBao_Loi(ketqua?.message || 'Đăng xuất thất bại');
            }
-           navigate('/DangNhap-admin');
        } catch (error) {
            console.error(error);
            ThongBao.ThongBao_Loi('Đã xảy ra lỗi khi đăng xuất');
+           return;
        }
    }
   

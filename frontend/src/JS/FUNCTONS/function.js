@@ -1,21 +1,31 @@
  //Kiểm tra giá trị rổng của obj
- export function KiemTraRong(obj) {
-    if (typeof obj !== "object" || obj === null) return false;
-    for (const key in obj) {
-        if (!obj.hasOwnProperty(key)) continue;
-        const value = obj[key];
-        if (typeof value === "object" && value !== null) {
-            if (!KiemTraRong(value)) return false; 
-        } 
-        else if (
-            value === "" || 
-            value === null || 
-            value === undefined
-        ) {
-            return false;
-        }
+export function KiemTraRong(obj) {
+  if (typeof obj !== "object" || obj === null) return false;
+
+  const keys = Object.keys(obj);
+  if (keys.length === 0) return false;
+
+  const errorKeys = [];
+
+  for (const key of keys) {
+    const value = obj[key];
+    // Nếu là File thì chỉ cần check null
+    if (value instanceof File) {
+      if (!value) errorKeys.push(key);
+    } else if (typeof value === "object" && value !== null) {
+      const result = KiemTraRong(value);
+      if (!result.Status) {
+        result.ErrorKeys.forEach(subKey => errorKeys.push(`${key}.${subKey}`));
+      }
+    } else if (value === "" || value === null || value === undefined) {
+      errorKeys.push(key);
     }
-    return true; 
+  }
+
+  if (errorKeys.length > 0) {
+    return { Status: false, ErrorKeys: errorKeys };
+  }
+  return { Status: true };
 }
 //reset giá trị obj
 export function resetGiaTri(obj) {

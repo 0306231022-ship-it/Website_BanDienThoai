@@ -99,7 +99,7 @@ function AdminLogin() {
                         </div>
 
                         <div className="text-sm">
-                            <Link to="/admin/forgot-password" className="font-medium text-teal-600 hover:text-teal-500 transition">
+                            <Link to="/quen-mat-khau" className="font-medium text-teal-600 hover:text-teal-500 transition">
                                 Quên mật khẩu?
                             </Link>
                         </div>

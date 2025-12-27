@@ -36,7 +36,7 @@ export async function CallAPI(dulieu = null, yeucau) {
         if (!response.ok) {
             const errorText = await response.text();
             return {
-                Status: false,
+                Status: true,
                 message: `Lỗi HTTP ${response.status}: ${errorText.substring(0, 50)}...`
             };
         }
@@ -44,7 +44,7 @@ export async function CallAPI(dulieu = null, yeucau) {
         return await response.json();
     } catch (error) {
         return {
-            Status: false,
+            Status: true,
             message: "Không thể kết nối đến hệ thống, vui lòng thử lại sau!"
         };
     }

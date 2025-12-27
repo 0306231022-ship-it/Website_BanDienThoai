@@ -4,8 +4,8 @@ import DonHang from '../DonHang';
 import DanhSachSanPham from '../DanhSachSanPham';
 import ThemSanPham from '../ThemSanPham';
 import ChiTietSanPham from '../ChiTietSP';
-import DanhSachThuongHieu from '../DanhSachThuongHieu';
-import ThemThuongHieu from '../ThemThuongHieu';
+import DanhSachThuongHieu from '../ThuongHieu/DanhSachThuongHieu';
+import ThemThuongHieu from '../ThuongHieu/ThemThuongHieu';
 import ChiTietThuongHieu from '../ChiTietThuongHieu';
 import DanhSachKhachHang from '../DanhSachKhachHang';
 import BaoCao from '../BaoCao';
@@ -18,6 +18,7 @@ import BinhLuan from '../DanhSachBinhLuan';
 import XemThongTinWebsite from '../CaiDatWebsite/XemCaiDat';
 import HoSo from '../ThongTinCaNhan/HoSoAdmin';
 import Xem from '../XemBinhLuan';
+import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
 import { Routes, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 function QuanLiTT() {
@@ -89,6 +90,7 @@ function QuanLiTT() {
 
     
         <main className="flex-1 p-6 bg-gray-50 min-h-screen" role="main" aria-label="Nội dung quản trị">
+            <AppProvider>
                 <Routes>
                     <Route index element={<BangChinh />} />
                     <Route path="DonHang" element={<DonHang />} />
@@ -111,6 +113,7 @@ function QuanLiTT() {
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                 </Routes>
+            </AppProvider>
         </main>
         </>
     );

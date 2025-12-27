@@ -72,39 +72,4 @@ export default class CaiDatModel{
             return 1;
         }
     }
-
-    
-
-    //Chưa sửa bên dưới 
- static async UpdateWebsite(dulieu, dsanh) {
-    try {
-        const [ketqua] = await execute(
-            `UPDATE caidatwebsite 
-             SET 
-                TenWebsite=?, 
-                Email=?, 
-                DiaChi=?, 
-                LinkFacebook=?, 
-                LinkInstagram=?, 
-                Zalo=?, 
-                LoGo=?, 
-                TrangThai=1
-             WHERE IDWEBSITE = ?`,
-            [
-                dulieu.TenWebsite,
-                dulieu.Email,
-                dulieu.DiaChi,
-                dulieu.LinkFace,
-                dulieu.LinkIns,
-                dulieu.Zalo,
-                dsanh,           
-                "ID-WBSS02"         
-            ]
-        );
-       return ketqua.affectedRows > 0 ? ketqua : null;
-    } catch (error) {
-       return null;
-    }
-}
-
 }

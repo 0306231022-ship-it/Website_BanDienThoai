@@ -268,30 +268,6 @@ export default class adminController{
     }
 }
 
- 
-    static async DangXuat(req,res){
-         const token = req.user.token;
-         const decode = jwt.decode(token);
-         const exp= decode && decode.exp ? new Date(decode.exp*1000):null;
-         if(!exp){
-            return res.status(400).json({
-                success : false,
-                message : 'Invalid token'
-            });
-        }
-        const result = await adminModel.removeToken(token, exp);
-        if(result){
-            return res.json({
-                ThanhCong:true,
-                message:'Bạn đã đăng xuát thành công!'
-            })
-        }else{
-            return res.json({
-                ThanhCong:false,
-                message:'Bạn đã đăng xuất thất bại. Vui lòng kiểm tra lại hệ thống!'
-            })
-        }
-    }
     static async LayWebsite(req,res){
         const kq= await CaiDatModel.GetTTWebsite();
         if(kq){

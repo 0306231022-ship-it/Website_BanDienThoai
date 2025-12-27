@@ -12,9 +12,11 @@ import { validateIns } from '../validation/KiemTraIns.js';
 import { validateDiaChi } from "../validation/KiemTraDiaChi.js";
 import { validateEmail } from "../validation/KLiemTraEmail.js";
 import { validateSoDienThoai } from "../validation/KiemTraSoDienThoai.js";
+import { validateThemTH } from "../validation/KiemTrDLThuongHieu.js";
+import ThuongHieuController from "../controllers/ThuongHieuController.js";
 const adminRouter = Router();
 const upload = multer();
-
+//==========================================
 adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
 adminRouter.post('/DangNhap',  upload.none(), UserValidate, CanhanADController.DangNhap);
 adminRouter.post('/ChinhSuaTen', upload.none(),  [
@@ -62,7 +64,25 @@ adminRouter.post('/ChinhSuaDiaChi', upload.none(), validateDiaChi, adminControll
 adminRouter.post('/ChinhSuaEmail', upload.none(), validateEmail, adminController.CapNhatEmail);
 adminRouter.post('/ChinhSuaSoDienThoai', upload.none(), validateSoDienThoai, adminController.CapNhatSoDienThoai);
 adminRouter.post('/kiemtra', authMiddleware, CanhanADController.kiemtra );
-adminRouter.post('/DangXuat', authMiddleware, adminController.DangXuat);
+adminRouter.post('/DangXuat', authMiddleware, CanhanADController.DangXuat);
+//=========================================
+adminRouter.post('/ChinhSuaTenUS', upload.none(),  [
+    body('Ten')
+    .notEmpty()
+    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+    .isLength({max:50})
+    .withMessage('Vượt quá kí tự cho phép!'),
+],
+(req, res, next) => {
+     const errors = validationResult(req);
+     if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+}, CanhanADController.CapNhatTen);
+//=========================================
+adminRouter.post('/ThemThuongHieu', pload.array("files", 5), validateImages, validateThemTH,ThuongHieuController.ThemThuongHieu);
+//========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers )
 console.log("✅ adminRouter loaded");

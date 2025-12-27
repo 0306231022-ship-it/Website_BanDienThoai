@@ -7,6 +7,7 @@ import AdminLogin from "./JSX/TRANG/DangNhapAdmin.jsx";
 import TrangChuAdmin from "./JSX/TRANG/TrangChuAdmin.jsx";
 import TrangChuWeb from "./JSX/TRANG/TrangChuWebsite.jsx";
 import ServerErrorPage from './JSX/TRANG/err/500.jsx';
+import QuenMatKhau from './JSX/TRANG/QuenMatKhau.jsx';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -19,6 +20,7 @@ root.render(
           <Route path="/admin/*" element={<TrangChuAdmin />} />
           <Route path="/*" element={<TrangChuWeb />} />
           <Route path="/500" element={<ServerErrorPage />} />
+          <Route path="/quen-mat-khau" element={<QuenMatKhau />} />
         </Routes>
         </AppADProvider>
       </AppProvider>

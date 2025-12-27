@@ -16,7 +16,7 @@ export default class CanhanADController{
             {expiresIn:JWT_EXPIRES_IN}
         );
     }
-     static async DangNhap(req, res) {
+    static async DangNhap(req, res) {
             const dulieu = req.body;
              if (!dulieu) {
                 return res.json({ 
@@ -116,7 +116,37 @@ export default class CanhanADController{
                     })
                  }
              }
-        
+             static async DangXuat(req, res) {
+                res.clearCookie('token', {
+                    httpOnly: true,
+                    sameSite: 'lax',
+                    secure: false,
+                    path: '/'
+                });
+                return res.json({
+                    ThanhCong: true,
+                    message: 'Bạn đã đăng xuất thành công!'
+                });
+            }
+            static async CapNhatTen(req,res){
+                 const { Ten } = req.body;
+                 if (!Ten) {
+                    return res.json({ 
+                        Status:true, 
+                        message: 'Vui lòng kiểm tra lại dữ liệu!' 
+                    });
+                } 
+                const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    return res.json({
+                        validation: true,
+                        errors: errors.array() 
+                    });
+                }
+                
+            }
+
+
 
   
 }

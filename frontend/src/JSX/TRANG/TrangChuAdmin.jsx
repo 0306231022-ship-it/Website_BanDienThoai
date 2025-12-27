@@ -126,11 +126,10 @@ function TrangChuAdmin() {
         </div>
       </header>
 
-      {/* BODY */}
       <div className="flex">
         <AppProvider>
           <Routes>
-            <Route index element={<QuanLiTT />} />
+            <Route path="*" element={<QuanLiTT />} />
             <Route path="/CaiDat/*" element={<QuanLiTTCaNhan />} />
           </Routes>
         </AppProvider>
