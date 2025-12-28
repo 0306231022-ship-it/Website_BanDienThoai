@@ -6,31 +6,43 @@ export function AppProvider({ children }) {
     const [modalState, setModalState] = useState({
         isOpen: false,
         DuLieu: {},
-        TrangThaiTrang: "",
-        TrangThaiTrangTruoc: ""
+        TrangThaiTrang: null,
+        QuaTrang: {
+            tenTrangMoi: null,
+            url: null
+        },
+        url:null
     });
-    const MoModal = (tenTrangMoi, duLieu = {}) => {
+    const MoModal = (tenTrangMoi, duLieu , url = null) => {
         setModalState(prev => ({
             isOpen: true,
             DuLieu: duLieu,
             TrangThaiTrang: tenTrangMoi,
-            TrangThaiTrangTruoc: prev.TrangThaiTrang 
+            QuaTrang: {
+                tenTrangMoi: tenTrangMoi,
+                url: url || null
+            },
+            url: url || null
         }));
     };
-
     const DongModal = () => {
         setModalState({
             isOpen: false,
             DuLieu: {},
-            TrangThaiTrang: "",
-            TrangThaiTrangTruoc: ""
+            TrangThaiTrang: null,
+            QuaTrang: {
+                tenTrangMoi: null,
+                url: null
+            },
+            url: null
         });
     };
 
-    const ChinhSuaModel = (tenTrang) => {
+    const ChinhSuaModel = (tenTrang, url) => {
         setModalState(prev => ({
             ...prev,
-            TrangThaiTrang: tenTrang
+            TrangThaiTrang: tenTrang,
+            url: url
         }));
     };
 

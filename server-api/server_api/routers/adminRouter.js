@@ -84,6 +84,9 @@ adminRouter.post('/ChinhSuaTenUS', upload.none(),  [
 adminRouter.post('/ThemThuongHieu', pload.array("files", 2), validateThemTH,validateImages,ThuongHieuController.ThemThuongHieu);
 //========================================= );
 //Phương thức get
-adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers )
+adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
+adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
+adminRouter.get('/ChiTietThuongHieu', authMiddleware, ThuongHieuController.LayChiTietThuongHieu);
+//=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;

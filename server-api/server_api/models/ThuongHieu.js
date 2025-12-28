@@ -21,19 +21,34 @@ export default class ThuongHieuModel{
         return false;
     }
 }
+    static async LayDanhSachThuongHieu(offset, limit) {
+        try {
+            const [rows] = await execute(
+                'SELECT IDTHUONGHIEU, TENTHUONGHIEU, TRANGTHAI, LOGO FROM thuonghieu ORDER BY NGAYTAO DESC LIMIT ? OFFSET ?',
+                [limit, offset]
+            );
+            const [countRows] = await execute(
+                'SELECT COUNT(*) as totalItems FROM thuonghieu'
+            );
+            const totalItems = countRows[0].totalItems;
+            return { thuongHieu: rows, totalItems };
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách thương hiệu:', error);
+            return { thuongHieu: [], totalItems: 0 };
+        }
+    }
+    static async LayChiTietThuongHieu(id) {
+        try {
+            const [rows] = await execute(
+                'SELECT * FROM thuonghieu WHERE IDTHUONGHIEU = ?',
+                [id]
+            );
+            return rows[0] || null;
+        } catch (error) {
+            console.error('Lỗi khi lấy chi tiết thương hiệu:', error);
+            return null;
+        }
+    }
 
-    /**
-     * app.get('/api/sanpham', async (req, res) => {
-    const page = parseInt(req.query.page) || 1;
-    const limit = 8;
-    const offset = (page - 1) * limit;
 
-    const [rows] = await db.execute(
-        'SELECT * FROM sanpham LIMIT ? OFFSET ?',
-        [limit, offset]
-    );
-
-    res.json(rows);
-});
-     */
 }

@@ -12,3 +12,7 @@ Cả tên và logo chưa xử lí lỗi validate
 
 ==========================
 xử lí validate hình ảnh chưa được 
+
+=========================
+
+càn xử lí lại modal

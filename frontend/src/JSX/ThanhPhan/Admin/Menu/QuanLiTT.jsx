@@ -100,7 +100,7 @@ function QuanLiTT() {
                     <Route path="sanpham/chitiet" element={<ChiTietSanPham />} />
                     <Route path="thuonghieu" element={<DanhSachThuongHieu />} />
                     <Route path="thuonghieu/ThemThuongHieu" element={<ThemThuongHieu />} />
-                    <Route path="thuonghieu/chitiet" element={<ChiTietThuongHieu />} />
+                    <Route path="thuonghieu/chitiet/:id" element={<ChiTietThuongHieu />} />
                     <Route path="khachhang" element={<DanhSachKhachHang />} />
                     <Route path="baocao" element={<BaoCao />} />
                     <Route path="phivanchuyen" element={<PhiVanChuyen />} />
