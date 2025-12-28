@@ -49,6 +49,28 @@ export default class ThuongHieuModel{
             return null;
         }
     }
-
-
+    static async CapNhatTenThuongHieu(id, Ten) {
+        try {
+            const [result] = await execute(
+                'UPDATE thuonghieu SET TENTHUONGHIEU = ? WHERE IDTHUONGHIEU = ?',
+                [Ten, id]
+            );
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật tên thương hiệu:', error);
+            return false;
+        }
+    }
+    static async CapNhatAnhThuongHieu(id, Logo) {
+        try {
+            const [result] = await execute(
+                'UPDATE thuonghieu SET LOGO = ? WHERE IDTHUONGHIEU = ?',
+                [Logo, id]
+            );
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật ảnh thương hiệu:', error);
+            return false;
+        }
+    }
 }

@@ -14,6 +14,7 @@ import { validateEmail } from "../validation/KLiemTraEmail.js";
 import { validateSoDienThoai } from "../validation/KiemTraSoDienThoai.js";
 import { validateThemTH } from "../validation/KiemTrDLThuongHieu.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
+import adminModel from "../models/adminModel.js";
 const adminRouter = Router();
 const upload = multer();
 //==========================================
@@ -82,6 +83,21 @@ adminRouter.post('/ChinhSuaTenUS', upload.none(),  [
 }, CanhanADController.CapNhatTen);
 //=========================================
 adminRouter.post('/ThemThuongHieu', pload.array("files", 2), validateThemTH,validateImages,ThuongHieuController.ThemThuongHieu);
+adminRouter.post('/SuaTenThuongHieu', upload.none(),  [
+    body('Ten')
+    .notEmpty()
+    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+    .isLength({max:50})
+    .withMessage('Vượt quá kí tự cho phép!'),
+],
+(req, res, next) => {
+     const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+}, ThuongHieuController.SuaTenThuongHieu);
+adminRouter.post('/SuaAnhThuongHieu', pload.array("files", 2), validateImages, ThuongHieuController.SuaAnhThuongHieu);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );

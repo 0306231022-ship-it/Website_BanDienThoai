@@ -7,7 +7,7 @@ import { useAppContext } from '../../../../../../CONTEXT/TrangChuAdmin';
 function ChinhSuaTen() {
   const { modalState } = useModalContext();
   const { GetTTwebsite} =useAppContext();
-  const tenCu = modalState?.DuLieu?.TenWebsite || "";
+  const tenCu = modalState?.DuLieu?.TenWebsite || modalState?.DuLieu?.Ten || '';
   const [ten, setTen] = useState('');
   const [err, setErr] = useState('');
   const [errValidate, seterr] = useState({}); 
@@ -39,8 +39,8 @@ function ChinhSuaTen() {
     }
 
     try {
-      const DuLieu = fun.objectToFormData({ Ten: ten });
-      const ketqua = await API.CallAPI(DuLieu, { PhuongThuc: 1, url: '/admin/ChinhSuaTen' });
+      const DuLieu = fun.objectToFormData({ Ten: ten , id : modalState?.DuLieu?.id || null});
+      const ketqua = await API.CallAPI(DuLieu, { PhuongThuc: 1, url: modalState.QuaTrang.url });
       if (ketqua.Status) {
         setErr(ketqua.message);
         setLoading(false);

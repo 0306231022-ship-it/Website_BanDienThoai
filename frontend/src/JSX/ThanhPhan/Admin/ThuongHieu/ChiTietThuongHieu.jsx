@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 import * as API from '../../../../JS/API/API';
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 import ThongTinCoBan from "./modal/ThongTinCoBan";
-import ChinhSuaTen from "./modal/conmodal/ChinhSuaTen";
+import ChinhSuaTen from "../CaiDatWebsite/modal/Conmodal/ChinhSuaName";
+import ChinhSuaLoGo from "../CaiDatWebsite/modal/Conmodal/ChinhSuaLoGo";
+import ChinhSuaTrangThai from "./modal/ChinhSuaTrangThai";
 
 function ChiTietThuongHieu() {
     const { id } = useParams();
@@ -105,7 +107,15 @@ function ChiTietThuongHieu() {
                 <div className="lg:col-span-1 space-y-6">
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden relative group">
                         {/* Nút chỉnh sửa hiện khi hover vào Card */}
-                        <button onClick={()=>{MoModal('ThongTinCoBan',{Ten:thuongHieu.TENTHUONGHIEU,Logo:thuongHieu.LOGO , TrangThai:thuongHieu.TRANGTHAI})}} className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm text-teal-600 rounded-xl shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-teal-600 hover:text-white flex items-center justify-center">
+                        <button onClick={()=>{MoModal('ThongTinCoBan',
+                            {
+                                Ten:thuongHieu.TENTHUONGHIEU,
+                                LoGo:thuongHieu.LOGO , 
+                                TrangThai:thuongHieu.TRANGTHAI,
+                                id:thuongHieu.IDTHUONGHIEU
+                            }
+                            )}} 
+                            className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm text-teal-600 rounded-xl shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-teal-600 hover:text-white flex items-center justify-center">
                             <i className="fas fa-pen-to-square"></i>
                         </button>
 
@@ -197,9 +207,10 @@ function ChiTietThuongHieu() {
                              <button onClick={DongModal} className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
                                 <i className="fa-solid fa-xmark text-white"></i>
                             </button>
+                            {/* Nội dung modal dựa trên trạng thái hiện tại */}
                             {
-                                modalState.TrangThaiTrang!==modalState.TrangThaiTrangTruoc && (
-                                  <button  onClick={()=>{ChinhSuaModel(modalState.TrangThaiTrangTruoc)}} class="btn-back"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>
+                                modalState.TrangThaiTrang!==modalState.QuaTrang.tenTrangMoi && (
+                                  <button  onClick={()=>{ChinhSuaModel(modalState.QuaTrang.tenTrangMoi)}} class="btn-back"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>
                                 )
                             }
                              <p className="text-gray-600 mb-6">
@@ -207,6 +218,8 @@ function ChiTietThuongHieu() {
                                     switch(modalState.TrangThaiTrang){
                                         case 'ThongTinCoBan': return <ThongTinCoBan />;
                                         case 'ChinhSuaTen': return <ChinhSuaTen />;
+                                        case 'SuaAnhThuongHieu': return <ChinhSuaLoGo />;
+                                        case 'ChinhSuaTrangThai': return <ChinhSuaTrangThai />;
                                         default: return null;
 
                             

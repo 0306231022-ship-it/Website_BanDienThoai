@@ -42,7 +42,10 @@ export function AppProvider({ children }) {
         setModalState(prev => ({
             ...prev,
             TrangThaiTrang: tenTrang,
-            url: url
+            QuaTrang: {
+                ...prev.QuaTrang,
+                url: url || null
+            },
         }));
     };
 

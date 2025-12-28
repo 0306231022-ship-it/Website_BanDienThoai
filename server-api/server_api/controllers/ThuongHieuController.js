@@ -91,5 +91,58 @@ export default class ThuongHieuController{
             return res.status(500).json({ message: 'Đã xảy ra lỗi hệ thống.' });
          }
     }
+    static async SuaTenThuongHieu(req, res) {
+        const { Ten } = req.body;
+        const id = req.body.id || null;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+        }
+        // Logic cập nhật tên thương hiệu dựa trên ID
+        // Giả sử bạn có một phương thức trong model để cập nhật tên thương hiệu
+        const capNhatThanhCong = await ThuongHieuModel.CapNhatTenThuongHieu(id, Ten);
+        if (capNhatThanhCong) {
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật tên thương hiệu thành công!'
+            });
+        } else {
+            return res.json({
+                ThatBai: true,
+                message: 'Cập nhật tên thương hiệu thất bại!'
+            });
+        }
+    }
+    static async SuaAnhThuongHieu(req, res) {
+        const files = req.files;
+        const id = req.body.id || null;
+        const pathFile = files[0].path.replace(/\\/g, '/');
+        if (!pathFile) {
+            return res.json({
+                Status: true,
+                message: 'Lỗi tải ảnh!'
+            })
+        };
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                validation: true,
+                errors: errors.array()
+            });
+        }
+        const capNhatThanhCong = await ThuongHieuModel.CapNhatAnhThuongHieu(id, pathFile);
+        if (capNhatThanhCong) {
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật ảnh thương hiệu thành công!'
+            });
+        } else {
+            return res.json({
+                ThatBai: true,
+                message: 'Cập nhật ảnh thương hiệu thất bại!'
+            });
+        }
+    }
+
 
 }

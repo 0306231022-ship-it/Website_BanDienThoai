@@ -4,13 +4,13 @@ function ThongTinCoBan() {
   const { modalState, ChinhSuaModel } = useModalContext();
 
   return (
-    <div className="w-full bg-white rounded-3xl p-6">
+    <div className="w-full bg-white rounded-3xl p-2">
       {/* --- PHẦN ĐẦU: LOGO VÀ TIÊU ĐỀ --- */}
       <div className="flex flex-col items-center mb-10 pt-4">
         <div className="relative group">
           <div className="absolute inset-0 bg-blue-100 rounded-full scale-110 opacity-50 group-hover:scale-125 transition-transform duration-500"></div>
           <img 
-            src={`http://localhost:3001/${modalState.DuLieu.Logo}`} 
+            src={`http://localhost:3001/${modalState.DuLieu.LoGo}`} 
             alt="Logo" 
             className="relative w-28 h-28 rounded-full object-cover border-4 border-white shadow-xl" 
           />
@@ -22,7 +22,7 @@ function ThongTinCoBan() {
                 </span>
              ) : (
                 <span className="flex items-center px-3 py-1 bg-white rounded-full text-[10px] font-bold text-red-600 border border-red-100 whitespace-nowrap">
-                   <i className="fa-solid fa-circle mr-1.5 text-[8px]"></i> Ngưng
+                   <i className="fa-solid fa-circle mr-1.5 text-[8px]"></i> Ngưng hoạt động
                 </span>
              )}
           </div>
@@ -34,7 +34,7 @@ function ThongTinCoBan() {
       {/* --- DANH SÁCH CÁC NÚT CHỈNH SỬA --- */}
       <div className="space-y-3">
         {/* Sửa Tên */}
-        <button disabled={modalState.DuLieu.TrangThai !==1} onClick={() => ChinhSuaModel('ChinhSuaTen')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-2xl transition-all group">
+        <button disabled={modalState.DuLieu.TrangThai !==1} onClick={() => ChinhSuaModel('ChinhSuaTen', '/admin/SuaTenThuongHieu')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-2xl transition-all group">
           <div className="flex items-center gap-4">
             <div className="w-11 h-11 bg-white shadow-sm text-blue-600 rounded-xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <i className="fa-solid fa-font text-lg"></i>
@@ -48,7 +48,7 @@ function ThongTinCoBan() {
         </button>
 
         {/* Sửa Ảnh/Logo */}
-        <button disabled={modalState.DuLieu.TrangThai !==1} onClick={() => ChinhSuaModel('SuaAnh')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-purple-50 border border-gray-100 rounded-2xl transition-all group">
+        <button disabled={modalState.DuLieu.TrangThai !==1} onClick={() => ChinhSuaModel('SuaAnhThuongHieu','/admin/SuaAnhThuongHieu')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-purple-50 border border-gray-100 rounded-2xl transition-all group">
           <div className="flex items-center gap-4">
             <div className="w-11 h-11 bg-white shadow-sm text-purple-600 rounded-xl flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors">
               <i className="fa-solid fa-image text-lg"></i>
@@ -62,7 +62,7 @@ function ThongTinCoBan() {
         </button>
 
         {/* Chỉnh sửa trạng thái (Tùy chọn thêm nếu bạn muốn đổi trạng thái ở đây) */}
-        <button onClick={() => ChinhSuaModel('SuaTrangThai')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-teal-50 border border-gray-100 rounded-2xl transition-all group">
+        <button onClick={() => ChinhSuaModel('ChinhSuaTrangThai', '/admin/ChinhSuaTrangThai')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-teal-50 border border-gray-100 rounded-2xl transition-all group">
           <div className="flex items-center gap-4">
             <div className={`w-11 h-11 bg-white shadow-sm rounded-xl flex items-center justify-center transition-colors ${modalState.DuLieu.TrangThai === 1 ? 'text-green-600 group-hover:bg-green-600' : 'text-red-600 group-hover:bg-red-600'} group-hover:text-white`}>
               <i className="fa-solid fa-power-off text-lg"></i>
@@ -70,7 +70,7 @@ function ThongTinCoBan() {
             <div className="text-left">
               <span className="block text-xs font-bold text-gray-400 uppercase tracking-tight">Trạng thái</span>
               <span className={`text-[15px] font-bold ${modalState.DuLieu.TrangThai === 1 ? 'text-green-600' : 'text-red-600'}`}>
-                {modalState.DuLieu.TrangThai === 1 ? 'Đang kích hoạt' : 'Đang tạm ngưng'}
+                {modalState.DuLieu.TrangThai === 1 ? 'Đang hoạt động' : 'Đang ngưng hoạt động'}
               </span>
             </div>
           </div>

@@ -28,6 +28,7 @@ function ChinhSuaLoGo() {
   };
 
   const LuuAnh = async () => {
+
     if (file.length === 0) {
       seterr('Vui lòng chọn hình ảnh trước');
       return;
@@ -44,9 +45,16 @@ function ChinhSuaLoGo() {
       setLoading(false);
       return;
     }
-
+   const DuLieu = modalState?.DuLieu?.id
+      ? fun.objectToFormData({ id: modalState.DuLieu.id })
+      : fun.objectToFormData({ id: "" });
     try {
-      const ketqua = await API.CallAPI(undefined, { fileArray: file, url: '/admin/ChinhLoGo', PhuongThuc: 1 });
+      const ketqua = await API.CallAPI(DuLieu || undefined, { 
+        fileArray: file,
+        url: modalState.QuaTrang.url || '/admin/ChinhLoGo', 
+        PhuongThuc: 1 
+      });
+      
       
       if (ketqua.Status) {
         seterr(ketqua.message);
@@ -74,7 +82,7 @@ function ChinhSuaLoGo() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white rounded-3xl overflow-hidden border border-gray-100">
+    <div className="w-full max-w-md mx-auto bg-white rounded-3xl overflow-hidden">
       <div className="p-8 flex flex-col items-center">
         
         <div className="relative mb-10">
