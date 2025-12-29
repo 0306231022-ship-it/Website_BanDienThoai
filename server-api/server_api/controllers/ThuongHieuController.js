@@ -143,6 +143,44 @@ export default class ThuongHieuController{
             });
         }
     }
+    static async ChinhSuaTrangThai(req,res){
+        const { id, TrangThai } = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+        }
+        const capNhatThanhCong = await ThuongHieuModel.CapNhatTrangThaiThuongHieu(id, TrangThai);
+        if (capNhatThanhCong) {
+            return res.json({   
+                ThanhCong: true,
+                message: 'Cập nhật trạng thái thương hiệu thành công!'
+            });
+        } else {
+            return res.json({
+                ThatBai: true,
+                message: 'Cập nhật trạng thái thương hiệu thất bại!'
+            });
+        }
+    }
+    static async SuaMoTathuongHieu(req,res){
+        const { id, MoTa } = req.body;
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+        }   
+        const capNhatThanhCong = await ThuongHieuModel.CapNhatMoTaThuongHieu(id, MoTa);
+        if (capNhatThanhCong) {
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật mô tả thương hiệu thành công!'
+            });
+        } else {
+            return res.json({
+                ThatBai: true,
+                message: 'Cập nhật mô tả thương hiệu thất bại!'
+            });
+        }
+    }
 
 
 }

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tin Tức Công Nghệ - Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <header class="bg-white border-b border-gray-200 py-10 mb-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Tin Tức Công Nghệ</h1>
+            <p class="text-gray-500">Cập nhật xu hướng, đánh giá sản phẩm và mẹo hay mỗi ngày.</p>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-10 pb-12">
+
+        <main class="lg:col-span-8">
+            
+            <div class="flex space-x-3 mb-8 overflow-x-auto pb-2 scrollbar-hide">
+                <button class="px-5 py-2 bg-blue-600 text-white rounded-full text-sm font-medium shadow-md shadow-blue-200 whitespace-nowrap">Tất cả</button>
+                <button class="px-5 py-2 bg-white text-gray-600 border border-gray-200 rounded-full text-sm font-medium hover:bg-gray-100 whitespace-nowrap transition">Tin tức</button>
+                <button class="px-5 py-2 bg-white text-gray-600 border border-gray-200 rounded-full text-sm font-medium hover:bg-gray-100 whitespace-nowrap transition">Đánh giá</button>
+                <button class="px-5 py-2 bg-white text-gray-600 border border-gray-200 rounded-full text-sm font-medium hover:bg-gray-100 whitespace-nowrap transition">Thủ thuật</button>
+            </div>
+
+            <article class="group relative h-96 rounded-2xl overflow-hidden shadow-lg mb-8 cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?q=80&w=2070&auto=format&fit=crop" 
+                     alt="Hero Image" 
+                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                
+                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6 md:p-8">
+                    <span class="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded w-fit mb-3">Đánh giá</span>
+                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2 leading-tight group-hover:text-blue-300 transition-colors">
+                        Đánh giá chi tiết iPhone 15 Pro Max: Titan siêu bền, nhưng có nóng máy?
+                    </h2>
+                    <div class="flex items-center text-gray-300 text-sm space-x-4">
+                        <span>✍️ Minh Tuấn</span>
+                        <span>📅 29/12/2024</span>
+                    </div>
+                </div>
+            </article>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col h-full">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=2071&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-bold px-2 py-1 rounded">Tin tức</span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">Rò rỉ Samsung S24 Ultra: Chip Snapdragon 8 Gen 3 for Galaxy</h3>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">Thông tin mới nhất về dòng Flagship sắp ra mắt của Samsung với sự nâng cấp mạnh mẽ về AI.</p>
+                        <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between text-xs text-gray-400">
+                            <span>Hồng Hạnh</span>
+                            <span>28/12/2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col h-full">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?q=80&w=1967&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-bold px-2 py-1 rounded">Thủ thuật</span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">5 Mẹo tiết kiệm pin cho Android không phải ai cũng biết</h3>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">Tắt tính năng này ngay lập tức nếu bạn muốn điện thoại trụ được cả ngày dài.</p>
+                        <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between text-xs text-gray-400">
+                            <span>Kỹ thuật viên</span>
+                            <span>27/12/2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col h-full">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1592899671815-e8e5d2f8195d?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-bold px-2 py-1 rounded">Tư vấn</span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">Top 5 điện thoại chơi game tốt nhất tầm giá 7 triệu</h3>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">Tổng hợp những mẫu smartphone cấu hình khủng, pin trâu dành cho game thủ.</p>
+                        <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between text-xs text-gray-400">
+                            <span>Thanh Tùng</span>
+                            <span>26/12/2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col h-full">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=2080&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                        <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-gray-800 text-xs font-bold px-2 py-1 rounded">Review</span>
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition-colors">So sánh camera: Pixel 8 Pro vs iPhone 15 Pro</h3>
+                        <p class="text-sm text-gray-500 mb-4 line-clamp-3">Cuộc chiến không hồi kết giữa thuật toán Google và phần cứng Apple.</p>
+                        <div class="mt-auto pt-4 border-t border-gray-100 flex justify-between text-xs text-gray-400">
+                            <span>Minh Tuấn</span>
+                            <span>25/12/2024</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <aside class="lg:col-span-4 space-y-8">
+            
+            <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100">
+                <h3 class="font-bold text-blue-900 text-lg mb-2">Đăng ký nhận tin</h3>
+                <p class="text-sm text-blue-700 mb-4">Nhận thông báo về khuyến mãi và tin công nghệ mới nhất.</p>
+                <div class="flex gap-2">
+                    <input type="email" placeholder="Email..." class="w-full px-3 py-2 rounded-lg border border-blue-200 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">Gửi</button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h3 class="font-bold text-gray-800 text-lg mb-4 flex items-center">
+                    <span class="mr-2">🔥</span> Xem nhiều nhất
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex items-start group cursor-pointer">
+                        <span class="text-2xl font-bold mr-3 text-red-500 leading-none">1</span>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition line-clamp-2">Cách check IMEI iPhone cũ chuẩn nhất 2024</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">15.2K lượt xem</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start group cursor-pointer">
+                        <span class="text-2xl font-bold mr-3 text-orange-500 leading-none">2</span>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition line-clamp-2">Nên mua iPhone 13 hay thêm tiền lên 14?</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">12.5K lượt xem</span>
+                        </div>
+                    </div>
+                    <div class="flex items-start group cursor-pointer">
+                        <span class="text-2xl font-bold mr-3 text-yellow-500 leading-none">3</span>
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition line-clamp-2">Xiaomi 14 ra mắt: Cấu hình khủng khiếp</h4>
+                            <span class="text-xs text-gray-400 mt-1 block">9.8K lượt xem</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rounded-2xl overflow-hidden shadow-sm relative h-64 group cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=1981&auto=format&fit=crop" class="w-full h-full object-cover transition group-hover:scale-105">
+                <div class="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center p-4">
+                    <h4 class="text-white font-bold text-xl mb-2">iPhone 15 Series</h4>
+                    <p class="text-white text-sm mb-4">Giảm ngay 2 triệu đồng</p>
+                    <button class="bg-white text-black px-6 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition">Mua ngay</button>
+                </div>
+            </div>
+
+        </aside>
+
+    </div>
+
+</body>
+</html>

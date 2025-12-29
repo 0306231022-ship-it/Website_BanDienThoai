@@ -18,6 +18,7 @@ function SuaMoTa() {
         setok('');
         setLoading(false);
     };
+    
 
     const LuuGT = async () => {
         seterr('');
@@ -33,10 +34,10 @@ function SuaMoTa() {
         }
 
         setLoading(true);
-        const DuLieu = fun.objectToFormData({ MoTa: MoTa });
+        const DuLieu = fun.objectToFormData({ MoTa: MoTa , id : modalState?.DuLieu?.id || null});
 
         try {
-            const KetQua = await API.CallAPI(DuLieu, { url: '/admin/ChinhSuaMoTa', PhuongThuc: 1 });
+            const KetQua = await API.CallAPI(DuLieu, { url: modalState?.url || '/admin/ChinhSuaMoTa', PhuongThuc: 1 });
 
             if (KetQua.Status) {
                 seterr(KetQua.message);
@@ -63,7 +64,7 @@ function SuaMoTa() {
                             <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Mô tả trước đó</label>
                         </div>
                         <div className="bg-gray-50/50 border border-gray-100 rounded-2xl p-4 text-gray-500 text-sm italic leading-relaxed">
-                            "{modalState.DuLieu.MoTaWebstite}"
+                            "{modalState.DuLieu.MoTaWebstite || modalState.DuLieu.MoTa || 'Chưa có mô tả nào được thiết lập cho website này.'}"
                         </div>
                     </div>
                     <div className="space-y-3">

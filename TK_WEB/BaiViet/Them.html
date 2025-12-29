@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm bài viết mới - Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* CSS cho vùng soạn thảo giả lập */
+        .editor-content { min-height: 400px; outline: none; }
+        .editor-content p { margin-bottom: 1em; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+    <div class="flex h-screen overflow-hidden">
+
+        <aside class="w-64 bg-slate-900 text-white flex flex-col fixed h-full shadow-xl z-10 hidden md:flex">
+            <div class="h-16 flex items-center justify-center border-b border-slate-700 bg-slate-900">
+                <h2 class="text-2xl font-bold text-blue-500 tracking-wider">PHONE<span class="text-white">STORE</span></h2>
+            </div>
+            <nav class="flex-1 px-2 py-4 space-y-2 overflow-y-auto">
+                <a href="#" class="flex items-center px-4 py-3 text-gray-400 hover:bg-slate-800 hover:text-white rounded-lg transition">
+                    <span class="mr-3">🔙</span> Quay lại danh sách
+                </a>
+                <div class="px-4 py-2 text-xs font-bold text-slate-500 uppercase">Nội dung</div>
+                <a href="#" class="flex items-center px-4 py-3 bg-blue-600 text-white rounded-lg shadow-md transition">
+                    <span class="mr-3">✏️</span> Thêm bài viết
+                </a>
+            </nav>
+        </aside>
+
+        <main class="flex-1 md:ml-64 flex flex-col h-screen overflow-y-auto">
+            
+            <header class="bg-white h-16 border-b border-gray-200 flex items-center justify-between px-8 shadow-sm sticky top-0 z-20">
+                <h1 class="text-xl font-bold text-gray-800">Thêm bài viết mới</h1>
+                <div class="flex gap-3">
+                    <button class="px-4 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200">Hủy</button>
+                    <button class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-200">Lưu & Đăng</button>
+                </div>
+            </header>
+
+            <div class="p-8 max-w-7xl mx-auto w-full">
+                
+                <form action="" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <div class="lg:col-span-2 space-y-6">
+                        
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Tiêu đề bài viết</label>
+                                <input type="text" id="postTitle" onkeyup="generateSlug()" placeholder="Nhập tiêu đề..." class="w-full px-4 py-3 text-lg font-bold border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none placeholder-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Đường dẫn tĩnh (Slug)</label>
+                                <div class="flex items-center">
+                                    <span class="bg-gray-100 border border-r-0 border-gray-300 text-gray-500 px-3 py-2 rounded-l-lg text-sm">domain.com/tin-tuc/</span>
+                                    <input type="text" id="postSlug" class="w-full px-3 py-2 border border-gray-300 rounded-r-lg text-sm text-gray-600 focus:outline-none focus:border-blue-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                            <div class="bg-gray-50 border-b border-gray-200 p-2 flex flex-wrap gap-2">
+                                <button type="button" class="p-2 hover:bg-gray-200 rounded text-gray-600 font-bold" title="In đậm">B</button>
+                                <button type="button" class="p-2 hover:bg-gray-200 rounded text-gray-600 italic" title="In nghiêng">I</button>
+                                <button type="button" class="p-2 hover:bg-gray-200 rounded text-gray-600 underline" title="Gạch chân">U</button>
+                                <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
+                                <button type="button" class="p-2 hover:bg-gray-200 rounded text-gray-600" title="Căn trái">⬅️</button>
+                                <button type="button" class="p-2 hover:bg-gray-200 rounded text-gray-600" title="Căn giữa">⬆️</button>
+                                <div class="w-px h-6 bg-gray-300 mx-1 self-center"></div>
+                                <button type="button" class="p-2 hover:bg-gray-200 rounded text-gray-600" title="Chèn ảnh">🖼️</button>
+                                <button type="button" class="p-2 hover:bg-gray-200 rounded text-gray-600" title="Chèn Link">🔗</button>
+                                <select class="ml-auto text-sm border-gray-300 rounded bg-white px-2 py-1">
+                                    <option>Paragraph</option>
+                                    <option>Heading 2</option>
+                                    <option>Heading 3</option>
+                                </select>
+                            </div>
+                            <div class="p-6 editor-content prose max-w-none focus:outline-none" contenteditable="true">
+                                <p>Viết nội dung bài đánh giá tại đây...</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                🔍 Tối ưu SEO (Google)
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Title</label>
+                                    <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                    <p class="text-xs text-green-600 mt-1">Độ dài khuyến nghị: 60 ký tự.</p>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Meta Description</label>
+                                    <textarea rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"></textarea>
+                                    <p class="text-xs text-orange-500 mt-1">Nên chứa từ khóa chính.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-gray-800 mb-3">Xuất bản</h3>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500">Trạng thái:</span>
+                                    <select class="border-none bg-gray-100 rounded px-2 py-1 text-gray-700 font-medium text-sm focus:ring-0">
+                                        <option>Bản nháp</option>
+                                        <option>Đã đăng</option>
+                                        <option>Ẩn</option>
+                                    </select>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500">Hiển thị:</span>
+                                    <span class="text-blue-600 font-medium cursor-pointer">Công khai</span>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500">Đăng lúc:</span>
+                                    <input type="date" class="border border-gray-300 rounded px-2 py-1 text-xs">
+                                </div>
+                            </div>
+                            <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between">
+                                <button class="text-gray-500 text-sm hover:text-red-500">Xóa bài</button>
+                                <button class="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg font-medium hover:bg-blue-700">Cập nhật</button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-gray-800 mb-3">Phân loại</h3>
+                            <div class="mb-4">
+                                <label class="block text-sm text-gray-600 mb-1">Danh mục chính</label>
+                                <select class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                                    <option>-- Chọn danh mục --</option>
+                                    <option>Tin tức</option>
+                                    <option>Đánh giá (Review)</option>
+                                    <option>Thủ thuật</option>
+                                    <option>Khuyến mãi</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-600 mb-1">Tags (Thẻ)</label>
+                                <input type="text" placeholder="Nhập tag rồi Enter..." class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs flex items-center">#iPhone15 <button class="ml-1 text-gray-400 hover:text-red-500">×</button></span>
+                                    <span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs flex items-center">#Apple <button class="ml-1 text-gray-400 hover:text-red-500">×</button></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-gray-800 mb-3">Ảnh đại diện</h3>
+                            
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:bg-gray-50 transition cursor-pointer relative group">
+                                <input type="file" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="previewImage(this)">
+                                <div id="uploadPlaceholder">
+                                    <div class="text-4xl mb-2">📷</div>
+                                    <p class="text-sm text-gray-500">Kéo thả hoặc click để tải ảnh</p>
+                                </div>
+                                <img id="imagePreview" class="hidden w-full h-40 object-cover rounded-lg">
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-gray-800 mb-3">Sản phẩm liên quan</h3>
+                            <p class="text-xs text-gray-500 mb-2">Bài viết này đánh giá sản phẩm nào?</p>
+                            
+                            <div class="relative">
+                                <input type="text" placeholder="Tìm tên điện thoại..." class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-blue-500">
+                                <span class="absolute left-2.5 top-2 text-gray-400">🔍</span>
+                            </div>
+
+                            <div class="mt-3 space-y-2">
+                                <div class="flex items-center gap-2 bg-blue-50 p-2 rounded-lg border border-blue-100">
+                                    <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-max-natural-titanium-select?wid=200&fmt=png-alpha" class="w-10 h-10 object-contain bg-white rounded">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-xs font-bold text-gray-800 truncate">iPhone 15 Pro Max</p>
+                                        <p class="text-xs text-blue-600">32.990.000đ</p>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-red-500">×</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 1. Tự động tạo Slug từ Tiêu đề
+        function generateSlug() {
+            const title = document.getElementById('postTitle').value;
+            // Chuyển tiếng Việt có dấu thành không dấu
+            let slug = title.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            // Thay thế khoảng trắng và ký tự đặc biệt bằng dấu gạch ngang
+            slug = slug.replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-');
+            
+            document.getElementById('postSlug').value = slug;
+        }
+
+        // 2. Xem trước ảnh khi upload
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('uploadPlaceholder').classList.add('hidden');
+                    const img = document.getElementById('imagePreview');
+                    img.src = e.target.result;
+                    img.classList.remove('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -73,4 +73,28 @@ export default class ThuongHieuModel{
             return false;
         }
     }
+    static async CapNhatTrangThaiThuongHieu(id, TrangThai) {
+        try {
+            const [result] = await execute(
+                'UPDATE thuonghieu SET TRANGTHAI = ? WHERE IDTHUONGHIEU = ?',
+                [TrangThai, id]
+            );
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật trạng thái thương hiệu:', error);
+            return false;
+        }   
+    }
+    static async CapNhatMoTaThuongHieu(id, MoTa) {
+        try {
+            const [result] = await execute(
+                'UPDATE thuonghieu SET MOTA = ? WHERE IDTHUONGHIEU = ?',
+                [MoTa, id]
+            );
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return false;
+        }
+    }
 }

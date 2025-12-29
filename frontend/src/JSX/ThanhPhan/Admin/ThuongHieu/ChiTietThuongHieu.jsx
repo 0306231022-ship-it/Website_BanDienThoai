@@ -6,6 +6,7 @@ import ThongTinCoBan from "./modal/ThongTinCoBan";
 import ChinhSuaTen from "../CaiDatWebsite/modal/Conmodal/ChinhSuaName";
 import ChinhSuaLoGo from "../CaiDatWebsite/modal/Conmodal/ChinhSuaLoGo";
 import ChinhSuaTrangThai from "./modal/ChinhSuaTrangThai";
+import SuaMoTa from "../CaiDatWebsite/modal/SuaMoTa";
 
 function ChiTietThuongHieu() {
     const { id } = useParams();
@@ -166,7 +167,12 @@ function ChiTietThuongHieu() {
                                 <span className="w-8 h-1 bg-teal-500 rounded-full mr-3"></span>
                                 Mô tả chi tiết
                             </h3>
-                            <button className="flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-700 rounded-xl text-sm font-bold hover:bg-teal-600 hover:text-white transition-all border border-teal-100">
+                            <button  onClick={()=>{MoModal('SuaMoTa',
+                            {
+                                MoTa:thuongHieu.MOTA ,
+                                id:thuongHieu.IDTHUONGHIEU
+                            }, '/admin/SuaMoTathuongHieu'
+                            )}} className="flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-700 rounded-xl text-sm font-bold hover:bg-teal-600 hover:text-white transition-all border border-teal-100">
                                 <i className="fas fa-edit text-xs"></i> Chỉnh sửa
                             </button>
                         </div>
@@ -220,9 +226,8 @@ function ChiTietThuongHieu() {
                                         case 'ChinhSuaTen': return <ChinhSuaTen />;
                                         case 'SuaAnhThuongHieu': return <ChinhSuaLoGo />;
                                         case 'ChinhSuaTrangThai': return <ChinhSuaTrangThai />;
+                                        case 'SuaMoTa': return <SuaMoTa />;
                                         default: return null;
-
-                            
                                     }
                                 })()}
                              </p>
