@@ -13,10 +13,10 @@ export function AppProvider({ children }) {
         },
         url:null
     });
-    const MoModal = (tenTrangMoi, duLieu , url = null) => {
+    const MoModal = (tenTrangMoi, duLieu = null , url = null) => {
         setModalState(prev => ({
             isOpen: true,
-            DuLieu: duLieu,
+            DuLieu: duLieu || null,
             TrangThaiTrang: tenTrangMoi,
             QuaTrang: {
                 tenTrangMoi: tenTrangMoi,

@@ -1,0 +1,112 @@
+import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
+function ThemCungCap() {
+     const {DongModal } = useModalContext();
+    
+    return (
+        <>
+    <div id="modalAddSupplier" class="fixed inset-0 z-50 p-[-3]0 flex items-start md:items-center justify-center overflow-auto">
+    
+    <div class="absolute inset-0 bg-slate-900 bg-opacity-50 transition-opacity"></div>
+
+    <div class="relative w-full max-w-4xl mx-auto mt-10 bg-white rounded-xl shadow-2xl overflow-hidden transform transition-all">
+        
+        <div class="px-8 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+            <h3 class="text-lg font-bold text-slate-800">Thêm mới Nhà Cung Cấp</h3>
+            <button onClick={DongModal} class="w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
+                <i class="fa-solid fa-xmark text-white"></i>
+            </button>
+        </div>
+
+        <div class="px-8 py-6 max-h-[75vh] overflow-y-auto">
+            <form action="#" method="POST">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <div class="md:col-span-1 space-y-4">
+                        <h4 class="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2">1. Định danh</h4>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Tên Nhà cung cấp <span class="text-red-500">*</span></label>
+                            <input type="text" placeholder="VD: Công ty FPT Trading" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-shadow" required />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Mã viết tắt (Tự tạo)</label>
+                            <input type="text" placeholder="VD: FPT" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none uppercase"/>
+                            <p class="text-xs text-slate-400 mt-1">Dùng để in tem quản lý.</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nhóm</label>
+                            <select class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                                <option>Công ty / Đại lý</option>
+                                <option>Cá nhân / Xách tay</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-1 space-y-4 border-l border-slate-100 pl-0 md:pl-8"> <h4 class="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2">2. Liên hệ</h4>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Số điện thoại <span class="text-red-500">*</span></label>
+                            <input type="tel" placeholder="09xxxx" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" required/>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Người liên hệ</label>
+                            <input type="text" placeholder="VD: Em Lan Sale" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"/>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Email / Website</label>
+                            <input type="text" placeholder="lienhe@fpt.com.vn" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"/>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Địa chỉ kho</label>
+                            <textarea rows="2" placeholder="Số 123, Đường ABC..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="md:col-span-1 space-y-4 border-l border-slate-100 pl-0 md:pl-8">
+                        <h4 class="text-sm font-semibold text-blue-600 uppercase tracking-wider mb-2">3. Tài chính</h4>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Mã số thuế</label>
+                            <input type="text" placeholder="010xxxx" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"/>
+                        </div>
+
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Số tài khoản NH</label>
+                            <input type="text" placeholder="STK..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white mb-2"/>
+                            
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Tên Ngân hàng</label>
+                            <input type="text" placeholder="VD: Vietcombank" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-6 pt-6 border-t border-slate-100">
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Ghi chú nội bộ</label>
+                    <textarea rows="2" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="VD: NCC này chuyên hàng Mỹ, bảo hành hơi chậm..."></textarea>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="px-8 py-4 bg-slate-50 border-t border-slate-200 flex justify-end gap-3">
+            <button onclick="closeModal()" class="px-5 py-2 text-slate-600 font-medium hover:bg-slate-200 rounded-lg transition-colors">
+                Hủy bỏ
+            </button>
+            <button class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow-sm transition-colors flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                Lưu Nhà cung cấp
+            </button>
+        </div>
+    </div>
+</div>
+
+        </>
+    );
+}
+export default ThemCungCap;  

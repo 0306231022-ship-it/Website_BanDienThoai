@@ -18,7 +18,9 @@ import BinhLuan from '../DanhSachBinhLuan';
 import XemThongTinWebsite from '../CaiDatWebsite/XemCaiDat';
 import HoSo from '../ThongTinCaNhan/HoSoAdmin';
 import Xem from '../XemBinhLuan';
+import NhaCungCap from '../NhaCungCap/DanhSachNhaCC';
 import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
+import ChiTietNhaCungCap from '../NhaCungCap/ChiTietNhaCungCap';
 import '../../../../CSS/ThanhCuon.css';
 import { Routes, Route } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
@@ -66,6 +68,7 @@ function QuanLiTT() {
                 { to: "/admin/sanpham", icon: "fa-box", label: "Sản Phẩm" },
                 { to: "/admin/thuonghieu", icon: "fa-tags", label: "Thương hiệu" },
                 { to: "/admin/khachhang", icon: "fa-users", label: "Khách Hàng" },
+                { to: "/admin/NhaCungCap", icon: "fa-truck-loading", label: "Nhà Cung Cấp" },
             ].map((item) => (
                 <li key={item.to}>
                     <NavLink 
@@ -142,6 +145,9 @@ function QuanLiTT() {
                     <Route path="hoso" element={<HoSo />} />
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
+                    <Route path="NhaCungCap" element={<NhaCungCap />} />
+                    <Route path='NhaCungCap/ChiTiet/:id' element={<ChiTietNhaCungCap/>} />
+
                 </Routes>
             </AppProvider>
         </main>

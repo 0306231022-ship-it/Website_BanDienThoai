@@ -14,6 +14,7 @@ import { validateEmail } from "../validation/KLiemTraEmail.js";
 import { validateSoDienThoai } from "../validation/KiemTraSoDienThoai.js";
 import { validateThemTH } from "../validation/KiemTrDLThuongHieu.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
+import NhaCungCapController from "../controllers/NhaCungCapController.js";
 const adminRouter = Router();
 const upload = multer();
 //==========================================
@@ -129,6 +130,7 @@ adminRouter.post('/SuaMoTathuongHieu', upload.none(),  [
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
 adminRouter.get('/ChiTietThuongHieu', authMiddleware, ThuongHieuController.LayChiTietThuongHieu);
+adminRouter.get('/layTTnhacungcap', authMiddleware, NhaCungCapController.LayDanhSachNhaCungCap)
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;
