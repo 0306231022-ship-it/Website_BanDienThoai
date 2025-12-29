@@ -20,3 +20,5 @@ Chưa thực hiên chức năng xuất excel cho thương hiệu
 Chưa thực hiện chức năng tìm kiếm cho thương hiệu 
 =========================
 
+===
+màu cơ bản cho website : bg-teal-600

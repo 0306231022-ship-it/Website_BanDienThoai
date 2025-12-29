@@ -51,7 +51,7 @@ function ChinhSuaLoGo() {
     try {
       const ketqua = await API.CallAPI(DuLieu || undefined, { 
         fileArray: file,
-        url: modalState.QuaTrang.url || '/admin/ChinhLoGo', 
+        url: modalState.QuaTrang.url, 
         PhuongThuc: 1 
       });
       

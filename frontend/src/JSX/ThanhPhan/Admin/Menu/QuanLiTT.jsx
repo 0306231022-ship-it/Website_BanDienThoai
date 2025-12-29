@@ -19,77 +19,107 @@ import XemThongTinWebsite from '../CaiDatWebsite/XemCaiDat';
 import HoSo from '../ThongTinCaNhan/HoSoAdmin';
 import Xem from '../XemBinhLuan';
 import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
+import '../../../../CSS/ThanhCuon.css';
 import { Routes, Route } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 function QuanLiTT() {
+
     return (
         <>
-                <aside id="sidebar" className="hidden md:block w-64 bg-white border-r border-gray-200 h-screen sticky top-0" aria-label="Menu điều hướng">
-            <nav className="p-4" aria-label="Menu quản trị">
-                <ul className="space-y-2">
-                    <li>
-                        <Link to="/admin" data-route="overview" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Tổng quan">
-                            <i className="fas fa-chart-line w-5"></i><span className="ml-3">Tổng Quan</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/admin/DonHang" data-route="orders" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Đơn hàng">
-                            <i className="fas fa-shopping-cart w-5"></i><span className="ml-3">Đơn Hàng</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/admin/sanpham" data-route="products" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Sản phẩm">
-                            <i className="fas fa-box w-5"></i><span className="ml-3">Sản Phẩm</span>
-                        </Link>
-                            <li>
-                        <Link to="/admin/thuonghieu" data-route="products" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Sản phẩm">
-                            <i className="fas fa-tags"></i><span className="ml-3">Thương hiệu</span>
-                        </Link>
-                    </li>
-                    </li>
-                    <li>
-                        <Link to="/admin/khachhang" data-route="customers" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Khách hàng">
-                            <i className="fas fa-users w-5"></i><span className="ml-3">Khách Hàng</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/admin/baocao" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                            <i className="fas fa-chart-pie w-5"></i><span className="ml-3">Báo Cáo</span>
-                        </Link>
-                    </li>
-                        <li>
-                        <Link to="/admin/phivanchuyen" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                                <i className="fas fa-shipping-fast"></i><span className="ml-3">Phí vận chuyển</span>
-                        </Link>
-                    </li>
-                        <li>
-                        <Link to="/admin/danhsachma" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                                <i className="fas fa-tags"></i><span className="ml-3">Mã giảm giá</span>
-                        </Link>
-                    </li>
-                        <li>
-                        <Link to="/admin/BinhLuan" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Quản lí bình luận">
-                                <i className="fas fa-comment-dots w-5"></i><span className="ml-3">Quản lí Bình Luận</span>
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to="/admin/hotro" data-route="reports" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Báo cáo">
-                                <i className="fas fa-headset"></i><span className="ml-3">Hỗ trợ khách hàng</span>
-                        </Link>
-                    </li>
-
-                    
-                    <li>
-                        <Link to="/admin/CaiDat" data-route="settings" className="flex items-center p-3 rounded-lg text-gray-700 hover:bg-gray-100 hover:text-gray-900" aria-label="Cài đặt">
-                            <i className="fas fa-cog w-5"></i><span className="ml-3">Cài Đặt</span>
-                        </Link>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+         <aside id="sidebar" className="w-72 fixed custom-scrollbar left-0 h-screen bg-white border-r border-gray-200 p-4 pt-6 overflow-y-auto shadow-md z-10" aria-label="Menu điều hướng">
+            <nav className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-6" aria-label="Menu quản trị">
+    <div>
+        <h3 className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-[2px] mb-3">
+            Hệ thống
+        </h3>
+        <ul className="space-y-1">
+            {[
+                { to: "/admin", icon: "fa-chart-line", label: "Tổng Quan", end: true },
+                { to: "/admin/CaiDat", icon: "fa-cogs", label: "Cài Đặt Hệ Thống" },
+            ].map((item) => (
+                <li key={item.to}>
+                    <NavLink
+                        to={item.to}
+                        end={item.end}
+                        className={({ isActive }) =>
+                            `flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
+                                isActive 
+                                ? 'bg-teal-600 text-white font-semibold shadow-md shadow-teal-100' 
+                                : 'text-gray-500 hover:bg-teal-50 hover:text-teal-700'
+                            }`
+                        }
+                    >
+                        <i className={`fas ${item.icon} w-6 text-lg transition-transform group-hover:scale-110`}></i>
+                        <span className="ml-2 text-sm">{item.label}</span>
+                    </NavLink>
+                </li>
+            ))}
+        </ul>
+    </div>
+    <div>
+        <h3 className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-[2px] mb-3">
+            Quản lý bán hàng
+        </h3>
+        <ul className="space-y-1">
+            {[
+                { to: "/admin/DonHang", icon: "fa-shopping-cart", label: "Đơn Hàng" },
+                { to: "/admin/sanpham", icon: "fa-box", label: "Sản Phẩm" },
+                { to: "/admin/thuonghieu", icon: "fa-tags", label: "Thương hiệu" },
+                { to: "/admin/khachhang", icon: "fa-users", label: "Khách Hàng" },
+            ].map((item) => (
+                <li key={item.to}>
+                    <NavLink 
+                        to={item.to} 
+                        className={({ isActive }) => 
+                            `flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
+                                isActive 
+                                ? 'bg-teal-600 text-white font-semibold shadow-md shadow-teal-100' 
+                                : 'text-gray-500 hover:bg-teal-50 hover:text-teal-700'
+                            }`
+                        }
+                    >
+                        <i className={`fas ${item.icon} w-6 text-lg transition-transform group-hover:scale-110`}></i>
+                        <span className="ml-2 text-sm">{item.label}</span>
+                    </NavLink>
+                </li>
+            ))}
+        </ul>
+    </div>
+    <div>
+        <h3 className="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-[2px] mb-3">
+            Mở rộng
+        </h3>
+        <ul className="space-y-1">
+            {[
+                { to: "/admin/phivanchuyen", icon: "fa-shipping-fast", label: "Phí vận chuyển" },
+                { to: "/admin/danhsachma", icon: "fa-ticket-alt", label: "Mã giảm giá" },
+                { to: "/admin/BinhLuan", icon: "fa-comment-dots", label: "Bình Luận" },
+                { to: "/admin/hotro", icon: "fa-headset", label: "Hỗ trợ khách" },
+            ].map((item) => (
+                <li key={item.to}>
+                    <NavLink 
+                        to={item.to} 
+                        className={({ isActive }) => 
+                            `flex items-center px-4 py-3 rounded-xl transition-all duration-200 group ${
+                                isActive 
+                                ? 'bg-teal-600 text-white font-semibold shadow-md shadow-teal-100' 
+                                : 'text-gray-500 hover:bg-teal-50 hover:text-teal-700'
+                            }`
+                        }
+                    >
+                        <i className={`fas ${item.icon} w-6 text-lg transition-transform group-hover:scale-110`}></i>
+                        <span className="ml-2 text-sm">{item.label}</span>
+                    </NavLink>
+                </li>
+            ))}
+        </ul>
+    </div>
+</nav>
+         </aside>
+        
 
     
-        <main className="flex-1 p-6 bg-gray-50 min-h-screen" role="main" aria-label="Nội dung quản trị">
+        <main className="flex-grow ml-72 overflow-y-auto min-h-screen py-2" role="main" aria-label="Nội dung quản trị">
             <AppProvider>
                 <Routes>
                     <Route index element={<BangChinh />} />

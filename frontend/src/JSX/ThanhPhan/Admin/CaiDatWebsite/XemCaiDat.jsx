@@ -139,9 +139,9 @@ function XemCaiDat(){
                              <button onClick={DongModal} className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
                                 <i className="fa-solid fa-xmark text-white"></i>
                             </button>
-                            {
-                                modalState.TrangThaiTrang!==modalState.TrangThaiTrangTruoc && (
-                                  <button  onClick={()=>{ChinhSuaModel(modalState.TrangThaiTrangTruoc)}} class="btn-back"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>
+                             {
+                                modalState.TrangThaiTrang!==modalState.QuaTrang.tenTrangMoi && (
+                                  <button  onClick={()=>{ChinhSuaModel(modalState.QuaTrang.tenTrangMoi)}} class="btn-back"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>
                                 )
                             }
                              <p className="text-gray-600 mb-6">

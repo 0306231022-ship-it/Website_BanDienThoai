@@ -12,7 +12,7 @@ function ChinhSuaImgaeVaTen() {
         <p className="text-gray-400 text-xs font-medium uppercase tracking-widest mt-1">Website Identity</p>
       </div>
       <div className="space-y-3">
-        <button onClick={() => ChinhSuaModel('SuaTen')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-2xl transition-all group">
+        <button onClick={() => ChinhSuaModel('SuaTen', '/admin/ChinhSuaTen')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-2xl transition-all group">
           <div className="flex items-center gap-4">
             <div className="w-11 h-11 bg-white shadow-sm text-blue-600 rounded-xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <i className="fa-solid fa-font text-lg"></i>
@@ -26,7 +26,7 @@ function ChinhSuaImgaeVaTen() {
             <i className="fa-solid fa-chevron-right text-gray-300"></i>
           </div>
         </button>
-        <button onClick={() => ChinhSuaModel('SuaAnh')}
+        <button onClick={() => ChinhSuaModel('SuaAnh', '/admin/ChinhLoGo')}
           className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-purple-50 border border-gray-100 rounded-2xl transition-all group"
         >
           <div className="flex items-center gap-4">

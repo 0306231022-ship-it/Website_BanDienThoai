@@ -1,0 +1,37 @@
+/* Tùy chỉnh thanh cuộn cho class custom-scrollbar */
+.custom-scrollbar {
+    /* Ẩn thanh cuộn trên Firefox */
+    scrollbar-width: none;
+    /* Ẩn thanh cuộn trên IE và Edge cũ */
+    -ms-overflow-style: none;
+}
+
+/* Ẩn thanh cuộn trên Chrome, Safari và Edge mới */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px; /* Độ rộng thanh cuộn */
+    transition: all 0.3s ease;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent; /* Nền của thanh cuộn trong suốt */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Mặc định là trong suốt (ẩn) */
+    border-radius: 20px;
+    border: 2px solid transparent; /* Tạo khoảng trống xung quanh */
+}
+
+/* KHI DI CHUỘT VÀO: Hiện thanh cuộn */
+.custom-scrollbar:hover {
+    scrollbar-width: thin; /* Hiện lại trên Firefox */
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background-color: #d1d5db; /* Màu xám nhạt (gray-300) khi hover */
+}
+
+/* Khi di chuột trực tiếp vào thanh cuộn thì đậm hơn một chút */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af; /* Màu xám đậm hơn (gray-400) */
+}
