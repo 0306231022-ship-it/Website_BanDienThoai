@@ -35,5 +35,34 @@ export default class NhaCungCapController{
                 return res.status(500).json({ message: 'Đã xảy ra lỗi hệ thống.' });
             }
         }
+        static async layChiTiet(req,res){
+             const id =req.query.id;
+             if(!id){
+                return res.json({
+                    Status:true,
+                    message:'Hệ thống không tìm thấy nhà cung cấp!'
+                });
+             }
+             try {
+                const NhaCungCap= await NhaCungCapModel.layChiTiet(id);
+                if(!NhaCungCap){
+                    return res.json({
+                        Status:true,
+                        message:'Hệ thống không tìm thấy nhà cung cấp!'
+                    })
+                };
+                return res.json({
+                    ThanhCong:true,
+                    DuLieu:NhaCungCap
+            })
+             } catch (error) {
+                console.error('Đã sãy ra lỗi trên hệ thống : ' + error);
+                return res.json({
+                    Status:true,
+                    message:'Đã sãy ra lỗi trên hệ thống! Vui lòng thử lại sau.'
+                })
+             }
+
+        }
    
 }

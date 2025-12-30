@@ -16,5 +16,17 @@ export default class NhaCungCapModel{
             return { nhacungcap: [], totalItems: 0 };
         }
     }
+    static async layChiTiet(id){
+         try {
+            const [rows] = await execute(
+                'SELECT * FROM nhacungcap WHERE IDNCC = ?',
+                [id]
+            );
+            return rows[0] || null;
+        } catch (error) {
+            console.error('Lỗi khi lấy chi tiết thương hiệu:', error);
+            return null;
+        }
+    }
 
 };

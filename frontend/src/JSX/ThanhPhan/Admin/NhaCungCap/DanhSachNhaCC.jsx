@@ -11,7 +11,6 @@ function NhaCungCap() {
     const [err, seterr] = useState('');
     const [DuLieu, setDuLieu] = useState([]);
 
-    // Hàm format tiền tệ (VND)
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     };
@@ -79,12 +78,6 @@ function NhaCungCap() {
 
                     <header className="bg-white shadow-sm h-16 flex items-center justify-between px-6 sticky top-0 z-10">
                         <h1 className="text-xl font-bold text-slate-800">Danh sách Nhà Cung Cấp</h1>
-                        <div className="flex items-center space-x-4">
-                            <div className="flex items-center space-x-2 text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
-                                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                                <span>NV: Nguyễn Văn A</span>
-                            </div>
-                        </div>
                     </header>
 
                     <div className="p-6">

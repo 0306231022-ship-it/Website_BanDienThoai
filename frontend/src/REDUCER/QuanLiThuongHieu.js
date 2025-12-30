@@ -10,12 +10,12 @@ export function QuanLiThuongHieu(state, action) {
     case 'SET_ERR':
       return {
         ...state,
-        err: { ...state.err, ...action.payload } // merge object
+        err: { ...state.err, ...action.payload } 
       };
     case 'SET_ERR_HT':
       return {
         ...state,
-        err: { ...state.err, ...action.payload } // merge object
+        err: { ...state.err, ...action.payload } 
         };
     case 'SET_HT':
       return {

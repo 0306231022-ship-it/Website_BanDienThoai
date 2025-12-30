@@ -130,7 +130,8 @@ adminRouter.post('/SuaMoTathuongHieu', upload.none(),  [
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
 adminRouter.get('/ChiTietThuongHieu', authMiddleware, ThuongHieuController.LayChiTietThuongHieu);
-adminRouter.get('/layTTnhacungcap', authMiddleware, NhaCungCapController.LayDanhSachNhaCungCap)
+adminRouter.get('/layTTnhacungcap', authMiddleware, NhaCungCapController.LayDanhSachNhaCungCap);
+adminRouter.get('/ChiTietNhaCungCap' ,authMiddleware , NhaCungCapController.layChiTiet)
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;
