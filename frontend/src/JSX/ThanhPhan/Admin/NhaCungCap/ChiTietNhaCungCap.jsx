@@ -219,10 +219,6 @@ function ChiTietNhaCungCap() {
         </div>
     );
 }
-
-
-
-
 const TabButton = ({ active, onClick, icon, label }) => (
     <button 
         onClick={onClick}

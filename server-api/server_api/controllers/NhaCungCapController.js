@@ -64,5 +64,28 @@ export default class NhaCungCapController{
              }
 
         }
+        static async ThemCungCap(req,res) {
+            const DuLieu=req.body;
+            try {
+                const ketqua= await NhaCungCapModel.ThemCungCap(DuLieu);
+                if (ketqua) {
+                    return res.json({   
+                        ThanhCong: true,
+                        message: 'Thêm mới 1 nhà cung cấp thành công!'
+                    });
+                } else {
+                    return res.json({
+                        ThanhCong: false,
+                        message: 'Thêm mới 1 nhà cung cấp thất bại!'
+                    });
+                 }
+            } catch (error) {
+                console.error('Đã có lỗi xãy ra:'+ error);
+                return res.json({
+                    Status:true,
+                    message:'Đã sãy ra lỗi trên hệ thống! Vui lòng thử lại sau.'
+                })
+            }
+        }
    
 }

@@ -28,5 +28,40 @@ export default class NhaCungCapModel{
             return null;
         }
     }
+    static async ThemCungCap(dulieu) {
+        const today = new Date();
+        let month = today.getMonth() + 1;
+        let ID ="NCC-" + today.getFullYear().toString().slice(-2) 
+        + (month < 10 ? "0" + month : month.toString()) + "-" 
+        + Math.floor(1000 + Math.random() * 9000).toString();
+         try {
+            const [row] = await execute(
+                `INSERT INTO nhacungcap 
+                 (IDNCC, MAVACH, TENNCC, SDT, LIENHE_DOITAC, EMAIL, DIACHI, MST, STK_NGANHANG, TEN_NGANHANG, NGAY_HOPTAC, GHICHU) 
+                 VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
+            [
+          ID,
+          dulieu?.DinhDanh?.MaDinhDanh ?? null,
+          dulieu?.DinhDanh?.TenNhaCungCap ?? null,
+          dulieu?.NguoiLienHe?.SDT ?? null,
+          dulieu?.NguoiLienHe?.TenNguoiDung ?? null,
+          dulieu?.NguoiLienHe?.Email ?? null,
+          dulieu?.NguoiLienHe?.DiaChiKho ?? null, 
+          dulieu?.TaiChinh?.MaThue ?? null,
+          dulieu?.TaiChinh?.STK ?? null,
+          dulieu?.TaiChinh?.NganHang ?? null,
+          today, 
+          dulieu?.GhiChu ?? null,
+        ]
+      );
+
+      return row.affectedRows > 0;
+    } catch (error) {
+      console.error("Lỗi khi thêm nhà cung cấp:", error);
+      return false;
+    }
+  }
+
+
 
 };

@@ -30,20 +30,22 @@ export function KiemTraRong(obj) {
 //reset giá trị obj
 export function resetGiaTri(obj) {
     if (typeof obj !== "object" || obj === null) return;
+
     for (const key in obj) {
-        if (!obj.hasOwnProperty(key)) continue;
+        if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
         const value = obj[key];
-        if (typeof value === "object" && value !== null) {
-            resetGiaTri(value);
-        } 
-        else if (Array.isArray(value)) {
-            obj[key] = []; 
-        }
-        else {
-            obj[key] = "";
+
+        if (Array.isArray(value)) {
+            obj[key] = []; // reset mảng
+        } else if (typeof value === "object" && value !== null) {
+            resetGiaTri(value); // reset object con
+        } else {
+            obj[key] = ""; // reset primitive
         }
     }
 }
+
+
 
 export function objectToFormData(obj, formData = new FormData(), parentKey = '') {
   for (const key in obj) {

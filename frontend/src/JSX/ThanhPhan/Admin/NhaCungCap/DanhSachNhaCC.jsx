@@ -31,13 +31,11 @@ function NhaCungCap() {
         LoadDL();
     }, [Trang]);
 
-    // Xử lý chuyển trang
     const handlePrevPage = () => {
         if (Trang > 1) setTrang(prev => prev - 1);
     };
 
     const handleNextPage = () => {
-        // Bạn nên check thêm điều kiện totalPages nếu API có trả về
         setTrang(prev => prev + 1);
     };
 
@@ -121,7 +119,7 @@ function NhaCungCap() {
                                         DuLieu && DuLieu.length > 0 ? (
                                             DuLieu.map((item, index) => (
                                                 <tr key={index} className="hover:bg-slate-50 transition-colors">
-                                                    <td className="px-6 py-4 text-sm text-slate-500">#{item.IDNCC}</td>
+                                                    <td className="px-6 py-4 text-sm text-slate-500">#{index+1}</td>
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center">
                                                             <div>

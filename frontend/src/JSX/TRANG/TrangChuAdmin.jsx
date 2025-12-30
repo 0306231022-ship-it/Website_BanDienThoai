@@ -114,13 +114,13 @@ function TrangChuAdmin() {
                   {/* Header Dropdown */}
                   <div className="px-6 py-4 bg-slate-50 border-b border-slate-100">
                     <p className="text-sm text-slate-500">Đăng nhập với</p>
-                    <p className="text-sm font-bold text-slate-800 truncate">{TTCaNhan?.Email || "admin@example.com"}</p>
+                    <p className="text-sm font-bold text-slate-800 truncate">{TTCaNhan?.EMAIL}</p>
                   </div>
 
                   {/* Menu Items */}
                   <div className="p-2">
                     <Link
-                      to="/admin/CaiDat/HoSo"
+                      to="/admin/CaiDat/hoAD"
                       onClick={() => setIsMenuOpen(false)}
                       className="flex items-center px-4 py-2.5 text-sm text-slate-600 rounded-lg hover:bg-teal-50 hover:text-teal-700 transition-colors group"
                     >
@@ -129,7 +129,7 @@ function TrangChuAdmin() {
                     </Link>
 
                     <Link
-                      to="/admin/CaiDat"
+                      to="/admin/CaiDat/web"
                       onClick={() => setIsMenuOpen(false)}
                       className="flex items-center px-4 py-2.5 text-sm text-slate-600 rounded-lg hover:bg-teal-50 hover:text-teal-700 transition-colors group"
                     >

@@ -13,6 +13,7 @@ import { validateDiaChi } from "../validation/KiemTraDiaChi.js";
 import { validateEmail } from "../validation/KLiemTraEmail.js";
 import { validateSoDienThoai } from "../validation/KiemTraSoDienThoai.js";
 import { validateThemTH } from "../validation/KiemTrDLThuongHieu.js";
+import { validateCungCap } from "../validation/KiemTraThemCungCap.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
 import NhaCungCapController from "../controllers/NhaCungCapController.js";
 const adminRouter = Router();
@@ -125,6 +126,8 @@ adminRouter.post('/SuaMoTathuongHieu', upload.none(),  [
     }
     next();
 },ThuongHieuController.SuaMoTathuongHieu );
+//========================================
+adminRouter.post('/Themcc', authMiddleware , upload.none() , validateCungCap, NhaCungCapController.ThemCungCap )
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );

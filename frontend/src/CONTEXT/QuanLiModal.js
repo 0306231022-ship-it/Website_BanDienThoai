@@ -1,8 +1,28 @@
+//áp dụng ngăn xếp vào modal
 import React, { createContext, useContext, useState } from "react";
 
 const MoDalContext = createContext();
 
 export function AppProvider({ children }) {
+    const [modalStack,setModalStack]=useState([]);
+    const OpenMoDal=(TenTrang,dulieu,url)=>{
+        setModalStack((prev)=>{
+            const newMoDal={
+                id:Date.now(),
+                TenTrang: TenTrang,
+                dulieu:dulieu || null,
+                url: url || null
+            };
+            return [
+                ...prev,
+                newMoDal
+            ];
+        })
+
+    }
+
+
+
     const [modalState, setModalState] = useState({
         isOpen: false,
         DuLieu: {},
