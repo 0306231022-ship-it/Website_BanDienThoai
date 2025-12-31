@@ -2,7 +2,6 @@ import { Link, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import * as API from '../../../../JS/API/API';
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
-import ThongTinCoBan from "./modal/ThongTinCoBan";
 import ChinhSuaTen from "../CaiDatWebsite/modal/Conmodal/ChinhSuaName";
 import ChinhSuaLoGo from "../CaiDatWebsite/modal/Conmodal/ChinhSuaLoGo";
 import ChinhSuaTrangThai from "./modal/ChinhSuaTrangThai";
@@ -13,7 +12,7 @@ function ChiTietThuongHieu() {
     const [thuongHieu, setThuongHieu] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const {modalState,MoModal,DongModal,ChinhSuaModel} = useModalContext();
+    const { OpenMoDal} = useModalContext();
 
     useEffect(() => {
         const fetchThuongHieu = async () => {
@@ -108,12 +107,14 @@ function ChiTietThuongHieu() {
                 <div className="lg:col-span-1 space-y-6">
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden relative group">
                         {/* Nút chỉnh sửa hiện khi hover vào Card */}
-                        <button onClick={()=>{MoModal('ThongTinCoBan',
+                        <button onClick={()=>{ OpenMoDal(
                             {
                                 Ten:thuongHieu.TENTHUONGHIEU,
                                 LoGo:thuongHieu.LOGO , 
                                 TrangThai:thuongHieu.TRANGTHAI,
                                 id:thuongHieu.IDTHUONGHIEU
+                            },{
+                                TenTrang:'ThongTinCoBan'
                             }
                             )}} 
                             className="absolute top-4 right-4 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm text-teal-600 rounded-xl shadow-md opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-teal-600 hover:text-white flex items-center justify-center">
@@ -167,7 +168,7 @@ function ChiTietThuongHieu() {
                                 <span className="w-8 h-1 bg-teal-500 rounded-full mr-3"></span>
                                 Mô tả chi tiết
                             </h3>
-                            <button  onClick={()=>{MoModal('SuaMoTa',
+                            <button  onClick={()=>{OpenMoDal('SuaMoTa',
                             {
                                 MoTa:thuongHieu.MOTA ,
                                 id:thuongHieu.IDTHUONGHIEU
@@ -206,36 +207,6 @@ function ChiTietThuongHieu() {
                     </div>
                 </div>
             </div>
-              {
-                modalState.isOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                         <div className="relative bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
-                             <button onClick={DongModal} className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-red-600 rounded-full hover:bg-red-700 transition">
-                                <i className="fa-solid fa-xmark text-white"></i>
-                            </button>
-                            {/* Nội dung modal dựa trên trạng thái hiện tại */}
-                            {
-                                modalState.TrangThaiTrang!==modalState.QuaTrang.tenTrangMoi && (
-                                  <button  onClick={()=>{ChinhSuaModel(modalState.QuaTrang.tenTrangMoi)}} class="btn-back"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>
-                                )
-                            }
-                             <p className="text-gray-600 mb-6">
-                                {(() => {
-                                    switch(modalState.TrangThaiTrang){
-                                        case 'ThongTinCoBan': return <ThongTinCoBan />;
-                                        case 'ChinhSuaTen': return <ChinhSuaTen />;
-                                        case 'SuaAnhThuongHieu': return <ChinhSuaLoGo />;
-                                        case 'ChinhSuaTrangThai': return <ChinhSuaTrangThai />;
-                                        case 'SuaMoTa': return <SuaMoTa />;
-                                        default: return null;
-                                    }
-                                })()}
-                             </p>
-                         
-                        </div>
-                    </div>
-                )
-            }
         </section>
        
      

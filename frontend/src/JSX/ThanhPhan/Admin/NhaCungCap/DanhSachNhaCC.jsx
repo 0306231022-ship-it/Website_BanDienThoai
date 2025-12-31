@@ -1,11 +1,10 @@
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 import { useEffect, useState } from "react";
-import ThemCungCap from "./ThemNhaCungCap";
 import * as API from '../../../../JS/API/API';
 import {Link } from 'react-router-dom';
 
 function NhaCungCap() {
-    const { modalState, MoModal } = useModalContext();
+    const { OpenMoDal } = useModalContext();
     const [Trang, setTrang] = useState(1);
     const [loading, setloading] = useState(false);
     const [err, seterr] = useState('');
@@ -96,7 +95,7 @@ function NhaCungCap() {
                                 </select>
                             </div>
 
-                            <button onClick={() => MoModal("themNhaCungCap")} className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-colors w-full md:w-auto justify-center">
+                            <button onClick={() =>OpenMoDal("themNhaCungCap")} className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-colors w-full md:w-auto justify-center">
                                 <i className="fa-solid fa-plus mr-2"></i>
                                 Thêm Nhà cung cấp
                             </button>
@@ -213,29 +212,7 @@ function NhaCungCap() {
                     </div>
                 </main>
             </div>
-            {
-                modalState.isOpen && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fadeIn">
-                        <div className="relative bg-white w-full max-w-md rounded-xl p-6 shadow-lg">
-                            {/* Nút đóng modal */}
-                            <button onClick={() => MoModal(null)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                                <i className="fa-solid fa-xmark text-xl"></i>
-                            </button>
-                            
-                            <div className="mt-2">
-                                {(() => {
-                                    switch (modalState.TrangThaiTrang) {
-                                        case "themNhaCungCap":
-                                            return <ThemCungCap />;
-                                        default:
-                                            return null;
-                                    }
-                                })()}
-                            </div>
-                        </div>
-                    </div>
-                )
-            }
+    
         </>
     );
 }

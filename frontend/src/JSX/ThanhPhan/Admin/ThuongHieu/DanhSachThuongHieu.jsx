@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ThemThuongHieu from "./ThemThuongHieu";
-import Trang404 from "../../../../JSX/TRANG/err/404";
 import * as API from '../../../../JS/API/API';
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 
 function DanhSachThuongHieu() {
     const [filter, setFilter] = useState('all');
     const [searchTerm, setSearchTerm] = useState("");
-    const { modalState, MoModal, DongModal } = useModalContext();
+    const { OpenMoDal } = useModalContext();
     const [Trang, setTrang] = useState(1);
     const [DuLieu, setDuLieu] = useState(null);
     const [dulieuTrang, setdulieuTrang] = useState({});
+    const [Loading,setloading] = useState(false);
     useEffect(() => {
         const fetchData = async () => {
+            setloading(true)
             try {
                 const ketqua = await API.CallAPI(undefined, { 
                     url: `/admin/thuonghieu?page=${Trang}`, 
@@ -21,9 +21,12 @@ function DanhSachThuongHieu() {
                 });
                 setDuLieu(ketqua.thuongHieu);
                 setdulieuTrang(ketqua.pagination);
+                setloading(false)
             } catch (error) {
                 console.error("Lỗi khi lấy dữ liệu:", error);
                 setDuLieu([]);
+            } finally {
+                setloading(false)
             }
         };
         fetchData();
@@ -53,7 +56,7 @@ function DanhSachThuongHieu() {
                         <p className="text-sm text-gray-500 mt-1">Theo dõi danh sách và hiệu suất các đối tác cung ứng</p>
                     </div>
                     <button
-                        onClick={() => MoModal("ThemThuongHieu", {})}
+                        onClick={() =>  OpenMoDal( undefined , {TenTrang :"ThemThuongHieu",TieuDe: 'Thêm Thương Hiệu Mới', icon: 'fas fa-tags mr-2 text-sm text-yellow-500'})}
                         className="flex items-center px-5 py-2.5 bg-teal-600 text-white rounded-xl hover:bg-teal-700 font-bold shadow-lg shadow-teal-600/20 transition-all active:scale-95 w-fit"
                     >
                         <i className="fas fa-plus mr-2 text-xs"></i> Thêm mới
@@ -94,7 +97,20 @@ function DanhSachThuongHieu() {
                                     <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-widest">Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-100">
+                           <tbody className="bg-white divide-y divide-gray-100">
+                                {Loading && (
+                                <tr>
+                                    <td colSpan="4">
+                                    <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-4">
+                                         <div className="relative">
+                                         <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+                                         <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+                                    </div>
+                                     <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase"> Đang tải dữ liệu...</p>
+                                    </div>
+                                    </td>
+                                </tr>
+                                )}
                                 {duLieuHienThi && duLieuHienThi.length > 0 ? (
                                     duLieuHienThi.map((item, index) => (
                                         <tr key={item.IDTHUONGHIEU || index} className="hover:bg-gray-50/50 transition-colors group">
@@ -139,8 +155,6 @@ function DanhSachThuongHieu() {
                             </tbody>
                         </table>
                     </div>
-
-                    {/* --- PAGINATION --- */}
                     <div className="px-6 py-4 bg-gray-50/50 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="text-sm text-gray-500 font-medium">
                             Dữ liệu trang {dulieuTrang.currentPage || 0} trên tổng số {dulieuTrang.totalPages || 0} trang (Tổng {dulieuTrang.totalItems || 0} thương hiệu)
@@ -165,33 +179,6 @@ function DanhSachThuongHieu() {
                     </div>
                 </div>
             </section>
-
-            {/* --- MODAL SYSTEM --- */}
-            {modalState.isOpen && (
-                <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className="relative bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden animate-zoomIn">
-                        {/* Modal Header/Close */}
-                        <div className="flex items-center justify-between p-4 border-b">
-                            <h3 className="font-bold text-gray-800">Thông báo hệ thống</h3>
-                            <button onClick={DongModal} className="w-8 h-8 flex items-center justify-center bg-red-50 text-red-500 rounded-full hover:bg-red-500 hover:text-white transition-all">
-                                <i className="fa-solid fa-xmark"></i>
-                            </button>
-                        </div>
-                        
-                        {/* Modal Content */}
-                        <div className="p-6">
-                            {(() => {
-                                switch (modalState.TrangThaiTrang) {
-                                    case 'ThemThuongHieu': 
-                                        return <ThemThuongHieu />;
-                                    
-                                    default: return <Trang404 />;
-                                }
-                            })()}
-                        </div>
-                    </div>
-                </div>
-            )}
         </>
     );
 }
