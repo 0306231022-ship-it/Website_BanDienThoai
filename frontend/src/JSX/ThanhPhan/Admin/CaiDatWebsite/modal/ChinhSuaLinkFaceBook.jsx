@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
 import * as fun from '../../../../../JS/FUNCTONS/function';
 import * as API from '../../../../../JS/API/API';
 import { useAppContext } from '../../../../../CONTEXT/TrangChuAdmin';
 
-function SuaLinkFacebook() {
-    const { modalState } = useModalContext();
+function SuaLinkFacebook({DuLieu}) {
     const [FacebookUrl, setFacebookUrl] = useState('');
     const [Loading, setLoading] = useState(false);
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
-    const { GetTTwebsite} =useAppContext();
+    const {GetTTwebsite} =useAppContext();
 
 
     const Reset = () => {
@@ -67,7 +65,7 @@ function SuaLinkFacebook() {
                             <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Link hiện tại</label>
                         </div>
                         <div className="bg-blue-50/30 border border-blue-100 rounded-2xl p-4 text-blue-600/70 text-sm truncate leading-relaxed">
-                            {modalState.DuLieu.LinkFacebook || "Chưa thiết lập liên kết"}
+                            { DuLieu.LinkFacebook || "Chưa thiết lập liên kết"}
                         </div>
                     </div>
 

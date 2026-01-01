@@ -6,6 +6,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import adminRouter from './routers/adminRouter.js';
 import multer from "multer";
+import websiteRoute from './routers/webstiteRoute.js';
 
 const app = express();
 //chấp nhận client vào server
@@ -22,6 +23,7 @@ export const upload = multer();
 app.use("/uploads", express.static("uploads"));
 app.get('/', (req, res) => res.json({ message: 'Server API running' }));
 app.use('/api/admin', adminRouter);
+app.use('/api/website', websiteRoute);
 
 app.use((req, res) => 
   res.json({

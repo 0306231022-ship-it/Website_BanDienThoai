@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tìm kiếm & Sản phẩm - Red Theme</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': {
+                            500: '#ef4444', 
+                            600: '#dc2626',
+                            700: '#b91c1c',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Hiệu ứng Fade in khi chuyển tab sản phẩm */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Ẩn thanh cuộn dọc cho gọn */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <div class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            
+            <div class="flex justify-between items-end mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Thương hiệu</h2>
+                    <p class="text-sm text-gray-500">Chọn logo để xem sản phẩm</p>
+                </div>
+                <div class="relative w-full max-w-xs">
+                    <input type="text" id="searchInput" 
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:border-brand-red-600 focus:ring-1 focus:ring-brand-red-600 transition"
+                           placeholder="Lọc nhanh hãng...">
+                    <i class="fas fa-search absolute left-3.5 top-3 text-gray-400"></i>
+                </div>
+            </div>
+
+            <div id="brandContainer" class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar sm:grid sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8">
+                </div>
+        </div>
+    </div>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen">
+        
+        <div class="flex items-center mb-6">
+            <div class="w-1 h-6 bg-brand-red-600 mr-3"></div>
+            <h3 id="productSectionTitle" class="text-xl font-bold text-gray-800">Sản phẩm nổi bật</h3>
+        </div>
+
+        <div id="productContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            </div>
+
+        <div id="emptyState" class="hidden text-center py-20">
+            <i class="fas fa-box-open text-6xl text-gray-200 mb-4"></i>
+            <p class="text-gray-500">Chưa có sản phẩm nào cho thương hiệu này.</p>
+        </div>
+    </main>
+
+    <script>
+        // --- DỮ LIỆU GIẢ LẬP (Mô phỏng Database) ---
+        const brands = [
+            { id: 'all', name: 'Tất cả', logo: null, icon: 'fa-th-large' }, // Nút xem tất cả
+            { id: 'apple', name: 'Apple', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
+            { id: 'samsung', name: 'Samsung', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg' },
+            { id: 'xiaomi', name: 'Xiaomi', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Xiaomi_logo_2021.svg' },
+            { id: 'oppo', name: 'OPPO', logo: 'https://upload.wikimedia.org/wikipedia/commons/b/b8/OPPO_Logo.svg' },
+            { id: 'vivo', name: 'Vivo', logo: 'https://upload.wikimedia.org/wikipedia/commons/e/e5/Vivo_mobile_logo.png' },
+            { id: 'realme', name: 'Realme', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/13/Realme_logo.png' },
+            { id: 'sony', name: 'Sony', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Sony_logo.svg' },
+            { id: 'nokia', name: 'Nokia', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/90/Nokia_2023_logo.svg' },
+        ];
+
+        const products = [
+            { id: 1, brandId: 'apple', name: 'iPhone 15 Pro Max', price: '34.990.000₫', img: 'https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumbnew-600x600.jpg' },
+            { id: 2, brandId: 'apple', name: 'iPhone 14', price: '19.990.000₫', img: 'https://cdn.tgdd.vn/Products/Images/42/240259/iPhone-14-thumb-do-600x600.jpg' },
+            { id: 3, brandId: 'samsung', name: 'Galaxy S24 Ultra', price: '31.990.000₫', img: 'https://cdn.tgdd.vn/Products/Images/42/307172/samsung-galaxy-s24-ultra-grey-thumbnew-600x600.jpg' },
+            { id: 4, brandId: 'samsung', name: 'Galaxy A54 5G', price: '8.490.000₫', img: 'https://cdn.tgdd.vn/Products/Images/42/251703/samsung-galaxy-a54-thumb-den-600x600.jpg' },
+            { id: 5, brandId: 'xiaomi', name: 'Xiaomi 14', price: '22.990.000₫', img: 'https://cdn.tgdd.vn/Products/Images/42/317698/xiaomi-14-black-thumb-600x600.jpg' },
+            { id: 6, brandId: 'xiaomi', name: 'Redmi Note 13', price: '4.890.000₫', img: 'https://cdn.tgdd.vn/Products/Images/42/309831/xiaomi-redmi-note-13-vang-thumb-600x600.jpg' },
+            { id: 7, brandId: 'oppo', name: 'OPPO Reno11 F', price: '8.990.000₫', img: 'https://cdn.tgdd.vn/Products/Images/42/320875/oppo-reno11-f-violet-thumb-600x600.jpg' },
+            { id: 8, brandId: 'sony', name: 'Xperia 1 V', price: '29.990.000₫', img: 'https://cdn.tgdd.vn/Products/Images/42/306352/sony-xperia-1-v-den-thumb-600x600.jpg' },
+            // ... Thêm dữ liệu tùy ý
+        ];
+
+        // --- CÁC HÀM XỬ LÝ (LOGIC) ---
+
+        const brandContainer = document.getElementById('brandContainer');
+        const productContainer = document.getElementById('productContainer');
+        const sectionTitle = document.getElementById('productSectionTitle');
+        const emptyState = document.getElementById('emptyState');
+        const searchInput = document.getElementById('searchInput');
+
+        let currentBrand = 'all';
+
+        // 1. Hàm vẽ danh sách Logo thương hiệu
+        function renderBrands(filterText = '') {
+            brandContainer.innerHTML = ''; // Xóa cũ
+            
+            brands.forEach(brand => {
+                // Logic tìm kiếm: Nếu tên không khớp thì bỏ qua (trừ nút Tất cả)
+                if (brand.id !== 'all' && !brand.name.toLowerCase().includes(filterText.toLowerCase())) {
+                    return;
+                }
+
+                const isActive = currentBrand === brand.id;
+                // Style cho nút đang chọn (Active) vs nút thường
+                const activeClass = isActive 
+                    ? 'border-brand-red-600 bg-red-50 ring-1 ring-brand-red-600 shadow-md' 
+                    : 'border-gray-200 bg-white hover:border-brand-red-300 hover:shadow';
+
+                const imgHtml = brand.id === 'all' 
+                    ? `<i class="fas ${brand.icon} text-lg ${isActive ? 'text-brand-red-600' : 'text-gray-500'}"></i> <span class="ml-2 text-sm font-bold ${isActive ? 'text-brand-red-600' : 'text-gray-600'}">${brand.name}</span>`
+                    : `<img src="${brand.logo}" class="h-6 w-auto object-contain filter ${isActive ? '' : 'grayscale'} group-hover:grayscale-0 transition" alt="${brand.name}">`;
+
+                const btn = document.createElement('div');
+                btn.className = `cursor-pointer group flex items-center justify-center h-14 min-w-[100px] sm:min-w-0 px-4 rounded-xl border transition-all duration-200 ${activeClass}`;
+                btn.innerHTML = imgHtml;
+                
+                // Sự kiện Click
+                btn.onclick = () => {
+                    currentBrand = brand.id;
+                    renderBrands(searchInput.value); // Render lại để cập nhật trạng thái Active
+                    renderProducts(brand.id);
+                };
+
+                brandContainer.appendChild(btn);
+            });
+        }
+
+        // 2. Hàm vẽ danh sách sản phẩm
+        function renderProducts(brandId) {
+            productContainer.innerHTML = '';
+            
+            // Lọc sản phẩm
+            const filteredProducts = brandId === 'all' 
+                ? products 
+                : products.filter(p => p.brandId === brandId);
+
+            // Cập nhật tiêu đề
+            const brandName = brands.find(b => b.id === brandId)?.name || 'Sản phẩm';
+            sectionTitle.innerText = brandId === 'all' ? 'Tất cả sản phẩm nổi bật' : `Sản phẩm của ${brandName}`;
+
+            // Xử lý khi không có sản phẩm
+            if (filteredProducts.length === 0) {
+                productContainer.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+            } else {
+                productContainer.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+
+                // Render từng thẻ sản phẩm
+                filteredProducts.forEach(product => {
+                    const card = document.createElement('div');
+                    card.className = 'fade-in bg-white border border-gray-100 rounded-xl p-4 shadow-sm hover:shadow-lg hover:border-brand-red-200 transition duration-300 group';
+                    card.innerHTML = `
+                        <div class="relative mb-4 aspect-square overflow-hidden rounded-lg bg-gray-100">
+                            <img src="${product.img}" alt="${product.name}" class="h-full w-full object-contain object-center group-hover:scale-105 transition duration-300 mix-blend-multiply">
+                        </div>
+                        <h3 class="text-sm font-medium text-gray-700 group-hover:text-brand-red-600 truncate">${product.name}</h3>
+                        <p class="mt-1 text-lg font-bold text-brand-red-600">${product.price}</p>
+                        <button class="mt-3 w-full bg-brand-red-600 text-white text-xs font-bold py-2 rounded-lg opacity-0 group-hover:opacity-100 transition duration-300">
+                            XEM CHI TIẾT
+                        </button>
+                    `;
+                    productContainer.appendChild(card);
+                });
+            }
+        }
+
+        // 3. Lắng nghe sự kiện tìm kiếm
+        searchInput.addEventListener('input', (e) => {
+            renderBrands(e.target.value);
+        });
+
+        // --- KHỞI CHẠY LẦN ĐẦU ---
+        renderBrands();
+        renderProducts('all');
+
+    </script>
+</body>
+</html>

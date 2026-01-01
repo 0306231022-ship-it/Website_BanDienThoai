@@ -2,10 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import * as API from '../../../../JS/API/API';
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
-import ChinhSuaTen from "../CaiDatWebsite/modal/Conmodal/ChinhSuaName";
-import ChinhSuaLoGo from "../CaiDatWebsite/modal/Conmodal/ChinhSuaLoGo";
-import ChinhSuaTrangThai from "./modal/ChinhSuaTrangThai";
-import SuaMoTa from "../CaiDatWebsite/modal/SuaMoTa";
+
 
 function ChiTietThuongHieu() {
     const { id } = useParams();
@@ -168,11 +165,14 @@ function ChiTietThuongHieu() {
                                 <span className="w-8 h-1 bg-teal-500 rounded-full mr-3"></span>
                                 Mô tả chi tiết
                             </h3>
-                            <button  onClick={()=>{OpenMoDal('SuaMoTa',
+                            <button  onClick={()=>{OpenMoDal(
                             {
-                                MoTa:thuongHieu.MOTA ,
+                                DuLieu:thuongHieu.MOTA ,
                                 id:thuongHieu.IDTHUONGHIEU
-                            }, '/admin/SuaMoTathuongHieu'
+                            },{
+                                TenTrang:'SuaMoTa' ,
+                                url: '/admin/SuaMoTathuongHieu'
+                            } 
                             )}} className="flex items-center gap-2 px-4 py-2 bg-teal-50 text-teal-700 rounded-xl text-sm font-bold hover:bg-teal-600 hover:text-white transition-all border border-teal-100">
                                 <i className="fas fa-edit text-xs"></i> Chỉnh sửa
                             </button>

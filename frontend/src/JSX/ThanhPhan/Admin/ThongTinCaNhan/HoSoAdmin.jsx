@@ -93,39 +93,6 @@ function HoSo() {
                 </main>
             </div>
 
-            {/* MODAL SYSTEM */}
-            {modalState.isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className="relative bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
-                        <button 
-                            onClick={DongModal} 
-                            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center bg-gray-100 text-gray-500 rounded-full hover:bg-red-500 hover:text-white transition"
-                        >
-                            <i className="fa-solid fa-xmark"></i>
-                        </button>
-
-                        {
-                             modalState.TrangThaiTrang!==modalState.TrangThaiTrangTruoc && (
-                                  <button  onClick={()=>{ChinhSuaModel(modalState.TrangThaiTrangTruoc)}} class="btn-back"><i class="fa-solid fa-chevron-left"></i> Quay lại</button>
-                                )
-                            }
-
-                        <div className="mt-2">
-                            {(() => {
-                                switch (modalState.TrangThaiTrang) {
-                                    case 'logo':
-                                        return <ChinhSuaImgaeVaTen />;
-                                    case 'SuaTen':
-                                        return <ChinhSuaTen/>
-
-                                    default:
-                                        return <Trang404 />;
-                                }
-                            })()}
-                        </div>
-                    </div>
-                </div>
-            )}
         </>
     );
 }

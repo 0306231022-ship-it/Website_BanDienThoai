@@ -1,7 +1,7 @@
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 import { useEffect, useState } from "react";
 import * as API from '../../../../JS/API/API';
-import {Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function NhaCungCap() {
     const { OpenMoDal } = useModalContext();
@@ -9,17 +9,23 @@ function NhaCungCap() {
     const [loading, setloading] = useState(false);
     const [err, seterr] = useState('');
     const [DuLieu, setDuLieu] = useState([]);
+    const [Timkiem, setTimKiem] = useState([]);
+    const [key,setkey]=useState(null)
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     };
+
 
     useEffect(() => {
         const LoadDL = async () => {
             setloading(true);
             try {
                 const ketqua = await API.CallAPI(undefined, { url: `/admin/layTTnhacungcap?page=${Trang}`, PhuongThuc: 2 });
-                setDuLieu(ketqua.nhacungcap || []); 
+                const data = ketqua.nhacungcap || [];
+                setDuLieu(data);
+                setTimKiem(data);
+                setkey(ketqua.pagination)
             } catch (error) {
                 console.error('Lỗi hệ thống!=' + error);
                 seterr('Đã xảy ra lỗi ngoài ý muốn!');
@@ -33,22 +39,36 @@ function NhaCungCap() {
     const handlePrevPage = () => {
         if (Trang > 1) setTrang(prev => prev - 1);
     };
-
     const handleNextPage = () => {
         setTrang(prev => prev + 1);
     };
 
-    if (loading) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-4">
-                <div className="relative">
-                    <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
-                    <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
-                </div>
-                <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang tải dữ liệu...</p>
-            </div>
-        );
+    const FilterData = (type) => {
+        setloading(true)
+        const filters = {
+             all: () => DuLieu, 
+             active: () => DuLieu.filter(item => item.TRANGTHAI === 1), // Khớp với value="active"
+             inactive: () => DuLieu.filter(item => item.TRANGTHAI !== 1), // Khớp với value="inactive"
+        };
+        setTimKiem(filters[type] ? filters[type]() : DuLieu);
+        setloading(false);
     };
+    const handleSearch = (e) => {
+        setloading(true)
+        const keyword = e.target.value.toLowerCase();
+        if(keyword === '') {
+            setTimKiem(DuLieu);
+            setloading(false);
+        } else {
+            const result = DuLieu.filter(item => 
+                (item.TENNCC && item.TENNCC.toLowerCase().includes(keyword)) ||
+                (item.SDT && item.SDT.includes(keyword)) || 
+                (item.MST && item.MST.includes(keyword))
+            );
+            setTimKiem(result);
+            setloading(false);
+        }
+    }
 
     if (err) {
         return (
@@ -85,17 +105,24 @@ function NhaCungCap() {
                                     <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                                         <i className="fa-solid fa-magnifying-glass"></i>
                                     </span>
-                                    <input type="text" placeholder="Tìm tên, SĐT, Mã số thuế..." className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" />
+                                    <input 
+                                        type="text" 
+                                        onChange={handleSearch}
+                                        placeholder="Tìm tên, SĐT, Mã số thuế..." 
+                                        className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" 
+                                    />
                                 </div>
-
-                                <select className="border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none bg-white">
+                                <select 
+                                    onChange={(e) => FilterData(e.target.value)}
+                                    className="border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none bg-white"
+                                >
                                     <option value="all">Tất cả trạng thái</option>
                                     <option value="active">Đang hợp tác</option>
                                     <option value="inactive">Ngừng hợp tác</option>
                                 </select>
                             </div>
 
-                            <button onClick={() =>OpenMoDal("themNhaCungCap")} className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-colors w-full md:w-auto justify-center">
+                            <button onClick={() => OpenMoDal(undefined, { TenTrang: 'themNhaCungCap' })} className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-colors w-full md:w-auto justify-center">
                                 <i className="fa-solid fa-plus mr-2"></i>
                                 Thêm Nhà cung cấp
                             </button>
@@ -114,11 +141,23 @@ function NhaCungCap() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-100">
-                                    {
-                                        DuLieu && DuLieu.length > 0 ? (
-                                            DuLieu.map((item, index) => (
+                                    {loading ? (
+                                        <tr>
+                                            <td colSpan="6" className="py-10">
+                                                <div className="flex flex-col items-center justify-center min-h-[300px] w-full gap-4">
+                                                    <div className="relative">
+                                                        <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+                                                        <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+                                                    </div>
+                                                    <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang tải dữ liệu...</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        Timkiem && Timkiem.length > 0 ? (
+                                            Timkiem.map((item, index) => (
                                                 <tr key={index} className="hover:bg-slate-50 transition-colors">
-                                                    <td className="px-6 py-4 text-sm text-slate-500">#{index+1}</td>
+                                                    <td className="px-6 py-4 text-sm text-slate-500">#{index + 1}</td>
                                                     <td className="px-6 py-4">
                                                         <div className="flex items-center">
                                                             <div>
@@ -128,7 +167,6 @@ function NhaCungCap() {
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4">
-                                                        {/* Hiển thị địa chỉ hoặc Email/SĐT */}
                                                         <div className="text-sm text-slate-900">{item.LIENHE_DOITAC}</div>
                                                         <div className="text-sm text-blue-600 font-medium hover:underline cursor-pointer flex items-center gap-1">
                                                             <i className="fa-solid fa-phone text-xs"></i>
@@ -136,7 +174,6 @@ function NhaCungCap() {
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4">
-                                                        {/* Sử dụng hàm formatCurrency */}
                                                         <div className="text-red-600 font-bold">{formatCurrency(item.CONGNO || 0)}</div>
                                                         <div className="text-xs text-slate-400">Hiện tại</div>
                                                     </td>
@@ -152,11 +189,11 @@ function NhaCungCap() {
                                                         )}
                                                     </td>
                                                     <td className="px-6 py-4 text-right">
-                                                               <div className="flex justify-center gap-1.5">
-                                                    <Link to={`chitiet/${item.IDNCC}`} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết">
-                                                        xem chi tiết <i className="fas fa-arrow-right ml-1"></i>
-                                                    </Link>
-                                                </div>
+                                                        <div className="flex justify-center gap-1.5">
+                                                            <Link to={`chitiet/${item.IDNCC}`} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết">
+                                                                xem chi tiết <i className="fas fa-arrow-right ml-1"></i>
+                                                            </Link>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             ))
@@ -167,23 +204,20 @@ function NhaCungCap() {
                                                 </td>
                                             </tr>
                                         )
-                                    }
+                                    )}
                                 </tbody>
                             </table>
-
-                            {/* PHẦN PHÂN TRANG (PAGINATION) */}
                             <div className="bg-white px-4 py-3 border-t border-slate-200 flex items-center justify-between sm:px-6">
                                 <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                                     <div>
                                         <p className="text-sm text-slate-700">
-                                            Trang hiện tại: <span className="font-medium">{Trang}</span>
+                                            Dữ liệu trang  {key?.currentPage} trên tổng số {key?.totalPages} trang (Tổng {key?.totalItems} danh sách nhà cung cấp)
                                         </p>
                                     </div>
                                     <div>
                                         <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                            {/* Nút Previous */}
-                                            <button 
-                                                type="button" 
+                                            <button
+                                                type="button"
                                                 onClick={handlePrevPage}
                                                 disabled={Trang === 1}
                                                 className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 bg-white text-sm font-medium ${Trang === 1 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-500 hover:bg-slate-50'} focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500`}
@@ -195,9 +229,9 @@ function NhaCungCap() {
                                                 {Trang}
                                             </span>
 
-                                            {/* Nút Next */}
-                                            <button 
-                                                type="button" 
+                                            <button
+                                                disabled={key?.currentPage===key?.totalPages}
+                                                type="button"
                                                 onClick={handleNextPage}
                                                 className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
                                             >
@@ -212,7 +246,7 @@ function NhaCungCap() {
                     </div>
                 </main>
             </div>
-    
+
         </>
     );
 }

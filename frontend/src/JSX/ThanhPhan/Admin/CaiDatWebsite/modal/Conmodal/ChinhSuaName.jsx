@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useModalContext } from '../../../../../../CONTEXT/QuanLiModal';
 import * as API from '../../../../../../JS/API/API';
 import * as fun from '../../../../../../JS/FUNCTONS/function';
 import { useAppContext } from '../../../../../../CONTEXT/TrangChuAdmin';
 
-function ChinhSuaTen() {
-  const { modalState } = useModalContext();
+function ChinhSuaTen({DuLieu , url}) {
   const { GetTTwebsite} =useAppContext();
-  const tenCu = modalState?.DuLieu?.TenWebsite || modalState?.DuLieu?.Ten || '';
+  const tenCu = DuLieu?.DuLieu;
+  const id = DuLieu?.id;
   const [ten, setTen] = useState('');
   const [err, setErr] = useState('');
   const [errValidate, seterr] = useState({}); 
@@ -31,6 +30,11 @@ function ChinhSuaTen() {
       setLoading(false)
       return;
     }
+    if(!URL){
+      setErr('Vui lòng kiểm tra lại hệ thống!');
+      setLoading(false);
+      return;
+    }
 
     if (ten.length > 255) {
       setErr('Nội dung không được vượt quá 255 ký tự!');
@@ -38,9 +42,10 @@ function ChinhSuaTen() {
       return;
     }
 
+
     try {
-      const DuLieu = fun.objectToFormData({ Ten: ten , id : modalState?.DuLieu?.id || null});
-      const ketqua = await API.CallAPI(DuLieu, { PhuongThuc: 1, url: modalState.QuaTrang.url });
+      const DuLieu = fun.objectToFormData({ Ten: ten , id :id || null});
+      const ketqua = await API.CallAPI(DuLieu, { PhuongThuc: 1, url: url });
       if (ketqua.Status) {
         setErr(ketqua.message);
         setLoading(false);

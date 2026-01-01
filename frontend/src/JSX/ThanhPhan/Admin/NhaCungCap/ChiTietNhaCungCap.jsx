@@ -101,9 +101,9 @@ function ChiTietNhaCungCap() {
                     </div>
 
                     <div className="flex gap-3">
-                        {/* NÚT SỬA: Đã chỉnh sửa để gọi OpenMoDal đúng cách */}
+                       
                         <button 
-                            onClick={() => OpenMoDal('ThongTin', dulieu, `/admin/CapNhatNCC?id=${id}`)}
+                            onClick={() => OpenMoDal({DuLieu:dulieu}, {TenTrang: 'ThongTinChung'})}
                             className="px-4 py-2 bg-white border border-slate-300 text-slate-700 font-medium rounded-lg shadow-sm hover:bg-slate-50 hover:text-blue-600 transition-all flex items-center gap-2"
                         >
                             <i className="fa-regular fa-pen-to-square"></i>
@@ -140,13 +140,13 @@ function ChiTietNhaCungCap() {
                         />
                         <StatRow
                             label="Tổng nhập tháng này"
-                            value="5.2 Tỷ" // Nếu có data từ API thì thay bằng {dulieu.TONGNHAP}
+                            value={150000} // Nếu có data từ API thì thay bằng {dulieu.TONGNHAP}
                             color="blue"
                             icon="fa-chart-line"
                         />
                         <StatRow
                             label="Số đơn hàng"
-                            value="32 đơn" // Nếu có data từ API thì thay bằng {dulieu.SODON}
+                            value="32" // Nếu có data từ API thì thay bằng {dulieu.SODON}
                             color="slate"
                             icon="fa-receipt"
                         />

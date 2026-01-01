@@ -22,3 +22,13 @@ Chưa thực hiện chức năng tìm kiếm cho thương hiệu
 
 ===
 màu cơ bản cho website : bg-teal-600
+
+var User = function(firstName, lastName, avatar){ //expression function
+   this.firstName = firstName;
+   this.lastName = lastName;
+   this.avatar = avatar;
+   this.getName = function(){
+      return `${this.firstName} ${this.lastName}`
+   }
+}
+// thêm 1 đối tuo

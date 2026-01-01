@@ -1,10 +1,9 @@
-import { useModalContext } from '../../../../../../CONTEXT/QuanLiModal';
 import { useState } from 'react';
 import * as fun from '../../../../../../JS/FUNCTONS/function';
 import * as API from '../../../../../../JS/API/API'
 import { useAppContext } from '../../../../../../CONTEXT/TrangChuAdmin';
 
-function ChinhSuaLoGo() {
+function ChinhSuaLoGo({DuLieu , url}) {
   const { GetTTwebsite} =useAppContext();
   const [file, setfile] = useState([]); 
   const [AnhTam, setAnhTam] = useState([]);
@@ -12,8 +11,9 @@ function ChinhSuaLoGo() {
   const [LoiValidate, setLoi] = useState({});
   const [ok, setok] = useState('');
   const [loading, setLoading] = useState(false); 
-  const { modalState } = useModalContext();
-  const LoGoServer = modalState?.DuLieu?.LoGo || "";
+  const LoGoServer = DuLieu?.DuLieu ;
+  const id = DuLieu?.id;
+
 
   const handleMultipleFilesChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -28,11 +28,11 @@ function ChinhSuaLoGo() {
   };
 
   const LuuAnh = async () => {
-
     if (file.length === 0) {
       seterr('Vui lòng chọn hình ảnh trước');
       return;
     }
+   
     
     setLoading(true);
     seterr('');
@@ -45,17 +45,16 @@ function ChinhSuaLoGo() {
       setLoading(false);
       return;
     }
-   const DuLieu = modalState?.DuLieu?.id
-      ? fun.objectToFormData({ id: modalState.DuLieu.id })
+   const DuLieu = id
+      ? fun.objectToFormData({ id: id })
       : fun.objectToFormData({ id: "" });
     try {
       const ketqua = await API.CallAPI(DuLieu || undefined, { 
         fileArray: file,
-        url: modalState.QuaTrang.url, 
+        url: url, 
         PhuongThuc: 1 
       });
-      
-      
+
       if (ketqua.Status) {
         seterr(ketqua.message);
         return;
@@ -89,7 +88,7 @@ function ChinhSuaLoGo() {
           <div className="absolute inset-0 bg-blue-200 rounded-full scale-110 blur-2xl opacity-30 animate-pulse"></div>
           
           <div className="relative group">
-            <div className={`w-36 h-36 rounded-full p-1 bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden transition-all
+            <div className={`w-36 h-36 rounded-full p-1  to-pink-500 flex items-center justify-center overflow-hidden transition-all
               ${(LoiValidate.file || LoiValidate.Logo) ? 'ring-4 ring-red-500 ring-offset-4' : ''}`}>
               {AnhTam.length > 0 ? (
                 <img

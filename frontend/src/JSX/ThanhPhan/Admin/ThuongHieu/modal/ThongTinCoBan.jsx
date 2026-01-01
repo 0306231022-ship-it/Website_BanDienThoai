@@ -33,7 +33,6 @@ function ThongTinCoBan({ DuLieu }) {
 
       {/* --- DANH SÁCH CÁC NÚT CHỈNH SỬA --- */}
       <div className="space-y-3">
-        {/* Sửa Tên */}
         <button disabled={DuLieu.TrangThai !==1} onClick={() => OpenMoDal(
           {
             DuLieu: DuLieu.Ten,
@@ -56,7 +55,14 @@ function ThongTinCoBan({ DuLieu }) {
         </button>
 
      
-        <button disabled={DuLieu.TrangThai !==1} onClick={() => OpenMoDal('SuaAnhThuongHieu','/admin/SuaAnhThuongHieu')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-purple-50 border border-gray-100 rounded-2xl transition-all group">
+        <button disabled={DuLieu.TrangThai !==1} onClick={() => OpenMoDal({
+          DuLieu: DuLieu.LoGo,
+          id:DuLieu.id,
+        },{
+          TenTrang: 'SuaAnhThuongHieu',
+          url: '/admin/SuaAnhThuongHieu'
+        },)}
+         className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-purple-50 border border-gray-100 rounded-2xl transition-all group">
           <div className="flex items-center gap-4">
             <div className="w-11 h-11 bg-white shadow-sm text-purple-600 rounded-xl flex items-center justify-center group-hover:bg-purple-600 group-hover:text-white transition-colors">
               <i className="fa-solid fa-image text-lg"></i>
@@ -64,22 +70,6 @@ function ThongTinCoBan({ DuLieu }) {
             <div className="text-left">
               <span className="block text-xs font-bold text-gray-400 uppercase tracking-tight">Logo thương hiệu</span>
               <span className="text-[15px] font-bold text-gray-700">Thay đổi hình ảnh</span>
-            </div>
-          </div>
-          <i className="fa-solid fa-chevron-right text-gray-300 group-hover:translate-x-1 transition-transform"></i>
-        </button>
-
-        {/* Chỉnh sửa trạng thái (Tùy chọn thêm nếu bạn muốn đổi trạng thái ở đây) */}
-        <button onClick={() => OpenMoDal('ChinhSuaTrangThai', '/admin/ChinhSuaTrangThai')} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-teal-50 border border-gray-100 rounded-2xl transition-all group">
-          <div className="flex items-center gap-4">
-            <div className={`w-11 h-11 bg-white shadow-sm rounded-xl flex items-center justify-center transition-colors ${DuLieu.TrangThai === 1 ? 'text-green-600 group-hover:bg-green-600' : 'text-red-600 group-hover:bg-red-600'} group-hover:text-white`}>
-              <i className="fa-solid fa-power-off text-lg"></i>
-            </div>
-            <div className="text-left">
-              <span className="block text-xs font-bold text-gray-400 uppercase tracking-tight">Trạng thái</span>
-              <span className={`text-[15px] font-bold ${DuLieu.TrangThai === 1 ? 'text-green-600' : 'text-red-600'}`}>
-                {DuLieu.TrangThai === 1 ? 'Đang hoạt động' : 'Đang ngưng hoạt động'}
-              </span>
             </div>
           </div>
           <i className="fa-solid fa-chevron-right text-gray-300 group-hover:translate-x-1 transition-transform"></i>
