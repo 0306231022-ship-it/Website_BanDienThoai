@@ -1,6 +1,7 @@
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import NhaCungCapModel from '../models/NhaCungCapModel.js';
+import { validationResult } from "express-validator";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
@@ -86,6 +87,115 @@ export default class NhaCungCapController{
                     message:'Đã sãy ra lỗi trên hệ thống! Vui lòng thử lại sau.'
                 })
             }
+        }
+        static async CapNhatTen(req,res){
+            const { Ten } = req.body;
+            const id = req.body.id || null;
+            const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                return res.json({ 
+                    Validate: true, 
+                    errors: errors.array() 
+                });
+             }
+             const CapNhat = await NhaCungCapModel.CapNhatTen(Ten,id);
+             if(CapNhat.Status){
+                return res.json({
+                    Status:true,
+                    message:'Đã xảy ra lỗi hệ thống! Vui lòng thử lại sau.'
+                })
+             }
+             if(CapNhat){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Cập nhật tên nhà cung cấp thành công!'
+                })
+             }else{
+                res.json({
+                    ThanhCong:false,
+                    message:'Cập nhật tên nhà cung cấp thất bại! Vui lòng thử lại sau.'
+                })
+             }
+        }
+        static async CapNhatMaDinhDanh(req,res){
+             const { Ten } = req.body;
+            const id = req.body.id || null;
+            const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                return res.json({ 
+                    Validate: true, 
+                    errors: errors.array() 
+                });
+             }
+             const CapNhat = await NhaCungCapModel.CapNhatMaDinhDanh(Ten,id);
+             if(CapNhat.Status){
+                return res.json({
+                    Status:true,
+                    message:'Đã xảy ra lỗi hệ thống! Vui lòng thử lại sau.'
+                })
+             }
+             if(CapNhat){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Cập nhật mã định danh nhà cung cấp thành công!'
+                })
+             }else{
+                res.json({
+                    ThanhCong:false,
+                    message:'Cập nhật mã định danh nhà cung cấp thất bại! Vui lòng thử lại sau.'
+                })
+             }
+        }
+        static async CapNhatMoTa(req,res){
+            const { id, MoTa } = req.body;
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                     Validate: true, 
+                     errors: errors.array() 
+                });
+            }   
+            const capNhatThanhCong = await NhaCungCapModel.CapNhatMoTaNhaCungCap(id, MoTa);
+            if (capNhatThanhCong) {
+                return res.json({
+                    ThanhCong: true,
+                    message: 'Cập nhật mô tả nhà cung cấp thành công!'
+                });
+            } else {
+                return res.json({
+                    ThatBai: true,
+                    message: 'Cập nhật mô tả nhà cung cấp thất bại!'
+                });
+            }
+        }
+        static async CapNhatTenNguoiDung(req,res) {
+            const { Ten } = req.body;
+            const id = req.body.id || null;
+            const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                return res.json({ 
+                    Validate: true, 
+                    errors: errors.array() 
+                });
+             }
+             const CapNhat= await NhaCungCapModel.CapNhatNguoiDaiDien(id,Ten);
+             if(CapNhat.Status){
+                return res.json({
+                    Status:true,
+                    message:'Đã xảy ra lỗi hệ thống! Vui lòng thử lại sau.'
+                })
+             }
+             if(CapNhat){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Cập nhật tên người liên hệ thành công!'
+                })
+             }else{
+                res.json({
+                    ThanhCong:false,
+                    message:'Cập nhật tên người liên hệ thất bại! Vui lòng thử lại sau.'
+                })
+             }
         }
    
 }

@@ -81,7 +81,7 @@ function SuaMoTa({DuLieu,url}) {
                                 className={`w-full px-5 py-4 bg-gray-50 border-2 border-transparent rounded-2xl outline-none transition-all font-medium text-gray-800 placeholder:text-gray-300 focus:border-blue-500 focus:bg-white focus:shadow-[0_0_20px_rgba(59,130,246,0.1)] resize-none
                                     ${err ? 'border-red-500 bg-red-50 text-red-900' : ''} 
                                     ${Loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                placeholder="Nhập mô tả website mới..."
+                                placeholder="Nhập mô tả mới..."
                             ></textarea>
                         </div>
                         <div className="min-h-[24px] px-1">

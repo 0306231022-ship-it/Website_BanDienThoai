@@ -10,6 +10,7 @@ import ChinhSuaImgaeVaTen from "../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/Chinh
 import  SuaLinkFacebook from '../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/ChinhSuaLinkFaceBook';
 import ThongTinChung from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTin";
 import ThongTinHeThong from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTinChung";
+import ThongTinLienHe from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTinLienHe";
 
 const MoDalContext = createContext();
 
@@ -25,6 +26,7 @@ const MODAL_REGISTRY = {
     'SuaFaceBook' : SuaLinkFacebook ,
     'ThongTinChung' : ThongTinChung ,
     'ThongTinHeThong' : ThongTinHeThong,
+    'ThongTinLienHe' : ThongTinLienHe,
 };
 
 export function AppProvider({ children }) {

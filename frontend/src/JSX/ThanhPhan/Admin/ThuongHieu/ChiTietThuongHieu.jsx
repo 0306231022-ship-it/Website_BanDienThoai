@@ -131,14 +131,13 @@ function ChiTietThuongHieu() {
                             <p className="text-gray-400 text-sm mb-6 uppercase tracking-widest font-bold">Thương hiệu đối tác</p>
 
                             <div className="  gap-4 text-left border-t border-gray-50 pt-6">
-                                <div className="p-3 rounded-2xl">
+                                <div className="p-3 flex gap-4 rounded-2xl">
                                     <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Trạng thái</p>
                                     <span className={`flex items-center text-xs font-bold ${thuongHieu.TRANGTHAI !== 0 ? 'text-green-600' : 'text-red-600'}`}>
-                                        <span className={`w-2 h-2 rounded-full mr-2 ${thuongHieu.TRANGTHAI !== 0 ? 'bg-green-500 animate-pulse' : 'bg-red-500'}`}></span>
-                                        {thuongHieu.TRANGTHAI !== 0 ? 'Đang hoạt động' : 'Ngưng hợp tác'}
+                                        {thuongHieu.TRANGTHAI !== 0 ? 'Còn sản phẩm' : 'Hết sản phẩm'}
                                     </span>
                                 </div>
-                                <div className="p-3 rounded-2xl">
+                                <div className="p-3 rounded-2xl flex gap-7">
                                     <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Sản phẩm</p>
                                     <span className="text-sm font-bold text-gray-800">{thuongHieu.SOLUONG_SANPHAM || 0} sản phẩm</span>
                                 </div>

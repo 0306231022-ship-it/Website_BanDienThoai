@@ -127,7 +127,63 @@ adminRouter.post('/SuaMoTathuongHieu', upload.none(),  [
     next();
 },ThuongHieuController.SuaMoTathuongHieu );
 //========================================
-adminRouter.post('/Themcc', authMiddleware , upload.none() , validateCungCap, NhaCungCapController.ThemCungCap )
+adminRouter.post('/Themcc', authMiddleware , upload.none() , validateCungCap, NhaCungCapController.ThemCungCap );
+adminRouter.post('/ChinhSuaTenNhaCungCap' , authMiddleware , upload.none(), [
+    body('Ten')
+    .notEmpty()
+    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+    .isLength({max:50})
+    .withMessage('Vượt quá kí tự cho phép!'),
+],
+(req, res, next) => {
+     const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+},NhaCungCapController.CapNhatTen);
+adminRouter.post('/ChinhSuaMDDNhaCungCap', authMiddleware ,upload.none(),[
+      body('Ten')
+     .notEmpty()
+    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+    .isLength({max:3})
+    .withMessage('Vượt quá kí tự cho phép!'),
+],
+(req, res, next) => {
+     const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+},NhaCungCapController.CapNhatMaDinhDanh );
+adminRouter.post('/ChinhSuaMoTaNhaCungCap', authMiddleware , upload.none(),[
+    body('MoTa')
+     .notEmpty()
+      .withMessage('Vui lòng nhập đầy đủ thông tin!')
+      .isLength({max:255})
+      .withMessage('Vượt quá kí tự cho phép!'),
+],
+(req, res, next) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+},NhaCungCapController.CapNhatMoTa );
+adminRouter.post('/ChinhSuaNguoiDaiDienNhaCungCap', authMiddleware, upload.none(),[
+    body('Ten')
+    .notEmpty()
+    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+    .isLength({max:50})
+    .withMessage('Vượt quá kí tự cho phép!'),
+],
+(req, res, next) => {
+     const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+},NhaCungCapController.CapNhatTenNguoiDung)
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );

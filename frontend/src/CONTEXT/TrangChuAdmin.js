@@ -19,12 +19,6 @@ export function AppProvider({ children }) {
     };
   
   }
-
-
-
-
-
-
   return (
     <AppContext.Provider value={{ GetTTwebsite , TTwebsite ,}}>
       {children}

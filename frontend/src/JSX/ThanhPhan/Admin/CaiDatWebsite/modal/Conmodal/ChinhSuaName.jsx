@@ -85,7 +85,7 @@ function ChinhSuaTen({DuLieu , url}) {
                 Thông tin hiển thị
               </label>
               <span className="text-[11px] text-blue-500 font-medium italic">
-                Tên cũ: {tenCu}
+                Dữ liệu cũ: {tenCu}
               </span>
             </div>
 
@@ -100,7 +100,7 @@ function ChinhSuaTen({DuLieu , url}) {
                         : "bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white text-gray-800"}
                   ${loading ? "opacity-50 cursor-not-allowed" : ""}
                   `}
-                placeholder="Nhập tên website mới..."
+                placeholder="Nhập dữ liệu mới..."
               />
               
               {ten && !loading && (

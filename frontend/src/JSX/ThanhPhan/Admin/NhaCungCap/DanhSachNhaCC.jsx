@@ -10,12 +10,14 @@ function NhaCungCap() {
     const [err, seterr] = useState('');
     const [DuLieu, setDuLieu] = useState([]);
     const [Timkiem, setTimKiem] = useState([]);
-    const [key,setkey]=useState(null)
+    const [key, setkey] = useState(null);
+
+    // --- STATE MỚI CHO MENU ---
+    const [openMenu, setOpenMenu] = useState(false);
 
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     };
-
 
     useEffect(() => {
         const LoadDL = async () => {
@@ -46,9 +48,9 @@ function NhaCungCap() {
     const FilterData = (type) => {
         setloading(true)
         const filters = {
-             all: () => DuLieu, 
-             active: () => DuLieu.filter(item => item.TRANGTHAI === 1), // Khớp với value="active"
-             inactive: () => DuLieu.filter(item => item.TRANGTHAI !== 1), // Khớp với value="inactive"
+            all: () => DuLieu,
+            active: () => DuLieu.filter(item => item.TRANGTHAI === 1),
+            inactive: () => DuLieu.filter(item => item.TRANGTHAI !== 1),
         };
         setTimKiem(filters[type] ? filters[type]() : DuLieu);
         setloading(false);
@@ -56,13 +58,13 @@ function NhaCungCap() {
     const handleSearch = (e) => {
         setloading(true)
         const keyword = e.target.value.toLowerCase();
-        if(keyword === '') {
+        if (keyword === '') {
             setTimKiem(DuLieu);
             setloading(false);
         } else {
-            const result = DuLieu.filter(item => 
+            const result = DuLieu.filter(item =>
                 (item.TENNCC && item.TENNCC.toLowerCase().includes(keyword)) ||
-                (item.SDT && item.SDT.includes(keyword)) || 
+                (item.SDT && item.SDT.includes(keyword)) ||
                 (item.MST && item.MST.includes(keyword))
             );
             setTimKiem(result);
@@ -93,8 +95,71 @@ function NhaCungCap() {
             <div className="flex h-screen overflow-hidden p-2">
                 <main className="flex-1 flex flex-col h-screen overflow-y-auto">
 
-                    <header className="bg-white shadow-sm h-16 flex items-center justify-between px-6 sticky top-0 z-10">
+                    {/* --- HEADER ĐÃ CẬP NHẬT --- */}
+                    <header className="bg-white shadow-sm h-16 flex items-center justify-between px-6 sticky top-0 z-20">
+                        {/* Bên Trái: Tiêu đề */}
                         <h1 className="text-xl font-bold text-slate-800">Danh sách Nhà Cung Cấp</h1>
+
+                        {/* Bên Phải: Menu Xổ Xuống (Dropdown) */}
+                        <div className="relative">
+                            {/* Nút Trigger Menu */}
+                            <button 
+                                onClick={() => setOpenMenu(!openMenu)}
+                                className="flex items-center gap-3 hover:bg-slate-50 px-2 py-1.5 rounded-lg transition-all border border-transparent hover:border-slate-200 focus:outline-none"
+                            >
+                                <div className="text-right hidden md:block">
+                                    <p className="text-sm font-bold text-slate-700">Nguyễn Ngọc Hiếu</p>
+                                    <p className="text-[10px] text-slate-400 font-medium uppercase">Quản trị viên</p>
+                                </div>
+                                <div className="w-9 h-9 rounded-full bg-teal-100 border border-teal-200 flex items-center justify-center text-teal-700 font-bold shadow-sm">
+                                    A
+                                </div>
+                                <i className={`fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-200 ${openMenu ? 'rotate-180' : ''}`}></i>
+                            </button>
+
+                            {/* Dropdown Content */}
+                            {openMenu && (
+                                <>
+                                    {/* Overlay trong suốt để click ra ngoài thì đóng menu */}
+                                    <div 
+                                        className="fixed inset-0 z-30 cursor-default" 
+                                        onClick={() => setOpenMenu(false)}
+                                    ></div>
+
+                                    {/* Nội dung Menu */}
+                                    <div className="absolute right-0 mt-3 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-40 animate-fadeIn origin-top-right">
+                                        <div className="px-4 py-3 border-b border-slate-100 mb-1">
+                                            <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Tài khoản</p>
+                                            <p className="text-sm font-medium text-slate-700 truncate">admin@hethong.com</p>
+                                        </div>
+                                        
+                                        <div className="space-y-1">
+                                            <Link to="/thong-tin-ca-nhan" className="block px-4 py-2 text-sm text-slate-600 hover:bg-teal-50 hover:text-teal-700 transition-colors flex items-center gap-3">
+                                                <i className="fa-regular fa-user w-4"></i> Thông tin cá nhân
+                                            </Link>
+                                            <Link to="/cai-dat" className="block px-4 py-2 text-sm text-slate-600 hover:bg-teal-50 hover:text-teal-700 transition-colors flex items-center gap-3">
+                                                <i className="fa-solid fa-gear w-4"></i> Cài đặt hệ thống
+                                            </Link>
+                                            <button 
+                                                onClick={() => alert('Chức năng xuất báo cáo đang phát triển')}
+                                                className="w-full text-left px-4 py-2 text-sm text-slate-600 hover:bg-teal-50 hover:text-teal-700 transition-colors flex items-center gap-3"
+                                            >
+                                                <i className="fa-solid fa-file-excel w-4"></i> Xuất báo cáo
+                                            </button>
+                                        </div>
+
+                                        <div className="border-t border-slate-100 mt-2 pt-1">
+                                            <button 
+                                                onClick={() => alert('Đã đăng xuất!')} 
+                                                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-3 font-medium"
+                                            >
+                                                <i className="fa-solid fa-right-from-bracket w-4"></i> Đăng xuất
+                                            </button>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
                     </header>
 
                     <div className="p-6">
@@ -105,14 +170,14 @@ function NhaCungCap() {
                                     <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
                                         <i className="fa-solid fa-magnifying-glass"></i>
                                     </span>
-                                    <input 
-                                        type="text" 
+                                    <input
+                                        type="text"
                                         onChange={handleSearch}
-                                        placeholder="Tìm tên, SĐT, Mã số thuế..." 
-                                        className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm" 
+                                        placeholder="Tìm tên, SĐT, Mã số thuế..."
+                                        className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm"
                                     />
                                 </div>
-                                <select 
+                                <select
                                     onChange={(e) => FilterData(e.target.value)}
                                     className="border border-slate-300 rounded-lg px-4 py-2 text-sm focus:outline-none bg-white"
                                 >
@@ -230,7 +295,7 @@ function NhaCungCap() {
                                             </span>
 
                                             <button
-                                                disabled={key?.currentPage===key?.totalPages}
+                                                disabled={key?.currentPage === key?.totalPages}
                                                 type="button"
                                                 onClick={handleNextPage}
                                                 className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"

@@ -36,7 +36,13 @@ function ThongTinChung({ DuLieu }) {
         
         {/* BUTTON 1: THÔNG TIN CHUNG */}
         <button 
-          onClick={() => OpenMoDal(undefined, { TenTrang: 'ThongTinHeThong' })} 
+          onClick={() => OpenMoDal(
+            {
+              DuLieu : DuLieu.DuLieu.TENNCC , 
+              id: DuLieu.DuLieu.IDNCC , 
+              ma: DuLieu.DuLieu.MAVACH ,
+              ghichu : DuLieu.DuLieu.GHICHU
+            }, { TenTrang: 'ThongTinHeThong' })} 
           className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-blue-100 rounded-2xl transition-all group"
         >
           <div className="flex items-center gap-4">
@@ -52,10 +58,16 @@ function ThongTinChung({ DuLieu }) {
             <i className="fa-solid fa-chevron-right"></i>
           </div>
         </button>
-
-        {/* BUTTON 2: THÔNG TIN LIÊN HỆ */}
         <button 
-          onClick={() => OpenMoDal(mockData, { TenTrang: 'SuaLienHe', url: '/admin/SuaLienHe' })} 
+          onClick={() => OpenMoDal({
+            nguoidaidien: DuLieu.DuLieu.LIENHE_DOITAC,
+            sdt:DuLieu.DuLieu.SDT,
+            email:DuLieu.DuLieu.EMAIL,
+            diachi:DuLieu.DuLieu.DIACHI,
+            id:DuLieu.DuLieu.IDNCC
+
+          }, { 
+            TenTrang: 'ThongTinLienHe'})} 
           className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-teal-100 rounded-2xl transition-all group"
         >
           <div className="flex items-center gap-4">

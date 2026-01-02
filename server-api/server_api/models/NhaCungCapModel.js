@@ -16,6 +16,40 @@ export default class NhaCungCapModel{
             return { nhacungcap: [], totalItems: 0 };
         }
     }
+    static async CapNhatTen(Ten,id){
+        try {
+            const [CapNhat] = await execute ('UPDATE nhacungcap SET TENNCC = ? WHERE IDNCC= ?' , [Ten,id]);
+             return CapNhat.affectedRows > 0;
+        } catch (error) {
+            console.error('sảy ra lỗi :' + error);
+            return {
+                Status:true
+            }
+        }
+    }
+    static async CapNhatMaDinhDanh(Ten,id){
+         try {
+            const [CapNhat] = await execute ('UPDATE nhacungcap SET MAVACH = ? WHERE IDNCC= ?' , [Ten,id]);
+             return CapNhat.affectedRows > 0;
+        } catch (error) {
+            console.error('sảy ra lỗi :' + error);
+            return {
+                Status:true
+            }
+        }
+    }
+    static async CapNhatMoTaNhaCungCap(id,mota){
+        try {
+            const [result] = await execute(
+                'UPDATE nhacungcap SET GHICHU = ? WHERE IDNCC = ?',
+                [mota, id]
+            );
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return false;
+        }
+    }
     static async layChiTiet(id){
          try {
             const [rows] = await execute(
@@ -26,6 +60,19 @@ export default class NhaCungCapModel{
         } catch (error) {
             console.error('Lỗi khi lấy chi tiết thương hiệu:', error);
             return null;
+        }
+    }
+    static async CapNhatNguoiDaiDien(id,ten){
+        try {
+            const [ketqqua] = await execute(
+                'UPDATE nhacungcap SET LIENHE_DOITAC=? WHERE IDNCC= ?',[ten,id]
+            );
+           return ketqqua.affectedRows > 0;
+        } catch (error) {
+             console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return {
+                Status:true
+            }
         }
     }
     static async ThemCungCap(dulieu) {
