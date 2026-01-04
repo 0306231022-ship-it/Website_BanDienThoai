@@ -75,6 +75,56 @@ export default class NhaCungCapModel{
             }
         }
     }
+    static async CapNhatDiaChi(id,DiaChi){
+        try {
+            const [ketqqua] = await execute(
+                'UPDATE nhacungcap SET DIACHI=? WHERE IDNCC= ?',[DiaChi,id]
+            );
+           return ketqqua.affectedRows > 0;
+        } catch (error) {
+             console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return {
+                Status:true
+            }
+        }
+    }
+    static async CapNhatTenNganHang(Ten,id){
+         try {
+            const [ketqqua] = await execute(
+                'UPDATE nhacungcap SET TEN_NGANHANG=? WHERE IDNCC= ?',[Ten,id]
+            );
+           return ketqqua.affectedRows > 0;
+        } catch (error) {
+             console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return {
+                Status:true
+            }
+        }
+    }
+    static async CapNhatSTKNganHang(so,id){
+         try {
+            const [ketqqua] = await execute(
+                'UPDATE nhacungcap SET STK_NGANHANG=? WHERE IDNCC= ?',[so,id]
+            );
+           return ketqqua.affectedRows > 0;
+        } catch (error) {
+             console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return {
+                Status:true
+            }
+        }
+    }
+    static async LayDShd(){
+        try {
+            const [ketqqua]= await execute('SELECT IDNCC , TENNCC FROM nhacungcap WHERE TRANGTHAI=?', [1]);
+            return ketqqua || null;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return {
+                Status:true
+            }
+        }
+    }
     static async ThemCungCap(dulieu) {
         const today = new Date();
         let month = today.getMonth() + 1;

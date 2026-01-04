@@ -275,7 +275,7 @@ function ThemCungCap() {
                                         type="text"
                                         placeholder="010xxxx"
                                         value={DuLieu.TaiChinh.MaThue}
-                                        onChange={(e) => handleChange('TaiChinh', 'MaThue', e.target.value)}
+                                        onChange={(e) => handleChange('TaiChinh', 'MaThue', e.target.value.replace(/[^0-9]/g, ''))}
                                         className={getInputClass('TaiChinh.MaThue')}
                                     />
                                      <ErrorMessage error={err?.['TaiChinh.MaThue']} />

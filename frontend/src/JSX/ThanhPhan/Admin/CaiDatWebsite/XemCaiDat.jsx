@@ -2,16 +2,6 @@
 import { Link } from 'react-router-dom';
 import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
-import ChinhSuaImgaeVaTen from "./modal/ChinhSuaNameLoGo";
-import ChinhSuaTen from './modal/Conmodal/ChinhSuaName';
-import ChinhSuaLoGo from './modal/Conmodal/ChinhSuaLoGo';
-import SuaMoTa from './modal/SuaMoTa';
-import SuaLinkFacebook from './modal/ChinhSuaLinkFaceBook';
-import SuaLinkInstagram from './modal/ChinhSuaLinkIns';
-import SuaDiaChi from './modal/ChinhSuaDiaChi';
-import SuaEmail from './modal/ChinhSuaEmail';
-import SuaSoDienThoai from './modal/ChinhSuaZalo';
-import Trang404 from "../../../TRANG/err/404";
 function XemCaiDat(){
     const { TTwebsite} = useAppContext();
     const { OpenMoDal} = useModalContext();

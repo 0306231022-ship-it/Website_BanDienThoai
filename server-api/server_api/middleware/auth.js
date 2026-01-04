@@ -16,7 +16,7 @@ const authMiddleware = (req, res, next) => {
     } catch (err) {
         return res.json({
             Status: true,
-            message: 'Token không hợp lệ'
+            message: 'Phiên đã hết hạn. Vui lòng đăng nhập lại!'
         });
     }
 };

@@ -118,7 +118,7 @@ export default class NhaCungCapController{
              }
         }
         static async CapNhatMaDinhDanh(req,res){
-             const { Ten } = req.body;
+            const { Ten } = req.body;
             const id = req.body.id || null;
             const errors = validationResult(req);
              if (!errors.isEmpty()) {
@@ -196,6 +196,107 @@ export default class NhaCungCapController{
                     message:'Cập nhật tên người liên hệ thất bại! Vui lòng thử lại sau.'
                 })
              }
+        }
+        static async CapNhatDiaChi(req,res){
+            const { DiaChi } = req.body;
+            const id = req.body.id || null;
+            const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                return res.json({ 
+                    Validate: true, 
+                    errors: errors.array() 
+                });
+             }
+             const CapNhat= NhaCungCapModel.CapNhatDiaChi(id,DiaChi);
+              if(CapNhat.Status){
+                return res.json({
+                    Status:true,
+                    message:'Đã xảy ra lỗi hệ thống! Vui lòng thử lại sau.'
+                })
+             }
+             if(CapNhat){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Cập nhật địa chỉ nhà cung cấp thành công!'
+                })
+             }else{
+                res.json({
+                    ThanhCong:false,
+                    message:'Cập nhật địa chỉ nhà cung cấp thất bại! Vui lòng thử lại sau.'
+                })
+             }
+        }
+        static async CapNhatTenNganHang(req,res){
+            const { Ten } = req.body;
+            const id = req.body.id || null;
+            const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                return res.json({ 
+                    Validate: true, 
+                    errors: errors.array() 
+                });
+             }
+             const CapNhat = await NhaCungCapModel.CapNhatTenNganHang(Ten,id);
+             if(CapNhat.Status){
+                return res.json({
+                    Status:true,
+                    message:'Đã xảy ra lỗi hệ thống! Vui lòng thử lại sau.'
+                })
+             }
+             if(CapNhat){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Cập nhật tên ngân hàng nhà cung cấp thành công!'
+                })
+             }else{
+                res.json({
+                    ThanhCong:false,
+                    message:'Cập nhật tên ngân hàng nhà cung cấp thất bại! Vui lòng thử lại sau.'
+                })
+             }
+
+        }
+        static async CapNhatSoTaiKhoan(req,res){
+            const { So } = req.body;
+            const id = req.body.id || null;
+            const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                return res.json({ 
+                    Validate: true, 
+                    errors: errors.array() 
+                });
+             }
+             const CapNhat = await NhaCungCapModel.CapNhatSTKNganHang(So,id);
+             if(CapNhat.Status){
+                return res.json({
+                    Status:true,
+                    message:'Đã xảy ra lỗi hệ thống! Vui lòng thử lại sau.'
+                })
+             }
+             if(CapNhat){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Cập nhật số tài khoản ngân hàng nhà cung cấp thành công!'
+                })
+             }else{
+                res.json({
+                    ThanhCong:false,
+                    message:'Cập nhật số tài khoản ngân hàng nhà cung cấp thất bại! Vui lòng thử lại sau.'
+                })
+             }
+        }
+        static async LayDShd(req,res){
+            const ketqqua = await NhaCungCapModel.LayDShd();
+            if(ketqqua){
+                return res.json({
+                    ThanhCong:true,
+                    DuLieu:ketqqua
+                })
+            }else{
+                return res.json({
+                    Status:true,
+                })
+            }
         }
    
 }

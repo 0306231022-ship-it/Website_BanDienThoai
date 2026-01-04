@@ -113,6 +113,7 @@ export default class ThuongHieuController{
             });
         }
     }
+    
     static async SuaAnhThuongHieu(req, res) {
         const files = req.files;
         const id = req.body.id || null;

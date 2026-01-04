@@ -3,14 +3,17 @@ import ThongTinChinhSua from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTin";
 import ThemCungCap from "../JSX/ThanhPhan/Admin/NhaCungCap/ThemNhaCungCap";
 import ThemThuongHieu from "../JSX/ThanhPhan/Admin/ThuongHieu/ThemThuongHieu";
 import ThongTinCoBan from "../JSX/ThanhPhan/Admin/ThuongHieu/modal/ThongTinCoBan";
-import ChinhSuaTen from "../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/Conmodal/ChinhSuaName";
-import ChinhSuaLoGo from "../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/Conmodal/ChinhSuaLoGo";
-import SuaMoTa from "../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/SuaMoTa";
+import ChinhSuaTen from "../JSX/ThanhPhan/MoDAL/ChinhSuaName";
+import ChinhSuaLoGo from "../JSX/ThanhPhan/MoDAL/ChinhSuaLoGo";
+import SuaMoTa from "../JSX/ThanhPhan/MoDAL/SuaMoTa";
 import ChinhSuaImgaeVaTen from "../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/ChinhSuaNameLoGo";
 import  SuaLinkFacebook from '../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/ChinhSuaLinkFaceBook';
 import ThongTinChung from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTin";
 import ThongTinHeThong from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTinChung";
 import ThongTinLienHe from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTinLienHe";
+import SuaDiaChi from "../JSX/ThanhPhan/MoDAL/ChinhSuaDiaChi";
+import ThongTinTaiChinh from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTinTaiChinh";
+import ChinhSuaSo from "../JSX/ThanhPhan/MoDAL/CapNhatSo";
 
 const MoDalContext = createContext();
 
@@ -27,6 +30,9 @@ const MODAL_REGISTRY = {
     'ThongTinChung' : ThongTinChung ,
     'ThongTinHeThong' : ThongTinHeThong,
     'ThongTinLienHe' : ThongTinLienHe,
+    'SuaDiaChi' : SuaDiaChi,
+    'ThongTinTaiChinh' : ThongTinTaiChinh,
+    'ChinhSuaSo' : ChinhSuaSo
 };
 
 export function AppProvider({ children }) {

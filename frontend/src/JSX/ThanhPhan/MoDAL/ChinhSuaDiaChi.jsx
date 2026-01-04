@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
-import * as fun from '../../../../../JS/FUNCTONS/function';
-import * as API from '../../../../../JS/API/API';
-import { useAppContext } from '../../../../../CONTEXT/TrangChuAdmin';
+import * as fun from '../../../JS/FUNCTONS/function';
+import * as API from '../../../JS/API/API';
+import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
 
-function SuaDiaChi() {
-    const { modalState } = useModalContext();
+function SuaDiaChi({DuLieu , url}) {
     const [DiaChi, setDiaChi] = useState('');
     const [Loading, setLoading] = useState(false);
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
+    const id = DuLieu.id;
     const { GetTTwebsite} =useAppContext();
 
     const Reset = () => {
@@ -29,10 +28,11 @@ function SuaDiaChi() {
         }
 
         setLoading(true);
-        const DuLieu = fun.objectToFormData({ DiaChi: DiaChi });
+        const DuLieu = fun.objectToFormData({ DiaChi: DiaChi , id: id || null });
+        // url Cập nhật địa chỉ website : '/admin/ChinhSuaDiaChi'
 
         try {
-            const KetQua = await API.CallAPI(DuLieu, { url: '/admin/ChinhSuaDiaChi', PhuongThuc: 1 });
+            const KetQua = await API.CallAPI(DuLieu, { url: url, PhuongThuc: 1 });
 
             if (KetQua.Status) {
                 seterr(KetQua.message);
@@ -60,7 +60,7 @@ function SuaDiaChi() {
                             <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Địa chỉ hiện tại</label>
                         </div>
                         <div className="bg-red-50/30 border border-red-100 rounded-2xl p-4 text-red-600/70 text-sm leading-relaxed">
-                            {modalState.DuLieu.DiaChi || "Chưa cập nhật địa chỉ"}
+                            {DuLieu.DuLieu || "Chưa cập nhật địa chỉ"}
                         </div>
                     </div>
 

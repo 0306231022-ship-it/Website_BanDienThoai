@@ -86,7 +86,7 @@ function ThongTinChung({ DuLieu }) {
 
         {/* BUTTON 3: TÀI CHÍNH VÀ THUẾ */}
         <button 
-          onClick={() => OpenMoDal(mockData, { TenTrang: 'SuaTaiChinh', url: '/admin/SuaTaiChinh' })} 
+          onClick={() => OpenMoDal({tennganhang:DuLieu.DuLieu.TEN_NGANHANG , sotaikhoan:DuLieu.DuLieu.STK_NGANHANG , chutaikhoan: DuLieu.DuLieu.LIENHE_DOITAC , id: DuLieu.DuLieu.IDNCC }, { TenTrang: 'ThongTinTaiChinh' })} 
           className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-rose-100 rounded-2xl transition-all group"
         >
           <div className="flex items-center gap-4">

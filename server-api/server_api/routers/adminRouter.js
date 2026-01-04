@@ -184,13 +184,44 @@ adminRouter.post('/ChinhSuaNguoiDaiDienNhaCungCap', authMiddleware, upload.none(
     }
     next();
 },NhaCungCapController.CapNhatTenNguoiDung)
+adminRouter.post('/ChinhSuaDiaChiNhaCungCap', authMiddleware , upload.none(),validateDiaChi, NhaCungCapController.CapNhatDiaChi);
+adminRouter.post('/ChinhSuaTenNganHang' , authMiddleware , upload.none(),[
+      body('Ten')
+     .notEmpty()
+    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+    .isLength({max:3})
+    .withMessage('Vượt quá kí tự cho phép!'),
+],
+(req, res, next) => {
+     const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+}, NhaCungCapController.CapNhatTenNganHang);
+adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
+    body('So')
+            .trim() // Xóa khoảng trắng đầu cuối
+            .notEmpty().withMessage('Vui lòng nhập số tài khoản') // Check rỗng
+            .isNumeric().withMessage('Số tài khoản chỉ được chứa ký tự số') // Check chỉ số (QUAN TRỌNG)
+            .isLength({ min: 8, max: 20 }).withMessage('Độ dài phải từ 8 đến 20 ký tự') // Check độ dài
+            .escape(), // Chống XSS cơ bản
+],
+(req, res, next) => {
+     const errors = validationResult(req);
+     if (!errors.isEmpty()) {
+            return res.json({ Validate: true, errors: errors.array() });
+    }
+    next();
+}, NhaCungCapController.CapNhatSoTaiKhoan);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
 adminRouter.get('/ChiTietThuongHieu', authMiddleware, ThuongHieuController.LayChiTietThuongHieu);
 adminRouter.get('/layTTnhacungcap', authMiddleware, NhaCungCapController.LayDanhSachNhaCungCap);
-adminRouter.get('/ChiTietNhaCungCap' ,authMiddleware , NhaCungCapController.layChiTiet)
+adminRouter.get('/ChiTietNhaCungCap' ,authMiddleware , NhaCungCapController.layChiTiet);
+adminRouter.get('/laynhacchoatdong' , authMiddleware , NhaCungCapController.LayDShd);
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;

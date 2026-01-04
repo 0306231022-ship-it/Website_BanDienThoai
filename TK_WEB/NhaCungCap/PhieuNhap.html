@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phiếu Nhập Kho - Quản lý điện thoại</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': { 600: '#dc2626', 700: '#b91c1c', 50: '#fef2f2' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="min-h-screen p-4 sm:p-6 lg:p-8">
+        
+        <div class="max-w-6xl mx-auto mb-6 flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">Tạo phiếu nhập hàng</h1>
+                <p class="text-sm text-gray-500">Mã phiếu: <span class="font-mono font-bold text-brand-red-600">PNK-2024-001</span></p>
+            </div>
+            <div class="space-x-2">
+                <button onclick="window.location.reload()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 text-sm font-medium">
+                    <i class="fas fa-times mr-2"></i>Hủy bỏ
+                </button>
+                <button onclick="saveReceipt()" class="px-6 py-2 bg-brand-red-600 text-white rounded-lg hover:bg-brand-red-700 shadow-md transition text-sm font-medium">
+                    <i class="fas fa-save mr-2"></i>Lưu phiếu nhập
+                </button>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <div class="lg:col-span-1 space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Thông tin nhà cung cấp</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nhà cung cấp <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <select id="supplierSelect" class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-red-600 focus:border-brand-red-600 appearance-none bg-white">
+                                    <option value="" disabled selected>-- Chọn NCC --</option>
+                                    <option value="Samsung VN">Samsung Vietnam Electronics</option>
+                                    <option value="FPT Trading">FPT Trading Synnex</option>
+                                    <option value="Digiworld">Digiworld Corp</option>
+                                    <option value="Apple VN">Apple Vietnam LLC</option>
+                                </select>
+                                <i class="fas fa-truck absolute left-3.5 top-3 text-gray-400"></i>
+                                <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                    <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Người giao hàng</label>
+                            <input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-brand-red-600 focus:border-brand-red-600" placeholder="Tên nhân viên giao...">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ngày nhập</label>
+                            <input type="date" id="dateInput" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-brand-red-600 focus:border-brand-red-600">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ghi chú</label>
+                            <textarea rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-brand-red-600 focus:border-brand-red-600" placeholder="Ghi chú thêm về lô hàng..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 sticky top-4">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">Thanh toán</h3>
+                    <div class="flex justify-between items-center mb-2 text-sm text-gray-600">
+                        <span>Tổng số lượng:</span>
+                        <span id="totalQtyDisplay" class="font-medium text-gray-900">0</span>
+                    </div>
+                    <div class="flex justify-between items-center mb-4 text-sm text-gray-600">
+                        <span>Chiết khấu:</span>
+                        <span class="font-medium text-gray-900">0₫</span>
+                    </div>
+                    <div class="border-t pt-4 flex justify-between items-end">
+                        <span class="font-bold text-gray-800">TỔNG CỘNG:</span>
+                        <span id="grandTotalDisplay" class="text-2xl font-bold text-brand-red-600">0₫</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-200 h-fit">
+                <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Chi tiết sản phẩm</h3>
+                
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3 mb-3">
+                        <div class="md:col-span-4">
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Tên điện thoại</label>
+                            <input type="text" id="prodName" placeholder="VD: iPhone 15 Pro Max..." class="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:border-brand-red-600 focus:outline-none">
+                        </div>
+                        <div class="md:col-span-3">
+                            <label class="block text-xs font-medium text-gray-500 mb-1">IMEI / Serial</label>
+                            <input type="text" id="prodIMEI" placeholder="Quét mã vạch..." class="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:border-brand-red-600 focus:outline-none font-mono">
+                        </div>
+                         <div class="md:col-span-3">
+                            <label class="block text-xs font-medium text-gray-500 mb-1">Giá nhập</label>
+                            <input type="number" id="prodPrice" placeholder="0" class="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:border-brand-red-600 focus:outline-none text-right">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-medium text-gray-500 mb-1">SL</label>
+                            <input type="number" id="prodQty" value="1" min="1" class="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:border-brand-red-600 focus:outline-none text-center">
+                        </div>
+                    </div>
+                    <button onclick="addProduct()" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-medium text-sm transition flex justify-center items-center">
+                        <i class="fas fa-plus-circle mr-2"></i> Thêm vào danh sách
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-brand-red-50 text-brand-red-700 text-xs uppercase tracking-wider">
+                                <th class="p-3 border-b border-red-100 rounded-tl-lg">#</th>
+                                <th class="p-3 border-b border-red-100">Sản phẩm</th>
+                                <th class="p-3 border-b border-red-100">IMEI</th>
+                                <th class="p-3 border-b border-red-100 text-right">Đơn giá</th>
+                                <th class="p-3 border-b border-red-100 text-center">SL</th>
+                                <th class="p-3 border-b border-red-100 text-right">Thành tiền</th>
+                                <th class="p-3 border-b border-red-100 text-center rounded-tr-lg">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTableBody" class="text-sm text-gray-700 divide-y divide-gray-100">
+                            <tr id="emptyRow">
+                                <td colspan="7" class="p-8 text-center text-gray-400 italic">
+                                    Chưa có sản phẩm nào. Vui lòng nhập thông tin bên trên.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set ngày mặc định là hôm nay
+        document.getElementById('dateInput').valueAsDate = new Date();
+
+        // Biến lưu trữ danh sách sản phẩm
+        let products = [];
+
+        // Hàm format tiền tệ VNĐ
+        const formatMoney = (amount) => {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        };
+
+        // Hàm thêm sản phẩm
+        function addProduct() {
+            const nameInput = document.getElementById('prodName');
+            const imeiInput = document.getElementById('prodIMEI');
+            const priceInput = document.getElementById('prodPrice');
+            const qtyInput = document.getElementById('prodQty');
+
+            const name = nameInput.value.trim();
+            const imei = imeiInput.value.trim() || 'N/A'; // Nếu không nhập thì để N/A
+            const price = parseFloat(priceInput.value);
+            const qty = parseInt(qtyInput.value);
+
+            // Validate đơn giản
+            if (!name || isNaN(price) || isNaN(qty) || qty <= 0) {
+                alert("Vui lòng nhập Tên sản phẩm, Giá và Số lượng hợp lệ!");
+                return;
+            }
+
+            // Thêm vào mảng
+            const total = price * qty;
+            const newProduct = {
+                id: Date.now(), // Tạo ID giả
+                name,
+                imei,
+                price,
+                qty,
+                total
+            };
+
+            products.push(newProduct);
+
+            // Reset form input
+            nameInput.value = '';
+            imeiInput.value = '';
+            priceInput.value = '';
+            qtyInput.value = '1';
+            nameInput.focus();
+
+            renderTable();
+        }
+
+        // Hàm xóa sản phẩm
+        function deleteProduct(id) {
+            if(confirm('Bạn có chắc muốn xóa dòng này?')) {
+                products = products.filter(p => p.id !== id);
+                renderTable();
+            }
+        }
+
+        // Hàm vẽ lại bảng và tính tổng
+        function renderTable() {
+            const tbody = document.getElementById('productTableBody');
+            const totalQtyDisplay = document.getElementById('totalQtyDisplay');
+            const grandTotalDisplay = document.getElementById('grandTotalDisplay');
+            const emptyRow = document.getElementById('emptyRow');
+
+            // Xóa nội dung bảng (trừ dòng empty nếu cần xử lý logic khác, ở đây ta render lại hết)
+            tbody.innerHTML = '';
+
+            if (products.length === 0) {
+                tbody.innerHTML = `
+                    <tr id="emptyRow">
+                        <td colspan="7" class="p-8 text-center text-gray-400 italic">
+                            Chưa có sản phẩm nào. Vui lòng nhập thông tin bên trên.
+                        </td>
+                    </tr>
+                `;
+                totalQtyDisplay.innerText = '0';
+                grandTotalDisplay.innerText = '0₫';
+                return;
+            }
+
+            let grandTotal = 0;
+            let totalQty = 0;
+
+            products.forEach((product, index) => {
+                grandTotal += product.total;
+                totalQty += product.qty;
+
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-gray-50 transition";
+                tr.innerHTML = `
+                    <td class="p-3 font-medium text-gray-500">${index + 1}</td>
+                    <td class="p-3 font-semibold text-gray-800">${product.name}</td>
+                    <td class="p-3 font-mono text-gray-500 text-xs">${product.imei}</td>
+                    <td class="p-3 text-right">${formatMoney(product.price)}</td>
+                    <td class="p-3 text-center">
+                        <span class="bg-gray-100 text-gray-700 py-1 px-2 rounded text-xs font-bold">${product.qty}</span>
+                    </td>
+                    <td class="p-3 text-right font-bold text-gray-800">${formatMoney(product.total)}</td>
+                    <td class="p-3 text-center">
+                        <button onclick="deleteProduct(${product.id})" class="text-red-400 hover:text-red-600 transition p-1">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Cập nhật tổng kết
+            totalQtyDisplay.innerText = totalQty;
+            grandTotalDisplay.innerText = formatMoney(grandTotal);
+        }
+
+        // Hàm Lưu (Demo)
+        function saveReceipt() {
+            const supplier = document.getElementById('supplierSelect').value;
+            if (!supplier) {
+                alert("Vui lòng chọn Nhà cung cấp!");
+                return;
+            }
+            if (products.length === 0) {
+                alert("Danh sách sản phẩm đang trống!");
+                return;
+            }
+            
+            // Xử lý gửi dữ liệu đi (API) tại đây...
+            alert(`Đã lưu phiếu nhập từ ${supplier} thành công!\nTổng tiền: ${document.getElementById('grandTotalDisplay').innerText}`);
+        }
+
+    </script>
+</body>
+</html>

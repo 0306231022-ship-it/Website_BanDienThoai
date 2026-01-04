@@ -19,6 +19,8 @@ import XemThongTinWebsite from '../CaiDatWebsite/XemCaiDat';
 import HoSo from '../ThongTinCaNhan/HoSoAdmin';
 import Xem from '../XemBinhLuan';
 import NhaCungCap from '../NhaCungCap/DanhSachNhaCC';
+import PhieuNhapHang from '../SanPham/PhieuNhapHang';
+import ThemPhieuNhap from '../SanPham/ThemPhieuNhap';
 import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
 import ChiTietNhaCungCap from '../NhaCungCap/ChiTietNhaCungCap';
 import '../../../../CSS/ThanhCuon.css';
@@ -69,6 +71,7 @@ function QuanLiTT() {
                 { to: "/admin/thuonghieu", icon: "fa-tags", label: "Thương hiệu" },
                 { to: "/admin/khachhang", icon: "fa-users", label: "Khách Hàng" },
                 { to: "/admin/NhaCungCap", icon: "fa-truck-loading", label: "Nhà Cung Cấp" },
+                { to:'/admin/PhieuNhapHang', icon:'fa-solid fa-boxes-packing' , label:'Phiếu nhập hàng'}
             ].map((item) => (
                 <li key={item.to}>
                     <NavLink 
@@ -119,8 +122,6 @@ function QuanLiTT() {
     </div>
 </nav>
          </aside>
-        
-
     
         <main className="flex-grow ml-72 overflow-y-auto min-h-screen py-2" role="main" aria-label="Nội dung quản trị">
             <AppProvider>
@@ -147,7 +148,8 @@ function QuanLiTT() {
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                     <Route path="NhaCungCap" element={<NhaCungCap />} />
                     <Route path='NhaCungCap/ChiTiet/:id' element={<ChiTietNhaCungCap/>} />
-
+                    <Route path='PhieuNhapHang' element={<PhieuNhapHang/>} />
+                    <Route path='PhieuNhapHang/themPhieuNhap' element={<ThemPhieuNhap/>} />
                 </Routes>
             </AppProvider>
         </main>

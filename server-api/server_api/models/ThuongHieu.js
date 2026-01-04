@@ -9,7 +9,6 @@ export default class ThuongHieuModel{
         + '-' + Math.floor(1000 + Math.random() * 9000).toString();
 
     try {
-        // Nếu NGAYTAO có default CURRENT_TIMESTAMP trong DB thì có thể bỏ cột này
         const [ketqua] = await execute(
             'INSERT INTO thuonghieu (IDTHUONGHIEU, TENTHUONGHIEU, MOTA, LOGO, TRANGTHAI, NGAYTAO) VALUES (?,?,?,?,?,?)',
             [ID, TenThuongHieu, MoTa, HinhAnh, 1, today]

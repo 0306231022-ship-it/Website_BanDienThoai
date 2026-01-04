@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import * as fun from '../../../../../../JS/FUNCTONS/function';
-import * as API from '../../../../../../JS/API/API'
-import { useAppContext } from '../../../../../../CONTEXT/TrangChuAdmin';
+import * as fun from '../../../JS/FUNCTONS/function';
+import * as API from '../../../JS/API/API'
+import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
 
 function ChinhSuaLoGo({DuLieu , url}) {
   const { GetTTwebsite} =useAppContext();

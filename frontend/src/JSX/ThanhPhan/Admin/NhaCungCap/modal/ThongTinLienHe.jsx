@@ -98,7 +98,13 @@ function ThongTinLienHe({ DuLieu }) {
 
                 {/* 4. ĐỊA CHỈ (Có xử lý xuống dòng) */}
                 <button 
-                    onClick={() => OpenMoDal({ DuLieu: contactData.DiaChi, id: contactData.id }, { TenTrang: 'ChinhSuaLienHe', url: '/admin/ChinhSuaDiaChi' })} 
+                    onClick={() => OpenMoDal({
+                         DuLieu: contactData.DiaChi, 
+                         id: contactData.id 
+                        }, { 
+                            TenTrang: 'SuaDiaChi',
+                             url: '/admin/ChinhSuaDiaChiNhaCungCap'
+                             })} 
                     className="w-full flex items-start p-3 bg-slate-50 border border-slate-100 rounded-xl transition-all group hover:bg-white hover:shadow-md hover:border-amber-200 hover:scale-[1.01]"
                 >
                     {/* Icon align top */}
