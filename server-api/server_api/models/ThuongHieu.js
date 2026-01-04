@@ -96,4 +96,15 @@ export default class ThuongHieuModel{
             return false;
         }
     }
+    static async LayDShd(){
+        try {
+            const [ketqqua]= await execute('SELECT IDTHUONGHIEU , TENTHUONGHIEU FROM thuonghieu WHERE TRANGTHAI=?', [1]);
+            return ketqqua || null;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return {
+                Status:true
+            }
+        }
+    }
 }

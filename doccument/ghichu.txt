@@ -8,10 +8,31 @@
 1: thêm 1 nhà cung cấp mới : [Hoàn thành]
 1: xem tất cả lịch sử giao dịch 
 ==== [ Còn gì sẽ có thông báo sau ...] ================
-
+==============================================
 // Chỉ cho phép nhập số : .replace(/[^0-9]/g, '')
-
 ==============================================
 Vì email, sđt liên quan đến bảo mật nên chưa được cập nhật
 ==============================================
 màu chủ đạo: bg-teal-600
+==============================================
+gọi Promise.all([]) để gọi API song song 
+==============================================
+ URL.revokeObjectURL : XÓA ĐƯỜNG DẪN ẢNH
+
+
+    const [SanPham,setSanPham]=useState({
+        TenSanPham:'',
+        ThuongHieu:'',
+        DongMay:'',
+        GiaNhap:'',
+        GiaDuKien:'',
+        ThongSoKyThuat:{
+            HeDieuHanh:'',
+            ManHinh:'',
+            Ram:'',
+            BoNhoTrong:'',
+            Pin:'',
+            MauSac:'',
+            MoTa:''
+        }
+    });

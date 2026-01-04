@@ -182,6 +182,19 @@ export default class ThuongHieuController{
             });
         }
     }
+    static async layth(req,res){
+        const ketqqua = await ThuongHieuModel.LayDShd();
+        if(ketqqua){
+         return res.json({
+            ThanhCong:true,
+            DuLieu:ketqqua
+         })
+       }else{
+        return res.json({
+            Status:true,
+        })
+     }
+    }
 
 
 }
