@@ -15,10 +15,15 @@ Vì email, sđt liên quan đến bảo mật nên chưa được cập nhật
 ==============================================
 màu chủ đạo: bg-teal-600
 ==============================================
-gọi Promise.all([]) để gọi API song song 
+gọi Promise.all([]) để gọi các tác vụ song song bên trong []
 ==============================================
  URL.revokeObjectURL : XÓA ĐƯỜNG DẪN ẢNH
-
+==============================================
+const { HinhAnh, ...newProductState } = sanPhamForm; 
+// xóa phần tử HinhAnh ra khỏi obj sanPhamForm
+==============================================
+flatMap : gom tất cả thành 1 mảng []
+=============================================
 
     const [SanPham,setSanPham]=useState({
         TenSanPham:'',

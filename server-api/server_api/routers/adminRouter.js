@@ -14,8 +14,10 @@ import { validateEmail } from "../validation/KLiemTraEmail.js";
 import { validateSoDienThoai } from "../validation/KiemTraSoDienThoai.js";
 import { validateThemTH } from "../validation/KiemTrDLThuongHieu.js";
 import { validateCungCap } from "../validation/KiemTraThemCungCap.js";
+import { PhieuNhapValidate } from "../validation/ValidatePhieuNhap.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
 import NhaCungCapController from "../controllers/NhaCungCapController.js";
+import PhieuNhapController from "../controllers/PhieuNhapController.js";
 const adminRouter = Router();
 const upload = multer();
 //==========================================
@@ -214,6 +216,7 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
     }
     next();
 }, NhaCungCapController.CapNhatSoTaiKhoan);
+adminRouter.post('/ThemPhieuNhap',  authMiddleware ,pload.array("files", 2), PhieuNhapValidate, PhieuNhapController.ThemPhieuNhap);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );

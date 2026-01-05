@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
+import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 
 function ThemPhieuNhap() {
     const [danhSachNhaCungCap, setDanhSachNhaCungCap] = useState([]);
@@ -62,8 +63,8 @@ function ThemPhieuNhap() {
         return;
     }
     const ResetSanPham=()=>{
-        fun.resetGiaTri(sanPhamForm);
-        setSanPhamForm({...sanPhamForm});
+        setSanPhamForm(initialProductState);
+        setPreviewUrls([]);
     }
     const ThemHinhAnh = (e) => {
         const files = Array.from(e.target.files); 
@@ -92,14 +93,9 @@ function ThemPhieuNhap() {
         URL.revokeObjectURL(previewUrls[ID]); 
         setPreviewUrls(prev => prev.filter((_, index) => index !== ID));
     };
-    useEffect(() => {
-        return () => {
-            previewUrls.forEach(url => URL.revokeObjectURL(url));
-        };
-    }, [previewUrls]);
     const ThemVaoBangTam = async () => {
         try {
-            let tempErrors = {}; 
+           /* let tempErrors = {}; 
             const checkPhieu = await fun.KiemTraRong(thongTinPhieu);
             if (!checkPhieu.Status) {
                 checkPhieu.ErrorKeys.forEach((item) => {
@@ -120,10 +116,10 @@ function ThemPhieuNhap() {
                 seterr(tempErrors); 
                 return; 
             }
-            seterr({});
+            seterr({});*/
             const imeiArray = sanPhamForm.DanhSachIMEI
             ? sanPhamForm.DanhSachIMEI.split('\n').map(i => i.trim()).filter(i => i !== '')
-            : [];
+            : []
             const newItem = {
                 ...sanPhamForm,
                 id: Date.now(), 
@@ -131,8 +127,11 @@ function ThemPhieuNhap() {
                 ThanhTien: parseInt(sanPhamForm.GiaNhap || 0) * parseInt(sanPhamForm.SoLuong || 1),
                  previewUrlsBackup: [...previewUrls] 
             };
-            setBangSanPham(prev => [...prev, newItem]);
-            ReSetPhieu();
+            setBangSanPham(prev => {
+                 const newData = [...prev, newItem];
+                 ThongBao.ThongBao_ThanhCong("Thêm sản phẩm thành công!");
+                 return newData;
+            });
             ResetSanPham();
             setPreviewUrls([]);
 
@@ -158,66 +157,90 @@ function ThemPhieuNhap() {
             </p>
         );
     };
-
-
-    //Đã sửa phía trên
-  
-    const formatCurrency = (value) => {
+    const XemChiTiet=(item)=>{
+        setSanPhamForm({
+            TenSanPham: item.TenSanPham,
+            ThuongHieu: item.ThuongHieu,
+            DongMay: item.DongMay,
+            GiaNhap: item.GiaNhap,
+            GiaDuKien: item.GiaDuKien,
+            SoLuong: item.SoLuong,
+            DanhSachIMEI: item.parsedIMEI ? item.parsedIMEI.join('\n') : '',
+            HinhAnh: item.HinhAnh,
+            ThongSoKyThuat: {
+                HeDieuHanh: item.ThongSoKyThuat?.HeDieuHanh,
+                ManHinh: item.ThongSoKyThuat?.ManHinh || '',
+                Ram: item.ThongSoKyThuat?.Ram || '',
+                BoNhoTrong: item.ThongSoKyThuat?.BoNhoTrong || '',
+                Pin: item.ThongSoKyThuat?.Pin || '',
+                MauSac: item.ThongSoKyThuat?.MauSac || '',
+                MoTa: item.ThongSoKyThuat?.MoTa || '',
+            }
+        });
+        setPreviewUrls(item.previewUrlsBackup || []);
+        setBangSanPham(prev => prev.filter(sp => sp.id !== item.id));
+        seterr({});
+    }
+      const formatCurrency = (value) => {
         if (!value) return '0 ₫';
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
     };
-    const handlePhieuChange = (field, value) => {
+      const handlePhieuChange = (field, value) => {
         setThongTinPhieu(prev => ({ ...prev, [field]: value }));
     };
-
-    // Xử lý thay đổi thông tin sản phẩm
     const handleProductChange = (field, value) => {
         setSanPhamForm(prev => ({ ...prev, [field]: value }));
     };
-
-    // Xử lý thay đổi thông số kỹ thuật
     const handleSpecChange = (field, value) => {
         setSanPhamForm(prev => ({
             ...prev,
             ThongSoKyThuat: { ...prev.ThongSoKyThuat, [field]: value }
         }));
     };
-
-   
-
-    
-
-    // Hàm kích hoạt input file ẩn
     const triggerFileInput = () => {
         fileInputRef.current.click();
     };
-
-   
-    // Xóa sản phẩm khỏi bảng tạm
-    const XoaKhoiBang = (id) => {
-        setBangSanPham(prev => prev.filter(item => item.id !== id));
-    };
-
-    // --- HOÀN TẤT NHẬP KHO (GỬI LÊN SERVER) ---
-    const HoanTatNhapKho = async () => {
-        if (bangSanPham.length === 0) {
-            alert("Vui lòng thêm ít nhất 1 sản phẩm vào bảng!");
-            return;
+    const XoaKhoiBang = async(id) => {
+        const kiemtra= await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn xóa sản phẩm này không?');
+        if(!kiemtra) return;
+        if(kiemtra){
+            setBangSanPham(prev => {
+                const newData = prev.filter(item => item.id !== id);
+                const daXoa = !newData.some(item => item.id === id);
+                if(daXoa){
+                    ThongBao.ThongBao_ThanhCong('Bạn đã xóa sản phẩm thành công!');
+                }
+                 return newData;
+            });
         }
-        if (!window.confirm("Xác nhận hoàn tất và lưu phiếu nhập kho?")) return;
-
-        // Xử lý logic gửi API ở đây (FormData nếu có file)
-        console.log("Thông tin chung:", thongTinPhieu);
-        console.log("Chi tiết sản phẩm:", bangSanPham);
-        
-        // Ví dụ: Tạo FormData để gửi bao gồm cả file
-        /*
-        const formData = new FormData();
-        formData.append('NhaCungCap', thongTinPhieu.NhaCungCap);
-        // Loop qua bangSanPham và append từng file...
-        */
-
-        alert("Chức năng lưu đang được xây dựng (Kiểm tra Console log để xem dữ liệu)");
+    };
+    // 0 là bản nháp, 1 là lưu chính thức
+    const HoanTatNhapKho = async (CheDo) => {
+       if(bangSanPham.length === 0){
+            ThongBao.ThongBao_CanhBao('Vui lòng kiểm tra thông tin trước khi nhập kho!');
+            return;
+       }
+       const newProductState = bangSanPham.map(sp => {
+            const { HinhAnh, ...rest } = sp; // bỏ HinhAnh ra
+            return rest;                     // giữ lại các field khác
+        });
+       const payload = {
+            thongTinPhieu,
+            newProductState: newProductState,
+            CheDoLuu: CheDo
+        };
+       const formdata= fun.objectToFormData(payload);
+       try {
+            const ketqua = await API.CallAPI(formdata,{
+                PhuongThuc:1,
+                url:'/admin/ThemPhieuNhap',
+                fileArray: bangSanPham.flatMap(sp => sp.HinhAnh || [])
+            });
+            alert(JSON.stringify(ketqua))
+       } catch (error) {
+            ThongBao.ThongBao_Loi('Đã sảy ra lỗi vui lòng thực hiện sau.');
+            return;
+       }
     };
 
     // Tính toán tổng tiền
@@ -231,7 +254,15 @@ function ThemPhieuNhap() {
     // ==========================================
     // 4. RENDER UI
     // ==========================================
-    if (loading) return (<div className="flex justify-center items-center h-screen"><p>Đang tải dữ liệu...</p></div>);
+    if (loading) 
+        return (
+        <div className="flex justify-center items-center h-screen">
+            <div className="relative">
+                <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+                <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+            </div>
+        <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang tải dữ liệu...</p>
+        </div>);
     if (err) return (<div className="text-center p-10 text-red-500 font-bold">{err}</div>);
 
     return (
@@ -459,8 +490,6 @@ function ThemPhieuNhap() {
                                 bangSanPham.map((item, index) => (
                                     <tr key={item.id} className="bg-white border-b hover:bg-gray-50">
                                         <td className="px-6 py-4">{index + 1}</td>
-                                        
-                                        {/* Cột hiển thị Ảnh + Tên */}
                                         <td className="px-6 py-4 font-medium text-gray-900">
                                             <div className="flex items-start gap-3">
                                                 <div className="relative flex-shrink-0">
@@ -501,6 +530,9 @@ function ThemPhieuNhap() {
                                             <button onClick={() => XoaKhoiBang(item.id)} className="text-red-500 hover:bg-red-50 p-2 rounded-full transition" title="Xóa dòng này">
                                                 <i className="fa-regular fa-trash-can text-lg"></i>
                                             </button>
+                                            <button onClick={() => XemChiTiet(item)} className="text-green-500 hover:bg-red-50 p-2 rounded-full transition" title="Xóa dòng này">
+                                                <i className="fas fa-edit"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))
@@ -535,13 +567,13 @@ function ThemPhieuNhap() {
                     </div>
                     <div className="flex flex-col gap-4 max-w-sm">
                         <button 
-                            onClick={HoanTatNhapKho}
+                            onClick={()=>{HoanTatNhapKho(0)}}
                             className="px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded shadow transition flex items-center"
                         >
                             <i className="fa-solid fa-check mr-2"></i> LƯU BẢN NHÁP
                         </button>
                         <button 
-                            onClick={HoanTatNhapKho}
+                            onClick={()=>{HoanTatNhapKho(1)}}
                             className="px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded shadow transition flex items-center"
                         >
                             <i className="fa-solid fa-check mr-2"></i> HOÀN TẤT NHẬP KHO
