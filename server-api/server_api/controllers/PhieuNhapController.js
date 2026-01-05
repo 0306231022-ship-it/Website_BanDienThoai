@@ -1,6 +1,6 @@
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import ThuongHieuModel from '../models/ThuongHieu.js';
+import PhieuNhapModal from '../models/PhieuNhapMoDel.js';
 import { validationResult } from "express-validator";
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -17,13 +17,15 @@ export default class PhieuNhapController{
     }
     static async ThemPhieuNhap(req, res) {
          const errors = validationResult(req);
-             if (!errors.isEmpty()) {
-                return res.json({ 
-                    Validate: true, 
-                    errors: errors.array() 
-                });
-             }
-        console.log('Dữ liệu lên :', req.body)
+         if (!errors.isEmpty()) {
+            return res.json({ 
+                Validate: true, 
+                errors: errors.array() 
+            });
+        };
+        const kq= await PhieuNhapModal.ThemPhieuNhap(req.body,res.files);
+
+       
     }
 
    

@@ -280,11 +280,6 @@ function ThemPhieuNhap() {
     }, [bangSanPham]);
 
     const conNoNCC = tongTienHang - thongTinPhieu.DaThanhToan;
-
-
-    // ==========================================
-    // 4. RENDER UI
-    // ==========================================
     if (loading) 
         return (
         <div className="flex justify-center items-center h-screen">
