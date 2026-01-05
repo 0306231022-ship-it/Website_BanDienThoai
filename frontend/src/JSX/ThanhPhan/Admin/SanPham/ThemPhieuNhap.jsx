@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
-
+// khi lỗi validate người dùng cần biết sản phẩm nào đang gặp lỗi và hiện lên form
 function ThemPhieuNhap() {
     const [danhSachNhaCungCap, setDanhSachNhaCungCap] = useState([]);
     const [danhSachThuongHieu, setDanhSachThuongHieu] = useState([]);
@@ -95,7 +95,7 @@ function ThemPhieuNhap() {
     };
     const ThemVaoBangTam = async () => {
         try {
-           /* let tempErrors = {}; 
+            let tempErrors = {}; 
             const checkPhieu = await fun.KiemTraRong(thongTinPhieu);
             if (!checkPhieu.Status) {
                 checkPhieu.ErrorKeys.forEach((item) => {
@@ -116,7 +116,7 @@ function ThemPhieuNhap() {
                 seterr(tempErrors); 
                 return; 
             }
-            seterr({});*/
+            seterr({});
             const imeiArray = sanPhamForm.DanhSachIMEI
             ? sanPhamForm.DanhSachIMEI.split('\n').map(i => i.trim()).filter(i => i !== '')
             : []
@@ -215,33 +215,64 @@ function ThemPhieuNhap() {
         }
     };
     // 0 là bản nháp, 1 là lưu chính thức
-    const HoanTatNhapKho = async (CheDo) => {
-       if(bangSanPham.length === 0){
+   const HoanTatNhapKho = async (CheDo) => {
+    setLoading(true)
+        if (!bangSanPham || bangSanPham.length === 0) {
             ThongBao.ThongBao_CanhBao('Vui lòng kiểm tra thông tin trước khi nhập kho!');
+            setLoading(false)
             return;
-       }
-       const newProductState = bangSanPham.map(sp => {
-            const { HinhAnh, ...rest } = sp; // bỏ HinhAnh ra
-            return rest;                     // giữ lại các field khác
-        });
-       const payload = {
-            thongTinPhieu,
-            newProductState: newProductState,
-            CheDoLuu: CheDo
-        };
-       const formdata= fun.objectToFormData(payload);
-       try {
-            const ketqua = await API.CallAPI(formdata,{
-                PhuongThuc:1,
-                url:'/admin/ThemPhieuNhap',
-                fileArray: bangSanPham.flatMap(sp => sp.HinhAnh || [])
+        }
+        try {
+            const payload = {
+                thongTinPhieu: JSON.stringify(thongTinPhieu), 
+                CheDoLuu: CheDo,
+                newProductState: JSON.stringify(bangSanPham.map(sp => { 
+                    const { HinhAnh, previewUrlsBackup, ...rest } = sp;
+                    return rest;
+                }))
+            };
+            const formdata = fun.objectToFormData(payload);
+            bangSanPham.forEach((sp, index) => {
+                if (Array.isArray(sp.HinhAnh)) {
+                    sp.HinhAnh.forEach(file => {
+                        if (file instanceof File || file instanceof Blob) {
+                            formdata.append(`HinhAnh[${index}][]`, file);
+                        }
+                    });
+                }
             });
-            alert(JSON.stringify(ketqua))
-       } catch (error) {
-            ThongBao.ThongBao_Loi('Đã sảy ra lỗi vui lòng thực hiện sau.');
-            return;
-       }
-    };
+            const ketqua = await API.CallAPI(formdata, {
+                PhuongThuc: 1, 
+                 url: '/admin/ThemPhieuNhap'
+             });
+             if(ketqua.Status){
+                ThongBao.ThongBao_Loi(ketqua.message);
+                return;
+             }
+             if(ketqua.Validate){
+                ThongBao.ThongBao_Loi('Vui lòng kiểm tra lại các thông tin về sản phẩm!');
+                setLoading(false)
+                return;
+             }
+             if(ketqua.ThanhCong){
+                ThongBao.ThongBao_ThanhCong(ketqua.message);
+                setLoading(false)
+                return;
+             }else{
+                ThongBao.ThongBao_CanhBao(ketqua.message);
+                setLoading(false)
+                return;
+             }
+        } catch (error) {
+        console.error('Lỗi nhập kho:', error);
+        const errorMessage = error?.response?.data?.message || 'Đã xảy ra lỗi vui lòng thực hiện sau.';
+        ThongBao.ThongBao_Loi(errorMessage);
+        } finally {
+            setLoading(false);
+        }
+};
+
+   
 
     // Tính toán tổng tiền
     const tongTienHang = useMemo(() => {

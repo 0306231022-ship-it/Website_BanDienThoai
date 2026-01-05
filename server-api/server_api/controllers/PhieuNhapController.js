@@ -16,6 +16,13 @@ export default class PhieuNhapController{
         );
     }
     static async ThemPhieuNhap(req, res) {
+         const errors = validationResult(req);
+             if (!errors.isEmpty()) {
+                return res.json({ 
+                    Validate: true, 
+                    errors: errors.array() 
+                });
+             }
         console.log('Dữ liệu lên :', req.body)
     }
 
