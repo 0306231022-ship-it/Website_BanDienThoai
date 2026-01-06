@@ -3,8 +3,11 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+import { useADContext } from '../../../../CONTEXT/QuanLiCaNhanAdmin';
+
 // khi lỗi validate người dùng cần biết sản phẩm nào đang gặp lỗi và hiện lên form
 function ThemPhieuNhap() {
+    const {GetTTCaNhan, TTCaNhan } = useADContext();
     const [danhSachNhaCungCap, setDanhSachNhaCungCap] = useState([]);
     const [danhSachThuongHieu, setDanhSachThuongHieu] = useState([]);
     const [err, setErr] = useState('');
@@ -38,6 +41,10 @@ function ThemPhieuNhap() {
         HinhAnh: [] 
     };
     const [sanPhamForm, setSanPhamForm] = useState(initialProductState);
+    useEffect(()=>{
+        GetTTCaNhan();
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
     useEffect(() => {
         setLoading(true);
         const LayDL = async () => {
@@ -224,6 +231,7 @@ function ThemPhieuNhap() {
         }
         try {
             const payload = {
+                NguoiGhiPhieu:TTCaNhan?.IDND,
                 thongTinPhieu: JSON.stringify(thongTinPhieu), 
                 CheDoLuu: CheDo,
                 newProductState: JSON.stringify(bangSanPham.map(sp => { 
@@ -245,6 +253,7 @@ function ThemPhieuNhap() {
                 PhuongThuc: 1, 
                  url: '/admin/ThemPhieuNhap'
              });
+             alert(JSON.stringify(ketqua))
              if(ketqua.Status){
                 ThongBao.ThongBao_Loi(ketqua.message);
                 return;
@@ -258,10 +267,6 @@ function ThemPhieuNhap() {
                 ThongBao.ThongBao_ThanhCong(ketqua.message);
                 setLoading(false)
                 return;
-             }else{
-                ThongBao.ThongBao_CanhBao(ketqua.message);
-                setLoading(false)
-                return;
              }
         } catch (error) {
         console.error('Lỗi nhập kho:', error);
@@ -271,9 +276,6 @@ function ThemPhieuNhap() {
             setLoading(false);
         }
 };
-
-   
-
     // Tính toán tổng tiền
     const tongTienHang = useMemo(() => {
         return bangSanPham.reduce((total, item) => total + item.ThanhTien, 0);
@@ -297,7 +299,7 @@ function ThemPhieuNhap() {
                 <h1 className="text-3xl font-bold text-blue-700 uppercase">
                     <i className="fa-solid fa-boxes-packing mr-2"></i> Phiếu Nhập Kho
                 </h1>
-                <Link to='/admin/PhieuNhapHang' className="bg-teal-600 hover:bg-gray-600 text-white px-4 py-2 rounded shadow transition">
+                <Link to='/admin/PhieuNhapHang' className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded shadow transition">
                     <i className="fa-solid fa-arrow-left"></i> Quay lại
                 </Link>
             </div>
@@ -317,7 +319,7 @@ function ThemPhieuNhap() {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Nhân viên nhập</label>
-                        <input type="text" value="Admin (Mặc định)" readOnly className="w-full bg-gray-100 border-gray-300 rounded-md p-2 text-gray-500 cursor-not-allowed border" />
+                        <input type="text" value={TTCaNhan?.HOTEN} readOnly className="w-full bg-gray-100 border-gray-300 rounded-md p-2 text-gray-500 cursor-not-allowed border" />
                     </div>
                     <div className="col-span-1 md:col-span-4 mt-2">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Ghi chú phiếu nhập</label>
@@ -478,7 +480,7 @@ function ThemPhieuNhap() {
                                 </span> / <span className="font-bold">{sanPhamForm.SoLuong || 1}</span>
                             </div>
                         </div>
-                        <button onClick={ThemVaoBangTam} className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded shadow gap-2 flex items-center justify-center transition-all active:scale-95">
+                        <button onClick={ThemVaoBangTam} className="mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 rounded shadow gap-2 flex items-center justify-center transition-all active:scale-95">
                             <i className="fa-solid fa-plus-circle"></i> Thêm vào phiếu
                         </button>
                     </div>
@@ -594,13 +596,13 @@ function ThemPhieuNhap() {
                     <div className="flex flex-col gap-4 max-w-sm">
                         <button 
                             onClick={()=>{HoanTatNhapKho(0)}}
-                            className="px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded shadow transition flex items-center"
+                            className="px-6 py-3 bg-teal-600 hover:teal-700 text-white font-bold rounded shadow transition flex items-center"
                         >
                             <i className="fa-solid fa-check mr-2"></i> LƯU BẢN NHÁP
                         </button>
                         <button 
                             onClick={()=>{HoanTatNhapKho(1)}}
-                            className="px-6 py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded shadow transition flex items-center"
+                            className="px-6 py-3 bg-teal-600 hover:teal-700 text-white font-bold rounded shadow transition flex items-center"
                         >
                             <i className="fa-solid fa-check mr-2"></i> HOÀN TẤT NHẬP KHO
                         </button>

@@ -24,21 +24,4 @@ const { HinhAnh, ...newProductState } = sanPhamForm;
 ==============================================
 flatMap : gom tất cả thành 1 mảng []
 =============================================
-//THONG TIN ĐÃ LÊN ĐẾN CONTROLLER CẦN ĐC MỔ SẼ ĐỂ THÊM VÀO DATABASE
-thongTinPhieu: { NhaCungCap: '1', GhiChu: '1', DaThanhToan: 0 },
-  CheDoLuu: '0',
-  newProductState: [
-    {
-      TenSanPham: '1',
-      ThuongHieu: 'TH-2512-15',
-      DongMay: '123',
-      GiaNhap: '1',
-      GiaDuKien: '1',
-      SoLuong: 1,
-      DanhSachIMEI: '1233',
-      ThongSoKyThuat: [Object],
-      id: 1767612887710,
-      parsedIMEI: [Array],
-      ThanhTien: 1
-    }
-  ]
+đã thành công thêm sản phẩm vào kho nhưng chưa quản lí IMEI 

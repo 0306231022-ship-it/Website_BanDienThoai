@@ -1,6 +1,6 @@
 import { execute } from '../config/db.js';
-import fs from 'fs';
-import path from 'path';
+import { TaoID } from '../function.js';
+//Chưa xử lí imei
 
 export default class PhieuNhapModal {
 
@@ -10,88 +10,107 @@ export default class PhieuNhapModal {
      * @param {Array} files Mảng file ảnh từ multer (nếu có)
      * @param {string} IDND_USER ID người dùng đang đăng nhập
      */
-    static async ThemPhieuNhap(dulieu, files, IDND_USER) {
-        const today = new Date();
-        const month = today.getMonth() + 1;
-        const IDPN = `PN-${today.getFullYear().toString().slice(-2)}${month < 10 ? '0' + month : month}-${Math.floor(1000 + Math.random() * 9000)}`;
-
+   static async ThemPhieuNhap(dulieu, files) {
         try {
-            // 1️⃣ Thêm phiếu nhập
+            const IDPN = TaoID('PN');
+            const today = new Date();
             const NhaCungCap = dulieu.thongTinPhieu.NhaCungCap ?? null;
             const DaThanhToan = dulieu.thongTinPhieu.DaThanhToan ?? null;
             const CheDoLuu = dulieu.CheDoLuu ?? null;
             const GhiChu = dulieu.thongTinPhieu.GhiChu ?? null;
-            const IDND = IDND_USER ?? null; // đảm bảo tồn tại trong bảng nguoidung
-
+            const IDND = dulieu.NguoiGhiPhieu;
             const [row1] = await execute(`
                 INSERT INTO phieunhap 
                 (IDPN, IDNCC, IDND, TONGTIEN, DA_THANHTOAN, NGAYNHAP, TRANGTHAI, GHICHU)
-                VALUES (?,?,?,?,?,?,?,?)`,
-                [IDPN, NhaCungCap, 'AD-2500601', 0, DaThanhToan, today, CheDoLuu, GhiChu]
-            );
-            if (row1.affectedRows <= 0) return { Status: true, message: 'Thêm phiếu nhập thất bại' };
-
-            // 2️⃣ Duyệt từng sản phẩm
+                VALUES (?,?,?,?,?,?,?,?)
+            `, [IDPN, NhaCungCap,  IDND, 0,  DaThanhToan, today, CheDoLuu, GhiChu]);
+            if (row1.affectedRows <= 0)
+                return { Status: false, message: 'Thêm phiếu nhập thất bại' };
             for (let i = 0; i < dulieu.newProductState.length; i++) {
                 const sp = dulieu.newProductState[i];
-                const IDSP = `SP-${today.getFullYear().toString().slice(-2)}${month < 10 ? '0' + month : month}-${Math.floor(1000 + Math.random() * 9000)}`;
 
-                // 2a️⃣ Xử lý dữ liệu
+                const IDSP = TaoID('SP');
                 const TenSanPham = sp.TenSanPham ?? null;
                 const ThuongHieu = sp.ThuongHieu ?? null;
                 const SoLuong = sp.SoLuong ?? 0;
-                const ThongSoKyThuat = sp.ThongSoKyThuat ? JSON.stringify(sp.ThongSoKyThuat) : null;
+                const GiaNhap = sp.GiaNhap ?? 0;
                 const DongMay = sp.DongMay ?? null;
                 const MoTa = sp.MoTa ?? null;
-                const GiaNhap = sp.GiaNhap ?? 0;
-                const TrangThai = 1;
 
-                // 2b️⃣ Thêm sản phẩm
+                const ThongSoKyThuat = sp.ThongSoKyThuat
+                    ? JSON.stringify(sp.ThongSoKyThuat)
+                    : null;
                 const [row2] = await execute(`
                     INSERT INTO sanpham
                     (IDSANPHAM, TENSANPHAM, IDTHUONGHIEU, SOLUONG, THONGSO_KYTHUAT, DONGMAY, MOTA, TRANGTHAI)
-                    VALUES (?,?,?,?,?,?,?,?)`,
-                    [IDSP, TenSanPham, ThuongHieu, SoLuong, ThongSoKyThuat, DongMay, MoTa, TrangThai]
-                );
-                if (row2.affectedRows <= 0) return { Status: true, message: 'Thêm sản phẩm thất bại' };
+                    VALUES (?,?,?,?,?,?,?,?)
+                `, [ IDSP, TenSanPham, ThuongHieu,  SoLuong,   ThongSoKyThuat,  DongMay,   MoTa,   1]);
 
-                // 2c️⃣ Thêm chi tiết phiếu nhập
+                if (row2.affectedRows <= 0)
+                    return { Status: false, message: 'Thêm sản phẩm thất bại' };
                 const [row3] = await execute(`
                     INSERT INTO chitiet_phieunhap
                     (IDPN, IDSANPHAM, SOLUONG, GIANHAP, THANHTIEN)
-                    VALUES (?,?,?,?,?)`,
-                    [IDPN, IDSP, SoLuong, GiaNhap, SoLuong * GiaNhap]
-                );
-                if (row3.affectedRows <= 0) return { Status: true, message: 'Thêm chi tiết phiếu nhập thất bại' };
-
-                // 2d️⃣ Lưu ảnh sản phẩm
-                if (Array.isArray(sp.HinhAnh) && sp.HinhAnh.length > 0) {
-                    for (let j = 0; j < sp.HinhAnh.length; j++) {
-                        const file = sp.HinhAnh[j];
+                    VALUES (?,?,?,?,?)
+                `, [ IDPN,    IDSP,   SoLuong,  GiaNhap,   SoLuong * GiaNhap ]);
+                if (row3.affectedRows <= 0)
+                    return { Status: false, message: 'Thêm chi tiết phiếu nhập thất bại' };
+                if (Array.isArray(files) && Array.isArray(files[i])) {
+                    for (const file of files[i]) {
                         if (!file) continue;
-
-                        const fileName = `${IDSP}-${Date.now()}-${j}.jpg`;
-                        const uploadPath = path.join('uploads', fileName);
-
-                        // Nếu file là Buffer
-                        if (file instanceof Buffer) {
-                            fs.writeFileSync(uploadPath, file);
-                        }
-                        // Nếu file là object multer
-                        else if (file.path) {
-                            fs.copyFileSync(file.path, uploadPath);
-                        }
-
-                        // TODO: Nếu muốn lưu tên file vào database, thêm bảng `sanpham_anh` và insert vào đó
+                        const imagePath = file.path.replace(/\\/g, '/');
+                        const [rowImg] = await execute(`
+                            INSERT INTO hinhanh_sanpham
+                            (IDHA, HINHANH, IDSANPHAM, TRANGTHAI)
+                            VALUES (?,?,?,?)
+                        `, [TaoID('IMG'),   imagePath, IDSP,  1 ]);
+                        if (rowImg.affectedRows <= 0)
+                            return { Status: false, message: 'Thêm ảnh sản phẩm thất bại' };
                     }
                 }
             }
-
             return { ThanhCong: true };
-
         } catch (error) {
             console.error('Lỗi ThemPhieuNhap:', error);
-            return { Status: true, message: 'Lỗi server' };
+            return { Status: false, message: 'Lỗi server' };
         }
     }
+    static async LayDanhSachPhieu(offset, limit) {
+    try {
+        const [rows] = await execute(`
+            SELECT 
+                pn.IDPN,
+                pn.IDNCC,
+                ncc.TENNCC,
+                pn.IDND,
+                nd.HOTEN,
+                pn.NGAYNHAP,
+                pn.TONGTIEN,
+                pn.TRANGTHAI
+            FROM phieunhap pn
+            LEFT JOIN nhacungcap ncc ON pn.IDNCC = ncc.IDNCC
+            LEFT JOIN nguoidung nd ON pn.IDND = nd.IDND
+            ORDER BY pn.NGAYNHAP DESC
+            LIMIT ? OFFSET ?
+        `, [limit, offset]);
+
+        const [countRows] = await execute(`
+            SELECT COUNT(*) AS totalItems FROM phieunhap
+        `);
+
+        return {
+            phieunhap: rows,
+            totalItems: countRows[0].totalItems
+        };
+
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách phiếu nhập:', error);
+        return { phieunhap: [], totalItems: 0 };
+    }
+}
+
+
+ 
+
+   
 }

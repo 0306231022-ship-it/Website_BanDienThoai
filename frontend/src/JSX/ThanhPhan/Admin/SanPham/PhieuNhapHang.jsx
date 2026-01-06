@@ -1,7 +1,46 @@
 import {Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
+import * as API from '../../../../JS/API/API';
 function PhieuNhapHang(){
-    const [Trang,setTrang] =useState(1)
+    const [Trang,setTrang] =useState(1);
+    const [PhieuNhap,setPhieuNhap]= useState([]);
+    const [key, setkey] = useState(null);
+    const [loading,setloading] = useState(false);
+    useEffect((e)=>{
+        setloading(true);
+        const LoadDL=async()=>{
+             try {
+                const dulieu= await API.CallAPI(undefined,{ url: `/admin/getPhieu?page=${Trang}`,PhuongThuc:2});
+                setPhieuNhap(dulieu.phieunhap);
+                setkey(dulieu.pagination)
+            } catch (error) {
+                console.error('Đax sảy ra lỗi!')
+            }finally{
+                setloading(false);
+            }
+        };
+        LoadDL();
+    },[Trang])
+     const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    };
+    const handlePrevPage = () => {
+        if (Trang > 1) setTrang(prev => prev - 1);
+    };
+    const handleNextPage = () => {
+        setTrang(prev => prev + 1);
+    };
+    if(loading){
+        return(
+     <div className="flex flex-col items-center justify-center min-h-[300px] w-full gap-4">
+         <div className="relative">
+              <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+               <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+          </div>
+           <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang tải dữ liệu...</p>
+     </div>         
+        )
+    }
     return(
         <>
   <div class="flex h-screen overflow-hidden">
@@ -105,13 +144,29 @@ function PhieuNhapHang(){
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-                                <tr class="bg-white hover:bg-gray-50">
-                                    <td class="px-6 py-4 font-bold text-blue-600">PN00125</td>
-                                    <td class="px-6 py-4">20/10/2023 <br/> <span class="text-xs text-gray-400">10:30 AM</span></td>
-                                    <td class="px-6 py-4">Nguyễn Văn A</td>
-                                    <td class="px-6 py-4 text-right font-bold">250.000.000</td>
+                                {
+                                    PhieuNhap ? (
+                                        PhieuNhap.map((item,index)=>(
+                                            <tr class="bg-white hover:bg-gray-50">
+                                    <td class="px-6 py-4 font-bold text-blue-600">{item.IDPN}</td>
+                                    <td class="px-6 py-4">{new Date(item.NGAYNHAP).toLocaleDateString('vi-VN')} 
+                                         <br/> 
+                                         <span class="text-xs text-gray-400">{new Date(item.NGAYNHAP).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true})}</span>
+                                    </td>
+                                    <td class="px-6 py-4">{item.TENNCC}</td>
+                                    <td class="px-6 py-4 text-right font-bold">{formatCurrency(item.TONGTIEN)}</td>
                                     <td class="px-6 py-4 text-center">
-                                        <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-green-200">Hoàn thành</span>
+                                
+                                            {item.TRANGTHAI === 1 ? (
+                                                            <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-700">
+                                                                Đax thoàn thành
+                                                            </span>
+                                                        ) : (
+                                                            <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700">
+                                                                Chưa hoàn thành
+                                                            </span>
+                                                        )}
+                                
                                     </td>
                                     <td class="px-6 py-4 text-center space-x-2">
                                        <Link to={`chitiet`} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết">
@@ -119,7 +174,11 @@ function PhieuNhapHang(){
                                       </Link>
                                     </td>
                                 </tr>
-
+                                        ))
+                                    ):(
+                                        <tr>Không có dữ liệu nào!</tr>
+                                    )
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -127,19 +186,19 @@ function PhieuNhapHang(){
                     <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                         <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                             <div>
-                                <p class="text-sm text-gray-700">
-                                    Hiển thị <span class="font-medium">1</span> đến <span class="font-medium">10</span> trong số <span class="font-medium">97</span> kết quả
-                                </p>
+                                <p className="text-sm text-slate-700">
+                                            Dữ liệu trang  {key?.currentPage} trên tổng số {key?.totalPages} trang (Tổng {key?.totalItems} danh sách phiếu nhập)
+                                        </p>
                             </div>
                             <div>
                                 <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
-                                   <button type="button" className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 bg-white text-sm font-medium ${Trang === 1 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-500 hover:bg-slate-50'} focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500`} >
+                                   <button  disabled={Trang === 1} onClick={handlePrevPage} type="button" className={`relative inline-flex items-center px-2 py-2 rounded-l-md border border-slate-300 bg-white text-sm font-medium ${Trang === 1 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-500 hover:bg-slate-50'} focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500`} >
                                         <i className="fa-solid fa-chevron-left"></i>
                                     </button>
                                     <span className="relative inline-flex items-center px-4 py-2 border border-slate-300 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                                         {Trang}
                                     </span>
-                                    <button type="button"  className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
+                                    <button type="button" onClick={handleNextPage} className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-slate-300 bg-white text-sm font-medium text-slate-500 hover:bg-slate-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500">
                                         <i className="fa-solid fa-chevron-right"></i>
                                     </button>
                                 </nav>

@@ -1,10 +1,11 @@
 import { body } from 'express-validator';
 
 export const PhieuNhapValidate = [
-  body('thongTinPhieu.NhaCungCap')
-    .notEmpty().withMessage('Vui lòng chọn nhà cung cấp')
-    .isInt({ min: 1 }).withMessage('Nhà cung cấp không hợp lệ'),
-
+  body('NguoiGhiPhieu')
+    .notEmpty()
+    .withMessage('Bạn đang thực hiện hành vi trái phép')
+    .isLength({ max: 10 })
+    .withMessage('không tồn tại định dạng IDND!'),
   body('thongTinPhieu.GhiChu')
     .optional()
     .isLength({ max: 255 }).withMessage('Ghi chú quá dài'),
