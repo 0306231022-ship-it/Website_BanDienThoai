@@ -1,3 +1,4 @@
+
 import { execute } from '../config/db.js';
 import { TaoID } from '../function.js';
 //Chưa xử lí imei
@@ -75,25 +76,46 @@ export default class PhieuNhapModal {
             return { Status: false, message: 'Lỗi server' };
         }
     }
+    static async layChiTietPN(id){
+        try {
+            // Bước 1: lấy IDNCC và IDND từ phiếu nhập
+             const [rows1] = await execute('SELECT IDNCC, IDND, TRANGTHAI FROM phieunhap WHERE IDPN = ? LIMIT 1',[id]);
+            // Bước 2: lấy thông tin nhà cung cấp
+             const [nhacungcap] = await execute('SELECT TENNCC, SDT, DIACHI FROM nhacungcap WHERE IDNCC = ?', [rows1[0]?.IDNCC]);
+            // Bước 3: lấy thông tin người nhập
+             const [ThongTinNguoiNhap] = await execute('SELECT HOTEN FROM nguoidung WHERE IDND = ? LIMIT 1',[rows1[0]?.IDND]);
+            // Bước 4: lấy thông tin thanh toán
+             const [ThongTinThanhToan] = await execute('SELECT TONGTIEN, DA_THANHTOAN FROM phieunhap WHERE IDPN = ? LIMIT 1',[id]);
+            // Bước 5: lấy thông tin sản phẩm trong phiếu nhập
+             const [ThongTinSanPham] = await execute(
+                `SELECT sp.TENSANPHAM, ct.SOLUONG, ct.GIANHAP, ct.THANHTIEN
+                 FROM chitiet_phieunhap ct
+                 JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
+                WHERE ct.IDPN = ?`,[id]
+            );
+            const ketqqua= {
+                TrangThaiPhieuNhap: rows1[0].TRANGTHAI,
+                CungCap:nhacungcap,
+                NguoiNhap:ThongTinNguoiNhap,
+                ThanhToan:ThongTinThanhToan,
+                SanPham:ThongTinSanPham,
+            };
+            return ketqqua;
+        } catch (error) {
+            console.error(error);
+            throw error; 
+        }
+    }
     static async LayDanhSachPhieu(offset, limit) {
     try {
         const [rows] = await execute(`
-            SELECT 
-                pn.IDPN,
-                pn.IDNCC,
-                ncc.TENNCC,
-                pn.IDND,
-                nd.HOTEN,
-                pn.NGAYNHAP,
-                pn.TONGTIEN,
-                pn.TRANGTHAI
+            SELECT  pn.IDPN,  ncc.TENNCC, nd.HOTEN,  pn.TONGTIEN, pn.TRANGTHAI
             FROM phieunhap pn
             LEFT JOIN nhacungcap ncc ON pn.IDNCC = ncc.IDNCC
             LEFT JOIN nguoidung nd ON pn.IDND = nd.IDND
             ORDER BY pn.NGAYNHAP DESC
             LIMIT ? OFFSET ?
         `, [limit, offset]);
-
         const [countRows] = await execute(`
             SELECT COUNT(*) AS totalItems FROM phieunhap
         `);

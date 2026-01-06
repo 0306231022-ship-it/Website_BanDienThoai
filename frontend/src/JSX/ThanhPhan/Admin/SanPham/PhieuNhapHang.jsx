@@ -147,13 +147,10 @@ function PhieuNhapHang(){
                                 {
                                     PhieuNhap ? (
                                         PhieuNhap.map((item,index)=>(
-                                            <tr class="bg-white hover:bg-gray-50">
+                                            <tr class="bg-white hover:bg-gray-50" key={index}>
                                     <td class="px-6 py-4 font-bold text-blue-600">{item.IDPN}</td>
-                                    <td class="px-6 py-4">{new Date(item.NGAYNHAP).toLocaleDateString('vi-VN')} 
-                                         <br/> 
-                                         <span class="text-xs text-gray-400">{new Date(item.NGAYNHAP).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true})}</span>
-                                    </td>
                                     <td class="px-6 py-4">{item.TENNCC}</td>
+                                    <td class="px-6 py-4">{item.HOTEN}</td>
                                     <td class="px-6 py-4 text-right font-bold">{formatCurrency(item.TONGTIEN)}</td>
                                     <td class="px-6 py-4 text-center">
                                 
@@ -169,7 +166,7 @@ function PhieuNhapHang(){
                                 
                                     </td>
                                     <td class="px-6 py-4 text-center space-x-2">
-                                       <Link to={`chitiet`} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết">
+                                       <Link to={`ChiTiet/${item.IDPN}`} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết">
                                                 xem chi tiết <i className="fas fa-arrow-right ml-1"></i>
                                       </Link>
                                     </td>

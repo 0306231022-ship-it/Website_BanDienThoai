@@ -4,6 +4,7 @@ import PhieuNhapModal from '../models/PhieuNhapMoDel.js';
 import { validationResult } from "express-validator";
 import { mapFilesByProduct } from '../function.js';
 
+
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
@@ -15,6 +16,13 @@ export default class PhieuNhapController{
             JWT_SECRET,
             {expiresIn:JWT_EXPIRES_IN}
         );
+    }
+    static async layChiTietPN(req,res){
+        const id = req.query.id;
+        const kq= await PhieuNhapModal.layChiTietPN(id);
+        return res.json({
+            DuLieu:kq
+        })
     }
     static async ThemPhieuNhap(req, res) {
          const errors = validationResult(req);
@@ -63,7 +71,9 @@ export default class PhieuNhapController{
         console.error('Lỗi khi lấy danh sách phiếu nhập:', error);
         return res.status(500).json({ message: 'Đã xảy ra lỗi hệ thống.' });
     }
+   
 }
+
 
    
        

@@ -23,6 +23,7 @@ import PhieuNhapHang from '../SanPham/PhieuNhapHang';
 import ThemPhieuNhap from '../SanPham/ThemPhieuNhap';
 import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
 import ChiTietNhaCungCap from '../NhaCungCap/ChiTietNhaCungCap';
+import ChiTietPhieu from '../SanPham/ChiTietPhieu';
 import '../../../../CSS/ThanhCuon.css';
 import { Routes, Route } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
@@ -126,15 +127,24 @@ function QuanLiTT() {
         <main className="flex-grow ml-72 overflow-y-auto min-h-screen py-2" role="main" aria-label="Nội dung quản trị">
             <AppProvider>
                 <Routes>
+                    <Route path="thuonghieu" element={<DanhSachThuongHieu />} />
+                    <Route path="thuonghieu/ThemThuongHieu" element={<ThemThuongHieu />} />
+                    <Route path="thuonghieu/chitiet/:id" element={<ChiTietThuongHieu />} />
+                    <Route path="NhaCungCap" element={<NhaCungCap />} />
+                    <Route path='NhaCungCap/ChiTiet/:id' element={<ChiTietNhaCungCap/>} />
+                    <Route path='PhieuNhapHang' element={<PhieuNhapHang/>} />
+                    <Route path='PhieuNhapHang/themPhieuNhap' element={<ThemPhieuNhap/>} />
+                    <Route path='PhieuNhapHang/ChiTiet/:id' element={<ChiTietPhieu/>} />
+                    <Route path="hoso" element={<HoSo />} />
+                    <Route path="xemThongTin" element={<XemThongTinWebsite />} />
+                    
                     <Route index element={<BangChinh />} />
                     <Route path="DonHang" element={<DonHang />} />
                     <Route path="DonHang/ChiTietDon" element={<ChiTietDon />} />
                     <Route path="sanpham" element={<DanhSachSanPham />} />
                     <Route path="sanpham/ThemSanPham" element={<ThemSanPham />} />
                     <Route path="sanpham/chitiet" element={<ChiTietSanPham />} />
-                    <Route path="thuonghieu" element={<DanhSachThuongHieu />} />
-                    <Route path="thuonghieu/ThemThuongHieu" element={<ThemThuongHieu />} />
-                    <Route path="thuonghieu/chitiet/:id" element={<ChiTietThuongHieu />} />
+                    
                     <Route path="khachhang" element={<DanhSachKhachHang />} />
                     <Route path="baocao" element={<BaoCao />} />
                     <Route path="phivanchuyen" element={<PhiVanChuyen />} />
@@ -143,13 +153,9 @@ function QuanLiTT() {
                     <Route path="hotro" element={<HoTroKhachHang />} />
                     <Route path="BinhLuan" element={<BinhLuan />} />
                     <Route path="BinhLuan/xem" element={< Xem />} />
-                    <Route path="hoso" element={<HoSo />} />
-                    <Route path="xemThongTin" element={<XemThongTinWebsite />} />
+                    
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
-                    <Route path="NhaCungCap" element={<NhaCungCap />} />
-                    <Route path='NhaCungCap/ChiTiet/:id' element={<ChiTietNhaCungCap/>} />
-                    <Route path='PhieuNhapHang' element={<PhieuNhapHang/>} />
-                    <Route path='PhieuNhapHang/themPhieuNhap' element={<ThemPhieuNhap/>} />
+                   
                 </Routes>
             </AppProvider>
         </main>
