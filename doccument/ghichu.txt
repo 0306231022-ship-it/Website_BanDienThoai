@@ -24,4 +24,14 @@ const { HinhAnh, ...newProductState } = sanPhamForm;
 ==============================================
 flatMap : gom tất cả thành 1 mảng []
 =============================================
+định dạng ngày/tháng/năm : new Date(ThongTinPhieu.NgayNhap).toLocaleDateString("vi-VN")
+=============================================
+định dạng giờ : vd :11:00 AM
+ new Date(ThongTinPhieu.NgayNhap).toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true
+    })
+===============================================
+Định dạng vnd : {Number(ThongTinPhieu.TONGTIEN).toLocaleString("vi-VN") + " ₫"}
 đã thành công thêm sản phẩm vào kho nhưng chưa quản lí IMEI 

@@ -79,11 +79,11 @@ export default class PhieuNhapModal {
     static async layChiTietPN(id){
         try {
             // Bước 1: lấy IDNCC và IDND từ phiếu nhập
-             const [rows1] = await execute('SELECT IDNCC, IDND, TRANGTHAI FROM phieunhap WHERE IDPN = ? LIMIT 1',[id]);
+             const [rows1] = await execute('SELECT IDNCC, IDND, TRANGTHAI , GHICHU , NGAYNHAP FROM phieunhap WHERE IDPN = ? LIMIT 1',[id]);
             // Bước 2: lấy thông tin nhà cung cấp
              const [nhacungcap] = await execute('SELECT TENNCC, SDT, DIACHI FROM nhacungcap WHERE IDNCC = ?', [rows1[0]?.IDNCC]);
             // Bước 3: lấy thông tin người nhập
-             const [ThongTinNguoiNhap] = await execute('SELECT HOTEN FROM nguoidung WHERE IDND = ? LIMIT 1',[rows1[0]?.IDND]);
+             const [ThongTinNguoiNhap] = await execute('SELECT HOTEN, IDND FROM nguoidung WHERE IDND = ? LIMIT 1',[rows1[0]?.IDND]);
             // Bước 4: lấy thông tin thanh toán
              const [ThongTinThanhToan] = await execute('SELECT TONGTIEN, DA_THANHTOAN FROM phieunhap WHERE IDPN = ? LIMIT 1',[id]);
             // Bước 5: lấy thông tin sản phẩm trong phiếu nhập
@@ -94,7 +94,13 @@ export default class PhieuNhapModal {
                 WHERE ct.IDPN = ?`,[id]
             );
             const ketqqua= {
-                TrangThaiPhieuNhap: rows1[0].TRANGTHAI,
+                ThongTinPhieu:[
+                    {
+                        TrangThai: rows1[0].TRANGTHAI,
+                        GhiChu: rows1[0].GHICHU,
+                        NgayNhap: rows1[0].NGAYNHAP
+                    }
+                ],
                 CungCap:nhacungcap,
                 NguoiNhap:ThongTinNguoiNhap,
                 ThanhToan:ThongTinThanhToan,

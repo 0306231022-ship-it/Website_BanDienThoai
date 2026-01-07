@@ -3,14 +3,44 @@ import * as API from '../../../../JS/API/API';
 import { useState, useEffect } from "react";
 function ChiTietPhieu() {
     const {id}  = useParams();
-    const [DuLieu,setDuLieu] = useState(null);
+    const [DuLieuCungCap,setDuLieuCungCap] = useState([]);
+    const [NguoiNhap,setNguoiNhap]=useState([]);
+    const [ThongTinPhieu,setThongTinPhieu]=useState([]);
+    const [ ThanhToan,setThanhToan] = useState([])
+    const conNo = (Number(ThanhToan?.TONGTIEN || 0) - Number(ThanhToan?.DA_THANHTOAN || 0)).toLocaleString("vi-VN") + " ₫";
+    const [SanPham,setSanPham]=useState([]);
+    const [loading,setloading]=useState(false);
     useEffect(()=>{
         const Laydata=async()=>{
-            const KetQua=await API.CallAPI(undefined,{url:`/admin/ChiTietPhieuNhap?id=${id}` , PhuongThuc:2});
-            setDuLieu(KetQua.DuLieu);
+            setloading(true)
+            try {
+                const KetQua=await API.CallAPI(undefined,{url:`/admin/ChiTietPhieuNhap?id=${id}` , PhuongThuc:2});
+                setDuLieuCungCap(KetQua.DuLieu.CungCap);
+                setNguoiNhap(KetQua.DuLieu.NguoiNhap);
+                setThongTinPhieu(KetQua?.DuLieu?.ThongTinPhieu?.[0] || null);
+                setThanhToan(KetQua?.DuLieu?.ThanhToan?.[0] || null);
+                setSanPham(KetQua.DuLieu.SanPham);
+                
+            } catch (error) {
+                console.error('Lỗi');
+            } finally {
+                setloading(false);
+            }
+            
         };
         Laydata();
     },[id])
+    if (loading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-4">
+                <div className="relative">
+                    <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+                    <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+                </div>
+                <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang tải dữ liệu...</p>
+            </div>
+        );
+    }
     return (
         <>
             {/* Đã thêm max-w-5xl để giới hạn chiều rộng và mx-auto để căn giữa */}
@@ -27,19 +57,32 @@ function ChiTietPhieu() {
                                 <i className="fa-solid fa-clock"></i> Công nợ
                             </span>
                         </h1>
-                        <p className="text-sm text-gray-500">Ngày tạo: 19/10/2023 lúc 08:15 AM</p>
+                        <p className="text-sm text-gray-500">Ngày tạo: {ThongTinPhieu?.NgayNhap && new Date(ThongTinPhieu.NgayNhap).toLocaleDateString("vi-VN")} lúc { new Date(ThongTinPhieu.NgayNhap).toLocaleTimeString("en-US", { hour: "2-digit",minute: "2-digit",hour12: true})}</p>
                     </div>
 
                     <div className="flex gap-2">
                         <button className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded shadow-sm hover:bg-gray-50">
                             <i className="fa-solid fa-print"></i> In phiếu
                         </button>
-                        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-sm">
-                            <i className="fa-solid fa-file-invoice-dollar"></i> Thanh toán thêm
-                        </button>
-                        <button className="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded shadow-sm border border-red-200">
-                            <i className="fa-solid fa-rotate-left"></i> Hoàn trả
-                        </button>
+                        {
+                            ThanhToan.TONGTIEN !== ThanhToan.DA_THANHTOAN && (
+                                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-sm">
+                                    <i className="fa-solid fa-file-invoice-dollar"></i> Thanh toán thêm
+                                </button>
+                            )
+                        }
+                     
+                        {
+                            ThongTinPhieu.TrangThai===1 ? (
+                                  <button className="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded shadow-sm border border-red-200">
+                                    <i className="fa-solid fa-rotate-left"></i> Hoàn trả
+                                 </button>
+                            ):(
+                                <button className=" bg-teal-600 hover: bg-teal-700 text-white px-4 py-2 rounded shadow-sm">
+                                    <i className="fa-solid fa-floppy-disk mr-1"></i> Lưu
+                                </button>
+                            )
+                        }
                     </div>
                 </div>
 
@@ -49,13 +92,13 @@ function ChiTietPhieu() {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             <div>
                                 {
-                                    DuLieu.CungCap && (
-                                       DuLieu.CungCap.map((item,index)=>(
+                                    DuLieuCungCap && (
+                                       DuLieuCungCap.map((item,index)=>(
                                         <>
-                                        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Nhà cung cấp</h3>
-                                <p className="font-bold text-lg text-gray-800">{item.TENCC}</p>
-                                <p className="text-sm text-gray-600"><i className="fa-solid fa-phone w-4"></i> {item.SDT}</p>
-                                <p className="text-sm text-gray-600"><i className="fa-solid fa-map-location-dot w-4"></i> {item.DIACHI}</p>
+                                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Nhà cung cấp</h3>
+                                            <p className="font-bold text-lg text-gray-800">{item.TENNCC}</p>
+                                            <p className="text-sm text-gray-600"><i className="fa-solid fa-phone w-4"></i> {item.SDT}</p>
+                                            <p className="text-sm text-gray-600"><i className="fa-solid fa-map-location-dot w-4"></i> {item.DIACHI}</p>
                                         </>
                                        ))
                                     )
@@ -64,26 +107,36 @@ function ChiTietPhieu() {
                             </div>
 
                             <div>
-                                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Thông tin người nhập</h3>
-                                <p className="font-bold text-gray-800">Trần Thị B (Kho)</p>
-                                <p className="text-sm text-gray-600">ID: STF-002</p>
+                                {
+                                    NguoiNhap && (
+                                        NguoiNhap.map((item,index)=>(
+                                         <>
+                                        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Thông tin người nhập</h3>
+                                        <p className="font-bold text-gray-800">{item.HOTEN} (Kho)</p>
+                                        <p className="text-sm text-gray-600">ID: {item.IDND}</p>
+                                        </>
+                                        ))
+                 
+                                    )
+                                }
+                    
                                 <div className="mt-2 text-sm bg-blue-50 text-blue-800 p-2 rounded border border-blue-100 italic">
-                                    "Ghi chú: Nhập hàng đợt Flash Sale, đã kiểm tra seal kỹ."
+                                    "Ghi chú: {ThongTinPhieu.GhiChu}"
                                 </div>
                             </div>
 
                             <div className="bg-white p-4 rounded border border-gray-200 shadow-sm">
                                 <div className="flex justify-between mb-1">
                                     <span className="text-gray-600">Tổng tiền hàng:</span>
-                                    <span className="font-bold">150.000.000 ₫</span>
+                                    <span className="font-bold">{Number(ThanhToan.TONGTIEN).toLocaleString("vi-VN") + " ₫"}</span>
                                 </div>
                                 <div className="flex justify-between mb-1 text-green-600">
                                     <span>Đã thanh toán:</span>
-                                    <span className="font-bold">- 100.000.000 ₫</span>
+                                    <span className="font-bold">- {Number(ThanhToan.DA_THANHTOAN).toLocaleString("vi-VN") + " ₫"}</span>
                                 </div>
                                 <div className="border-t pt-2 mt-2 flex justify-between text-red-600 text-lg font-bold">
                                     <span>Còn nợ:</span>
-                                    <span>50.000.000 ₫</span>
+                                    <span>{conNo}</span>
                                 </div>
                             </div>
                         </div>
