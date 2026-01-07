@@ -10,6 +10,7 @@ function ThemPhieuNhap() {
     const {GetTTCaNhan, TTCaNhan } = useADContext();
     const [danhSachNhaCungCap, setDanhSachNhaCungCap] = useState([]);
     const [danhSachThuongHieu, setDanhSachThuongHieu] = useState([]);
+    //dữ liệu hiện thị tết
     const [err, setErr] = useState('');
     const [errors,seterr]=useState({})
     const [loading, setLoading] = useState(false);
@@ -43,6 +44,7 @@ function ThemPhieuNhap() {
     const [sanPhamForm, setSanPhamForm] = useState(initialProductState);
     useEffect(()=>{
         GetTTCaNhan();
+        ThongBao.ThongBao_CanhBao('Chức năng IMEI chưa được phát triển vui lòng nhập giá trị giả định trước khi thực hiện!')
          // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     useEffect(() => {
@@ -294,6 +296,7 @@ function ThemPhieuNhap() {
     if (err) return (<div className="text-center p-10 text-red-500 font-bold">{err}</div>);
 
     return (
+        
         <div className="max-w-7xl mx-auto p-4 md:p-8 pb-32">
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold text-blue-700 uppercase">

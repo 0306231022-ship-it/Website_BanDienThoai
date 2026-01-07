@@ -35,3 +35,14 @@ flatMap : gom tất cả thành 1 mảng []
 ===============================================
 Định dạng vnd : {Number(ThongTinPhieu.TONGTIEN).toLocaleString("vi-VN") + " ₫"}
 đã thành công thêm sản phẩm vào kho nhưng chưa quản lí IMEI 
+
+=============================================
+// của nhà cung cấp
+<div className="flex flex-col items-center justify-center h-96 text-slate-400">
+                                <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                                    <i className="fa-solid fa-file-invoice-dollar text-3xl text-slate-300"></i>
+                                </div>
+                                <p className="font-medium">Lịch sử thanh toán công nợ sẽ hiển thị ở đây</p>
+                            </div>
+
+

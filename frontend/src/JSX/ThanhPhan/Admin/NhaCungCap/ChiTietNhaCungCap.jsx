@@ -5,6 +5,7 @@ import CompanyInfoCard from './compoment/ThongTin';
 import StatRow from './compoment/StarRow';
 import BankCard from './compoment/NganHang';
 import { useModalContext } from '../../../../CONTEXT/QuanLiModal';
+import ChiTietLichSuChuyenTien from './ChiTietLichSu';
 
 function ChiTietNhaCungCap() {
     const [activeTab, setActiveTab] = useState('history');
@@ -13,6 +14,7 @@ function ChiTietNhaCungCap() {
     const [err, seterr] = useState('');
     const [loading, setloading] = useState(false);
     const { OpenMoDal } = useModalContext();
+
 
     useEffect(() => {
         const layDL = async () => {
@@ -183,45 +185,494 @@ function ChiTietNhaCungCap() {
                         />
                     </div>
 
-                    <div className="p-0 flex-1 relative">
+                    <div className="p-0 flex-1">
                         {activeTab === 'history' && (
-                            <div className="flex flex-col items-center justify-center h-96 text-slate-400">
-                                <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                                    <i className="fa-solid fa-box-open text-3xl text-slate-300"></i>
+                            <div className="flex flex-col bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+                                <div className="p-4 border-b border-slate-100 flex justify-between items-center gap-4 bg-slate-50/50">
+                                    <div className="relative flex-1 max-w-md">
+                                        <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                                        <input type="text"  placeholder="Tìm theo mã phiếu, nhà cung cấp..."  className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-400" />
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
+                                            <i className="fa-regular fa-calendar"></i>
+                                            <span>Ngày tháng</span>
+                                        </button>
+                                        <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
+                                             <i className="fa-solid fa-filter"></i>
+                                             <span>Lọc trạng thái</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <p className="font-medium">Danh sách lịch sử sẽ hiển thị ở đây</p>
-                            </div>
-                        )}
+                        <div className="flex-1 overflow-auto">
+            <table className="w-full text-left border-collapse">
+                <thead className="bg-slate-50 sticky top-0 z-10">
+                    <tr>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Mã phiếu</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Nhà cung cấp</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Ngày nhập</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Người tạo</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Tổng tiền</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">Trạng thái</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                    
+                    {/* Dòng 1: Hoàn thành */}
+                    <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <td className="px-4 py-3 text-sm font-medium text-blue-600">PNK-001</td>
+                        <td className="px-4 py-3 text-sm text-slate-700 font-medium">Công ty TNHH ABC</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">25/10/2023</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">Nguyễn Văn A</td>
+                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right">15.500.000 ₫</td>
+                        <td className="px-4 py-3 text-center">
+                            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">Hoàn thành</span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                            <button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors"><i className="fa-solid fa-eye"></i></button>
+                        </td>
+                    </tr>
+
+                    {/* Dòng 2: Đang xử lý */}
+                    <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <td className="px-4 py-3 text-sm font-medium text-blue-600">PNK-002</td>
+                        <td className="px-4 py-3 text-sm text-slate-700 font-medium">Nhà phân phối XYZ</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">24/10/2023</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">Trần Thị B</td>
+                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right">8.200.000 ₫</td>
+                        <td className="px-4 py-3 text-center">
+                            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200">Đang xử lý</span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                            <button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors"><i className="fa-solid fa-eye"></i></button>
+                        </td>
+                    </tr>
+
+                    {/* Dòng 3: Đã hủy */}
+                    <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <td className="px-4 py-3 text-sm font-medium text-blue-600">PNK-003</td>
+                        <td className="px-4 py-3 text-sm text-slate-700 font-medium">Kho Tổng</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">20/10/2023</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">Nguyễn Văn A</td>
+                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right">45.000.000 ₫</td>
+                        <td className="px-4 py-3 text-center">
+                            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">Đã hủy</span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                            <button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors"><i className="fa-solid fa-eye"></i></button>
+                        </td>
+                    </tr>
+
+                     {/* Dòng 4: Hoàn thành */}
+                     <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <td className="px-4 py-3 text-sm font-medium text-blue-600">PNK-004</td>
+                        <td className="px-4 py-3 text-sm text-slate-700 font-medium">Công ty TNHH ABC</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">18/10/2023</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">Lê C</td>
+                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right">2.100.000 ₫</td>
+                        <td className="px-4 py-3 text-center">
+                            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">Hoàn thành</span>
+                        </td>
+                        <td className="px-4 py-3 text-center">
+                            <button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors"><i className="fa-solid fa-eye"></i></button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        {/* --- 3. PHÂN TRANG (PAGINATION) --- */}
+        <div className="p-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-sm text-slate-500">
+            <span>Hiển thị 1-4 trên 24 phiếu nhập</span>
+            <div className="flex gap-1">
+                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-50">
+                    <i className="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button className="w-8 h-8 flex items-center justify-center rounded bg-blue-600 text-white font-medium border border-blue-600">1</button>
+                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-600">2</button>
+                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-600">3</button>
+                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50">
+                    <i className="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+)}
                         {activeTab === 'products' && (
-                            <div className="flex flex-col items-center justify-center h-96 text-slate-400">
-                                <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                                    <i className="fa-solid fa-box-open text-3xl text-slate-300"></i>
-                                </div>
-                                <p className="font-medium">Danh sách sản phẩm sẽ hiển thị ở đây</p>
+    <div className="flex flex-col h-full bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
+        
+        {/* --- 1. THANH CÔNG CỤ (TOOLBAR) --- */}
+        <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/50">
+            {/* Tìm kiếm */}
+            <div className="relative flex-1 w-full sm:max-w-md">
+                <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                <input 
+                    type="text" 
+                    placeholder="Tìm tên sản phẩm, mã SKU, mã vạch..." 
+                    className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-400"
+                />
+            </div>
+            
+            {/* Các nút hành động */}
+            <div className="flex gap-2 w-full sm:w-auto justify-end">
+                <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
+                    <i className="fa-solid fa-list"></i>
+                    <span className="hidden sm:inline">Danh mục</span>
+                </button>
+                <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
+                    <i className="fa-solid fa-filter"></i>
+                    <span className="hidden sm:inline">Lọc tồn kho</span>
+                </button>
+                <button className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 flex items-center gap-2 shadow-sm transition-colors">
+                    <i className="fa-solid fa-plus"></i>
+                    <span>Thêm mới</span>
+                </button>
+            </div>
+        </div>
+
+        {/* --- 2. BẢNG SẢN PHẨM (PRODUCT TABLE) --- */}
+        <div className="flex-1 overflow-auto">
+            <table className="w-full text-left border-collapse">
+                <thead className="bg-slate-50 sticky top-0 z-10">
+                    <tr>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 w-16 text-center">Ảnh</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Tên sản phẩm / SKU</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Danh mục</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Giá vốn</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Giá bán</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">Tồn kho</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">Trạng thái</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                    
+                    {/* Sản phẩm 1: Bình thường */}
+                    <tr className="hover:bg-slate-50 transition-colors group">
+                        <td className="px-4 py-3 align-middle">
+                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
+                                <i className="fa-brands fa-apple text-xl text-slate-400"></i>
                             </div>
-                        )}
-                        {activeTab === 'debt' && (
-                            <div className="flex flex-col items-center justify-center h-96 text-slate-400">
-                                <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-                                    <i className="fa-solid fa-file-invoice-dollar text-3xl text-slate-300"></i>
-                                </div>
-                                <p className="font-medium">Lịch sử thanh toán công nợ sẽ hiển thị ở đây</p>
+                        </td>
+                        <td className="px-4 py-3 align-middle">
+                            <div className="font-medium text-slate-700 text-sm group-hover:text-blue-600 transition-colors">iPhone 15 Pro Max 256GB</div>
+                            <div className="text-xs text-slate-400">SKU: IP15-PM-256</div>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-sm text-slate-600">Điện thoại</td>
+                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">28.500.000</td>
+                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-700 text-right">32.990.000</td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="font-medium text-slate-700">12</span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
+                                Đang bán
+                            </span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <div className="flex items-center justify-center gap-2">
+                                <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors" title="Sửa">
+                                    <i className="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors" title="Xóa">
+                                    <i className="fa-solid fa-trash"></i>
+                                </button>
                             </div>
-                        )}
+                        </td>
+                    </tr>
+
+                    {/* Sản phẩm 2: Sắp hết hàng (Warning) */}
+                    <tr className="hover:bg-slate-50 transition-colors group">
+                        <td className="px-4 py-3 align-middle">
+                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
+                                <i className="fa-solid fa-laptop text-lg text-slate-400"></i>
+                            </div>
+                        </td>
+                        <td className="px-4 py-3 align-middle">
+                            <div className="font-medium text-slate-700 text-sm group-hover:text-blue-600 transition-colors">MacBook Air M2 2023</div>
+                            <div className="text-xs text-slate-400">SKU: MB-AIR-M2</div>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-sm text-slate-600">Laptop</td>
+                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">24.000.000</td>
+                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-700 text-right">28.490.000</td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="font-bold text-amber-600">2</span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
+                                Đang bán
+                            </span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <div className="flex items-center justify-center gap-2">
+                                <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><i className="fa-solid fa-pen-to-square"></i></button>
+                                <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"><i className="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {/* Sản phẩm 3: Hết hàng (Error) */}
+                    <tr className="hover:bg-slate-50 transition-colors group">
+                        <td className="px-4 py-3 align-middle">
+                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
+                                <i className="fa-solid fa-headphones text-lg text-slate-400"></i>
+                            </div>
+                        </td>
+                        <td className="px-4 py-3 align-middle">
+                            <div className="font-medium text-slate-700 text-sm group-hover:text-blue-600 transition-colors">AirPods Pro Gen 2</div>
+                            <div className="text-xs text-slate-400">SKU: APP-GEN2</div>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-sm text-slate-600">Phụ kiện</td>
+                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">4.800.000</td>
+                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-700 text-right">5.990.000</td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="font-bold text-red-500">0</span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">
+                                Hết hàng
+                            </span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <div className="flex items-center justify-center gap-2">
+                                <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><i className="fa-solid fa-pen-to-square"></i></button>
+                                <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"><i className="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    {/* Sản phẩm 4: Ngừng kinh doanh (Inactive) */}
+                    <tr className="hover:bg-slate-50 transition-colors group opacity-70">
+                        <td className="px-4 py-3 align-middle">
+                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
+                                <i className="fa-solid fa-mobile-screen text-lg text-slate-400"></i>
+                            </div>
+                        </td>
+                        <td className="px-4 py-3 align-middle">
+                            <div className="font-medium text-slate-600 text-sm group-hover:text-blue-600 transition-colors">Samsung Galaxy S20 (Cũ)</div>
+                            <div className="text-xs text-slate-400">SKU: SS-S20-OLD</div>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-sm text-slate-600">Điện thoại</td>
+                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">5.000.000</td>
+                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-600 text-right">7.500.000</td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="font-medium text-slate-500">5</span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
+                                Ngừng bán
+                            </span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <div className="flex items-center justify-center gap-2">
+                                <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><i className="fa-solid fa-pen-to-square"></i></button>
+                                <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"><i className="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        {/* --- 3. PHÂN TRANG (PAGINATION) --- */}
+        <div className="p-3 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between text-sm text-slate-500 gap-3">
+            <span>Hiển thị 1-4 trên 150 sản phẩm</span>
+            <div className="flex gap-1">
+                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-50">
+                    <i className="fa-solid fa-chevron-left text-xs"></i>
+                </button>
+                <button className="w-8 h-8 flex items-center justify-center rounded bg-blue-600 text-white font-medium border border-blue-600">1</button>
+                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-600">2</button>
+                <span className="w-8 h-8 flex items-center justify-center text-slate-400">...</span>
+                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-600">10</button>
+                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50">
+                    <i className="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+)}
+        {activeTab === 'debt' && (
+    <div className="flex flex-col h-full space-y-4">
+        
+        {/* --- 1. THẺ TỔNG QUAN (SUMMARY CARDS) --- */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Card 1: Tổng nợ phải trả */}
+            <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p className="text-sm text-slate-500 mb-1">Tổng nợ phải trả</p>
+                    <h3 className="text-2xl font-bold text-slate-700">185.000.000 ₫</h3>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-500">
+                    <i className="fa-solid fa-arrow-trend-up"></i>
+                </div>
+            </div>
+            
+            {/* Card 2: Đã thanh toán (Tháng này) */}
+            <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p className="text-sm text-slate-500 mb-1">Đã trả (Tháng 10)</p>
+                    <h3 className="text-2xl font-bold text-emerald-600">50.000.000 ₫</h3>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-emerald-50 flex items-center justify-center text-emerald-500">
+                    <i className="fa-solid fa-check"></i>
+                </div>
+            </div>
+
+            {/* Card 3: Nợ quá hạn / Sắp đến hạn */}
+            <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-sm flex items-center justify-between">
+                <div>
+                    <p className="text-sm text-slate-500 mb-1">Nợ đến hạn trả</p>
+                    <h3 className="text-2xl font-bold text-amber-500">32.000.000 ₫</h3>
+                </div>
+                <div className="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
+                    <i className="fa-regular fa-clock"></i>
+                </div>
+            </div>
+        </div>
+
+        {/* --- 2. KHUNG DỮ LIỆU CHÍNH --- */}
+        <div className="flex-1 bg-white rounded-lg shadow-sm border border-slate-200 flex flex-col overflow-hidden">
+            
+            {/* Toolbar */}
+            <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/50">
+                <div className="relative flex-1 w-full sm:max-w-md">
+                    <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input 
+                        type="text" 
+                        placeholder="Tìm nhà cung cấp, mã chứng từ..." 
+                        className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-400"
+                    />
+                </div>
+                <div className="flex gap-2 w-full sm:w-auto justify-end">
+                     <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
+                        <i className="fa-regular fa-calendar"></i>
+                        <span>Thời gian</span>
+                    </button>
+                    <button className="px-4 py-2 bg-emerald-600 text-white rounded-md text-sm font-medium hover:bg-emerald-700 flex items-center gap-2 shadow-sm transition-colors">
+                        <i className="fa-solid fa-money-bill-transfer"></i>
+                        <span>Tạo phiếu chi</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Table */}
+            <div className="flex-1 overflow-auto">
+                <table className="w-full text-left border-collapse">
+                    <thead className="bg-slate-50 sticky top-0 z-10">
+                        <tr>
+                            <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Mã chứng từ</th>
+                            <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Thời gian</th>
+                            <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Đối tượng (NCC)</th>
+                            <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Loại giao dịch</th>
+                            <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Giá trị</th>
+                            <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Dư nợ cuối</th>
+                            <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                        
+                        {/* Giao dịch 1: NHẬP HÀNG (Tăng nợ) */}
+                        <tr className="hover:bg-slate-50 transition-colors">
+                            <td className="px-4 py-3 align-middle">
+                                <span className="text-blue-600 font-medium text-sm">PNK-001</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-sm text-slate-500">25/10/2023 09:30</td>
+                            <td className="px-4 py-3 align-middle">
+                                <div className="text-sm font-medium text-slate-700">Công ty TNHH ABC</div>
+                            </td>
+                            <td className="px-4 py-3 align-middle">
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700">
+                                    <i className="fa-solid fa-box text-slate-400"></i> Nhập hàng
+                                </span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-right">
+                                <span className="text-red-600 font-medium text-sm">+ 15.500.000</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-right">
+                                <span className="text-slate-800 font-bold text-sm">115.500.000</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-center">
+                                <button className="text-slate-400 hover:text-blue-600 p-1"><i className="fa-solid fa-circle-info"></i></button>
+                            </td>
+                        </tr>
+
+                        {/* Giao dịch 2: THANH TOÁN (Giảm nợ) */}
+                        <tr className="hover:bg-slate-50 transition-colors">
+                            <td className="px-4 py-3 align-middle">
+                                <span className="text-blue-600 font-medium text-sm">PC-089</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-sm text-slate-500">24/10/2023 14:15</td>
+                            <td className="px-4 py-3 align-middle">
+                                <div className="text-sm font-medium text-slate-700">Công ty TNHH ABC</div>
+                            </td>
+                            <td className="px-4 py-3 align-middle">
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                    <i className="fa-solid fa-money-bill text-emerald-500"></i> Thanh toán
+                                </span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-right">
+                                <span className="text-emerald-600 font-medium text-sm">- 50.000.000</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-right">
+                                <span className="text-slate-800 font-bold text-sm">100.000.000</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-center">
+                                <button className="text-slate-400 hover:text-blue-600 p-1"><i className="fa-solid fa-circle-info"></i></button>
+                            </td>
+                        </tr>
+
+                         {/* Giao dịch 3: TRẢ HÀNG (Giảm nợ) */}
+                         <tr className="hover:bg-slate-50 transition-colors">
+                            <td className="px-4 py-3 align-middle">
+                                <span className="text-blue-600 font-medium text-sm">TH-002</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-sm text-slate-500">22/10/2023 10:00</td>
+                            <td className="px-4 py-3 align-middle">
+                                <div className="text-sm font-medium text-slate-700">Nhà phân phối XYZ</div>
+                            </td>
+                            <td className="px-4 py-3 align-middle">
+                                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">
+                                    <i className="fa-solid fa-rotate-left text-amber-500"></i> Trả hàng
+                                </span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-right">
+                                <span className="text-emerald-600 font-medium text-sm">- 2.500.000</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-right">
+                                <span className="text-slate-800 font-bold text-sm">0</span>
+                            </td>
+                            <td className="px-4 py-3 align-middle text-center">
+                                <button className="text-slate-400 hover:text-blue-600 p-1"><i className="fa-solid fa-circle-info"></i></button>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Pagination */}
+            <div className="p-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-sm text-slate-500">
+                <span>Hiển thị 20 giao dịch gần nhất</span>
+                <div className="flex gap-1">
+                    <button className="px-3 py-1 rounded bg-white border border-slate-300 hover:bg-slate-50">Trước</button>
+                    <button className="px-3 py-1 rounded bg-white border border-slate-300 hover:bg-slate-50">Sau</button>
+                </div>
+            </div>
+        </div>
+    </div>
+)}
+                        
                     </div>
 
-                    <div className="px-6 py-4 border-t border-slate-200 bg-white rounded-b-2xl flex justify-between items-center">
-                        <span className="text-sm text-slate-500">Hiển thị 5 / 50 kết quả</span>
-                        <div className="flex gap-2">
-                            <button className="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 text-sm text-slate-600 disabled:opacity-50"><i className="fa-solid fa-chevron-left"></i></button>
-                            <button className="px-3 py-1 border border-blue-500 bg-blue-50 rounded text-sm text-blue-600 font-bold">1</button>
-                            <button className="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 text-sm text-slate-600">2</button>
-                            <button className="px-3 py-1 border border-slate-300 rounded hover:bg-slate-50 text-sm text-slate-600"><i className="fa-solid fa-chevron-right"></i></button>
-                        </div>
-                    </div>
+                    <ChiTietLichSuChuyenTien/>
                 </div>
             </main>
-        </div>
+       
+                </div>
+    
     );
 }
 

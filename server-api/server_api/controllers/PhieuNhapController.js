@@ -17,13 +17,36 @@ export default class PhieuNhapController{
             {expiresIn:JWT_EXPIRES_IN}
         );
     }
-    static async layChiTietPN(req,res){
+    static async layChiTietPN(req, res) {
+    try {
         const id = req.query.id;
-        const kq= await PhieuNhapModal.layChiTietPN(id);
+        if (!id) {
+            return res.json({
+                Status: false,
+                message: 'Không tìm thấy phiếu nhập!'
+            });
+        }
+        const kq = await PhieuNhapModal.layChiTietPN(id);
+        if(kq.Status){
+            return res.json({
+                Status:true,
+                message:kq.message
+            })
+        };
         return res.json({
+            ThanhCong:true,
             DuLieu:kq
         })
+    } catch (error) {
+        console.error(error);
+        return res.json({
+            Status: true,
+            message: 'Có lỗi xảy ra khi lấy chi tiết phiếu nhập!',
+            error: error.message
+        });
     }
+}
+   
     static async ThemPhieuNhap(req, res) {
          const errors = validationResult(req);
          if (!errors.isEmpty()) {
