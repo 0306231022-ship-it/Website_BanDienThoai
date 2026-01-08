@@ -5,7 +5,6 @@ import CompanyInfoCard from './compoment/ThongTin';
 import StatRow from './compoment/StarRow';
 import BankCard from './compoment/NganHang';
 import { useModalContext } from '../../../../CONTEXT/QuanLiModal';
-import ChiTietLichSuChuyenTien from './ChiTietLichSu';
 
 function ChiTietNhaCungCap() {
     const [activeTab, setActiveTab] = useState('history');
@@ -667,7 +666,7 @@ function ChiTietNhaCungCap() {
                         
                     </div>
 
-                    <ChiTietLichSuChuyenTien/>
+                
                 </div>
             </main>
        

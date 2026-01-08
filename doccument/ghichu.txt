@@ -37,6 +37,12 @@ flatMap : gom tất cả thành 1 mảng []
 đã thành công thêm sản phẩm vào kho nhưng chưa quản lí IMEI 
 
 =============================================
+tiền tố hình ảnh : http://localhost:3001/
+=============================================
+dùng INNER JOIN để kết bảng nha 
+=============================================
+Chia lấy phần nguyên : Math.ceil
+=============================================
 // của nhà cung cấp
 <div className="flex flex-col items-center justify-center h-96 text-slate-400">
                                 <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
@@ -44,5 +50,12 @@ flatMap : gom tất cả thành 1 mảng []
                                 </div>
                                 <p className="font-medium">Lịch sử thanh toán công nợ sẽ hiển thị ở đây</p>
                             </div>
-
+// thương hiệu
+ <div className="divide-y divide-gray-50">
+                            {/* Hiển thị danh sách sản phẩm liên quan ở đây */}
+                            <div className="p-10 text-center text-gray-400">
+                                <i className="fas fa-folder-open text-4xl mb-3 block"></i>
+                                <p className="text-sm font-medium">Danh sách sản phẩm đang được cập nhật...</p>
+                            </div>
+                        </div>
 

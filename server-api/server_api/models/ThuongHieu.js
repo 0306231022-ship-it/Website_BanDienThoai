@@ -107,4 +107,41 @@ export default class ThuongHieuModel{
             }
         }
     }
+    static async laysp_thuonghieu(offset, limit, id) {
+        try {
+            const [ketqua] = await execute(
+                `
+                    SELECT sp.IDSANPHAM, sp.SOLUONG, sp.TENSANPHAM,
+                        (SELECT ha.HINHANH
+                            FROM hinhanh_sanpham ha
+                            WHERE ha.IDSANPHAM = sp.IDSANPHAM
+                            LIMIT 1) AS HINHANH
+                    FROM sanpham sp
+                    WHERE sp.IDTHUONGHIEU = ?
+                    LIMIT ? OFFSET ?
+                `,
+                [id, limit, offset]
+            );
+            const [countResult] = await execute(`SELECT COUNT(*) AS total FROM sanpham WHERE IDTHUONGHIEU = ?`,[id]);
+            const total = countResult[0].total;
+            const start = offset + 1;
+            const end = Math.min(offset + limit, total);
+            return {
+                ThanhCong:true,
+                DuLieu: ketqua,
+                PhanTrang:{
+                    BatDau:start,
+                    ketThuc:end,
+                    Tong:total
+                }
+            };
+    } catch (error) {
+        console.error(error);
+        return {
+            Status:true,
+        }
+    }
+}
+   
+
 }

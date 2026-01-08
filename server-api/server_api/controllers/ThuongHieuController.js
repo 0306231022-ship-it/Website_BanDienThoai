@@ -195,6 +195,14 @@ export default class ThuongHieuController{
         })
      }
     }
+    static async laysp_thuonghieu(req,res){
+         const id = req.query.id|| null;
+         const page=req.query.page || null ;
+         const limit = parseInt(req.query.limit) || 2;
+         const offset = (page - 1) * limit;
+         const ketqqua = await ThuongHieuModel.laysp_thuonghieu(offset,limit,id);
+         return res.json({ketqqua});
+    }
 
 
 }

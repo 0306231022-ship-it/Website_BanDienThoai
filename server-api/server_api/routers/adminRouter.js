@@ -229,6 +229,7 @@ adminRouter.get('/laynhacchoatdong' , authMiddleware , NhaCungCapController.LayD
 adminRouter.get('/laythuonghieu' , authMiddleware , ThuongHieuController.layth );
 adminRouter.get('/getPhieu', authMiddleware,PhieuNhapController.layDL);
 adminRouter.get('/ChiTietPhieuNhap' ,authMiddleware, PhieuNhapController.layChiTietPN);
+adminRouter.get('/laysp_thuonghieu',authMiddleware,ThuongHieuController.laysp_thuonghieu)
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;
