@@ -15,10 +15,7 @@ function DanhSachThuongHieu() {
         const fetchData = async () => {
             setloading(true)
             try {
-                const ketqua = await API.CallAPI(undefined, { 
-                    url: `/admin/thuonghieu?page=${Trang}`, 
-                    PhuongThuc: 2 
-                });
+                const ketqua = await API.CallAPI(undefined, { url: `/admin/thuonghieu?page=${Trang}`, PhuongThuc: 2  });
                 setDuLieu(ketqua.thuongHieu);
                 setdulieuTrang(ketqua.pagination);
                 setloading(false)
@@ -133,7 +130,7 @@ function DanhSachThuongHieu() {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-center">
                                                 <span className="inline-block px-3 py-1 bg-gray-100 text-gray-700 font-bold rounded-lg text-sm">
-                                                    {item.SOLUONG_SANPHAM || 0}
+                                                    {item.tongSanPham} sản phẩm
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-center text-sm">

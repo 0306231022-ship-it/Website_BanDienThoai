@@ -1,17 +1,12 @@
 import {execute} from '../config/db.js';
+import { TaoID } from '../function.js';
 export default class ThuongHieuModel{
   static async ThemThuongHieu(TenThuongHieu, MoTa, HinhAnh) {
     const today = new Date();
-    let month = today.getMonth() + 1;
-    let ID = 'TH-' 
-        + today.getFullYear().toString().slice(-2) 
-        + (month < 10 ? '0' + month : month.toString()) 
-        + '-' + Math.floor(1000 + Math.random() * 9000).toString();
-
     try {
         const [ketqua] = await execute(
             'INSERT INTO thuonghieu (IDTHUONGHIEU, TENTHUONGHIEU, MOTA, LOGO, TRANGTHAI, NGAYTAO) VALUES (?,?,?,?,?,?)',
-            [ID, TenThuongHieu, MoTa, HinhAnh, 1, today]
+            [TaoID('TH'), TenThuongHieu, MoTa, HinhAnh, 1, today]
         );
 
         return ketqua.affectedRows > 0 ? true : false;
@@ -22,10 +17,14 @@ export default class ThuongHieuModel{
 }
     static async LayDanhSachThuongHieu(offset, limit) {
         try {
-            const [rows] = await execute(
-                'SELECT IDTHUONGHIEU, TENTHUONGHIEU, TRANGTHAI, LOGO FROM thuonghieu ORDER BY NGAYTAO DESC LIMIT ? OFFSET ?',
-                [limit, offset]
-            );
+            const [rows]= await execute(`
+                SELECT th.IDTHUONGHIEU, th.TENTHUONGHIEU, th.TRANGTHAI, th.LOGO,
+                       COUNT(sp.IDTHUONGHIEU) AS tongSanPham
+                FROM thuonghieu th
+                LEFT JOIN sanpham sp ON th.IDTHUONGHIEU = sp.IDTHUONGHIEU
+                GROUP BY th.IDTHUONGHIEU, th.TENTHUONGHIEU, th.TRANGTHAI, th.LOGO
+                ORDER BY th.NGAYTAO DESC
+                LIMIT ? OFFSET ?`, [limit, offset])
             const [countRows] = await execute(
                 'SELECT COUNT(*) as totalItems FROM thuonghieu'
             );
@@ -38,9 +37,14 @@ export default class ThuongHieuModel{
     }
     static async LayChiTietThuongHieu(id) {
         try {
-            const [rows] = await execute(
-                'SELECT * FROM thuonghieu WHERE IDTHUONGHIEU = ?',
-                [id]
+           const [rows] = await execute(
+                `SELECT th.*, 
+                    (SELECT COUNT(*) 
+                    FROM sanpham sp 
+                    WHERE sp.IDTHUONGHIEU = th.IDTHUONGHIEU) AS tongSanPham
+                        FROM thuonghieu th
+                        WHERE th.IDTHUONGHIEU = ?`,
+             [id]
             );
             return rows[0] || null;
         } catch (error) {

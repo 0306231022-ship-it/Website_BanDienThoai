@@ -13,8 +13,6 @@ function ChiTietNhaCungCap() {
     const [err, seterr] = useState('');
     const [loading, setloading] = useState(false);
     const { OpenMoDal } = useModalContext();
-
-
     useEffect(() => {
         const layDL = async () => {
             setloading(true);
@@ -40,6 +38,17 @@ function ChiTietNhaCungCap() {
         }
         layDL();
     }, [id]);
+    //Lấy API lịch sử nhập hàng theo IDNCC
+    useEffect(()=>{
+        const laydata= async()=>{
+            try {
+                const ketqua= await API.CallAPI(undefined,{PhuongThuc:2, url : `/admin/laydspn_idncc?id=${dulieu.IDNCC}`});
+                alert(JSON.stringify(ketqua))
+            } catch (error) {
+                
+            }
+        }
+    },[])
 
     // --- Loading UI ---
     if (loading) {

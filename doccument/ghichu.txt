@@ -58,4 +58,4 @@ Chia lấy phần nguyên : Math.ceil
                                 <p className="text-sm font-medium">Danh sách sản phẩm đang được cập nhật...</p>
                             </div>
                         </div>
-
+// đang làm phần hiện danh sách phiếu nhập theo idncc, nhớ dổi max phiếu thành STT, NHÀ CUNG CẤP thành tên thương hiệu

@@ -5,6 +5,7 @@ export const TaoID=(bien)=>{
      const ID = `${bien}-${today.getFullYear().toString().slice(-2)}${month < 10 ? '0' + month : month}-${Math.floor(1000 + Math.random() * 9000)}`;
      return ID;
 }
+
 export function mapFilesByProduct(files) {
     const result = [];
 

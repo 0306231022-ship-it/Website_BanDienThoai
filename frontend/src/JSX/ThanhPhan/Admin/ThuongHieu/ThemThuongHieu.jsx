@@ -51,11 +51,7 @@ function ThemThuongHieu() {
         const formdata = fun.objectToFormData(dataToSend);
         try {
             dispatch({ type: 'SET_LOADING', payload: true });
-            const ketqqua = await API.CallAPI(formdata, { 
-                PhuongThuc: 1, 
-                url: '/admin/ThemThuongHieu', 
-                fileArray: [img] 
-            });
+            const ketqqua = await API.CallAPI(formdata, { PhuongThuc: 1,  url: '/admin/ThemThuongHieu', fileArray: [img] });
             if (ketqqua.Status) {
                 dispatch({ type: 'SET_ERR_HT', payload: { err: ketqqua.message } });
                 return;

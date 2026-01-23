@@ -104,11 +104,8 @@ function ChiTietThuongHieu() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                
-                {/* --- LEFT COLUMN: BRAND INFO --- */}
                 <div className="lg:col-span-1 space-y-6">
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden relative group hover:shadow-md transition-shadow">
-                        {/* Edit Button */}
                         <button 
                             onClick={() => {
                                 OpenMoDal({
@@ -122,8 +119,6 @@ function ChiTietThuongHieu() {
                         >
                             <i className="fas fa-pen"></i>
                         </button>
-
-                        {/* Cover & Logo */}
                         <div className="bg-gradient-to-br from-teal-500 to-teal-700 h-32 w-full relative">
                             <div className="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
                         </div>
@@ -135,8 +130,6 @@ function ChiTietThuongHieu() {
                             </div>
                             <h3 className="text-2xl font-bold text-gray-900">{thuongHieu.TENTHUONGHIEU}</h3>
                             <p className="text-teal-600 text-xs font-bold uppercase tracking-widest mt-1">Đối tác chính thức</p>
-
-                            {/* Stats Grid */}
                             <div className="grid grid-cols-2 gap-4 mt-8 border-t border-gray-100 pt-6 text-left">
                                 <div className="p-4 bg-gray-50 rounded-2xl">
                                     <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Trạng thái</p>
@@ -147,7 +140,7 @@ function ChiTietThuongHieu() {
                                 </div>
                                 <div className="p-4 bg-gray-50 rounded-2xl">
                                     <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Tổng sản phẩm</p>
-                                    <p className="text-sm font-bold text-gray-800">{thuongHieu.SOLUONG_SANPHAM || 0} <span className="text-gray-400 text-xs font-normal">items</span></p>
+                                    <p className="text-sm font-bold text-gray-800">{thuongHieu.tongSanPham} <span className="text-gray-400 text-xs font-normal">sản phẩm</span></p>
                                 </div>
                             </div>
 
@@ -160,11 +153,7 @@ function ChiTietThuongHieu() {
                         </div>
                     </div>
                 </div>
-
-                {/* --- RIGHT COLUMN: DETAILS & PRODUCTS --- */}
                 <div className="lg:col-span-2 space-y-8">
-                    
-                    {/* 1. MÔ TẢ */}
                     <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden group">
                         <div className="flex items-center justify-between mb-6 relative z-10">
                             <h3 className="text-lg font-bold text-gray-800 flex items-center">
@@ -190,8 +179,6 @@ function ChiTietThuongHieu() {
                         </div>
                         <i className="fas fa-quote-right absolute -top-2 right-6 text-gray-50 text-[120px] -z-0"></i>
                     </div>
-
-                    {/* 2. DANH SÁCH SẢN PHẨM */}
                     <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
                         <div className="p-6 border-b border-gray-50 flex items-center justify-between bg-white">
                             <h3 className="text-lg font-bold text-gray-800 flex items-center">
@@ -199,11 +186,9 @@ function ChiTietThuongHieu() {
                                 Sản phẩm thuộc thương hiệu
                             </h3>
                             <span className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-bold">
-                                {thuongHieu.SOLUONG_SANPHAM || 0}
+                               Tổng : {thuongHieu.tongSanPham}
                             </span>
                         </div>
-
-                        {/* List View Container */}
                         <div className="divide-y divide-gray-50">
                             {SanPham.map((product) => (
                                 <div key={product.IDSANPHAM} className="group flex flex-col sm:flex-row items-start sm:items-center p-6 gap-6 hover:bg-gray-50 transition duration-200">
@@ -214,8 +199,6 @@ function ChiTietThuongHieu() {
                                             className="h-full w-full object-cover object-center group-hover:scale-110 transition-transform duration-500" 
                                         />
                                     </div>
-                                    
-                                    {/* Product Info */}
                                     <div className="flex-1 w-full min-w-0">
                                         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                                             <div className="mb-2 sm:mb-0">
@@ -232,8 +215,6 @@ function ChiTietThuongHieu() {
                                             </div>
                                             <p className="text-lg font-bold text-red-600 whitespace-nowrap">{product.price}</p>
                                         </div>
-                                        
-                                        {/* Actions Bar */}
                                         <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
                                             {/* Stars Rating */}
                                             <div className="flex gap-1">
