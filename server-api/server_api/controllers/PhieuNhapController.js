@@ -18,34 +18,55 @@ export default class PhieuNhapController{
         );
     }
     static async layChiTietPN(req, res) {
-    try {
-        const id = req.query.id;
-        if (!id) {
+        try {
+            const id = req.query.id;
+            if (!id) {
+                return res.json({
+                    Status: false,
+                    message: 'Không tìm thấy phiếu nhập!'
+                });
+            }
+            const kq = await PhieuNhapModal.layChiTietPN(id);
+            if(kq.Status){
+                return res.json({
+                    Status:true,
+                    message:kq.message
+                })
+            };
             return res.json({
-                Status: false,
-                message: 'Không tìm thấy phiếu nhập!'
+                ThanhCong:true,
+                DuLieu:kq
+            })
+        } catch (error) {
+            console.error(error);
+            return res.json({
+                Status: true,
+                message: 'Có lỗi xảy ra khi lấy chi tiết phiếu nhập!',
+                error: error.message
             });
         }
-        const kq = await PhieuNhapModal.layChiTietPN(id);
-        if(kq.Status){
-            return res.json({
-                Status:true,
-                message:kq.message
-            })
-        };
-        return res.json({
-            ThanhCong:true,
-            DuLieu:kq
-        })
-    } catch (error) {
-        console.error(error);
-        return res.json({
-            Status: true,
-            message: 'Có lỗi xảy ra khi lấy chi tiết phiếu nhập!',
-            error: error.message
-        });
     }
-}
+    static async LayPhieuNhap_theo_id_trang(req,res){
+        const id = req.query.id;
+        const page = req.query.page;
+        const linit = 10;
+        const ketqua = await PhieuNhapModal.LayPhieuNhap_theo_id_trang(id,page,linit);
+        if (ketqua) {
+            return res.json({
+                ThanhCong: true,
+                dulieu: ketqua.phieu,
+                Trang : {
+                    totalPhieuNhap:  Math.ceil(ketqua.TtotalPhieuNhap/linit),
+                     message: ketqua.message, 
+                }                
+            });
+        } else {
+            return res.json({
+                ThanhCong: false,
+                message: "Không có dữ liệu"
+            });
+        }
+    }
    
     static async ThemPhieuNhap(req, res) {
          const errors = validationResult(req);

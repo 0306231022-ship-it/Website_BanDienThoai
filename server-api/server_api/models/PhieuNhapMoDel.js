@@ -183,7 +183,42 @@ export default class PhieuNhapModal {
         return { phieunhap: [], totalItems: 0 };
     }
 }
-
+    static async LayPhieuNhap_theo_id_trang(id,page,linit){
+        try {
+            const OFFSET = (page - 1) * linit;
+            const [ketqqua] = await execute(`
+                SELECT 
+                    pn.IDPN,
+                    pn.NGAYNHAP,
+                    pn.TONGTIEN,
+                    pn.TRANGTHAI,
+                    nd.HOTEN
+                FROM PHIEUNHAP pn
+                JOIN NGUOIDUNG nd ON pn.IDND = nd.IDND
+                WHERE pn.IDNCC = ? 
+                ORDER BY pn.NGAYNHAP DESC
+                LIMIT ? OFFSET ?;
+                `,[id,linit,OFFSET]);
+            const [countRows]= await execute(`
+                SELECT COUNT(*) AS totalPhieuNhap
+                FROM PHIEUNHAP
+                WHERE IDNCC=?
+                `, [id]);
+             const total = countRows[0].totalPhieuNhap;
+             const start = OFFSET + 1;
+             const end = Math.min(page * linit, total);
+             return {
+                phieu : ketqqua,
+                TtotalPhieuNhap: total,
+                message: `Hiển thị ${start}-${end} trên ${total} phiếu nhập`
+             };
+        } catch (error) {
+            console.log(error)
+            return {
+                status : true,
+            }
+        }
+    }
 
  
 

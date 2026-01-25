@@ -27,7 +27,7 @@ app.use('/api/website', websiteRoute);
 
 app.use((req, res) => 
   res.json({
-      Status:true,
+       Status:true,
        message: 'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!' 
   }));
 app.use((err, req, res, next) => {

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
@@ -42,6 +42,9 @@ function ThemPhieuNhap() {
         HinhAnh: [] 
     };
     const [sanPhamForm, setSanPhamForm] = useState(initialProductState);
+    const navigate = useNavigate();
+
+
     useEffect(()=>{
         GetTTCaNhan();
         ThongBao.ThongBao_CanhBao('Chức năng IMEI chưa được phát triển vui lòng nhập giá trị giả định trước khi thực hiện!')
@@ -302,9 +305,9 @@ function ThemPhieuNhap() {
                 <h1 className="text-3xl font-bold text-blue-700 uppercase">
                     <i className="fa-solid fa-boxes-packing mr-2"></i> Phiếu Nhập Kho
                 </h1>
-                <Link to='/admin/PhieuNhapHang' className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded shadow transition">
+                <button onClick={() => navigate(-1)} className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded shadow transition">
                     <i className="fa-solid fa-arrow-left"></i> Quay lại
-                </Link>
+                </button>
             </div>
             <div className="bg-white rounded-lg shadow-md p-6 mb-6 border-t-4 border-blue-600">
                 <h2 className="text-xl font-semibold mb-4 text-gray-700 border-b pb-2">1. Thông tin chung</h2>

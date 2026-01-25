@@ -229,7 +229,8 @@ adminRouter.get('/laynhacchoatdong' , authMiddleware , NhaCungCapController.LayD
 adminRouter.get('/laythuonghieu' , authMiddleware , ThuongHieuController.layth );
 adminRouter.get('/getPhieu', authMiddleware,PhieuNhapController.layDL);
 adminRouter.get('/ChiTietPhieuNhap' ,authMiddleware, PhieuNhapController.layChiTietPN);
-adminRouter.get('/laysp_thuonghieu',authMiddleware,ThuongHieuController.laysp_thuonghieu)
+adminRouter.get('/laysp_thuonghieu',authMiddleware,ThuongHieuController.laysp_thuonghieu);
+adminRouter.get('/laydspn_idncc' ,authMiddleware, PhieuNhapController.LayPhieuNhap_theo_id_trang)
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;

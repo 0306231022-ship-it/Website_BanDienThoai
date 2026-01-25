@@ -1,9 +1,10 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams , useNavigate } from "react-router-dom";
 import * as API from '../../../../JS/API/API';
 import { useState, useEffect } from "react";
 
 function ChiTietPhieu() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [DuLieuCungCap, setDuLieuCungCap] = useState([]);
     const [NguoiNhap, setNguoiNhap] = useState([]);
     const [ThongTinPhieu, setThongTinPhieu] = useState([]);
@@ -23,8 +24,6 @@ function ChiTietPhieu() {
                     return;
                 }
                 const KetQua = await API.CallAPI(undefined, { url: `/admin/ChiTietPhieuNhap?id=${id}`, PhuongThuc: 2 });
-            
-
                 if (KetQua.Status) {
                     seterr(KetQua.message);
                     return;
@@ -96,9 +95,9 @@ function ChiTietPhieu() {
 
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 no-print">
                     <div>
-                        <Link to='/admin/PhieuNhapHang' className="text-gray-500 hover:text-blue-600 flex items-center gap-1 text-sm mb-1">
-                            <i className="fa-solid fa-arrow-left"></i> Quay lại danh sách
-                        </Link>
+                        <button onClick={() => navigate(-1)} className="text-gray-500 hover:text-blue-600 flex items-center gap-1 text-sm mb-1">
+                            <i className="fa-solid fa-arrow-left"></i> Quay lại 
+                        </button>
                         <h1 className="text-2xl font-bold text-gray-800">
                             Phiếu Nhập: <span className="text-blue-600">#{id}</span>
                             <span className="ml-2 text-sm font-medium bg-yellow-100 text-yellow-800 px-2.5 py-0.5 rounded border border-yellow-200">

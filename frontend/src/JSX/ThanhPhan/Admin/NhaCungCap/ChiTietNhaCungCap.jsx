@@ -5,6 +5,7 @@ import CompanyInfoCard from './compoment/ThongTin';
 import StatRow from './compoment/StarRow';
 import BankCard from './compoment/NganHang';
 import { useModalContext } from '../../../../CONTEXT/QuanLiModal';
+import { Link } from 'react-router-dom';
 
 function ChiTietNhaCungCap() {
     const [activeTab, setActiveTab] = useState('history');
@@ -13,6 +14,10 @@ function ChiTietNhaCungCap() {
     const [err, seterr] = useState('');
     const [loading, setloading] = useState(false);
     const { OpenMoDal } = useModalContext();
+    const [loading2,setloading2] = useState(false);
+    const [page,setpage] = useState(1);
+    const [PhieuNhap_theo_idncc,setPhieu] = useState([]);
+    const [PhanTrang_phieunhap,setPhanTrang_PhieuNhap] = useState({})
     useEffect(() => {
         const layDL = async () => {
             setloading(true);
@@ -40,15 +45,24 @@ function ChiTietNhaCungCap() {
     }, [id]);
     //Lấy API lịch sử nhập hàng theo IDNCC
     useEffect(()=>{
+        setloading2(true)
         const laydata= async()=>{
             try {
-                const ketqua= await API.CallAPI(undefined,{PhuongThuc:2, url : `/admin/laydspn_idncc?id=${dulieu.IDNCC}`});
-                alert(JSON.stringify(ketqua))
+                const ketqua= await API.CallAPI(undefined,{PhuongThuc:2, url: `/admin/laydspn_idncc?id=${id}&page=${page}`});
+                if(ketqua.ThanhCong){
+                    setPhieu(ketqua.dulieu);
+                    setPhanTrang_PhieuNhap(ketqua.Trang)
+                    setloading2(false)
+                }
             } catch (error) {
-                
+                console.error('Lỗi sảy ra:' + error)
+            } finally {
+                setloading2(false)
             }
-        }
-    },[])
+        };
+        laydata();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[page,id])
 
     // --- Loading UI ---
     if (loading) {
@@ -150,7 +164,7 @@ function ChiTietNhaCungCap() {
                         />
                         <StatRow
                             label="Tổng nhập tháng này"
-                            value={150000} // Nếu có data từ API thì thay bằng {dulieu.TONGNHAP}
+                            value={150000} 
                             color="blue"
                             icon="fa-chart-line"
                         />
@@ -217,7 +231,6 @@ function ChiTietNhaCungCap() {
                 <thead className="bg-slate-50 sticky top-0 z-10">
                     <tr>
                         <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Mã phiếu</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Nhà cung cấp</th>
                         <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Ngày nhập</th>
                         <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Người tạo</th>
                         <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Tổng tiền</th>
@@ -226,82 +239,71 @@ function ChiTietNhaCungCap() {
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                    
-                    {/* Dòng 1: Hoàn thành */}
-                    <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
-                        <td className="px-4 py-3 text-sm font-medium text-blue-600">PNK-001</td>
-                        <td className="px-4 py-3 text-sm text-slate-700 font-medium">Công ty TNHH ABC</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">25/10/2023</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">Nguyễn Văn A</td>
-                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right">15.500.000 ₫</td>
+                    {
+                        loading2 ? (
+                            <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-4">
+                                <div className="relative">
+                                    <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+                                    <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+                                </div>
+                                <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang tải dữ liệu...</p>
+                            </div>
+                        ):(
+                            PhieuNhap_theo_idncc && PhieuNhap_theo_idncc.length>0 ? (
+                                PhieuNhap_theo_idncc.map((phieu)=>(
+                                    <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
+                        <td className="px-4 py-3 text-sm font-medium text-blue-600">{phieu.IDPN}</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">{ new Date(phieu.NGAYNHAP).toLocaleDateString("vi-VN")}</td>
+                        <td className="px-4 py-3 text-sm text-slate-500">{phieu.HOTEN}</td>
+                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right"> {Number(phieu.TONGTIEN).toLocaleString("vi-VN") + " ₫"}</td>
                         <td className="px-4 py-3 text-center">
-                            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">Hoàn thành</span>
+                            {
+                                phieu.TRANGTHAI ===1 ? (
+                                    <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">Hoàn thành</span>
+                                ):(
+                                    <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-700"> Chưa hoàn thành</span>
+                                )
+                            }
                         </td>
                         <td className="px-4 py-3 text-center">
-                            <button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors"><i className="fa-solid fa-eye"></i></button>
-                        </td>
-                    </tr>
-
-                    {/* Dòng 2: Đang xử lý */}
-                    <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
-                        <td className="px-4 py-3 text-sm font-medium text-blue-600">PNK-002</td>
-                        <td className="px-4 py-3 text-sm text-slate-700 font-medium">Nhà phân phối XYZ</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">24/10/2023</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">Trần Thị B</td>
-                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right">8.200.000 ₫</td>
-                        <td className="px-4 py-3 text-center">
-                            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700 border border-amber-200">Đang xử lý</span>
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                            <button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors"><i className="fa-solid fa-eye"></i></button>
-                        </td>
-                    </tr>
-
-                    {/* Dòng 3: Đã hủy */}
-                    <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
-                        <td className="px-4 py-3 text-sm font-medium text-blue-600">PNK-003</td>
-                        <td className="px-4 py-3 text-sm text-slate-700 font-medium">Kho Tổng</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">20/10/2023</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">Nguyễn Văn A</td>
-                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right">45.000.000 ₫</td>
-                        <td className="px-4 py-3 text-center">
-                            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">Đã hủy</span>
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                            <button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors"><i className="fa-solid fa-eye"></i></button>
+                              <Link to={`/admin/PhieuNhapHang/ChiTiet/${phieu.IDPN}`} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết"> xem chi tiết <i className="fas fa-arrow-right ml-1"></i></Link>
                         </td>
                     </tr>
 
-                     {/* Dòng 4: Hoàn thành */}
-                     <tr className="hover:bg-slate-50 transition-colors cursor-pointer group">
-                        <td className="px-4 py-3 text-sm font-medium text-blue-600">PNK-004</td>
-                        <td className="px-4 py-3 text-sm text-slate-700 font-medium">Công ty TNHH ABC</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">18/10/2023</td>
-                        <td className="px-4 py-3 text-sm text-slate-500">Lê C</td>
-                        <td className="px-4 py-3 text-sm font-medium text-slate-700 text-right">2.100.000 ₫</td>
-                        <td className="px-4 py-3 text-center">
-                            <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 border border-emerald-200">Hoàn thành</span>
-                        </td>
-                        <td className="px-4 py-3 text-center">
-                            <button className="text-slate-400 hover:text-blue-600 p-1 rounded transition-colors"><i className="fa-solid fa-eye"></i></button>
-                        </td>
-                    </tr>
-
+                                ))
+                            ):(
+                               <tr class="hover:bg-transparent">
+                                    <td colspan="100%" class="p-0">
+                                        < div class="flex flex-col items-center justify-center py-16 bg-gray-50/50 border-y border-dashed border-gray-200">
+                                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                                 <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                                </svg>
+                                            </div>
+                                            <h3 class="text-gray-700 font-semibold">Danh sách trống</h3>
+                                            <p class="text-gray-500 text-sm max-w-xs text-center mt-2"> Hiện tại hệ thống chưa ghi nhận dữ liệu nào trong mục này.</p>
+                                             <Link to='/admin/PhieuNhapHang/themPhieuNhap' class="mt-6 px-4 py-2 bg-teal-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
+                                                <i class="fa-solid fa-plus"></i> + Thêm dữ liệu đầu tiên
+                                            </Link>
+                                          </div>
+                                     </td>
+                                </tr>
+                            )
+                        )
+                    }
                 </tbody>
             </table>
         </div>
 
         {/* --- 3. PHÂN TRANG (PAGINATION) --- */}
         <div className="p-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-sm text-slate-500">
-            <span>Hiển thị 1-4 trên 24 phiếu nhập</span>
+            <span>{PhanTrang_phieunhap.message}</span>
             <div className="flex gap-1">
-                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-50">
+                <button onClick={()=>{setpage(P=>P-1)}} disabled={page===1} className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-50">
                     <i className="fa-solid fa-chevron-left text-xs"></i>
                 </button>
-                <button className="w-8 h-8 flex items-center justify-center rounded bg-blue-600 text-white font-medium border border-blue-600">1</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-600">2</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-600">3</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50">
+                <span className="w-8 h-8 flex items-center justify-center rounded bg-blue-600 text-white font-medium border border-blue-600">{page}</span>
+                <button onClick={()=>{setpage(P=>P+1)}} disabled={page===PhanTrang_phieunhap.totalPhieuNhap} className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50">
                     <i className="fa-solid fa-chevron-right text-xs"></i>
                 </button>
             </div>
