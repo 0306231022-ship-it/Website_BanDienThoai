@@ -14,6 +14,7 @@ function AdminLogin() {
             passWord:passWord,
         };
        const ketqua= await login(obj);
+       alert(JSON.stringify(ketqua));
        if(ketqua?.Status){
             setLoi(ketqua.message);
             return;

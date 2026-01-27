@@ -59,3 +59,40 @@ Chia lấy phần nguyên : Math.ceil
                             </div>
                         </div>
 // đang làm phần hiện danh sách phiếu nhập theo idncc, nhớ dổi max phiếu thành STT, NHÀ CUNG CẤP thành tên thương hiệu
+//=====================================
+Dữ liệu gửi lên server có dạng 
+const DuLieu = {
+    ThongTinChung:{
+        IDNCC:'',
+        IDND:'',
+        GHICHU:'',
+        THANHTOAN:{
+            TONGTIEN:'',
+            DA_THANHTOAN:'',
+        }
+    }
+    SANPHAM : [
+        {
+        TENSP:'',
+        HANG:'',
+        GIANHAP:'',
+        GIABAN:'',
+        THONGSO_KYTHUAT:{
+            HEDIEUHANH:'',
+            MANHINH:'',
+            RAM:'',
+            BONHOTRONG:'',
+            PIN:'',
+            MAUSAC
+        }
+        MOTASP:'',
+        HINHANH:[
+
+        ],
+        IMEI: [
+
+        ]
+    }
+    // THÊM MẢNG CÁC SẢN PHÂM
+    ]
+}

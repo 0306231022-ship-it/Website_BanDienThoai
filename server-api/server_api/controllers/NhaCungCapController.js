@@ -298,5 +298,8 @@ export default class NhaCungCapController{
                 })
             }
         }
-   
+        static async kiemtraid(req,res){
+            const kiemtra = await NhaCungCapModel.kiemtraid(req.query.id);
+            return res.json({kiemtra})
+        }
 }

@@ -134,6 +134,7 @@ function QuanLiTT() {
                     <Route path='NhaCungCap/ChiTiet/:id' element={<ChiTietNhaCungCap/>} />
                     <Route path='PhieuNhapHang' element={<PhieuNhapHang/>} />
                     <Route path='PhieuNhapHang/themPhieuNhap' element={<ThemPhieuNhap/>} />
+                    <Route path='PhieuNhapHang/themPhieuNhap/:id' element={<ThemPhieuNhap/>} />
                     <Route path='PhieuNhapHang/ChiTiet/:id' element={<ChiTietPhieu/>} />
                     <Route path="hoso" element={<HoSo />} />
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />

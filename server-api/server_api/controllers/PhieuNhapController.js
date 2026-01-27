@@ -69,28 +69,43 @@ export default class PhieuNhapController{
     }
    
     static async ThemPhieuNhap(req, res) {
-         const errors = validationResult(req);
-         if (!errors.isEmpty()) {
-            return res.json({ 
-                Validate: true, 
-                errors: errors.array() 
-            });
-        };
-        const files2D = mapFilesByProduct(req.files);
-        const kq= await PhieuNhapModal.ThemPhieuNhap(req.body,files2D);
-        if(kq.Status===false){
-            return res.json({
-                Status:true,
-                message:kq.message
-            })
-        };
-        if(kq.ThanhCong){
-            return res.json({
-                ThanhCong:true,
-                message:'Thêm sản phẩm thành công!'
-            })
+    try {
+        // 1. Kiểm tra nếu không có dữ liệu
+        if (!req.body.DuLieu) {
+            return res.json({ Status: false, message: "Không có dữ liệu gửi lên" });
         }
+
+        // 2. Parse dữ liệu JSON từ Client
+        const bodyData = JSON.parse(req.body.DuLieu); 
+        const danhSachSP = bodyData.SANPHAM;
+
+        // 3. Debug kiểm tra dữ liệu nhận được
+        console.log("Dữ liệu SP:", bodyData);
+        console.log("Số lượng file nhận được từ Multer:", req.files ? req.files.length : 0);
+
+        // 4. Map file bằng cách truyền thêm danh sách SP
+        const files2D = mapFilesByProduct(req.files, danhSachSP);
+
+        // 5. Gọi Modal xử lý lưu DB
+        const kq = await PhieuNhapModal.ThemPhieuNhap(bodyData, files2D);
+
+        if (kq.Status === false) {
+            return res.json({
+                ThanhCong: false,
+                message: kq.message
+            });
+        }
+
+        return res.json({
+            ThanhCong: true,
+            message: 'Thêm phiếu nhập thành công!'
+        });
+
+    } catch (error) {
+        console.error("Lỗi Controller:", error);
+        return res.status(500).json({ ThanhCong: false, message: "Lỗi Server: " + error.message });
     }
+}
     static async layDL(req, res) {
     try {
         const page = parseInt(req.query.page) || 1;

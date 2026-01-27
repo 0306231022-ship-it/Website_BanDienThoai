@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams , Link } from "react-router-dom";
 import * as API from '../../../../JS/API/API';
 import CompanyInfoCard from './compoment/ThongTin';
 import StatRow from './compoment/StarRow';
 import BankCard from './compoment/NganHang';
 import { useModalContext } from '../../../../CONTEXT/QuanLiModal';
-import { Link } from 'react-router-dom';
+
 
 function ChiTietNhaCungCap() {
     const [activeTab, setActiveTab] = useState('history');
@@ -134,10 +134,10 @@ function ChiTietNhaCungCap() {
                             <span className="hidden sm:inline">Sửa</span>
                         </button>
 
-                        <button className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-all flex items-center gap-2 hover:shadow-lg">
+                        <Link to={`/admin/PhieuNhapHang/themPhieuNhap/${id}`} className="px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 transition-all flex items-center gap-2 hover:shadow-lg">
                             <i className="fa-solid fa-plus"></i>
                             <span>Nhập hàng</span>
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </header>

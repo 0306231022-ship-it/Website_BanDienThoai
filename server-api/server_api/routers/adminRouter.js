@@ -6,7 +6,6 @@ import pload from "../middleware/upload.js";
 import multer from "multer";
 import { body, validationResult } from "express-validator";
 import { validateImages } from "../validation/KTimage.js";
-import {UserValidate } from '../validation/KTDangNhap.js';
 import {validateSocialLinks} from '../validation/KiemTraLinkFaceBook.js';
 import { validateIns } from '../validation/KiemTraIns.js';
 import { validateDiaChi } from "../validation/KiemTraDiaChi.js";
@@ -23,32 +22,10 @@ const adminRouter = Router();
 const upload = multer();
 //==========================================
 adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
-adminRouter.post('/DangNhap',  upload.none(), UserValidate, CanhanADController.DangNhap);
-adminRouter.post('/ChinhSuaTen', upload.none(),  [
-    body('Ten')
-    .notEmpty()
-    .withMessage('Vui lòng nhập đầy đủ thông tin!')
-    .isLength({max:50})
-    .withMessage('Vượt quá kí tự cho phép!'),
-],
-(req, res, next) => {
-     const errors = validationResult(req);
-     if (!errors.isEmpty()) {
-            return res.json({ Validate: true, errors: errors.array() });
-    }
-    next();
-}, adminController.CapNhatTen);
-adminRouter.post('/ChinhLoGo',pload.array("files", 5), validateImages,
-(req, res, next) => {      
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.json({
-        Validate: true,
-        errors: errors.array()
-      });
-    }
-    next();
-  },adminController.ChinhSuaLoGo);
+adminRouter.post('/DangNhap',upload.none(), CanhanADController.DangNhap);
+adminRouter.post('/ChinhSuaTen', upload.none(), adminController.CapNhatTen);
+adminRouter.post('/ChinhLoGo',pload.array("files", 5), validateImages,adminController.ChinhSuaLoGo);
+
   adminRouter.post('/ChinhSuaMoTa',upload.none(),[
     body('MoTa')
      .notEmpty()
@@ -217,7 +194,12 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
     }
     next();
 }, NhaCungCapController.CapNhatSoTaiKhoan);
-adminRouter.post('/ThemPhieuNhap',  authMiddleware , pload.any(), parseNewProductState ,PhieuNhapValidate, PhieuNhapController.ThemPhieuNhap);
+adminRouter.post(
+    '/ThemPhieuNhap', 
+    authMiddleware, 
+    upload.array('HinhAnh', 20), // Thêm Multer ở đây (tên field phải khớp với Client)
+    PhieuNhapController.ThemPhieuNhap
+);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
@@ -230,7 +212,8 @@ adminRouter.get('/laythuonghieu' , authMiddleware , ThuongHieuController.layth )
 adminRouter.get('/getPhieu', authMiddleware,PhieuNhapController.layDL);
 adminRouter.get('/ChiTietPhieuNhap' ,authMiddleware, PhieuNhapController.layChiTietPN);
 adminRouter.get('/laysp_thuonghieu',authMiddleware,ThuongHieuController.laysp_thuonghieu);
-adminRouter.get('/laydspn_idncc' ,authMiddleware, PhieuNhapController.LayPhieuNhap_theo_id_trang)
+adminRouter.get('/laydspn_idncc' ,authMiddleware, PhieuNhapController.LayPhieuNhap_theo_id_trang);
+adminRouter.get('/kiemtra_id_ncc' ,authMiddleware , NhaCungCapController.kiemtraid);
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;

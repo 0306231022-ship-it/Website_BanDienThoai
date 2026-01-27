@@ -18,6 +18,19 @@ export default class adminController{
         );
     }
     static async CapNhatTen(req,res){
+        await body('Ten')
+            .notEmpty()
+            .withMessage('Vui lòng nhập đầy đủ thông tin!')
+            .isLength({max:50})
+            .withMessage('Vượt quá kí tự cho phép!')
+            .run(req);
+        const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    validation: true,
+                    errors: errors.array() 
+                });
+            }
          const { Ten } = req.body;
          if (!Ten) {
             return res.json({ 
@@ -25,13 +38,6 @@ export default class adminController{
                 message: 'Vui lòng kiểm tra lại dữ liệu!' 
             });
         } 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.json({
-                validation: true,
-                errors: errors.array() 
-            });
-        }
         const CaiDat= CaiDatModel.updateTen(Ten);
         if(CaiDat===1){
             return res.json({

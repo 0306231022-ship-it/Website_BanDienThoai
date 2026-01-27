@@ -158,6 +158,22 @@ export default class NhaCungCapModel{
       return false;
     }
   }
+  static async kiemtraid(id){
+    try {
+        const [ketqua] = await execute(`
+            SELECT * FROM nhacungcap
+            WHERE IDNCC=? AND TRANGTHAI=1
+            `,[id]);
+       const exists= ketqua.length>0 ? true : false
+       return exists;
+    } catch (error) {
+        console.error('lỗi sãy ra:' + error);
+        return {
+            status:true,
+            message:'Không thể truy vấn dữ liệu, Vui lòng thử lại sau!'
+        }
+    }
+  }
 
 
 
