@@ -1,7 +1,7 @@
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import PhieuNhapModal from '../models/PhieuNhapMoDel.js';
-import { validationResult } from "express-validator";
+import { body, validationResult } from "express-validator";
 import { mapFilesByProduct } from '../function.js';
 
 
@@ -69,43 +69,151 @@ export default class PhieuNhapController{
     }
    
     static async ThemPhieuNhap(req, res) {
-    try {
-        // 1. Kiểm tra nếu không có dữ liệu
-        if (!req.body.DuLieu) {
-            return res.json({ Status: false, message: "Không có dữ liệu gửi lên" });
+        let DuLieuPhieuNhap = req.body.DuLieu;
+        if (typeof DuLieuPhieuNhap === 'string') {
+             DuLieuPhieuNhap = JSON.parse(DuLieuPhieuNhap);
         }
-
-        // 2. Parse dữ liệu JSON từ Client
-        const bodyData = JSON.parse(req.body.DuLieu); 
-        const danhSachSP = bodyData.SANPHAM;
-
-        // 3. Debug kiểm tra dữ liệu nhận được
-        console.log("Dữ liệu SP:", bodyData);
-        console.log("Số lượng file nhận được từ Multer:", req.files ? req.files.length : 0);
-
-        // 4. Map file bằng cách truyền thêm danh sách SP
-        const files2D = mapFilesByProduct(req.files, danhSachSP);
-
-        // 5. Gọi Modal xử lý lưu DB
-        const kq = await PhieuNhapModal.ThemPhieuNhap(bodyData, files2D);
-
-        if (kq.Status === false) {
+        req.body = DuLieuPhieuNhap;
+        const validate_values = [];
+        // Validate Thông Tin Chung
+        validate_values.push(
+            body('ThongTinChung.IDNCC')
+                .notEmpty().withMessage('Vui lòng chọn nhà cung cấp!')
+                .custom(async (value) => {
+                    const exists = await PhieuNhapModal.kiemtraidncc(value);
+                    if (!exists) {
+                        return Promise.reject('Nhà cung cấp không tồn tại hoặc không hoạt động!');
+                    }
+                }),
+            body('ThongTinChung.IDND')
+                .notEmpty().withMessage('ID người dùng không được để trống!')
+                .custom(async (value) => {
+                    const exists = await PhieuNhapModal.kiemtraidnd(value);
+                    if (!exists) {
+                        return Promise.reject('Người dùng không tồn tại hoặc không hoạt động!');
+                    }
+                }),
+            body('ThongTinChung.GHICHU')
+                .optional().isString().withMessage('Ghi chú phải là chuỗi!')
+                .notEmpty().withMessage('Ghi chú không được để trống!')
+                .isLength({ max: 500 }).withMessage('Ghi chú vượt quá kí tự cho phép!'),
+            body('ThongTinChung.THANHTOAN.TONGTIEN')
+                .notEmpty().withMessage('Vui lòng nhập tổng tiền!')
+                .isFloat({ min: 0 }).withMessage('Tổng tiền phải là số hợp lệ và không được âm!'),
+            body('ThongTinChung.THANHTOAN.DA_THANHTOAN')
+                .notEmpty().withMessage('Vui lòng nhập số tiền đã thanh toán!')
+                .isFloat({ min: 0 }).withMessage('Số tiền đã thanh toán phải là số hợp lệ và không được âm!')
+                .custom((value, { req }) => {
+                    if (parseFloat(value) > parseFloat(req.body.ThongTinChung.THANHTOAN.TONGTIEN)) {
+                        throw new Error('Số tiền đã thanh toán không được lớn hơn tổng tiền!');
+                    }           return true;
+                }),
+        );
+        // Validate Sản Phẩm
+        if (!Array.isArray(req.body.SANPHAM) || req.body.SANPHAM.length === 0) {
+            return res.json({ Status: false, message: 'Vui lòng thêm sản phẩm vào phiếu nhập!' });
+        }
+        req.body.SANPHAM.forEach((sp, index) => {
+            validate_values.push(
+                body(`SANPHAM[${index}].TENSP`)
+                    .notEmpty().withMessage(`Vui lòng nhập tên sản phẩm cho sản phẩm thứ ${index + 1}!`)
+                    .isLength({ max: 255 }).withMessage(`Tên sản phẩm cho sản phẩm thứ ${index + 1} vượt quá kí tự cho phép!`),
+                body(`SANPHAM[${index}].HANG`)
+                    .notEmpty().withMessage(`Vui lòng nhập hãng cho sản phẩm thứ ${index + 1}!`)
+                    .custom(async (value) => {
+                        const exists = await PhieuNhapModal.kiemtrahang(value);
+                        if (!exists) {
+                            return Promise.reject(`Hãng ${value} không tồn tại hoặc không hoạt động!`);
+                        }
+                    }),
+                body(`SANPHAM[${index}].GIANHAP`)
+                    .notEmpty().withMessage(`Vui lòng nhập giá nhập cho sản phẩm thứ ${index + 1}!`)
+                    .isFloat({ min: 0 }).withMessage(`Giá nhập cho sản phẩm thứ ${index + 1} phải là số hợp lệ và không được âm!`),
+                body(`SANPHAM[${index}].GIABAN`)
+                    .notEmpty().withMessage(`Vui lòng nhập giá bán cho sản phẩm thứ ${index + 1}!`)
+                    .isFloat({ min: 0 }).withMessage(`Giá bán cho sản phẩm thứ ${index + 1} phải là số hợp lệ và không được âm!`),
+                body(`SANPHAM[${index}].THONGSO_KYTHUAT.HEDIEUHANH`)
+                    .optional().isString().withMessage(`Hệ điều hành phải là chuỗi!`)
+                    .notEmpty().withMessage(`Vui lòng nhập hệ điều hành cho sản phẩm thứ ${index + 1}!`)
+                    .isLength({ max: 100 }).withMessage(`Hệ điều hành cho sản phẩm thứ ${index + 1} vượt quá kí tự cho phép!`),
+                body(`SANPHAM[${index}].THONGSO_KYTHUAT.MANHINH`)
+                    .notEmpty().withMessage(`Vui lòng nhập màn hình cho sản phẩm thứ ${index + 1}!`)
+                    .optional().isString().withMessage(`Màn hình phải là chuỗi!`),
+                body(`SANPHAM[${index}].THONGSO_KYTHUAT.RAM`)
+                    .notEmpty().withMessage(`Vui lòng nhập RAM cho sản phẩm thứ ${index + 1}!`)
+                    .optional().isString().withMessage(`RAM phải là chuỗi!`),
+                body(`SANPHAM[${index}].THONGSO_KYTHUAT.BONHOTRONG`)
+                    .notEmpty().withMessage(`Vui lòng nhập bộ nhớ trong cho sản phẩm thứ ${index + 1}!`)
+                    .optional().isString().withMessage(`Bộ nhớ trong phải là chuỗi!`),
+                body(`SANPHAM[${index}].THONGSO_KYTHUAT.PIN`)
+                    .notEmpty().withMessage(`Vui lòng nhập pin cho sản phẩm thứ ${index + 1}!`)
+                    .optional().isString().withMessage(`Pin phải là chuỗi!`),
+                body(`SANPHAM[${index}].THONGSO_KYTHUAT.MAUSAC`)
+                    .notEmpty().withMessage(`Vui lòng nhập màu sắc cho sản phẩm thứ ${index + 1}!`)
+                    .optional().isString().withMessage(`Màu sắc phải là chuỗi!`),
+                body(`SANPHAM[${index}].MOTASP`)
+                    .notEmpty().withMessage(`Vui lòng nhập mô tả sản phẩm cho sản phẩm thứ ${index + 1}!`)
+                    .optional().isString().withMessage(`Mô tả sản phẩm phải là chuỗi!`)
+                    .isLength({ max: 1000 }).withMessage(`Mô tả sản phẩm cho sản phẩm thứ ${index + 1} vượt quá kí tự cho phép!`),
+            );
+        });
+        // validate hinh ảnh từ multer
+        const filesByProduct = mapFilesByProduct(req.files);
+        req.body.SANPHAM.forEach((sp, index) => {
+            const filesForThisProduct = filesByProduct[index] || [];
+            const expectedImageCount = parseInt(sp.SO_LUONG_ANH) || 0;
+            if (filesForThisProduct.length < expectedImageCount) {
+                validate_values.push(
+                    body(`SANPHAM[${index}].HINHANH`).custom(() => {
+                        throw new Error(`Số lượng hình ảnh tải lên cho sản phẩm thứ ${index + 1} không đủ!`);
+                    })
+                );
+            }
+        });
+        //validate IMEI
+        req.body.SANPHAM.forEach((sp, index) => {
+            if (!Array.isArray(sp.IMEI) || sp.IMEI.length === 0) {
+                validate_values.push(
+                    body(`SANPHAM[${index}].IMEI`).custom(() => {
+                        throw new Error(`Vui lòng nhập IMEI cho sản phẩm thứ ${index + 1}!`);
+                    })
+                );
+            } else if (sp.IMEI.length != sp.SO_LUONG_ANH) {
+                validate_values.push(
+                    body(`SANPHAM[${index}].IMEI`).custom(() => {
+                        throw new Error(`Số lượng IMEI không khớp với số lượng hình ảnh cho sản phẩm thứ ${index + 1}!`);
+                    })
+                );
+            } else {
+                sp.IMEI.forEach((imei, imeiIndex) => {
+                    validate_values.push(
+                        body(`SANPHAM[${index}].IMEI[${imeiIndex}]`)
+                            .notEmpty().withMessage(`Vui lòng nhập IMEI thứ ${imeiIndex + 1} cho sản phẩm thứ ${index + 1}!`)
+                            .isLength({ min: 14, max: 16 }).withMessage(`IMEI thứ ${imeiIndex + 1} cho sản phẩm thứ ${index + 1} phải từ 14 đến 16 ký tự!`)
+                    );
+                });
+            }
+        });
+        // Run all validations
+        await Promise.all(validate_values.map(validation => validation.run(req)));
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({ Status: true, Validate: true, errors: errors.array() });
+        }
+        const ketqua = await PhieuNhapModal.ThemPhieuNhap(DuLieuPhieuNhap, filesByProduct);
+        if (ketqua.ThanhCong) {
+            return res.json({
+                ThanhCong: true,
+                message: ketqua.message
+            });
+        } else {
             return res.json({
                 ThanhCong: false,
-                message: kq.message
+                message: ketqua.message
             });
         }
 
-        return res.json({
-            ThanhCong: true,
-            message: 'Thêm phiếu nhập thành công!'
-        });
-
-    } catch (error) {
-        console.error("Lỗi Controller:", error);
-        return res.status(500).json({ ThanhCong: false, message: "Lỗi Server: " + error.message });
     }
-}
     static async layDL(req, res) {
     try {
         const page = parseInt(req.query.page) || 1;
@@ -132,15 +240,5 @@ export default class PhieuNhapController{
     }
    
 }
-
-
-   
-       
-
-       
-    
-
-   
-
 
 }

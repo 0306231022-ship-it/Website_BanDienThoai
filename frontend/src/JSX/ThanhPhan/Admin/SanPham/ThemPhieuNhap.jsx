@@ -4,8 +4,6 @@ import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 import { useADContext } from '../../../../CONTEXT/QuanLiCaNhanAdmin';
-
-
 function ThemPhieuNhap() {
     const { id } = useParams();
     const [errID, seterrID] = useState('')
@@ -66,7 +64,8 @@ function ThemPhieuNhap() {
             }
         };
         LayDL();
-    }, [id]);
+         // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         const kiemtra = async () => {
@@ -180,7 +179,6 @@ function ThemPhieuNhap() {
 
         } catch (error) {
             console.error("Lỗi:", error);
-            alert("Có lỗi xảy ra: " + (error.message || error));
         }
     };
 
@@ -245,21 +243,19 @@ function ThemPhieuNhap() {
         });
     };
 
-    // LOGIC GỬI LÊN SERVER ĐÃ FIX LỖI MULTER & FILES IS NOT ITERABLE
     const HoanTatNhapKho = async (CheDo) => {
         if (!bangSanPham || bangSanPham.length === 0) {
             ThongBao.ThongBao_CanhBao('Vui lòng thêm sản phẩm vào bảng tạm trước!');
             return;
         }
-
         setLoading(true);
         try {
-            // Cấu trúc dữ liệu JSON bạn yêu cầu
             const DuLieu = {
                 ThongTinChung: {
                     IDNCC: thongTinPhieu.NhaCungCap,
                     IDND: TTCaNhan?.IDND,
                     GHICHU: thongTinPhieu.GhiChu,
+                    CheDoLuu: CheDo,
                     THANHTOAN: {
                         TONGTIEN: tongTienHang,
                         DA_THANHTOAN: thongTinPhieu.DaThanhToan,
@@ -282,9 +278,9 @@ function ThemPhieuNhap() {
                     },
                     MOTASP: sp.ThongSoKyThuat.MoTa,
                     IMEI: sp.parsedIMEI,
-                    SO_LUONG_ANH: sp.HinhAnh.length // Quan trọng: Để server biết bóc tách file từ mảng chung
+                    SO_LUONG_ANH: sp.HinhAnh.length
                 })),
-                CheDoLuu: CheDo
+                
             };
 
             const formdata = new FormData();
@@ -303,13 +299,14 @@ function ThemPhieuNhap() {
                 PhuongThuc: 1,
                 url: '/admin/ThemPhieuNhap'
             });
+            alert(JSON.stringify(ketqua));
 
-            if (ketqua.ThanhCong) {
+            /*if (ketqua.ThanhCong) {
                 ThongBao.ThongBao_ThanhCong(ketqua.message);
                 if (CheDo === 1) navigate(-1);
             } else {
                 ThongBao.ThongBao_Loi(ketqua.message || 'Có lỗi xảy ra');
-            }
+            }*/
         } catch (error) {
             console.error('Lỗi nhập kho:', error);
             ThongBao.ThongBao_Loi('Đã xảy ra lỗi vui lòng thực hiện sau.');

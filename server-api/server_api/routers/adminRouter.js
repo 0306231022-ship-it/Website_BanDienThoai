@@ -194,12 +194,9 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
     }
     next();
 }, NhaCungCapController.CapNhatSoTaiKhoan);
-adminRouter.post(
-    '/ThemPhieuNhap', 
-    authMiddleware, 
-    upload.array('HinhAnh', 20), // Thêm Multer ở đây (tên field phải khớp với Client)
-    PhieuNhapController.ThemPhieuNhap
-);
+//=========================================
+// Xử lý Phieu Nhập
+adminRouter.post('/ThemPhieuNhap', authMiddleware,upload.array('HinhAnh', 20),PhieuNhapController.ThemPhieuNhap);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
