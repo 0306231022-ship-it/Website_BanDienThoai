@@ -5,6 +5,7 @@ import adminModel from '../models/adminModel.js';
 import CaiDatModel from '../models/CaiDatWebsite.js';
 import { validationResult } from "express-validator";
 
+
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
@@ -59,27 +60,39 @@ export default class adminController{
         };
     }
     static async ChinhSuaLoGo(req,res){
-        const files = req.files;
-        const pathFile = files[0].path.replace(/\\/g, '/');
-        if(!pathFile){
-            return res.json({
-                Status:true,
-                message:'Lỗi tải ảnh!'
-            })
-        };
-         const errors = validationResult(req);
-        if (!errors.isEmpty()) {
+       const files = req.files;
+      const hinhAnhDeLuuDB = `${files[0].destination}/${files[0].filename}`.replace(/\\/g, '/');
+        if (!files || files.length === 0) {
             return res.json({
                 validation: true,
-                errors: errors.array() 
+                errors: [{ path: "files", msg: "Vui lòng tải lên ít nhất 1 ảnh" }]
             });
         }
-        const ketqua= CaiDatModel.updateHinhAnh(pathFile);
+        const errors = [];
+        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+        for (const file of files) {
+            if (!allowedTypes.includes(file.mimetype)) {
+                errors.push({ 
+                    path: "files", 
+                    msg: `File ${file.originalname} không đúng định dạng JPG hoặc PNG` 
+                });
+                break; 
+            }
+        }
+       if (files.length < 1 || files.length > 5) {
+            errors.push({ path: "files", msg: "Không được upload quá 5 ảnh" });
+        }
+        if (errors.length > 0) {
+            return res.json({ Validate: true, errors });
+        }
+        const index = hinhAnhDeLuuDB.indexOf("uploads");
+        const relativePath = hinhAnhDeLuuDB.substring(index);
+        const ketqua= CaiDatModel.updateHinhAnh(relativePath);
         if(ketqua===1){
             return res.json({
                 Status : true,
                 message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-            })
+            });
         };
         if(ketqua){
             return res.json({

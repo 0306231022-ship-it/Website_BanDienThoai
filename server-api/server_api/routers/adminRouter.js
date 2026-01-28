@@ -2,7 +2,7 @@ import { Router } from "express";
 import adminController from "../controllers/adminController.js";
 import CanhanADController from "../controllers/CaNhanADController.js";
 import authMiddleware from "../middleware/auth.js";
-import pload from "../middleware/upload.js";
+import createUpload from '../middleware/upload.js';
 import multer from "multer";
 import { body, validationResult } from "express-validator";
 import { validateImages } from "../validation/KTimage.js";
@@ -21,10 +21,11 @@ import { parseNewProductState } from "../middleware/ChuyenDL.js";
 const adminRouter = Router();
 const upload = multer();
 //==========================================
+// xử lí thông tin website
 adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
 adminRouter.post('/DangNhap',upload.none(), CanhanADController.DangNhap);
 adminRouter.post('/ChinhSuaTen', upload.none(), adminController.CapNhatTen);
-adminRouter.post('/ChinhLoGo',pload.array("files", 5), validateImages,adminController.ChinhSuaLoGo);
+adminRouter.post('/ChinhLoGo',createUpload('logo').array("files", 5),adminController.ChinhSuaLoGo);
 
   adminRouter.post('/ChinhSuaMoTa',upload.none(),[
     body('MoTa')
@@ -63,7 +64,7 @@ adminRouter.post('/ChinhSuaTenUS', upload.none(),  [
     next();
 }, CanhanADController.CapNhatTen);
 //=========================================
-adminRouter.post('/ThemThuongHieu', pload.array("files", 2), validateThemTH,validateImages,ThuongHieuController.ThemThuongHieu);
+//adminRouter.post('/ThemThuongHieu', pload.array("files", 2), validateThemTH,validateImages,ThuongHieuController.ThemThuongHieu);
 adminRouter.post('/SuaTenThuongHieu', upload.none(),  [
     body('Ten')
     .notEmpty()
@@ -78,7 +79,7 @@ adminRouter.post('/SuaTenThuongHieu', upload.none(),  [
     }
     next();
 }, ThuongHieuController.SuaTenThuongHieu);
-adminRouter.post('/SuaAnhThuongHieu', pload.array("files", 2), validateImages, ThuongHieuController.SuaAnhThuongHieu);
+//adminRouter.post('/SuaAnhThuongHieu', pload.array("files", 2), validateImages, ThuongHieuController.SuaAnhThuongHieu);
 adminRouter.post('/ChinhSuaTrangThai', upload.none(),  [
     body('TrangThai')
     .notEmpty()
@@ -195,8 +196,8 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
     next();
 }, NhaCungCapController.CapNhatSoTaiKhoan);
 //=========================================
-// Xử lý Phieu Nhập
-adminRouter.post('/ThemPhieuNhap',pload.any(), authMiddleware,PhieuNhapController.ThemPhieuNhap);
+// Xử lý Phiếu Nhập
+adminRouter.post('/ThemPhieuNhap',createUpload('sanpham').any(), authMiddleware,PhieuNhapController.ThemPhieuNhap);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );

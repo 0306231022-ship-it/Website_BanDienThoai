@@ -303,6 +303,10 @@ function ThemPhieuNhap() {
                 ThongBao.ThongBao_Loi('Dữ liệu nhập kho không hợp lệ, vui lòng kiểm tra lại ở đầu trang!');
                 return;
             }
+            if(ketqua.status){
+                ThongBao.ThongBao_Loi(ketqua.message);
+                return;
+            }
             if (ketqua.ThanhCong) {
                 ThongBao.ThongBao_ThanhCong(ketqua.message);
                 return;
