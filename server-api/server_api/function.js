@@ -1,20 +1,16 @@
+import crypto from 'crypto';
 export const TaoID = (bien) => {
-const now = new Date();
-    
-    // Lấy thời gian hiện tại đến tận mili giây
-    const timestamp = now.getTime(); // Ví dụ: 1738294857201
-    
-    // Tạo số ngẫu nhiên lớn (từ 100,000 đến 999,999)
-    const randomPart = Math.floor(100000 + Math.random() * 900000);
-
-    return `${bien}-${timestamp}-${randomPart}`;
+    const prefix = bien.toString().slice(0, 2);
+    const timePart = Date.now().toString().slice(-4);
+    const randomPart = crypto.randomBytes(2).toString('hex').toUpperCase();
+    return `${prefix}-${timePart}-${randomPart}`;
 };
 
 export function mapFilesByProduct(files) {
     if (!Array.isArray(files)) return [];
 
     const result = [];
-    // Đưa regex ra ngoài để tối ưu hiệu suất
+   
     const INDEX_REGEX = /HinhAnh\[(\d+)\]/;
 
     for (const file of files) {

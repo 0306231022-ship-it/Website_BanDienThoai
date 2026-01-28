@@ -201,7 +201,7 @@ export default class PhieuNhapController{
         await Promise.all(validate_values.map(validation => validation.run(req)));
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.json({ Status: true, Validate: true, errors: errors.array() });
+            return res.json({ Validate: true, errors: errors.array() });
         }
        const finalData = DuLieuPhieuNhap.SANPHAM.map((sp, index) => {
             const productFiles = filesByProduct[index] || [];
@@ -211,7 +211,6 @@ export default class PhieuNhapController{
                 HINHANH: pathList
             };
         });
-        console.log('finalData:', finalData);
         const ketqua = await PhieuNhapModal.ThemPhieuNhap(
             {
                 ThongTinChung: DuLieuPhieuNhap.ThongTinChung,

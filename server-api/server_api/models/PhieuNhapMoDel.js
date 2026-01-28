@@ -42,7 +42,6 @@ export default class PhieuNhapModal {
     static async ThemPhieuNhap(ThongTinChung) {
         const ThongTin= ThongTinChung.ThongTinChung;
         const SanPham= ThongTinChung.SANPHAM;
-        console.log('SanPham:', ThongTin);
         try {
             //Bước 1 Thêm phiếu nhập
             const IDPN = TaoID('PN');
@@ -58,10 +57,10 @@ export default class PhieuNhapModal {
             const IDSANPHAM_MOI = [];
             for (const sanpham of SanPham) {
                 const IdSanPham = TaoID('SP');
-                IDSANPHAM_MOI.push(IdSanPham);
+                IDSANPHAM_MOI.push({id: IdSanPham, soluong: sanpham.SOLUONG, gianhap: sanpham.GIANHAP , giaban: sanpham.GIABAN});
                 const themsp=  await execute(
                         'INSERT INTO sanpham (IDSANPHAM, TENSANPHAM, IDTHUONGHIEU, SOLUONG, THONGSO_KYTHUAT ,DONGMAY , MOTA , TRANGTHAI) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                        [IdSanPham, sanpham.TENSP, sanpham.HANG, sanpham.SOLUONG, JSON.stringify(sanpham.THONGSO_KYTHUAT), sanpham.DONGMAY, sanpham.MOTA, 1]
+                        [IdSanPham, sanpham.TENSP, sanpham.HANG, sanpham.SOLUONG, JSON.stringify(sanpham.THONGSO_KYTHUAT), sanpham.DONGMAY, sanpham.MOTASP, 1]
                     );
                 if (themsp[0].affectedRows === 0) {
                     throw new Error('Không thể tạo sản phẩm mới.');
@@ -70,8 +69,8 @@ export default class PhieuNhapModal {
                 const HinhAnh = sanpham.HINHANH || [];
                 for (const hinhanhPath of HinhAnh) {
                      const ThemHA= await execute(
-                        'INSERT INTO hinhanh_sanpham (IDSANPHAM, HINHANH, TRANGTHAI) VALUES (?, ?, ?)',
-                        [IdSanPham, hinhanhPath, 1]
+                        'INSERT INTO hinhanh_sanpham (IDHA , IDSANPHAM, HINHANH, TRANGTHAI) VALUES (?, ?, ?, ?)',
+                        [TaoID('HA'), IdSanPham, hinhanhPath, 1]
                     );
                     if (ThemHA[0].affectedRows === 0) {
                         throw new Error('Không thể thêm hình ảnh sản phẩm.');
@@ -90,16 +89,12 @@ export default class PhieuNhapModal {
                 }
             }
             // THÊM VÀO CHI TIẾT PHIẾU NHẬP , DUYỆT QUA IDSẢNPHẨM MỚI
-                for (const sanpham of IDSANPHAM_MOI) {
-                    const IdSanPham = sanpham;
-
-                    const sanphamData = SanPham.find(sp => sp.TENSP === sanpham.TENSP && sp.SOLUONG && sp.GIANHAP && sp.THANHTIEN);
-                    if (!sanphamData) {
-                        throw new Error('Không tìm thấy dữ liệu sản phẩm để thêm vào chi tiết phiếu nhập.');
-                    }
+                for (const sp of IDSANPHAM_MOI) {
+                    const idCTPN = TaoID('CTPN');
+                   const thanhTien = sp.soluong * sp.gianhap;
                     const themctpn= await execute(
-                        'INSERT INTO chitiet_phieunhap (IDPN, IDSANPHAM, SOLUONG, GIANHAP, THANHTIEN) VALUES (?, ?, ?, ?, ?)',
-                        [IDPN, IdSanPham, sanphamData.SOLUONG, sanphamData.GIANHAP, sanphamData.THANHTIEN]
+                        'INSERT INTO chitiet_phieunhap (IDCTPN, IDPN, IDSANPHAM, SOLUONG, GIANHAP, GIABAN , THANHTIEN) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                        [idCTPN, IDPN, sp.id, sp.soluong, sp.gianhap, sp.giaban, thanhTien]
                     );
                     if (themctpn[0].affectedRows === 0) {
                         throw new Error('Không thể thêm chi tiết phiếu nhập.');

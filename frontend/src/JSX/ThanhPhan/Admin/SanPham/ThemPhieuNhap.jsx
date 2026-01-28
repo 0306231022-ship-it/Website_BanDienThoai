@@ -43,6 +43,7 @@ function ThemPhieuNhap() {
     };
     const [sanPhamForm, setSanPhamForm] = useState(initialProductState);
     const navigate = useNavigate();
+    const [errValidate, setErrValidate] = useState([]);
 
     useEffect(() => {
         GetTTCaNhan();
@@ -297,14 +298,18 @@ function ThemPhieuNhap() {
                 PhuongThuc: 1,
                 url: '/admin/ThemPhieuNhap'
             });
-            alert(JSON.stringify(ketqua));
-
-            /*if (ketqua.ThanhCong) {
+            if (ketqua.Validate) {
+                setErrValidate(ketqua.errors.map(err => err.msg));
+                ThongBao.ThongBao_Loi('Dữ liệu nhập kho không hợp lệ, vui lòng kiểm tra lại ở đầu trang!');
+                return;
+            }
+            if (ketqua.ThanhCong) {
                 ThongBao.ThongBao_ThanhCong(ketqua.message);
-                if (CheDo === 1) navigate(-1);
+                return;
             } else {
                 ThongBao.ThongBao_Loi(ketqua.message || 'Có lỗi xảy ra');
-            }*/
+                return;
+            }
         } catch (error) {
             console.error('Lỗi nhập kho:', error);
             ThongBao.ThongBao_Loi('Đã xảy ra lỗi vui lòng thực hiện sau.');
@@ -347,7 +352,22 @@ function ThemPhieuNhap() {
     }
 
     return (
+        
         <div className="max-w-7xl mx-auto p-4 md:p-8 pb-32">
+            {
+                errValidate.length > 0 && (
+                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <h3 className="text-red-600 font-bold mb-2 flex items-center gap-2">
+                            <i className="fa-solid fa-circle-exclamation"></i> Lỗi xác thực dữ liệu:
+                        </h3>
+                        <ul className="list-disc list-inside text-red-500">
+                            {errValidate.map((errMsg, index) => (
+                                <li key={index}>{errMsg}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )
+            }
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-3xl font-bold text-blue-700 uppercase">
                     <i className="fa-solid fa-boxes-packing mr-2"></i> Phiếu Nhập Kho
