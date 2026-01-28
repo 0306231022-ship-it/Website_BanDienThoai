@@ -5,7 +5,6 @@ import cors from 'cors';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import adminRouter from './routers/adminRouter.js';
-import multer from "multer";
 import websiteRoute from './routers/webstiteRoute.js';
 
 const app = express();
@@ -19,7 +18,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.json());
 
-export const upload = multer();
 app.use("/uploads", express.static("uploads"));
 app.get('/', (req, res) => res.json({ message: 'Server API running' }));
 app.use('/api/admin', adminRouter);

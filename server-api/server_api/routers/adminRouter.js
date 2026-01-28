@@ -196,7 +196,7 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
 }, NhaCungCapController.CapNhatSoTaiKhoan);
 //=========================================
 // Xử lý Phieu Nhập
-adminRouter.post('/ThemPhieuNhap', authMiddleware,upload.array('HinhAnh', 20),PhieuNhapController.ThemPhieuNhap);
+adminRouter.post('/ThemPhieuNhap',pload.any(), authMiddleware,PhieuNhapController.ThemPhieuNhap);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );

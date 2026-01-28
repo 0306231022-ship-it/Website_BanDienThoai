@@ -69,11 +69,14 @@ export default class PhieuNhapController{
     }
    
     static async ThemPhieuNhap(req, res) {
+        const files = req.files;
         let DuLieuPhieuNhap = req.body.DuLieu;
         if (typeof DuLieuPhieuNhap === 'string') {
              DuLieuPhieuNhap = JSON.parse(DuLieuPhieuNhap);
         }
         req.body = DuLieuPhieuNhap;
+        //sửa lỗi
+
         const validate_values = [];
         // Validate Thông Tin Chung
         validate_values.push(
@@ -158,7 +161,7 @@ export default class PhieuNhapController{
             );
         });
         // validate hinh ảnh từ multer
-        const filesByProduct = mapFilesByProduct(req.files);
+        const filesByProduct = mapFilesByProduct(files);
         req.body.SANPHAM.forEach((sp, index) => {
             const filesForThisProduct = filesByProduct[index] || [];
             const expectedImageCount = parseInt(sp.SO_LUONG_ANH) || 0;
@@ -200,7 +203,21 @@ export default class PhieuNhapController{
         if (!errors.isEmpty()) {
             return res.json({ Status: true, Validate: true, errors: errors.array() });
         }
-        const ketqua = await PhieuNhapModal.ThemPhieuNhap(DuLieuPhieuNhap, filesByProduct);
+       const finalData = DuLieuPhieuNhap.SANPHAM.map((sp, index) => {
+            const productFiles = filesByProduct[index] || [];
+            const pathList = productFiles.map(f => `uploads/sanpham/${f.filename}`);
+            return {
+                ...sp,
+                HINHANH: pathList
+            };
+        });
+        console.log('finalData:', finalData);
+        const ketqua = await PhieuNhapModal.ThemPhieuNhap(
+            {
+                ThongTinChung: DuLieuPhieuNhap.ThongTinChung,
+                SANPHAM: finalData
+            }
+        );
         if (ketqua.ThanhCong) {
             return res.json({
                 ThanhCong: true,
@@ -212,7 +229,6 @@ export default class PhieuNhapController{
                 message: ketqua.message
             });
         }
-
     }
     static async layDL(req, res) {
     try {

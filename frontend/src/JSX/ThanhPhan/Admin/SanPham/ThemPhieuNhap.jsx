@@ -285,12 +285,10 @@ function ThemPhieuNhap() {
 
             const formdata = new FormData();
             formdata.append('DuLieu', JSON.stringify(DuLieu));
-
-            // Gửi toàn bộ ảnh vào chung 1 field 'HinhAnh' để Multer không lỗi "Unexpected field"
-            bangSanPham.forEach((sp) => {
+            bangSanPham.forEach((sp , index) => {
                 if (sp.HinhAnh && sp.HinhAnh.length > 0) {
                     sp.HinhAnh.forEach(file => {
-                        formdata.append('HinhAnh', file);
+                        formdata.append(`HinhAnh[${index}]`, file);
                     });
                 }
             });

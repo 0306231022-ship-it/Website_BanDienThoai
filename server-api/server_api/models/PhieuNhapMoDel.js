@@ -39,15 +39,16 @@ export default class PhieuNhapModal {
             return false;
         }
     }
-    static async ThemPhieuNhap(DuLieu, files) {
-        const data = DuLieu.ThongTinChung;
-        const SanPham = DuLieu.SANPHAM;
+    static async ThemPhieuNhap(ThongTinChung) {
+        const ThongTin= ThongTinChung.ThongTinChung;
+        const SanPham= ThongTinChung.SANPHAM;
+        console.log('SanPham:', ThongTin);
         try {
-            // Bước 1: Thêm phiếu nhập
+            //Bước 1 Thêm phiếu nhập
             const IDPN = TaoID('PN');
             const [resultPhieuNhap] = await execute(
                 'INSERT INTO phieunhap (IDPN, IDNCC, IDND, TONGTIEN, DA_THANHTOAN, NGAYNHAP, TRANGTHAI, GHICHU) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)',
-                [IDPN, data.IDNCC, data.IDND, data.THANHTOAN.TONGTIEN, data.THANHTOAN.DA_THANHTOAN , data.CheDoLuu, data.GHICHU ]
+                [IDPN, ThongTin.IDNCC, ThongTin.IDND, ThongTin.THANHTOAN.TONGTIEN, ThongTin.THANHTOAN.DA_THANHTOAN , ThongTin.CheDoLuu, ThongTin.GHICHU ]
             );
             if (resultPhieuNhap.affectedRows === 0) {
                 throw new Error('Không thể tạo phiếu nhập mới.');
@@ -60,19 +61,17 @@ export default class PhieuNhapModal {
                 IDSANPHAM_MOI.push(IdSanPham);
                 const themsp=  await execute(
                         'INSERT INTO sanpham (IDSANPHAM, TENSANPHAM, IDTHUONGHIEU, SOLUONG, THONGSO_KYTHUAT ,DONGMAY , MOTA , TRANGTHAI) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-                        [IdSanPham, TenSanPham, IDTHUONGHIEU, SOLUONG, JSON.stringify(ThongSoKyThuat), DONGMAY, MOTA, 1]
+                        [IdSanPham, sanpham.TENSP, sanpham.HANG, sanpham.SOLUONG, JSON.stringify(sanpham.THONGSO_KYTHUAT), sanpham.DONGMAY, sanpham.MOTA, 1]
                     );
                 if (themsp[0].affectedRows === 0) {
                     throw new Error('Không thể tạo sản phẩm mới.');
                 }
                 // THÊM VÀO HÌNH ANH SẢN PHẨM
-                //LÁY DỮ LIỆU ẢNH TỪ FILES
-                const SO_LUONG_ANH = sanpham.SO_LUONG_ANH || 0;
-                const HinhAnh = files[0]?.path.replace(/\\/g, '/') || null;
-                if (HinhAnh) {
-                   const ThemHA= await execute(
+                const HinhAnh = sanpham.HINHANH || [];
+                for (const hinhanhPath of HinhAnh) {
+                     const ThemHA= await execute(
                         'INSERT INTO hinhanh_sanpham (IDSANPHAM, HINHANH, TRANGTHAI) VALUES (?, ?, ?)',
-                        [IdSanPham, HinhAnh, 1]
+                        [IdSanPham, hinhanhPath, 1]
                     );
                     if (ThemHA[0].affectedRows === 0) {
                         throw new Error('Không thể thêm hình ảnh sản phẩm.');
@@ -93,10 +92,10 @@ export default class PhieuNhapModal {
             // THÊM VÀO CHI TIẾT PHIẾU NHẬP , DUYỆT QUA IDSẢNPHẨM MỚI
                 for (const sanpham of IDSANPHAM_MOI) {
                     const IdSanPham = sanpham;
-                    // Tìm sản phẩm tương ứng trong dữ liệu đầu vào
-                    const sanphamData = DuLieu.SANPHAM.find(sp => sp.IDSANPHAM_MOI === IdSanPham);
+
+                    const sanphamData = SanPham.find(sp => sp.TENSP === sanpham.TENSP && sp.SOLUONG && sp.GIANHAP && sp.THANHTIEN);
                     if (!sanphamData) {
-                        throw new Error(`Không tìm thấy dữ liệu sản phẩm cho IDSANPHAM: ${IdSanPham}`);
+                        throw new Error('Không tìm thấy dữ liệu sản phẩm để thêm vào chi tiết phiếu nhập.');
                     }
                     const themctpn= await execute(
                         'INSERT INTO chitiet_phieunhap (IDPN, IDSANPHAM, SOLUONG, GIANHAP, THANHTIEN) VALUES (?, ?, ?, ?, ?)',
@@ -111,6 +110,7 @@ export default class PhieuNhapModal {
                 message: 'Thêm phiếu nhập thành công!',
             };
         } catch (error) {
+            console.error('Lỗi khi thêm phiếu nhập:', error);
             return {
                 ThanhCong: false,
                 message: 'Thêm phiếu nhập thất bại do lỗi hệ thống!'
@@ -118,7 +118,6 @@ export default class PhieuNhapModal {
         }
     }
 
-   
     static async layChiTietPN(id){
     try {
         const [rows1] = await execute(
