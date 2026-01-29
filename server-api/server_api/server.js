@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 import adminRouter from './routers/adminRouter.js';
 import websiteRoute from './routers/webstiteRoute.js';
 
+import './CleanDB.js';
 const app = express();
 //chấp nhận client vào server
 app.use(cors({

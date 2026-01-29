@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import * as API from '../../../../JS/API/API';
 import { useState, useEffect } from "react";
+import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 
 function ChiTietPhieu() {
     const { id } = useParams();
@@ -14,7 +15,6 @@ function ChiTietPhieu() {
     const [err, seterr] = useState('');
 
     const conNo = (Number(ThanhToan?.TONGTIEN || 0) - Number(ThanhToan?.DA_THANHTOAN || 0)).toLocaleString("vi-VN") + " ₫";
-
     useEffect(() => {
         const Laydata = async () => {
             setloading(true)
@@ -67,6 +67,42 @@ function ChiTietPhieu() {
          .map(([key, value]) => `${Map(key)}: ${value}`)
          .join(', ');
     }
+    const DuyetPhieuNhap=async()=> {
+       const XacNhan= await ThongBao.ThongBao_XacNhanTT("Xác nhận duyệt phiếu nhập này?");
+       if (!XacNhan) return;
+         try {
+            const KetQua= await API.CallAPI(undefined, { url: `/admin/DuyetPhieuNhap?id=${id}`, PhuongThuc: 2 });
+            if (KetQua && KetQua.ThanhCong) {
+                ThongBao.ThongBao_ThanhCong("Duyệt phiếu nhập thành công!");
+                // Cập nhật lại dữ liệu phiếu nhập
+                setThongTinPhieu(prev => ({ ...prev, TRANGTHAI: 1 }));
+            } else {
+                ThongBao.ThongBao_Loi(KetQua?.message || "Không thể duyệt phiếu nhập!");
+            }
+           
+        } catch (error) {
+            console.error('Lỗi', error);
+            ThongBao.ThongBao_Loi("Lỗi kết nối server");
+        }
+    }
+    const XoaPhieuNhap=async()=> {
+         const XacNhan= await ThongBao.ThongBao_XacNhanTT("Xác nhận hủy phiếu nhập này?");
+        if (!XacNhan) return;
+        try {
+            const KetQua= await API.CallAPI(undefined, { url: `/admin/HuyPhieuNhap?id=${id}`, PhuongThuc: 2 });
+            if (KetQua && KetQua.ThanhCong) {
+                ThongBao.ThongBao_ThanhCong("Hủy phiếu nhập thành công!");
+                // Cập nhật lại dữ liệu phiếu nhập
+                setThongTinPhieu(prev => ({ ...prev, TRANGTHAI: 2 }));
+                
+            } else {
+                ThongBao.ThongBao_Loi(KetQua?.message || "Không thể hủy phiếu nhập!");
+            }
+        } catch (error) {
+            console.error('Lỗi', error);
+            ThongBao.ThongBao_Loi("Lỗi kết nối server");
+        }
+    }
 
 
     if (loading) {
@@ -118,13 +154,20 @@ function ChiTietPhieu() {
                     {
                         ThongTinPhieu.TRANGTHAI === 0 && (
                             <>
-                              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow-sm">
+                              <button onClick={()=>{DuyetPhieuNhap()}} className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow-sm">
                                 Duyệt phiếu
                             </button>
-                            <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow-sm">
+                            <button onClick={()=>{XoaPhieuNhap()}} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow-sm">
                                 Hủy phiếu
                             </button>
                             </>
+                        )
+                    }
+                    {
+                        ThongTinPhieu.TRANGTHAI === 2 && (
+                            <span className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded shadow-sm">
+                                Phiếu đã hủy
+                            </span>
                         )
                     }
                     {ThongTinPhieu.TRANGTHAI === 1 && (

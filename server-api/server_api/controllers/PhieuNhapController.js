@@ -261,5 +261,88 @@ export default class PhieuNhapController{
     }
    
 }
+    static async DuyetPhieuNhap(req, res) {
+        try {
+            const id = req.query.id;
+            if (!id) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Không tìm thấy phiếu nhập!'
+                });
+            }
+            const ketqua = await PhieuNhapModal.DuyetPhieuNhap(id);
+            if (ketqua.ThanhCong) {
+                return res.json({
+                    ThanhCong: true,
+                    message: ketqua.message
+                });
+            } else {
+                return res.json({
+                    ThanhCong: false,
+                    message: ketqua.message
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra khi duyệt phiếu nhập!',
+                error: error.message
+            });
+        }
+    }
+    static async HuyPhieuNhap(req, res) {
+        try {
+            const id = req.query.id;
+            if (!id) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Không tìm thấy phiếu nhập!'
+                });
+            }
+            const ketqua = await PhieuNhapModal.HuyPhieuNhap(id);
+            if (ketqua.ThanhCong) {
+                return res.json({
+                    ThanhCong: true,
+                    message: ketqua.message
+                });
+            } else {
+                return res.json({
+                    ThanhCong: false,
+                    message: ketqua.message
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra khi hủy phiếu nhập!',
+                error: error.message
+            });
+        }
+    }
+    static async LayDanhSachPhieuNhap(req, res) {
+        try {
+            const danhSachPhieuNhap = await PhieuNhapModal.LayDanhSachPhieuNhap_DaXoa();
+            if(danhSachPhieuNhap.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    DuLieu : danhSachPhieuNhap.DuLieu
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message : danhSachPhieuNhap.message
+                })
+            }
+        } catch (error) {
+            console.error(error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra khi lấy danh sách phiếu nhập đã xóa!',
+                error: error.message
+            });
+        }
+    }
 
 }

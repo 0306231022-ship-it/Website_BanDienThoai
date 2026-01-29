@@ -1,0 +1,4 @@
+1. Bảng phieunhap 
+ 0 : lưu bản nháp
+ 1 : bản chính chức
+ 2 : đã xóa kèm theo DELETE_AT = NOW();

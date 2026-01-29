@@ -132,6 +132,32 @@ export default class PhieuNhapModal {
         return [];
     }
 }
+    static async DuyetPhieuNhap(Idpn){
+        try {
+            const [result] = await execute(
+                `UPDATE phieunhap
+                    SET TRANGTHAI = 1
+                    WHERE IDPN = ? AND TRANGTHAI = 0`,
+                [Idpn]
+            );
+          if (result.affectedRows === 0) {
+                return {
+                    ThanhCong: false,
+                    message: 'Duyệt phiếu nhập thất bại! Phiếu nhập không tồn tại hoặc đã được duyệt trước đó.'
+                };
+            }
+            return {
+                ThanhCong: true,
+                message: 'Duyệt phiếu nhập thành công!'
+            };
+        } catch (error) {
+            console.error('Lỗi khi duyệt phiếu nhập:', error);
+            return {
+                ThanhCong: false,
+                message: 'Lỗi hệ thống khi duyệt phiếu nhập!'
+            };
+        }
+    }
 
 
 
@@ -229,6 +255,7 @@ export default class PhieuNhapModal {
             FROM phieunhap pn
             LEFT JOIN nhacungcap ncc ON pn.IDNCC = ncc.IDNCC
             LEFT JOIN nguoidung nd ON pn.IDND = nd.IDND
+            WHERE pn.TRANGTHAI != 2
             ORDER BY pn.NGAYNHAP DESC
             LIMIT ? OFFSET ?
         `, [limit, offset]);
@@ -258,14 +285,14 @@ export default class PhieuNhapModal {
                     nd.HOTEN
                 FROM PHIEUNHAP pn
                 JOIN NGUOIDUNG nd ON pn.IDND = nd.IDND
-                WHERE pn.IDNCC = ? 
+                WHERE pn.IDNCC = ? AND pn.TRANGTHAI != 2 
                 ORDER BY pn.NGAYNHAP DESC
                 LIMIT ? OFFSET ?;
                 `,[id,linit,OFFSET]);
             const [countRows]= await execute(`
                 SELECT COUNT(*) AS totalPhieuNhap
                 FROM PHIEUNHAP
-                WHERE IDNCC=?
+                WHERE IDNCC=? AND TRANGTHAI!=2
                 `, [id]);
              const total = countRows[0].totalPhieuNhap;
              const start = OFFSET + 1;
@@ -282,8 +309,146 @@ export default class PhieuNhapModal {
             }
         }
     }
+    static async HuyPhieuNhap(Idpn){
+        try {
+            const [result] = await execute(
+                `UPDATE phieunhap
+                    SET TRANGTHAI = 2, DELETE_AT = NOW()
+                    WHERE IDPN = ?`,
+                [Idpn]
+            );
 
- 
+            if (result.affectedRows === 0) {
+                return {
+                    ThanhCong: false,
+                    message: 'Không thể hủy phiếu nhập hoặc phiếu nhập đã được hủy trước đó!'
+                };
+            }
 
-   
+            return {
+                ThanhCong: true,
+                message: 'Hủy phiếu nhập thành công!'
+            };
+        } catch (error) {
+            console.error('Lỗi khi hủy phiếu nhập:', error);
+            return {
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra khi hủy phiếu nhập!'
+            };
+        }
+    }
+    static async XoaPhieuNhap_ThungRac() {
+    try {
+        // Bước 1: Lấy danh sách ID phiếu nhập thỏa mãn điều kiện (Test 5 giây, thực tế nên là 30 ngày)
+        // Lưu ý: Sử dụng INTERVAL 30 DAY cho môi trường thực tế
+        const [rows] = await execute(
+            `SELECT IDPN FROM phieunhap 
+             WHERE TRANGTHAI = 2 AND DELETE_AT <= DATE_SUB(NOW(), INTERVAL 30 DAY)`
+        );
+
+        const idPhieuNhapToDelete = rows.map(row => row.IDPN);
+
+        // Nếu không có phiếu nào cần xóa thì thoát sớm
+        if (idPhieuNhapToDelete.length === 0) {
+            return {
+                ThanhCong: true,
+                message: 'Không có dữ liệu quá hạn trong thùng rác.',
+                dulieu: []
+            };
+        }
+
+        // Bước 2: Duyệt từng phiếu nhập để xóa dữ liệu liên quan
+        for (const idpn of idPhieuNhapToDelete) {
+            
+            // 2.1: Lấy danh sách ID sản phẩm thuộc phiếu nhập này
+            const [sanphamRows] = await execute(
+                `SELECT IDSANPHAM FROM chitiet_phieunhap WHERE IDPN = ?`, 
+                [idpn]
+            );
+            const idsanphamList = sanphamRows.map(row => row.IDSANPHAM);
+
+            // 2.2: Xóa dữ liệu ở các bảng con dựa trên ID sản phẩm
+            for (const idsanpham of idsanphamList) {
+                
+                // Xóa hình ảnh sản phẩm
+                const [xoaHA] = await execute(
+                    `DELETE FROM hinhanh_sanpham WHERE IDSANPHAM = ?`, 
+                    [idsanpham]
+                );
+                if (xoaHA.affectedRows === 0) {
+                    console.log(`💡 Không có hình ảnh để xóa cho SP: ${idsanpham}`);
+                }
+
+                // Xóa kho IMEI (Rất quan trọng vì IMEI đi theo phiếu nhập cụ thể)
+                const [xoaIMEI] = await execute(
+                    `DELETE FROM kho_imei WHERE IDSANPHAM = ? AND ID_PHIEUNHAP = ?`, 
+                    [idsanpham, idpn]
+                );
+                if (xoaIMEI.affectedRows === 0) {
+                    console.warn(`💡 Không tìm thấy IMEI cho SP: ${idsanpham} thuộc phiếu: ${idpn}`);
+                }
+
+                // Xóa chi tiết phiếu nhập (Bảng trung gian)
+                await execute(
+                    `DELETE FROM chitiet_phieunhap WHERE IDPN = ? AND IDSANPHAM = ?`, 
+                    [idpn, idsanpham]
+                );
+
+                // Xóa bảng sản phẩm chính 
+                // CẢNH BÁO: Chỉ xóa nếu SP này không còn tồn tại trong bất kỳ phiếu nhập nào khác
+                await execute(
+                    `DELETE FROM sanpham WHERE IDSANPHAM = ?`, 
+                    [idsanpham]
+                );
+            }
+
+            // Bước 2.3: Cuối cùng mới xóa bản ghi ở bảng phieunhap
+            const [xoaPN] = await execute(
+                `DELETE FROM phieunhap WHERE IDPN = ?`, 
+                [idpn]
+            );
+            
+            if (xoaPN.affectedRows > 0) {
+                console.log(`✅ Đã dọn dẹp vĩnh viễn phiếu nhập: ${idpn}`);
+            }
+        }
+
+        return {
+            ThanhCong: true,
+            message: `Đã dọn dẹp sạch sẽ ${idPhieuNhapToDelete.length} phiếu nhập quá hạn!`,
+            dulieu: idPhieuNhapToDelete
+        };
+
+    } catch (error) {
+        console.error('❌ Lỗi tại PhieuNhapModal.XoaPhieuNhap_ThungRac:', error);
+        return {
+            ThanhCong: false,
+            message: 'Lỗi hệ thống khi dọn dẹp thùng rác!',
+            error: error.message
+        };
+    }
+}   
+    static async LayDanhSachPhieuNhap_DaXoa() {
+    try {
+        const [rows] = await execute(`
+            SELECT  pn.IDPN,  ncc.TENNCC, pn.TONGTIEN, pn.DELETE_AT
+            FROM phieunhap pn
+            LEFT JOIN nhacungcap ncc ON pn.IDNCC = ncc.IDNCC
+            WHERE pn.TRANGTHAI = 2
+            ORDER BY pn.DELETE_AT DESC
+        `);
+        return {
+            ThanhCong: true,
+            DuLieu: rows
+        };
+    } catch (error) {
+        console.error('Lỗi khi lấy danh sách phiếu nhập đã xóa:', error);
+        return {
+            ThanhCong: false,
+            DuLieu: [],
+            message: 'Lỗi hệ thống khi lấy danh sách phiếu nhập đã xóa!'
+        };
+    }
+}
+
 }

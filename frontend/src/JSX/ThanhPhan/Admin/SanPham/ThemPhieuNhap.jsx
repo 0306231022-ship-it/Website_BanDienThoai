@@ -7,7 +7,6 @@ import { useADContext } from '../../../../CONTEXT/QuanLiCaNhanAdmin';
 function ThemPhieuNhap() {
     const { id } = useParams();
     const [errID, seterrID] = useState('')
-
     const { GetTTCaNhan, TTCaNhan } = useADContext();
     const [danhSachNhaCungCap, setDanhSachNhaCungCap] = useState([]);
     const [danhSachThuongHieu, setDanhSachThuongHieu] = useState([]);
