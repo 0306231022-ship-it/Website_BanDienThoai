@@ -39,6 +39,116 @@ export default class PhieuNhapModal {
             return false;
         }
     }
+    static async kiemtraid_phieunhap(idpn){
+        try {
+            const [rows] = await execute(
+                'SELECT * FROM phieunhap WHERE IDPN = ? LIMIT 1',
+                [idpn]
+            );
+            return rows.length > 0;
+        } catch (error) {
+            console.error('Lỗi khi kiểm tra IDPN:', error);
+            return false;
+        }
+    }
+    static async layTT_NHCC(Idpn){
+        try {
+            const [rows] = await execute(
+                `SELECT ncc.TENNCC, ncc.SDT, ncc.DIACHI
+                 FROM phieunhap pn
+                    JOIN nhacungcap ncc ON pn.IDNCC = ncc.IDNCC
+                    WHERE pn.IDPN = ? LIMIT 1`,
+                [Idpn]
+            );
+            return rows.length > 0 ? rows[0] : null;
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin nhà cung cấp:', error);
+            return null;
+        }
+    }
+    static async layTT_ND(Idpn){ 
+        try {
+            const [rows] = await execute(
+                `SELECT nd.HOTEN, nd.IDND
+                 FROM phieunhap pn
+                    JOIN nguoidung nd ON pn.IDND = nd.IDND
+                    WHERE pn.IDPN = ? LIMIT 1`,
+                [Idpn]
+            );
+            return rows.length > 0 ? rows[0] : null;
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin người dùng:', error);
+            return null;
+        }
+    }
+    static async layTT_ThanhToan(Idpn){
+        try {
+            const [rows] = await execute(
+                `SELECT TONGTIEN, DA_THANHTOAN
+                 FROM phieunhap
+                 WHERE IDPN = ? LIMIT 1`,
+                [Idpn]
+            );
+            return rows.length > 0 ? rows[0] : null;
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin thanh toán:', error);
+            return null;
+        }
+    }
+    static async layTT_SanPham(Idpn) {
+    try {
+        // Lấy thông tin sản phẩm trước
+        const [sanphams] = await execute(
+            `SELECT sp.IDSANPHAM, sp.TENSANPHAM, sp.THONGSO_KYTHUAT, ct.SOLUONG, ct.GIANHAP, ct.THANHTIEN
+             FROM chitiet_phieunhap ct
+             JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
+             WHERE ct.IDPN = ?`,
+            [Idpn]
+        );
+
+        // Với mỗi sản phẩm, lấy hình ảnh riêng
+        for (let sp of sanphams) {
+            const [hinhanh] = await execute(
+                `SELECT HINHANH 
+                 FROM hinhanh_sanpham 
+                 WHERE IDSANPHAM = ?`,
+                [sp.IDSANPHAM]
+            );
+            sp.HINHANH = hinhanh.length > 0 ? hinhanh[0].HINHANH : null;
+        }
+        // LẤY IMEI CHO TỪNG SẢN PHẨM
+        for (let sp of sanphams) {
+            const [imeiCodes] = await execute(
+                `SELECT MA_IMEI 
+                 FROM kho_imei 
+                 WHERE IDSANPHAM = ? AND ID_PHIEUNHAP = ?`,
+                [sp.IDSANPHAM, Idpn]
+            );
+            sp.IMEI = imeiCodes.map(item => item.MA_IMEI);
+        }
+        return sanphams;
+    } catch (error) {
+        console.error('Lỗi khi lấy thông tin sản phẩm:', error);
+        return [];
+    }
+}
+
+
+
+    static async layTT_PhieuNhap(Idpn){
+        try {
+            const [rows] = await execute(
+                `SELECT GHICHU, TRANGTHAI ,NGAYNHAP
+                    FROM phieunhap
+                    WHERE IDPN = ? LIMIT 1`,
+                [Idpn]
+            );
+            return rows.length > 0 ? rows[0] : null;
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin phiếu nhập:', error);
+            return null;
+        }
+    }
     static async ThemPhieuNhap(ThongTinChung) {
         const ThongTin= ThongTinChung.ThongTinChung;
         const SanPham= ThongTinChung.SANPHAM;
@@ -112,90 +222,6 @@ export default class PhieuNhapModal {
             };
         }
     }
-
-    static async layChiTietPN(id){
-    try {
-        const [rows1] = await execute(
-            'SELECT IDNCC, IDND, TRANGTHAI , GHICHU , NGAYNHAP FROM phieunhap WHERE IDPN = ? LIMIT 1',
-            [id]
-        );
-
-        if (!rows1 || rows1.length === 0) {
-            return {
-                Status: true,
-                message: "Không tìm thấy phiếu nhập với IDPN = " + id
-            };
-        }
-
-        // Bước 2: lấy thông tin nhà cung cấp
-        const [nhacungcap] = await execute(
-            'SELECT TENNCC, SDT, DIACHI FROM nhacungcap WHERE IDNCC = ?',
-            [rows1[0]?.IDNCC ?? null]
-        );
-
-        // Bước 3: lấy thông tin người nhập
-        const [ThongTinNguoiNhap] = await execute(
-            'SELECT HOTEN, IDND FROM nguoidung WHERE IDND = ? LIMIT 1',
-            [rows1[0]?.IDND ?? null]
-        );
-
-        // Bước 4: lấy thông tin thanh toán
-        const [ThongTinThanhToan] = await execute(
-            'SELECT TONGTIEN, DA_THANHTOAN FROM phieunhap WHERE IDPN = ? LIMIT 1',
-            [id]
-        );
-
-        // Bước 5: lấy thông tin sản phẩm + ảnh
-        const [rowsSanPham] = await execute(
-            `SELECT sp.IDSANPHAM, sp.TENSANPHAM, sp.THONGSO_KYTHUAT, ct.SOLUONG, ct.GIANHAP, ct.THANHTIEN, ha.HINHANH
-             FROM chitiet_phieunhap ct
-             JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
-             LEFT JOIN hinhanh_sanpham ha ON sp.IDSANPHAM = ha.IDSANPHAM
-             WHERE ct.IDPN = ?`, [id]
-        );
-
-        // Gom ảnh thành mảng cho từng sản phẩm
-        const mapSanPham = {};
-        rowsSanPham.forEach(sp => {
-            if (!mapSanPham[sp.IDSANPHAM]) {
-                mapSanPham[sp.IDSANPHAM] = {
-                    IdSanPham: sp.IDSANPHAM,
-                    TenSanPham: sp.TENSANPHAM,
-                    SoLuong: sp.SOLUONG,
-                    GiaNhap: sp.GIANHAP,
-                    ThanhTien: sp.THANHTIEN,
-                    HinhAnh: [],
-                    ThongSoKyThuat:sp.THONGSO_KYTHUAT
-                };
-            }
-            if (sp.HINHANH) {
-                mapSanPham[sp.IDSANPHAM].HinhAnh.push(sp.HINHANH);
-            }
-        });
-
-        const danhSachSanPham = Object.values(mapSanPham);
-
-        // Kết quả cuối cùng
-        const ketqqua = {
-            ThongTinPhieu: [
-                {
-                    TrangThai: rows1[0].TRANGTHAI ?? null,
-                    GhiChu: rows1[0].GHICHU ?? null,
-                    NgayNhap: rows1[0].NGAYNHAP ?? null
-                }
-            ],
-            CungCap: nhacungcap ?? [],
-            NguoiNhap: ThongTinNguoiNhap ?? [],
-            ThanhToan: ThongTinThanhToan ?? [],
-            SanPham: danhSachSanPham
-        };
-
-        return ketqqua;
-    } catch (error) {
-        console.error(error);
-        throw error; 
-    }
-}
     static async LayDanhSachPhieu(offset, limit) {
     try {
         const [rows] = await execute(`

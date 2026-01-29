@@ -26,17 +26,23 @@ export default class PhieuNhapController{
                     message: 'Không tìm thấy phiếu nhập!'
                 });
             }
-            const kq = await PhieuNhapModal.layChiTietPN(id);
-            if(kq.Status){
-                return res.json({
-                    Status:true,
-                    message:kq.message
-                })
-            };
+            const [nhacungcap , nguoidung ,thongtin_thanhtoan , sanpham , phieunhap] = await Promise.all([
+                PhieuNhapModal.layTT_NHCC(id),
+                PhieuNhapModal.layTT_ND(id),
+                PhieuNhapModal.layTT_ThanhToan(id),
+                PhieuNhapModal.layTT_SanPham(id),
+                PhieuNhapModal.layTT_PhieuNhap(id)
+            ]);
             return res.json({
-                ThanhCong:true,
-                DuLieu:kq
-            })
+                ThanhCong: true,
+                dulieu: {
+                    phieunhap,
+                    nhacungcap,
+                    nguoidung,
+                    thongtin_thanhtoan,
+                    sanpham
+                }
+            });
         } catch (error) {
             console.error(error);
             return res.json({
