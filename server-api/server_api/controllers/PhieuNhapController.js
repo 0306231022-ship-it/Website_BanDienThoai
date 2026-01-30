@@ -405,5 +405,63 @@ export default class PhieuNhapController{
             })
         }
     }
+    static async xoa_phieunhap_theoid(req,res){
+        const id = req.body.id
+         if(!id){
+            res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại dữ liệu!'
+            })
+         }
+         const kiemtra = PhieuNhapModal.kiemtraid_phieunhap(id);
+         if(!kiemtra){
+            res.json({
+                status:true,
+                message:'Phiếu nhập không tồn tại, hoặc đã xóa cui lòng kiểm tra lại!'
+            })
+         }
+         try {
+            const xoaphieu = await PhieuNhapModal.xoa_phieunhap_theoid(id);
+            if(xoaphieu){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Đã xóa phiếu thành công!'
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Xóa phiếu nhập thất bại!'
+                })
+            }
+         } catch (error) {
+            console.log('Có lỗi sãy ra :' + error);
+            return res.json({
+                status:true,
+                message:'Đã có lỗi sãy ra, vui lòng kiểm tra lại!'
+            })
+         }
+    }
+    static async xoa_tatca_phieunhap(req,res){
+        try {
+            const xoa= await PhieuNhapModal.xoa_tatca_phieunhap();
+            if(xoa){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Đã xóa tất cả phiếu nhập trong thùng rác thành công!'
+                })
+            }else{
+                return res.json({
+                     ThanhCong:false,
+                     message:'Xóa phiếu nhập thất bại!'
+                })
+            }
+        } catch (error) {
+            console.error('lỗi sãy ra:'+ error)
+            return res.json({
+                status:true,
+                message:'Đã sãy ra lỗi hệ thống. Vui lòng kiểm tra lại hệ thống!'
+            })
+        }
+    }
 
 }

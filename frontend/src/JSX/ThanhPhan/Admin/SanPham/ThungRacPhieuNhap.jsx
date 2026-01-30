@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as API from '../../../../JS/API/API';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+import * as fun from '../../../../JS/FUNCTONS/function';
 function ThungRacPhieuNhap() {
     const [DanhSachPhieuNhap, setDanhSachPhieuNhap] = useState([]);
     const THOI_HAN_MAX_MS = 30 * 24 * 60 * 60 * 1000; 
@@ -47,7 +48,57 @@ function ThungRacPhieuNhap() {
         }
     }
     const xoa_tatca= async()=>{
-        ThongBao.ThongBao_CanhBao('Chức năng chưa được thực hiện')
+        const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn xóa tất cả các phiếu nhập trong thùng rác?');
+        if(!XacNhan) return;
+        setLoading(true)
+        try {
+            const ketqua = await API.CallAPI(undefined,{PhuongThuc:1, url :'/admin/xoa_tatca_phieunhap'});
+             if(ketqua.status){
+                ThongBao.ThongBao_CanhBao(ketqua.message);
+                return;
+             }
+             if(ketqua.ThanhCong){
+                 setDanhSachPhieuNhap([]);
+                 ThongBao.ThongBao_ThanhCong(ketqua.message);
+                 return;
+             }else{
+                ThongBao.ThongBao_Loi(ketqua.message);
+                return;
+             }
+
+        } catch (error) {
+            console.error('lỗi sãy ra : ' + error)
+        } finally {
+            setLoading(false)
+        }
+    }
+    const xoa_phieunhap_theo_id= async(id)=>{
+        const xacnhan= await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn xóa phiếu nhập này không?');
+        if(!xacnhan) return;
+        const kiemtra = fun.KiemTraRong({id:id});
+        if(!kiemtra.Status){
+            ThongBao.ThongBao_CanhBao('Vui lòng kiểm tra lại thông tin!');
+            return;
+        }
+        try {
+             const formdata= fun.objectToFormData({id:id});
+             const ketqua=await API.CallAPI(formdata,{url : '/admin/xoa_phieunhap_theoid', PhuongThuc:1})
+             if(ketqua.status){
+                ThongBao.ThongBao_CanhBao(ketqua.message);
+                return;
+             }
+             if(ketqua.ThanhCong){
+                 setDanhSachPhieuNhap(DanhSachPhieuNhap.filter(item => item.IDPN !== id));
+                 ThongBao.ThongBao_ThanhCong(ketqua.message);
+                 return;
+             }else{
+                ThongBao.ThongBao_Loi(ketqua.message);
+                return;
+             }
+        } catch (error) {
+            console.error('lỗi sãy ra:'+ error)
+        }
+       
     }
     if (loading) {
         return (
@@ -161,7 +212,7 @@ function ThungRacPhieuNhap() {
                                             <button onClick={()=>{Khoi_Phuc(phieu.IDPN)}} className="flex items-center gap-2 bg-emerald-500 text-white px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase hover:bg-emerald-600 transition-all shadow-md shadow-emerald-100 active:scale-95">
                                                 <i className="fa-solid fa-reply-all"></i> Khôi phục
                                             </button>
-                                            <button className="w-10 h-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-2xl hover:bg-red-50 hover:text-red-500 transition-all active:scale-95">
+                                            <button onClick={()=>{xoa_phieunhap_theo_id(phieu.IDPN)}} className="w-10 h-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-2xl hover:bg-red-50 hover:text-red-500 transition-all active:scale-95">
                                                 <i className="fa-solid fa-trash-can"></i>
                                             </button>
                                         </div>

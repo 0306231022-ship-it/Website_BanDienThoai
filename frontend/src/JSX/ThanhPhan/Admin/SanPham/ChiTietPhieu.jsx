@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate ,Link } from "react-router-dom";
 import * as API from '../../../../JS/API/API';
 import { useState, useEffect } from "react";
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
@@ -171,10 +171,10 @@ function ChiTietPhieu() {
                     }
                     {ThongTinPhieu.TRANGTHAI === 1 && (
     <>
-        <button className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded shadow-sm hover:bg-gray-50 flex items-center gap-2 transition-all">
+        <Link to={`/admin/PhieuNhapHang/hoadon/${id}`} className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded shadow-sm hover:bg-gray-50 flex items-center gap-2 transition-all">
             <i className="fa-solid fa-print"></i> 
             <span>In phiếu</span>
-        </button>
+        </Link>
         
         {Number(ThanhToan?.TONGTIEN) !== Number(ThanhToan?.DA_THANHTOAN) && (
             <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded shadow-sm flex items-center gap-2 transition-all active:scale-95">

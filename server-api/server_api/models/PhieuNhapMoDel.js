@@ -493,4 +493,62 @@ export default class PhieuNhapModal {
             }
         }
     }
+    static async xoa_phieunhap_theoid(id){
+        //Bước 1 : lấy IDSANPHAM từ bảng chitiet_sanpham
+        const [idsp] = await execute(`
+            SELECT IDSANPHAM 
+            FROM chitiet_phieunhap
+            WHERE IDPN = ?
+            `,[id]);
+         const IDSP = idsp.map(row => row.IDSANPHAM);
+         //Bước 2 : Duyệt qua mảng IDSP
+        for(const idsanpham of IDSP){
+            //Bước 2.1 : Xóa bảng hinhanh_sanpham có IDSP
+            const [XoaAnh] = await execute(`
+                DELETE FROM hinhanh_sanpham
+                WHERE IDSANPHAM = ?
+                `,[idsanpham]);
+            if(XoaAnh.affectedRows<=0) return false;
+            //Bước 2.2 : xóa bảng kho_imei
+            const [xoa_imei] = await execute(`
+                DELETE FROM kho_imei
+                WHERE IDSANPHAM = ? AND ID_PHIEUNHAP =?
+                ` , [idsanpham,id]);
+            if(xoa_imei.affectedRows<=0) return false;
+            //Bước 2.3 : xóa chitiet_phieunhap
+            const [xoa_chitiet] = await execute(`
+                DELETE FROM chitiet_phieunhap
+                WHERE IDPN = ? AND IDSANPHAM =?
+                `,[id,idsanpham]);
+            if(xoa_chitiet.affectedRows<=0) return false;
+            //Bước 2.4 : xóa bảng sanpham
+            const [xoa_sanpham] = await execute(`
+                DELETE FROM sanpham 
+                WHERE IDSANPHAM = ?
+                `,[idsanpham]);
+            if(xoa_sanpham.affectedRows<=0) return false;
+        }
+        //Bước 3 : xóa bảng phiểu nhâp;
+        const [xoa_phieunhap] = await execute(`
+            DELETE FROM phieunhap 
+            WHERE IDPN =?
+            `,[id]);
+         return xoa_phieunhap.affectedRows>0 ? true : false;
+    }
+    static async xoa_tatca_phieunhap(){
+        //lấy tất cả id có TRANGTHAI = 2 của bảng phieunhap;
+        const [id] = await execute(`
+            SELECT IDPN 
+            FROM phieunhap
+            WHERE TRANGTHAI = ?
+            `,[2]);
+        const IDPN = id.map(row => row.IDPN);
+        for(const id of IDPN){
+            const xoa = await PhieuNhapModal.xoa_phieunhap_theoid(id);
+            if(!xoa){
+                return false;
+            }
+        }
+        return true;
+    }
 }

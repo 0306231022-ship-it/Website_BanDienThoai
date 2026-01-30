@@ -18,6 +18,7 @@ import ThuongHieuController from "../controllers/ThuongHieuController.js";
 import NhaCungCapController from "../controllers/NhaCungCapController.js";
 import PhieuNhapController from "../controllers/PhieuNhapController.js";
 import { parseNewProductState } from "../middleware/ChuyenDL.js";
+import adminModel from "../models/adminModel.js";
 const adminRouter = Router();
 const upload = multer();
 //==========================================
@@ -199,6 +200,8 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
 // Xử lý Phiếu Nhập
 adminRouter.post('/ThemPhieuNhap',createUpload('sanpham').any(), authMiddleware,PhieuNhapController.ThemPhieuNhap);
 adminRouter.post('/khoiphuc_phieunhap' , authMiddleware , PhieuNhapController.khoiphuc_phieunhap);
+adminRouter.post('/xoa_phieunhap_theoid' , upload.none(), authMiddleware , PhieuNhapController.xoa_phieunhap_theoid);
+adminRouter.post('/xoa_tatca_phieunhap' , upload.none(), authMiddleware, PhieuNhapController.xoa_tatca_phieunhap );
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );

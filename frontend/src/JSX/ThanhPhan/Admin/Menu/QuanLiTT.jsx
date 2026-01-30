@@ -21,6 +21,7 @@ import Xem from '../XemBinhLuan';
 import NhaCungCap from '../NhaCungCap/DanhSachNhaCC';
 import PhieuNhapHang from '../SanPham/PhieuNhapHang';
 import ThemPhieuNhap from '../SanPham/ThemPhieuNhap';
+import HoaDonNhapKho from '../SanPham/HoaDonNhapHang';
 import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
 import ChiTietNhaCungCap from '../NhaCungCap/ChiTietNhaCungCap';
 import ChiTietPhieu from '../SanPham/ChiTietPhieu';
@@ -195,6 +196,7 @@ function QuanLiTT() {
                     <Route path='PhieuNhapHang/themPhieuNhap' element={<ThemPhieuNhap/>} />
                     <Route path='PhieuNhapHang/themPhieuNhap/:id' element={<ThemPhieuNhap/>} />
                     <Route path='PhieuNhapHang/ChiTiet/:id' element={<ChiTietPhieu/>} />
+                    <Route path='PhieuNhapHang/hoadon/:id' element={<HoaDonNhapKho/>} />
                     <Route path="hoso" element={<HoSo />} />
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     
