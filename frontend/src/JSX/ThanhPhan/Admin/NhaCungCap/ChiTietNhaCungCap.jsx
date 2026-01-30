@@ -282,7 +282,7 @@ function ChiTietNhaCungCap() {
                                             </div>
                                             <h3 class="text-gray-700 font-semibold">Danh sách trống</h3>
                                             <p class="text-gray-500 text-sm max-w-xs text-center mt-2"> Hiện tại hệ thống chưa ghi nhận dữ liệu nào trong mục này.</p>
-                                             <Link to='/admin/PhieuNhapHang/themPhieuNhap' class="mt-6 px-4 py-2 bg-teal-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
+                                             <Link to={`/admin/PhieuNhapHang/themPhieuNhap/${id}`} class="mt-6 px-4 py-2 bg-teal-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
                                                 <i class="fa-solid fa-plus"></i> + Thêm dữ liệu đầu tiên
                                             </Link>
                                           </div>

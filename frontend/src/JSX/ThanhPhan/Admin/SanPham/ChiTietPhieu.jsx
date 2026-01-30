@@ -73,8 +73,7 @@ function ChiTietPhieu() {
          try {
             const KetQua= await API.CallAPI(undefined, { url: `/admin/DuyetPhieuNhap?id=${id}`, PhuongThuc: 2 });
             if (KetQua && KetQua.ThanhCong) {
-                ThongBao.ThongBao_ThanhCong("Duyệt phiếu nhập thành công!");
-                // Cập nhật lại dữ liệu phiếu nhập
+                ThongBao.ThongBao_ThanhCong(KetQua.message);
                 setThongTinPhieu(prev => ({ ...prev, TRANGTHAI: 1 }));
             } else {
                 ThongBao.ThongBao_Loi(KetQua?.message || "Không thể duyệt phiếu nhập!");
@@ -91,8 +90,8 @@ function ChiTietPhieu() {
         try {
             const KetQua= await API.CallAPI(undefined, { url: `/admin/HuyPhieuNhap?id=${id}`, PhuongThuc: 2 });
             if (KetQua && KetQua.ThanhCong) {
+                navigate(-1)
                 ThongBao.ThongBao_ThanhCong("Hủy phiếu nhập thành công!");
-                // Cập nhật lại dữ liệu phiếu nhập
                 setThongTinPhieu(prev => ({ ...prev, TRANGTHAI: 2 }));
                 
             } else {

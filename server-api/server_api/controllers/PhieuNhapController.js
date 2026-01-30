@@ -344,5 +344,66 @@ export default class PhieuNhapController{
             });
         }
     }
+    static async khoiphuc_phieunhap(req,res){
+        const id = req.query.id;
+        if(!id){
+            return res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại hệ thống dữ liệu!'
+            })
+        }
+        const kiemtra = await PhieuNhapModal.kiemtraid_phieunhap(id);
+        if(!kiemtra) {
+            return res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại thông tin dữ liệu!'
+            })
+        }
+        try {
+            const khoiphuc= await PhieuNhapModal.khoiphuc_phieunhap(id);
+            if(khoiphuc){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Khôi phục phiếu nhập thành công!'
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Khôi phục thất bại, Vui lòng kiểm tra lại hệ thống!'
+                })
+            }
+        } catch (error) {
+            console.log('lỗi sãy ra :'+ error);
+            return res.json({
+                status:true,
+                message: 'Lỗi đến từ hệ thống, Vui lòng kiểm tra lại thông tin!'
+            })
+        }
+    }
+    static async laythongke_phieunhap(req,res){
+        try {
+            const ketqua = await PhieuNhapModal.laythongke_phieunhap();
+            if(ketqua.status){
+                return res.json({
+                    status :true,
+                    message:ketqua.message
+                })
+            }
+            return res.json({
+                ThanhCong:true,
+                DuLieu:{
+                    TongTien:ketqua.sum,
+                    DaThanhToan:ketqua.da_thanhToan,
+                    No:ketqua.no
+                }
+            })
+        } catch (error) {
+            console.error('lỗi sãy ra:' + error);
+            return res.json({
+                status:true,
+                message:'lỗi hệ thống, vui lòng thử lại sau!'
+            })
+        }
+    }
 
 }

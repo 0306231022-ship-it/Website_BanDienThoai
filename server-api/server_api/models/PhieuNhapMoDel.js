@@ -45,7 +45,7 @@ export default class PhieuNhapModal {
                 'SELECT * FROM phieunhap WHERE IDPN = ? LIMIT 1',
                 [idpn]
             );
-            return rows.length > 0;
+            if(rows.length > 0) return true;
         } catch (error) {
             console.error('Lỗi khi kiểm tra IDPN:', error);
             return false;
@@ -449,6 +449,48 @@ export default class PhieuNhapModal {
             message: 'Lỗi hệ thống khi lấy danh sách phiếu nhập đã xóa!'
         };
     }
-}
-
+}   
+    static async khoiphuc_phieunhap(id){
+        try {
+            const [ketqqua] = await execute(`
+                UPDATE phieunhap
+                SET TRANGTHAI = 1 , DELETE_AT = NULL 
+                WHERE IDPN = ?
+                `,[id]);
+          return  ketqqua.affectedRows>0 ? true : false;
+        } catch (error) {
+            console.log('Có lỗi xảy ra:' + error);
+            return false;
+        }
+    }
+    static async laythongke_phieunhap(){
+        try {
+            const [ketqua1, ketqua2 ] = await Promise.all([
+                 execute(`
+                    SELECT SUM(TONGTIEN) AS TongTien
+                    FROM phieunhap
+                    WHERE MONTH(NGAYNHAP) = MONTH(CURDATE()) AND YEAR(NGAYNHAP) = YEAR(CURDATE());
+                `),
+                execute(`
+                    SELECT SUM(DA_THANHTOAN) AS DaThanhToan
+                    FROM phieunhap
+                    WHERE MONTH(NGAYNHAP) = MONTH(CURDATE()) AND YEAR(NGAYNHAP) = YEAR(CURDATE());
+                    `)
+            ])
+            const tongTien = parseFloat(ketqua1[0][0].TongTien) || 0;
+            const daThanhToan = parseFloat(ketqua2[0][0].DaThanhToan) || 0;
+            const ConNo=tongTien-daThanhToan;
+            return {
+                sum:tongTien,
+                da_thanhToan:daThanhToan,
+                no:ConNo
+            }
+        } catch (error) {
+            console.error('lỗi sảy ra:' + error);
+            return {
+                status:true,
+                message:'Không thể truy vẫn dữ liệu!'
+            }
+        }
+    }
 }

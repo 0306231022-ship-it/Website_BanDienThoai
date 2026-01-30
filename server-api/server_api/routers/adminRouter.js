@@ -198,6 +198,7 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
 //=========================================
 // Xử lý Phiếu Nhập
 adminRouter.post('/ThemPhieuNhap',createUpload('sanpham').any(), authMiddleware,PhieuNhapController.ThemPhieuNhap);
+adminRouter.post('/khoiphuc_phieunhap' , authMiddleware , PhieuNhapController.khoiphuc_phieunhap);
 //========================================= );
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
@@ -215,6 +216,7 @@ adminRouter.get('/kiemtra_id_ncc' ,authMiddleware , NhaCungCapController.kiemtra
 adminRouter.get('/DuyetPhieuNhap', authMiddleware, PhieuNhapController.DuyetPhieuNhap);
 adminRouter.get('/HuyPhieuNhap', authMiddleware, PhieuNhapController.HuyPhieuNhap);
 adminRouter.get('/lay_phieunhap_daxoa', authMiddleware, PhieuNhapController.LayDanhSachPhieuNhap);
+adminRouter.get('/laythongke_phieunhap' , authMiddleware , PhieuNhapController.laythongke_phieunhap)
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;

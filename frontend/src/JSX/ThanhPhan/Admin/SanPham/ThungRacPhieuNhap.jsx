@@ -5,6 +5,7 @@ function ThungRacPhieuNhap() {
     const [DanhSachPhieuNhap, setDanhSachPhieuNhap] = useState([]);
     const THOI_HAN_MAX_MS = 30 * 24 * 60 * 60 * 1000; 
     const [loading, setLoading] = useState(false);
+    const [errHT , seterrHT] = useState('')
     const fetchData = async () => {
     setLoading(true);
         try {
@@ -21,16 +22,32 @@ function ThungRacPhieuNhap() {
     };
     useEffect(() => { fetchData(); }, []);
     const formatVND = (value) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
-    const Khoi_Phuc = async()=>{
+    const Khoi_Phuc = async(id)=>{
         const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn khôi phục phiếu nhập này chứ?');
         if(!XacNhan) return;
         try {
             setLoading(true)
-            const khoiphuc = await API.CallAPI(undefined,{url : '/admin/khoiphuc_phieunhap' , PhuongThuc:1});
-            alert(JSON.stringify(khoiphuc))
+            const khoiphuc = await API.CallAPI(undefined,{url : `/admin/khoiphuc_phieunhap?id=${id}` , PhuongThuc:1});
+            if(khoiphuc.status){
+                seterrHT(khoiphuc.message);
+                return;
+            }
+            if(khoiphuc.ThanhCong){
+                setDanhSachPhieuNhap(DanhSachPhieuNhap.filter(item => item.IDPN !== id));
+                ThongBao.ThongBao_ThanhCong(khoiphuc.message);
+                return;
+            }else{
+                ThongBao.ThongBao_Loi(khoiphuc.message);
+                return;
+            }
         } catch (error) {
             console.error('lỗi sãy ra:' + error)
+        } finally {
+            setLoading(false)
         }
+    }
+    const xoa_tatca= async()=>{
+        ThongBao.ThongBao_CanhBao('Chức năng chưa được thực hiện')
     }
     if (loading) {
         return (
@@ -44,7 +61,16 @@ function ThungRacPhieuNhap() {
     }
     return (
         <div className="w-full min-h-screen bg-[#fcfcfd] text-slate-900 font-sans z-0 relative">
-            
+            {
+                errHT && (
+                   <div className="error-container">
+                        <svg className="error-icon" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span className="error-text">{errHT}</span>
+                    </div>
+                )
+            }
             {/* --- TOP BAR (Glassmorphism) --- */}
             <div className="sticky top-0 z-20 bg-white/80 backdrop-blur-md border-b border-slate-200/60 px-8 py-4 shadow-sm">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -69,7 +95,7 @@ function ThungRacPhieuNhap() {
                         <button onClick={fetchData} className="h-10 px-4 flex items-center gap-2 bg-white border border-slate-200 rounded-xl text-xs font-black text-slate-600 hover:bg-slate-50 transition-all shadow-sm active:scale-95">
                             <i className="fa-solid fa-arrows-rotate"></i> LÀM MỚI
                         </button>
-                        <button className="h-10 px-4 flex items-center gap-2 bg-red-500 rounded-xl text-xs font-black text-white hover:bg-red-600 transition-all shadow-lg shadow-red-100 uppercase tracking-wider active:scale-95">
+                        <button onClick={xoa_tatca} className="h-10 px-4 flex items-center gap-2 bg-red-500 rounded-xl text-xs font-black text-white hover:bg-red-600 transition-all shadow-lg shadow-red-100 uppercase tracking-wider active:scale-95">
                             <i className="fa-solid fa-fire-burner"></i> Hủy tất cả dữ liệu
                         </button>
                     </div>
@@ -132,7 +158,7 @@ function ThungRacPhieuNhap() {
                                         </div>
 
                                         <div className="flex items-center gap-2 border-l border-slate-100 pl-6">
-                                            <button className="flex items-center gap-2 bg-emerald-500 text-white px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase hover:bg-emerald-600 transition-all shadow-md shadow-emerald-100 active:scale-95">
+                                            <button onClick={()=>{Khoi_Phuc(phieu.IDPN)}} className="flex items-center gap-2 bg-emerald-500 text-white px-5 py-2.5 rounded-2xl text-[11px] font-black uppercase hover:bg-emerald-600 transition-all shadow-md shadow-emerald-100 active:scale-95">
                                                 <i className="fa-solid fa-reply-all"></i> Khôi phục
                                             </button>
                                             <button className="w-10 h-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-2xl hover:bg-red-50 hover:text-red-500 transition-all active:scale-95">

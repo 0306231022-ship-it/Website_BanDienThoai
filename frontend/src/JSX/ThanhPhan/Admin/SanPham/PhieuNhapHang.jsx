@@ -2,13 +2,33 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import * as API from '../../../../JS/API/API';
 import '../../../../CSS/ThanhCuon.css';
+import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+
 
 function PhieuNhapHang() {
     const [Trang, setTrang] = useState(1);
     const [PhieuNhap, setPhieuNhap] = useState([]);
     const [key, setkey] = useState(null);
     const [loading, setloading] = useState(false);
-
+    const [ThongKe,setThongKe] = useState({})
+    useEffect(()=>{
+        const LayThongKe= async()=>{
+            setloading(true)
+            try {
+                const ketqua= await API.CallAPI(undefined,{url : '/admin/laythongke_phieunhap' ,PhuongThuc:2});
+                if(ketqua.ThanhCong){
+                    setThongKe(ketqua.DuLieu);
+                    return;
+                }
+            } catch (error) {
+                console.error('Có lỗi sãy ra :' + error);
+                ThongBao.ThongBao_CanhBao('Không thể lấy được thống kê phiêu nhập!')
+            } finally {
+                setloading(false)
+            }
+        }
+        LayThongKe();
+    },[])
     useEffect(() => {
         setloading(true);
         const LoadDL = async () => {
@@ -64,16 +84,16 @@ function PhieuNhapHang() {
                     {/* Các thẻ thống kê */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <div className="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500">
-                            <p className="text-sm text-gray-500 uppercase font-bold">Tổng nhập (Tháng 10)</p>
-                            <p className="text-2xl font-bold text-blue-700 mt-1">1.2 Tỷ VNĐ</p>
+                            <p className="text-sm text-gray-500 uppercase font-bold">Tổng nhập (Tháng { new Date().getMonth() + 1} / {new Date().getFullYear()})</p>
+                            <p className="text-2xl font-bold text-blue-700 mt-1">{formatCurrency(ThongKe.TongTien)}</p>
                         </div>
                         <div className="bg-white rounded-lg shadow p-5 border-l-4 border-green-500">
-                            <p className="text-sm text-gray-500 uppercase font-bold">Đã thanh toán</p>
-                            <p className="text-2xl font-bold text-green-700 mt-1">800 Triệu</p>
+                            <p className="text-sm text-gray-500 uppercase font-bold">Đã thanh toán (Tháng { new Date().getMonth() + 1} / {new Date().getFullYear()})</p>
+                            <p className="text-2xl font-bold text-green-700 mt-1">{formatCurrency(ThongKe.DaThanhToan)}</p>
                         </div>
                         <div className="bg-white rounded-lg shadow p-5 border-l-4 border-red-500">
-                            <p className="text-sm text-gray-500 uppercase font-bold">Nợ Nhà Cung Cấp</p>
-                            <p className="text-2xl font-bold text-red-600 mt-1">400 Triệu</p>
+                            <p className="text-sm text-gray-500 uppercase font-bold">Nợ Nhà Cung Cấp (Tháng { new Date().getMonth() + 1} / {new Date().getFullYear()})</p>
+                            <p className="text-2xl font-bold text-red-600 mt-1">{formatCurrency(ThongKe.No)}</p>
                         </div>
                     </div>
 
