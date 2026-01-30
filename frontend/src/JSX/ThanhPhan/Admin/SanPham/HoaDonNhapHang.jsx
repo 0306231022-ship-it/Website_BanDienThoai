@@ -1,172 +1,182 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { useParams } from 'react-router-dom';
+import * as API from '../../../../JS/API/API';
+import { useAppContext } from '../../../../CONTEXT/TrangChuAdmin';
 
-// --- Bước 1: Nội dung hóa đơn đầy đủ chi tiết ---
-const PrintableContent = React.forwardRef((props, ref) => {
-    return (
-        <div ref={ref} className="bg-white p-8 sm:p-10">
-            {/* Header hóa đơn */}
-            <div className="flex justify-between items-start border-b-2 border-gray-100 pb-8">
-                <div>
-                    <h1 className="text-4xl font-black text-gray-900 uppercase tracking-tighter">
-                        Hóa Đơn <span className="text-blue-600">Nhập Kho</span>
-                    </h1>
-                    <div className="mt-4 space-y-1">
-                        <p className="text-sm text-gray-500">
-                            <span className="font-semibold text-gray-700">Mã phiếu:</span> #PO-2024001
-                        </p>
-                        <p className="text-sm text-gray-500">
-                            <span className="font-semibold text-gray-700">Ngày nhập:</span> 24/05/2024
-                        </p>
-                    </div>
-                </div>
-                <div className="text-right">
-                    <h2 className="text-2xl font-bold text-gray-800">MOBILE STORE PRO</h2>
-                    <p className="text-sm text-gray-500">123 Đường Láng, Đống Đa, Hà Nội</p>
-                    <p className="text-sm text-gray-500">Hotline: 0988.XXX.XXX</p>
-                </div>
-            </div>
-
-            {/* Thông tin 2 bên: Nhà cung cấp & Nhân viên */}
-            <div className="grid grid-cols-2 gap-8 my-10">
-                <div className="bg-gray-50 p-5 rounded-lg border border-gray-100">
-                    <h3 className="text-blue-600 uppercase text-xs font-bold mb-2 tracking-widest">Nhà Cung Cấp</h3>
-                    <p className="font-bold text-gray-900 text-lg">Công ty TNHH Apple Vietnam</p>
-                    <p className="text-sm text-gray-600 mt-1">📍 Khu công nghệ cao, TP. HCM</p>
-                    <p className="text-sm text-gray-600">🆔 MST: 0102345678</p>
-                </div>
-                <div className="p-5 text-right">
-                    <h3 className="text-gray-400 uppercase text-xs font-bold mb-2 tracking-widest">Nhân Viên Tiếp Nhận</h3>
-                    <p className="font-bold text-gray-800 text-lg">Nguyễn Văn A</p>
-                    <p className="text-sm text-gray-500">Bộ phận: Kho vận</p>
-                    <span className="inline-block mt-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
-                        ● Đã nhập kho
-                    </span>
-                </div>
-            </div>
-
-            {/* Bảng danh sách sản phẩm */}
-            <div className="overflow-hidden rounded-lg border border-gray-200">
-                <table className="w-full text-left">
-                    <thead>
-                        <tr className="bg-gray-800 text-white">
-                            <th className="py-4 px-4 text-xs font-bold uppercase">Sản Phẩm</th>
-                            <th className="py-4 px-4 text-xs font-bold uppercase">IMEI/Serial</th>
-                            <th className="py-4 px-4 text-xs font-bold uppercase text-center">SL</th>
-                            <th className="py-4 px-4 text-xs font-bold uppercase text-right">Thành Tiền</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                        <tr>
-                            <td className="py-4 px-4">
-                                <p className="font-bold text-gray-800">iPhone 15 Pro Max 256GB</p>
-                                <span className="text-xs text-blue-500">Màu: Titan Tự Nhiên</span>
-                            </td>
-                            <td className="py-4 px-4 text-xs font-mono text-gray-500">3582910XXXXXXX</td>
-                            <td className="py-4 px-4 text-center font-bold">10</td>
-                            <td className="py-4 px-4 text-right font-bold text-gray-900">285.000.000đ</td>
-                        </tr>
-                        <tr>
-                            <td className="py-4 px-4">
-                                <p className="font-bold text-gray-800">Samsung Galaxy S24 Ultra</p>
-                                <span className="text-xs text-blue-500">Màu: Đen Kim Cương</span>
-                            </td>
-                            <td className="py-4 px-4 text-xs font-mono text-gray-500">3511820XXXXXXX</td>
-                            <td className="py-4 px-4 text-center font-bold">05</td>
-                            <td className="py-4 px-4 text-right font-bold text-gray-900">120.000.000đ</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            {/* Tổng cộng */}
-            <div className="mt-8 flex justify-end">
-                <div className="w-80 bg-gray-900 p-6 rounded-xl text-white shadow-xl">
-                    <div className="flex justify-between text-sm opacity-70 mb-2">
-                        <span>Tổng tiền hàng:</span>
-                        <span>405.000.000đ</span>
-                    </div>
-                    <div className="flex justify-between text-sm opacity-70 mb-3">
-                        <span>Thuế VAT (10%):</span>
-                        <span>40.500.000đ</span>
-                    </div>
-                    <div className="flex justify-between text-xl font-black border-t border-white/20 pt-3">
-                        <span>Tổng cộng:</span>
-                        <span className="text-yellow-400">445.500.000đ</span>
-                    </div>
-                </div>
-            </div>
-
-            {/* Phần chữ ký */}
-            <div className="mt-16 grid grid-cols-3 gap-4 text-center border-t border-dashed border-gray-200 pt-10">
-                <div>
-                    <p className="text-sm font-bold text-gray-800 uppercase">Người lập phiếu</p>
-                    <div className="h-20"></div>
-                    <p className="text-xs text-gray-400 italic">(Ký, họ tên)</p>
-                </div>
-                <div>
-                    <p className="text-sm font-bold text-gray-800 uppercase">Người giao hàng</p>
-                    <div className="h-20"></div>
-                    <p className="text-xs text-gray-400 italic">(Ký, họ tên)</p>
-                </div>
-                <div>
-                    <p className="text-sm font-bold text-gray-800 uppercase">Thủ kho</p>
-                    <div className="h-20"></div>
-                    <p className="text-xs text-gray-400 italic">(Ký, họ tên)</p>
-                </div>
-            </div>
-        </div>
-    );
-});
-
-// --- Bước 2: Component chính ---
 const HoaDonNhapKho = () => {
+    const { id } = useParams();
+    const { TTwebsite } = useAppContext();
     const componentRef = useRef();
+    const [DuLieu_hoadon, setDuLieu] = useState({});
+    const [loading, setloading] = useState(true);
+
+    useEffect(() => {
+        const laydl = async () => {
+            setloading(true);
+            try {
+                const laydata = await API.CallAPI(undefined, { 
+                    url: `/admin/dulieu_hoadon_nhapkho?id=${id}`, 
+                    PhuongThuc: 2 
+                });
+                if (laydata.ThanhCong) {
+                    setDuLieu({
+                        ...laydata.DuLieu,
+                        idphieunhap: id,
+                        ThongTinWebsite: TTwebsite
+                    });
+                }
+            } catch (error) {
+                console.error('Lỗi xảy ra: ' + error);
+            } finally {
+                setloading(false);
+            }
+        };
+        laydl();
+    }, [id, TTwebsite]);
+
+    // --- LOGIC TÍNH TOÁN TIỀN ---
+    const thueVAT = 0.1; // 10% cho hợp lý thực tế
+    const tongTienHang = DuLieu_hoadon.SANPHAM?.reduce((total, item) => total + (item.SOLUONG * item.GIANHAP), 0) || 0;
+    const tienThue = tongTienHang * thueVAT;
+    const tongThanhToan = tongTienHang + tienThue;
 
     const handleDownloadPDF = async () => {
         const element = componentRef.current;
         if (!element) return;
-
-        // Chụp ảnh chất lượng cao (scale 2 hoặc 3 để không bị vỡ chữ khi zoom PDF)
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-            backgroundColor: "#ffffff",
-        });
-
+        const canvas = await html2canvas(element, { scale: 3, useCORS: true });
         const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4',
-        });
-
+        const pdf = new jsPDF('p', 'mm', 'a4');
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save(`Hoa_Don_Nhap_Kho_${new Date().getTime()}.pdf`);
+        pdf.save(`PhieuNhap_${id}.pdf`);
     };
 
+    const formatVND = (so) => new Intl.NumberFormat('vi-VN').format(Math.round(so || 0)) + ' ₫';
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-slate-50">
+                <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        );
+    }
+
     return (
-        <div className="min-h-screen bg-gray-100 py-12 px-4 flex flex-col items-center">
-            {/* Khung hiển thị preview trên Web */}
-            <div className="max-w-4xl w-full shadow-2xl rounded-2xl overflow-hidden bg-white mb-10">
-                <PrintableContent ref={componentRef} />
+        <div className="min-h-screen bg-slate-200 py-10 px-4 flex flex-col items-center font-sans">
+            
+            <div className="max-w-4xl w-full shadow-2xl bg-white relative overflow-hidden rounded-sm">
+                <div ref={componentRef} className="p-12 relative text-slate-800">
+                    
+                    {/* Header: Thương hiệu & Tiêu đề */}
+                    <div className="flex justify-between items-start mb-10">
+                        <div>
+                            <h2 className="text-3xl font-black text-blue-700 tracking-tighter mb-1 uppercase">
+                                {DuLieu_hoadon.ThongTinWebsite?.TenWebsite || "MOBILE STORE"}
+                            </h2>
+                            <div className="text-[11px] text-slate-500 space-y-1 uppercase font-semibold">
+                                <p>{DuLieu_hoadon.ThongTinWebsite?.DiaChi}</p>
+                                <p>Hotline: {DuLieu_hoadon.ThongTinWebsite?.Zalo}</p>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <h1 className="text-4xl font-black text-slate-900 uppercase">Phiếu Nhập Kho</h1>
+                            <p className="font-mono text-sm mt-1 text-slate-500">Mã chứng từ: <span className="text-blue-600 font-bold">#{DuLieu_hoadon.idphieunhap}</span></p>
+                            <p className="text-xs text-slate-400 italic">Ngày nhập: {new Date(DuLieu_hoadon.PhieuNhap).toLocaleDateString("vi-VN")}</p>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-10 mb-10 py-6 border-y border-slate-100">
+                        <div className="flex-1">
+                            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Đơn vị cung cấp</h4>
+                            <p className="text-md font-bold uppercase">{DuLieu_hoadon?.ThongTinNCC.Ten}</p>
+                            <p className="text-xs text-slate-500 mt-1 italic">{DuLieu_hoadon?.ThongTinNCC?.DiaChi}</p>
+                            <p className="text-xs text-slate-500">MST: {DuLieu_hoadon?.ThongTinNCC?.mst}</p>
+                        </div>
+                        <div className="flex-1 border-l border-slate-100 pl-10">
+                            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Nhân viên tiếp nhận</h4>
+                            <p className="text-md font-bold uppercase">{DuLieu_hoadon?.NguoiNhap?.HoTen}</p>
+                            <p className="text-xs text-slate-500 mt-1 italic">Bộ phận: Kho vận & Kỹ thuật</p>
+                            <p className="text-xs text-green-600 font-bold uppercase mt-1 italic">● Đã kiểm định chất lượng</p>
+                        </div>
+                    </div>
+
+                    {/* Table Sản phẩm */}
+                    <table className="w-full mb-8">
+                        <thead>
+                            <tr className="bg-slate-900 text-white">
+                                <th className="py-3 px-4 text-left text-[11px] uppercase tracking-wider">STT</th>
+                                <th className="py-3 px-4 text-left text-[11px] uppercase tracking-wider">Mô tả hàng hóa</th>
+                                <th className="py-3 px-4 text-center text-[11px] uppercase tracking-wider">Số lượng</th>
+                                <th className="py-3 px-4 text-right text-[11px] uppercase tracking-wider">Đơn giá</th>
+                                <th className="py-3 px-4 text-right text-[11px] uppercase tracking-wider">Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-200 border-b border-slate-900">
+                            {DuLieu_hoadon.SANPHAM?.map((item, index) => (
+                                <tr key={index}>
+                                    <td className="py-4 px-4 text-sm text-slate-400">{index + 1}</td>
+                                    <td className="py-4 px-4">
+                                        <p className="font-bold text-sm uppercase">{item.TENSANPHAM}</p>
+                                        <p className="text-[10px] text-blue-500 font-bold tracking-tighter italic">IMEI: {item.MA_IMEI || 'Đang cập nhật'}</p>
+                                    </td>
+                                    <td className="py-4 px-4 text-center font-bold text-sm">{item.SOLUONG}</td>
+                                    <td className="py-4 px-4 text-right text-sm">{formatVND(item.GIANHAP)}</td>
+                                    <td className="py-4 px-4 text-right font-bold text-sm">{formatVND(item.SOLUONG * item.GIANHAP)}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+
+                    {/* Footer tính tiền */}
+                    <div className="flex justify-end">
+                        <div className="w-72 space-y-3">
+                            <div className="flex justify-between text-sm text-slate-600">
+                                <span>Cộng tiền hàng:</span>
+                                <span className="font-medium">{formatVND(tongTienHang)}</span>
+                            </div>
+                            <div className="flex justify-between text-sm text-slate-600">
+                                <span>Thuế GTGT (VAT 10%):</span>
+                                <span className="font-medium">{formatVND(tienThue)}</span>
+                            </div>
+                            <div className="flex justify-between py-3 px-4 bg-slate-900 text-white rounded-lg shadow-lg">
+                                <span className="font-bold uppercase text-xs">Tổng thanh toán:</span>
+                                <span className="text-lg font-black text-yellow-400">{formatVND(tongThanhToan)}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Chữ ký */}
+                    <div className="mt-20 grid grid-cols-3 gap-4 text-center">
+                        <div className="space-y-20 italic">
+                            <p className="text-xs font-bold uppercase not-italic">Đại diện bên nhận</p>
+                            <p className="text-sm font-bold not-italic underline">{DuLieu_hoadon?.NguoiNhap?.HoTen}</p>
+                        </div>
+                        <div className="space-y-20 italic">
+                            <p className="text-xs font-bold uppercase not-italic">Người giao hàng</p>
+                            <p className="text-xs text-slate-300">(Ký và ghi rõ họ tên)</p>
+                        </div>
+                        <div className="space-y-20 italic">
+                            <p className="text-xs font-bold uppercase not-italic">Kế toán trưởng</p>
+                            <p className="text-xs text-slate-300">(Ký và ghi rõ họ tên)</p>
+                        </div>
+                    </div>
+
+                    <div className="mt-16 text-center border-t border-slate-100 pt-6">
+                        <p className="text-[10px] text-slate-400 tracking-[3px] uppercase italic">Hóa đơn điện tử chuyển đổi từ phiếu nhập kho hệ thống</p>
+                    </div>
+                </div>
             </div>
 
-            {/* Nút bấm tải về */}
-            <button 
-                onClick={handleDownloadPDF} 
-                className="flex items-center px-12 py-4 font-black text-lg text-white bg-blue-600 rounded-2xl shadow-2xl hover:bg-blue-700 transition-all active:scale-95 group"
-            >
-                <svg className="w-6 h-6 mr-3 group-hover:bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                TẢI FILE PDF NGAY
-            </button>
-            <p className="mt-4 text-gray-400 text-sm italic">File sẽ được tải tự động sau khi xử lý xong (khoảng 1-2 giây).</p>
+            {/* Nút thao tác */}
+            <div className="mt-8 flex gap-4">
+                <button onClick={() => window.history.back()} className="px-8 py-3 bg-white text-slate-600 font-bold rounded-lg border border-slate-300 hover:bg-slate-50 transition-all shadow-md">QUAY LẠI</button>
+                <button onClick={handleDownloadPDF} className="flex items-center px-10 py-3 font-black text-white bg-blue-700 rounded-lg shadow-xl hover:bg-blue-800 transition-all hover:-translate-y-1">
+                    <i className="fa-solid fa-file-pdf mr-2"></i> XUẤT HÓA ĐƠN PDF
+                </button>
+            </div>
         </div>
     );
 };

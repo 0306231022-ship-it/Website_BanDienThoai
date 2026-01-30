@@ -551,4 +551,99 @@ export default class PhieuNhapModal {
         }
         return true;
     }
+    static async dulieu_hoadon_nhapkho(id) {
+    // 1. Lấy phiếu nhập
+    const [phieuNhapRows] = await execute(`
+        SELECT IDNCC, IDND, NGAYNHAP
+        FROM phieunhap
+        WHERE IDPN = ?
+        LIMIT 1
+    `, [id]);
+
+    if (phieuNhapRows.length === 0) return null;
+    const { IDNCC, IDND, NGAYNHAP } = phieuNhapRows[0];
+
+    // 2. Lấy thông tin nhà cung cấp
+    const [nccRows] = await execute(`
+        SELECT TENNCC, DIACHI, MST
+        FROM nhacungcap
+        WHERE IDNCC = ?
+        LIMIT 1
+    `, [IDNCC]);
+    const ThongTinNCC = nccRows[0] || {};
+
+    // 3. Lấy thông tin người nhập
+    const [ndRows] = await execute(`
+        SELECT HOTEN
+        FROM nguoidung
+        WHERE IDND = ?
+        LIMIT 1
+    `, [IDND]);
+    const NguoiNhap = ndRows[0] || {};
+
+    // 4. Lấy chi tiết sản phẩm trong phiếu nhập
+    const [ctRows] = await execute(`
+        SELECT IDSANPHAM, SOLUONG, GIANHAP
+        FROM chitiet_phieunhap
+        WHERE IDPN = ?
+    `, [id]);
+
+    // 5. Với mỗi sản phẩm, lấy thêm thông tin
+    const SANPHAM = [];
+    for (const ct of ctRows) {
+        // Lấy thông tin sản phẩm
+        const [spRows] = await execute(`
+            SELECT TENSANPHAM, THONGSO_KYTHUAT
+            FROM sanpham
+            WHERE IDSANPHAM = ?
+            LIMIT 1
+        `, [ct.IDSANPHAM]);
+
+        const spInfo = spRows[0] || {};
+
+        // Parse JSON để lấy MAUSAC
+        let MAUSAC = null;
+        try {
+            const thongSo = JSON.parse(spInfo.THONGSO_KYTHUAT || "{}");
+            MAUSAC = thongSo.MAUSAC || null;
+        } catch (e) {
+            console.error("Lỗi parse JSON:", e);
+        }
+
+        // Lấy MA_IMEI đầu tiên
+        const [imeiRows] = await execute(`
+            SELECT MA_IMEI
+            FROM kho_imei
+            WHERE IDSANPHAM = ?
+            LIMIT 1
+        `, [ct.IDSANPHAM]);
+
+        const imeiInfo = imeiRows[0] || {};
+
+        SANPHAM.push({
+            IDSANPHAM: ct.IDSANPHAM,
+            SOLUONG: ct.SOLUONG,
+            GIANHAP: ct.GIANHAP,
+            TENSANPHAM: spInfo.TENSANPHAM,
+            MAUSAC: MAUSAC,
+            MA_IMEI: imeiInfo.MA_IMEI
+        });
+    }
+
+    // 6. Trả về object cuối cùng
+    return {
+        PhieuNhap: NGAYNHAP,
+        ThongTinNCC: {
+            Ten: ThongTinNCC.TENNCC,
+            DiaChi: ThongTinNCC.DIACHI,
+            mst: ThongTinNCC.MST
+        },
+        NguoiNhap: {
+            HoTen: NguoiNhap.HOTEN
+        },
+        SANPHAM
+    };
+}
+
+   
 }

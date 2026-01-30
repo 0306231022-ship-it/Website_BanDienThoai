@@ -183,10 +183,7 @@ function ChiTietPhieu() {
             </button>
         )}
     </>
-)}
-              
-                  
-                    
+)}    
                 </div>
             </div>
 

@@ -219,7 +219,8 @@ adminRouter.get('/kiemtra_id_ncc' ,authMiddleware , NhaCungCapController.kiemtra
 adminRouter.get('/DuyetPhieuNhap', authMiddleware, PhieuNhapController.DuyetPhieuNhap);
 adminRouter.get('/HuyPhieuNhap', authMiddleware, PhieuNhapController.HuyPhieuNhap);
 adminRouter.get('/lay_phieunhap_daxoa', authMiddleware, PhieuNhapController.LayDanhSachPhieuNhap);
-adminRouter.get('/laythongke_phieunhap' , authMiddleware , PhieuNhapController.laythongke_phieunhap)
+adminRouter.get('/laythongke_phieunhap' , authMiddleware , PhieuNhapController.laythongke_phieunhap);
+adminRouter.get('/dulieu_hoadon_nhapkho' , authMiddleware , PhieuNhapController.dulieu_hoadon_nhapkho);
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;

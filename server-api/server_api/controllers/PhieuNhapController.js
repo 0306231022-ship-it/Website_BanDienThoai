@@ -463,5 +463,33 @@ export default class PhieuNhapController{
             })
         }
     }
+    static async dulieu_hoadon_nhapkho(req,res){
+         const id = req.query.id;
+         if(!id){
+            res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại dữ liệu!'
+            })
+         }
+         const kiemtra = PhieuNhapModal.kiemtraid_phieunhap(id);
+         if(!kiemtra){
+            res.json({
+                status:true,
+                message:'Phiếu nhập không tồn tại, hoặc đã xóa cui lòng kiểm tra lại!'
+            })
+         }
+         try {
+            const laykq = await PhieuNhapModal.dulieu_hoadon_nhapkho(id);
+            return res.json({
+                ThanhCong: true,
+                DuLieu: laykq
+            });
+         } catch (error) {
+            return res.json({
+                status:true,
+                message:'Đã có lỗi sảy ra vui lòng kiểm tra lại!'
+            })
+         }
+    }
 
 }

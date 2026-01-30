@@ -4,31 +4,34 @@ import * as API from '../../../../JS/API/API';
 import '../../../../CSS/ThanhCuon.css';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 
-
 function PhieuNhapHang() {
     const [Trang, setTrang] = useState(1);
     const [PhieuNhap, setPhieuNhap] = useState([]);
     const [key, setkey] = useState(null);
     const [loading, setloading] = useState(false);
-    const [ThongKe,setThongKe] = useState({})
-    useEffect(()=>{
-        const LayThongKe= async()=>{
-            setloading(true)
+    const [ThongKe, setThongKe] = useState({});
+    
+    // Logic tìm kiếm
+    const [searchTerm, setSearchTerm] = useState("");
+
+    useEffect(() => {
+        const LayThongKe = async () => {
+            setloading(true);
             try {
-                const ketqua= await API.CallAPI(undefined,{url : '/admin/laythongke_phieunhap' ,PhuongThuc:2});
-                if(ketqua.ThanhCong){
+                const ketqua = await API.CallAPI(undefined, { url: '/admin/laythongke_phieunhap', PhuongThuc: 2 });
+                if (ketqua.ThanhCong) {
                     setThongKe(ketqua.DuLieu);
-                    return;
                 }
             } catch (error) {
                 console.error('Có lỗi sãy ra :' + error);
-                ThongBao.ThongBao_CanhBao('Không thể lấy được thống kê phiêu nhập!')
+                ThongBao.ThongBao_CanhBao('Không thể lấy được thống kê phiêu nhập!');
             } finally {
-                setloading(false)
+                setloading(false);
             }
-        }
+        };
         LayThongKe();
-    },[])
+    }, []);
+
     useEffect(() => {
         setloading(true);
         const LoadDL = async () => {
@@ -45,8 +48,18 @@ function PhieuNhapHang() {
         LoadDL();
     }, [Trang]);
 
+    // Hàm xử lý lọc dữ liệu tại local
+    const filteredPhieuNhap = PhieuNhap.filter(item => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+            item.IDPN?.toString().toLowerCase().includes(searchLower) ||
+            item.TENNCC?.toLowerCase().includes(searchLower) ||
+            item.HOTEN?.toLowerCase().includes(searchLower)
+        );
+    });
+
     const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount || 0);
     };
 
     const handlePrevPage = () => {
@@ -54,7 +67,7 @@ function PhieuNhapHang() {
     };
 
     const handleNextPage = () => {
-        setTrang(prev => prev + 1);
+        if (Trang < key?.totalPages) setTrang(prev => prev + 1);
     };
 
     if (loading) {
@@ -81,7 +94,6 @@ function PhieuNhapHang() {
 
                 <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-6 custom-scrollbar">
                     
-                    {/* Các thẻ thống kê */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <div className="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500">
                             <p className="text-sm text-gray-500 uppercase font-bold">Tổng nhập (Tháng { new Date().getMonth() + 1} / {new Date().getFullYear()})</p>
@@ -97,34 +109,26 @@ function PhieuNhapHang() {
                         </div>
                     </div>
 
-                    {/* Bộ lọc */}
                     <div className="bg-white rounded-lg shadow p-4 mb-6">
                         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
-                            <div className="md:col-span-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Tìm kiếm</label>
-                                <input type="text" className="w-full border border-gray-300 rounded-md p-2" placeholder="Mã phiếu, tên NCC..." />
-                            </div>
-                            <div className="md:col-span-3">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Nhà cung cấp</label>
-                                <select className="w-full border border-gray-300 rounded-md p-2">
-                                    <option value="">Tất cả</option>
-                                    <option>Apple VN</option>
-                                    <option>Samsung Vina</option>
-                                </select>
-                            </div>
-                            <div className="md:col-span-3">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Thời gian</label>
-                                <input type="date" className="w-full border border-gray-300 rounded-md p-2" />
-                            </div>
-                            <div className="md:col-span-2">
-                                <button className="w-full bg-teal-600 text-white p-2 rounded-md hover:bg-teal-700 transition">
-                                    <i className="fa-solid fa-filter"></i> Lọc
-                                </button>
+                            <div className="md:col-span-12">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Tìm kiếm nhanh trên trang này</label>
+                                <div className="relative">
+                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <i className="fa-solid fa-magnifying-glass text-gray-400"></i>
+                                    </span>
+                                    <input 
+                                        type="text" 
+                                        className="w-full border border-gray-300 rounded-md p-2 pl-10 focus:ring-teal-500 focus:border-teal-500" 
+                                        placeholder="Nhập mã phiếu, tên nhà cung cấp hoặc người nhập..." 
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Bảng dữ liệu - Nơi quan trọng cần ẩn thanh cuộn ngang */}
                     <div className="bg-white rounded-lg shadow overflow-hidden custom-scrollbar">
                         <div className="overflow-x-auto custom-scrollbar">
                             <table className="w-full text-sm text-left text-gray-500">
@@ -139,8 +143,8 @@ function PhieuNhapHang() {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
-                                    {PhieuNhap && PhieuNhap.length > 0 ? (
-                                        PhieuNhap.map((item, index) => (
+                                    {filteredPhieuNhap.length > 0 ? (
+                                        filteredPhieuNhap.map((item, index) => (
                                             <tr className="bg-white hover:bg-gray-50" key={index}>
                                                 <td className="px-6 py-4 font-bold text-blue-600">{item.IDPN}</td>
                                                 <td className="px-6 py-4">{item.TENNCC}</td>
@@ -160,14 +164,13 @@ function PhieuNhapHang() {
                                         ))
                                     ) : (
                                         <tr>
-                                            <td colSpan="6" className="px-6 py-4 text-center font-bold">Không có dữ liệu nào!</td>
+                                            <td colSpan="6" className="px-6 py-4 text-center font-bold">Không tìm thấy dữ liệu phù hợp!</td>
                                         </tr>
                                     )}
                                 </tbody>
                             </table>
                         </div>
 
-                        {/* Phân trang */}
                         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                             <div className="flex-1 flex justify-between items-center">
                                 <p className="text-sm text-slate-700">
@@ -178,7 +181,7 @@ function PhieuNhapHang() {
                                         <i className="fa-solid fa-chevron-left"></i>
                                     </button>
                                     <span className="px-4 py-2 border border-slate-300 bg-white text-sm font-medium text-slate-700">{Trang}</span>
-                                    <button onClick={handleNextPage} className="px-2 py-2 rounded-r-md border border-slate-300 bg-white text-slate-500 hover:bg-slate-50">
+                                    <button disabled={Trang >= key?.totalPages} onClick={handleNextPage} className="px-2 py-2 rounded-r-md border border-slate-300 bg-white text-slate-500 hover:bg-slate-50 disabled:opacity-50">
                                         <i className="fa-solid fa-chevron-right"></i>
                                     </button>
                                 </nav>
