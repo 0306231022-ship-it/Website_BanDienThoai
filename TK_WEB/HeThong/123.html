@@ -3,124 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hóa Đơn Nhập Hàng Điện Thoại</title>
+    <title>Thùng rác Sản phẩm Premium</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 p-6 md:p-12">
-
-    <div class="max-w-4xl mx-auto bg-white p-8 shadow-lg rounded-lg border border-gray-200">
-        <div class="flex justify-between items-start border-b pb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-blue-600 uppercase tracking-tight">Hóa Đơn Nhập Hàng</h1>
-                <p class="text-gray-500 mt-1">Mã đơn: <span class="font-mono font-semibold text-gray-800">#PO-2024001</span></p>
-                <p class="text-gray-500">Ngày nhập: 24/05/2024</p>
-            </div>
-            <div class="text-right">
-                <h2 class="text-xl font-bold text-gray-800">MOBILE STORE PRO</h2>
-                <p class="text-sm text-gray-600">123 Đường Láng, Đống Đa, Hà Nội</p>
-                <p class="text-sm text-gray-600">Hotline: 0988.XXX.XXX</p>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-8 my-8">
-            <div>
-                <h3 class="text-gray-400 uppercase text-xs font-bold mb-2">Nhà Cung Cấp</h3>
-                <p class="font-bold text-gray-800">Công ty TNHH Apple Vietnam</p>
-                <p class="text-sm text-gray-600">Khu công nghệ cao, Quận 9, TP. HCM</p>
-                <p class="text-sm text-gray-600">MST: 0102345678</p>
-            </div>
-            <div class="text-right">
-                <h3 class="text-gray-400 uppercase text-xs font-bold mb-2">Nhân Viên Tiếp Nhận</h3>
-                <p class="font-bold text-gray-800">Nguyễn Văn A</p>
-                <p class="text-sm text-gray-600">Bộ phận: Kho vận</p>
-                <p class="text-sm text-gray-600">Trạng thái: <span class="bg-green-100 text-green-700 px-2 py-0.5 rounded-full text-xs">Đã nhập kho</span></p>
-            </div>
-        </div>
-
-        <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-gray-50 border-b">
-                        <th class="py-3 px-2 text-sm font-semibold text-gray-700">STT</th>
-                        <th class="py-3 px-2 text-sm font-semibold text-gray-700">Tên Sản Phẩm / Model</th>
-                        <th class="py-3 px-2 text-sm font-semibold text-gray-700">IMEI/Serial</th>
-                        <th class="py-3 px-2 text-sm font-semibold text-gray-700 text-center">SL</th>
-                        <th class="py-3 px-2 text-sm font-semibold text-gray-700 text-right">Đơn Giá</th>
-                        <th class="py-3 px-2 text-sm font-semibold text-gray-700 text-right">Thành Tiền</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    <tr>
-                        <td class="py-4 px-2 text-sm text-gray-600">01</td>
-                        <td class="py-4 px-2">
-                            <p class="font-medium text-gray-800">iPhone 15 Pro Max 256GB</p>
-                            <span class="text-xs text-gray-500 italic">Màu: Titan Tự Nhiên</span>
-                        </td>
-                        <td class="py-4 px-2 text-xs font-mono text-gray-600">3582910XXXXXXX</td>
-                        <td class="py-4 px-2 text-sm text-center">10</td>
-                        <td class="py-4 px-2 text-sm text-right">28.500.000đ</td>
-                        <td class="py-4 px-2 text-sm text-right font-semibold">285.000.000đ</td>
-                    </tr>
-                    <tr>
-                        <td class="py-4 px-2 text-sm text-gray-600">02</td>
-                        <td class="py-4 px-2">
-                            <p class="font-medium text-gray-800">Samsung Galaxy S24 Ultra</p>
-                            <span class="text-xs text-gray-500 italic">Màu: Đen Kim Cương</span>
-                        </td>
-                        <td class="py-4 px-2 text-xs font-mono text-gray-600">3511820XXXXXXX</td>
-                        <td class="py-4 px-2 text-sm text-center">05</td>
-                        <td class="py-4 px-2 text-sm text-right">24.000.000đ</td>
-                        <td class="py-4 px-2 text-sm text-right font-semibold">120.000.000đ</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="mt-8 flex justify-end">
-            <div class="w-full md:w-64 space-y-3">
-                <div class="flex justify-between text-sm text-gray-600">
-                    <span>Tổng tiền hàng:</span>
-                    <span>405.000.000đ</span>
-                </div>
-                <div class="flex justify-between text-sm text-gray-600">
-                    <span>Thuế VAT (10%):</span>
-                    <span>40.500.000đ</span>
-                </div>
-                <div class="flex justify-between text-lg font-bold text-gray-900 border-t pt-3">
-                    <span>Tổng cộng:</span>
-                    <span class="text-blue-600">445.500.000đ</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="mt-12 pt-8 border-t border-dashed border-gray-300 grid grid-cols-3 text-center">
-            <div>
-                <p class="text-sm font-bold text-gray-700 uppercase">Người lập phiếu</p>
-                <p class="text-xs text-gray-400 mt-8">(Ký, họ tên)</p>
-            </div>
-            <div>
-                <p class="text-sm font-bold text-gray-700 uppercase">Người giao hàng</p>
-                <p class="text-xs text-gray-400 mt-8">(Ký, họ tên)</p>
-            </div>
-            <div>
-                <p class="text-sm font-bold text-gray-700 uppercase">Thủ kho</p>
-                <p class="text-xs text-gray-400 mt-8">(Ký, họ tên)</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-8 text-center no-print">
-        <button onclick="window.print()" class="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition">
-            In hóa đơn
-        </button>
-    </div>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @media print {
-            .no-print { display: none; }
-            body { background-color: white; padding: 0; }
-            .max-w-4xl { border: none; shadow: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0f2f5; }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        .product-card:hover .action-btn {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .custom-shadow {
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.05);
         }
     </style>
+</head>
+<body class="p-4 md:p-10">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+            <div>
+                <nav class="flex items-center gap-2 text-indigo-500 font-bold text-xs uppercase tracking-[0.2em] mb-3">
+                    <a href="#" class="hover:text-indigo-700 transition-all">Sản phẩm</a>
+                    <i class="fa-solid fa-chevron-right text-[8px] opacity-50"></i>
+                    <span class="text-slate-400">Thùng rác</span>
+                </nav>
+                <h1 class="text-5xl font-black text-slate-900 tracking-tighter">
+                    Recycle <span class="text-indigo-600 italic">Bin</span>
+                </h1>
+            </div>
+
+            <div class="flex items-center gap-4 bg-white p-2 rounded-[28px] shadow-sm border border-white">
+                <div class="px-6 py-3">
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tổng mục đã xóa</p>
+                    <p class="text-2xl font-black text-slate-800">24 <span class="text-sm font-medium text-slate-400">thiết bị</span></p>
+                </div>
+                <button class="h-14 px-8 bg-red-600 text-white rounded-[22px] font-black text-xs uppercase tracking-widest hover:bg-red-700 transition-all shadow-lg shadow-red-200">
+                    Dọn tất cả
+                </button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 mb-8">
+            <div class="lg:col-span-9 relative group">
+                <i class="fa-solid fa-magnifying-glass absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-indigo-500 transition-colors"></i>
+                <input type="text" placeholder="Tìm kiếm máy đã xóa bằng tên, IMEI hoặc ID..." 
+                    class="w-full pl-16 pr-6 py-6 bg-white/60 border-none rounded-[30px] shadow-sm focus:ring-4 focus:ring-indigo-500/10 font-bold text-slate-700 glass transition-all outline-none">
+            </div>
+            <button class="lg:col-span-3 bg-white py-6 rounded-[30px] font-black text-xs uppercase tracking-widest text-slate-500 hover:bg-slate-900 hover:text-white transition-all shadow-sm border border-white">
+                <i class="fa-solid fa-arrow-up-wide-short mr-2"></i> Mới xóa gần đây
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            
+            <div class="product-card group relative bg-white rounded-[40px] p-6 border border-white shadow-sm hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 overflow-hidden">
+                <div class="absolute top-6 right-6 z-10">
+                    <span class="px-4 py-2 bg-red-50 text-red-500 text-[10px] font-black rounded-full border border-red-100 uppercase">Hết hạn sau 12 ngày</span>
+                </div>
+
+                <div class="relative w-full aspect-square bg-slate-50 rounded-[32px] overflow-hidden mb-6">
+                    <img src="https://picsum.photos/400/400?random=11" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" alt="iPhone">
+                    <div class="absolute inset-0 bg-indigo-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
+                        <button class="w-14 h-14 bg-white text-indigo-600 rounded-2xl hover:scale-110 transition-transform shadow-xl" title="Phục hồi">
+                            <i class="fa-solid fa-rotate-left text-xl"></i>
+                        </button>
+                        <button class="w-14 h-14 bg-red-500 text-white rounded-2xl hover:scale-110 transition-transform shadow-xl" title="Xóa vĩnh viễn">
+                            <i class="fa-solid fa-trash-can text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="px-2">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-xl font-black text-slate-800 group-hover:text-indigo-600 transition-colors">iPhone 15 Pro Max</h3>
+                            <p class="text-sm font-bold text-slate-400">#SP00982 • Apple</p>
+                        </div>
+                        <p class="text-lg font-black text-slate-900">32.9M</p>
+                    </div>
+
+                    <div class="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center font-black text-indigo-600 text-xs">A</div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-300 uppercase">Người xóa</p>
+                                <p class="text-xs font-black text-slate-600">Admin_Duy</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-bold text-slate-300 uppercase">Ngày xóa</p>
+                            <p class="text-xs font-black text-slate-600 italic">20/05/2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card group relative bg-white rounded-[40px] p-6 border border-white shadow-sm hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 overflow-hidden">
+                <div class="absolute top-6 right-6 z-10">
+                    <span class="px-4 py-2 bg-red-50 text-red-500 text-[10px] font-black rounded-full border border-red-100 uppercase">Hết hạn sau 5 ngày</span>
+                </div>
+                <div class="relative w-full aspect-square bg-slate-50 rounded-[32px] overflow-hidden mb-6">
+                    <img src="https://picsum.photos/400/400?random=12" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" alt="Samsung">
+                    <div class="absolute inset-0 bg-indigo-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
+                        <button class="w-14 h-14 bg-white text-indigo-600 rounded-2xl hover:scale-110 transition-transform shadow-xl"><i class="fa-solid fa-rotate-left text-xl"></i></button>
+                        <button class="w-14 h-14 bg-red-500 text-white rounded-2xl hover:scale-110 transition-transform shadow-xl"><i class="fa-solid fa-trash-can text-xl"></i></button>
+                    </div>
+                </div>
+                <div class="px-2">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-xl font-black text-slate-800 group-hover:text-indigo-600 transition-colors">Samsung S24 Ultra</h3>
+                            <p class="text-sm font-bold text-slate-400">#SP00771 • Samsung</p>
+                        </div>
+                        <p class="text-lg font-black text-slate-900">28.5M</p>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center font-black text-emerald-600 text-xs">M</div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-300 uppercase">Người xóa</p>
+                                <p class="text-xs font-black text-slate-600">Manager_Minh</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-bold text-slate-300 uppercase">Ngày xóa</p>
+                            <p class="text-xs font-black text-slate-600 italic">18/05/2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-card group relative bg-white rounded-[40px] p-6 border border-white shadow-sm hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500 overflow-hidden">
+                <div class="absolute top-6 right-6 z-10">
+                    <span class="px-4 py-2 bg-red-50 text-red-500 text-[10px] font-black rounded-full border border-red-100 uppercase">Hết hạn sau 28 ngày</span>
+                </div>
+                <div class="relative w-full aspect-square bg-slate-50 rounded-[32px] overflow-hidden mb-6">
+                    <img src="https://picsum.photos/400/400?random=13" class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" alt="Xiaomi">
+                    <div class="absolute inset-0 bg-indigo-900/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-4">
+                        <button class="w-14 h-14 bg-white text-indigo-600 rounded-2xl hover:scale-110 transition-transform shadow-xl"><i class="fa-solid fa-rotate-left text-xl"></i></button>
+                        <button class="w-14 h-14 bg-red-500 text-white rounded-2xl hover:scale-110 transition-transform shadow-xl"><i class="fa-solid fa-trash-can text-xl"></i></button>
+                    </div>
+                </div>
+                <div class="px-2">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <h3 class="text-xl font-black text-slate-800 group-hover:text-indigo-600 transition-colors">Xiaomi 14 Pro</h3>
+                            <p class="text-sm font-bold text-slate-400">#SP00552 • Xiaomi</p>
+                        </div>
+                        <p class="text-lg font-black text-slate-900">16.2M</p>
+                    </div>
+                    <div class="mt-6 pt-6 border-t border-slate-50 flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center font-black text-indigo-600 text-xs">A</div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-300 uppercase">Người xóa</p>
+                                <p class="text-xs font-black text-slate-600">Admin_Duy</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-bold text-slate-300 uppercase">Ngày xóa</p>
+                            <p class="text-xs font-black text-slate-600 italic">15/05/2024</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="mt-16 flex justify-center">
+            <div class="bg-white p-2 rounded-[24px] shadow-sm flex items-center gap-1 border border-white">
+                <button class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-indigo-600 transition-all">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="w-12 h-12 rounded-xl bg-indigo-600 text-white font-black shadow-lg shadow-indigo-100">1</button>
+                <button class="w-12 h-12 rounded-xl font-bold text-slate-400 hover:bg-slate-50 hover:text-indigo-600 transition-all">2</button>
+                <button class="w-12 h-12 rounded-xl font-bold text-slate-400 hover:bg-slate-50 hover:text-indigo-600 transition-all">3</button>
+                <button class="w-12 h-12 rounded-xl flex items-center justify-center text-slate-400 hover:bg-slate-50 hover:text-indigo-600 transition-all">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </footer>
+    </div>
+
 </body>
 </html>

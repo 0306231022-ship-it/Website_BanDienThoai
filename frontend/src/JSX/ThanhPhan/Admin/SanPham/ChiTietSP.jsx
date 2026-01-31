@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
@@ -64,9 +64,9 @@ function ChiTietSanPham() {
         <section className="p-4 md:p-8 bg-[#f8fafc] min-h-screen font-sans text-gray-800">
             {/* HEADER */}
             <div className="max-w-7xl mx-auto flex justify-between mb-8">
-                <Link to="/admin/sanpham" className="flex items-center gap-2 text-gray-500 font-bold bg-white px-5 py-2.5 rounded-2xl shadow-sm border border-gray-100">
+                <button onClick={()=>{navigate(-1)}} className="flex items-center gap-2 text-gray-500 font-bold bg-white px-5 py-2.5 rounded-2xl shadow-sm border border-gray-100">
                     <i className="fas fa-arrow-left"></i> Quay lại
-                </Link>
+                </button>
                 <div className="flex gap-3">
                     <button onClick={handleXoa} className="px-5 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-2xl font-bold hover:bg-red-600 hover:text-white transition-all">
                         Xóa sản phẩm

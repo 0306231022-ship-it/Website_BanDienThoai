@@ -216,19 +216,9 @@ function ChiTietThuongHieu() {
                                             <p className="text-lg font-bold text-red-600 whitespace-nowrap">{product.price}</p>
                                         </div>
                                         <div className="mt-4 flex flex-wrap items-center justify-between gap-4">
-                                            {/* Stars Rating */}
-                                            <div className="flex gap-1">
-                                                <i className="fas fa-star text-yellow-400 text-xs"></i>
-                                                <i className="fas fa-star text-yellow-400 text-xs"></i>
-                                                <i className="fas fa-star text-yellow-400 text-xs"></i>
-                                                <i className="fas fa-star text-yellow-400 text-xs"></i>
-                                                <i className="fas fa-star-half-alt text-yellow-400 text-xs"></i>
-                                                <span className="text-xs text-gray-400 ml-1">(24)</span>
-                                            </div>
-
-                                            {/* NÚT XEM CHI TIẾT ĐÃ THÊM Ở ĐÂY */}
+        
                                             <Link 
-                                                to={`/admin/chitiet-sanpham/${product.id}`} 
+                                                to={`/admin/sanpham/ChiTiet/${product.IDSANPHAM}`} 
                                                 className="inline-flex items-center gap-2 rounded-xl bg-white border border-gray-200 px-4 py-2 text-sm font-bold text-gray-700 shadow-sm hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all duration-300 group/btn"
                                             >
                                                 <i className="fas fa-eye text-xs group-hover/btn:scale-110 transition-transform"></i> Xem chi tiết

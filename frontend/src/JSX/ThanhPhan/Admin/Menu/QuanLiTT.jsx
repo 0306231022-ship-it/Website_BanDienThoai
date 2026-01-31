@@ -32,6 +32,7 @@ import { useState } from 'react';
 import ThungRacPhieuNhap from '../SanPham/ThungRacPhieuNhap';
 function QuanLiTT() {
     const [isPhieuNhapOpen, setIsPhieuNhapOpen] = useState(false);
+    const [sanpham,setsanpham] = useState(false);
     return (
         <>
          <aside id="sidebar" className="w-72 fixed custom-scrollbar left-0 h-screen bg-white border-r border-gray-200 p-4 pt-6 overflow-y-auto shadow-md z-10" aria-label="Menu điều hướng">
@@ -73,7 +74,12 @@ function QuanLiTT() {
         <ul className="space-y-1">
   {[
     { to: "/admin/DonHang", icon: "fa-shopping-cart", label: "Đơn Hàng" },
-    { to: "/admin/sanpham", icon: "fa-box", label: "Sản Phẩm" },
+    { 
+      to: "/admin/sanpham", 
+      icon: "fa-box", 
+      label: "Sản Phẩm",
+      isDropdown_sanpham:true
+    },
     { to: "/admin/thuonghieu", icon: "fa-tags", label: "Thương hiệu" },
     { to: "/admin/khachhang", icon: "fa-users", label: "Khách Hàng" },
     { to: "/admin/NhaCungCap", icon: "fa-truck-loading", label: "Nhà Cung Cấp" },
@@ -81,7 +87,7 @@ function QuanLiTT() {
       to: "/admin/PhieuNhapHang", 
       icon: "fa-boxes-packing", 
       label: "Phiếu nhập hàng",
-      isDropdown: true // Đánh dấu mục này có menu con
+      isDropdown: true 
     },
   ].map((item) => (
     <li key={item.to} className="flex flex-col">
@@ -91,9 +97,10 @@ function QuanLiTT() {
           to={item.to}
           onClick={(e) => {
             if (item.isDropdown) {
-              // Nếu là dropdown thì ngăn chuyển trang ngay để toggle menu (tùy chọn)
-              // Hoặc cứ cho chuyển trang và mở menu con
               setIsPhieuNhapOpen(!isPhieuNhapOpen);
+            }
+            if(item.isDropdown_sanpham){
+              setsanpham(!sanpham);
             }
           }}
           className={({ isActive }) =>
@@ -106,15 +113,15 @@ function QuanLiTT() {
         >
           <i className={`fas ${item.icon} w-6 text-lg transition-transform group-hover:scale-110`}></i>
           <span className="ml-2 text-sm">{item.label}</span>
-          
-          {/* Icon mũi tên cho Dropdown */}
-          {item.isDropdown && (
-            <i className={`fas fa-chevron-down ml-auto text-[10px] transition-transform duration-300 ${isPhieuNhapOpen ? 'rotate-180' : ''}`}></i>
+          {(item.isDropdown || item.isDropdown_sanpham) && (
+             <i className={`fas fa-chevron-down ml-auto text-[10px] transition-transform duration-300 ${
+              isPhieuNhapOpen ? 'rotate-180' : ''}
+              ${sanpham ? 'rotate-180' : ''}`}></i>
           )}
         </NavLink>
       </div>
 
-      {/* Menu Cấp 2 - Chỉ hiển thị khi là mục PhieuNhapHang và đang Open */}
+     
       {item.isDropdown && isPhieuNhapOpen && (
         <ul className="mt-1 ml-9 space-y-1 border-l-2 border-teal-100 pl-2 transition-all animate-in slide-in-from-top-2">
           <li>
@@ -131,6 +138,25 @@ function QuanLiTT() {
           </li>
           
           {/* MỤC KẺ PHÂN CÁCH */}
+          <li className="my-1 border-t border-gray-100 mx-2"></li>
+
+          <li>
+            <NavLink
+              to="/admin/PhieuNhapHang/ThungRac"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all ${
+                  isActive ? "text-red-600 bg-red-50" : "text-gray-500 hover:text-red-600 hover:bg-red-50"
+                }`
+              }
+            >
+              <i className="fas fa-trash-can mr-2 opacity-70"></i> Thùng rác
+            </NavLink>
+          </li>
+        </ul>
+      )}
+       {item.isDropdown_sanpham && sanpham && (
+        <ul className="mt-1 ml-9 space-y-1 border-l-2 border-teal-100 pl-2 transition-all animate-in slide-in-from-top-2">
+  
           <li className="my-1 border-t border-gray-100 mx-2"></li>
 
           <li>

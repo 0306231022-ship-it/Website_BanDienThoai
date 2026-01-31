@@ -302,4 +302,32 @@ export default class NhaCungCapController{
             const kiemtra = await NhaCungCapModel.kiemtraid(req.query.id);
             return res.json({kiemtra})
         }
+        static async lay_sp_theo_id_ncc(req,res){
+            const page = req.query.page;
+            const id = req.query.id;
+            const limit = parseInt(req.query.limit) || 10;
+            const offset = (page - 1) * limit;
+            try {
+                const ketqua = await NhaCungCapModel.lay_sp_theo_id_ncc(id,limit,offset);
+                if(ketqua.ThanhCong){
+                    return res.json({
+                        ThanhCong:true,
+                        dulieu: ketqua.dulieu
+                    })
+                }
+                if(ketqua.status){
+                    return res.json({
+                        status:true,
+                        message:ketqua.message
+                    })
+                }
+            } catch (error) {
+                console.error('Looix sãy ra:'+ error);
+                return res.json({
+                    status:true,
+                    message:'Không thể kết nối với hệ thống,Vui lòng thực hiện sau!'
+                })
+            }
+
+        }
 }

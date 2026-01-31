@@ -5,8 +5,7 @@ import CompanyInfoCard from './compoment/ThongTin';
 import StatRow from './compoment/StarRow';
 import BankCard from './compoment/NganHang';
 import { useModalContext } from '../../../../CONTEXT/QuanLiModal';
-
-
+import * as fun from '../../../../JS/FUNCTONS/function'
 function ChiTietNhaCungCap() {
     const [activeTab, setActiveTab] = useState('history');
     const { id } = useParams();
@@ -18,6 +17,8 @@ function ChiTietNhaCungCap() {
     const [page,setpage] = useState(1);
     const [PhieuNhap_theo_idncc,setPhieu] = useState([]);
     const [PhanTrang_phieunhap,setPhanTrang_PhieuNhap] = useState({})
+    const [page1,setpage1] = useState(1);
+    const [sanpham,setsanpham] = useState([])
     useEffect(() => {
         const layDL = async () => {
             setloading(true);
@@ -63,6 +64,26 @@ function ChiTietNhaCungCap() {
         laydata();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[page,id])
+    //lấy sản phẩm thuộc nhà cung cấp
+    useEffect(()=>{
+        const laydulieu = async()=>{
+            setloading(true)
+            try {
+                const ketqua = await API.CallAPI(undefined,{PhuongThuc:2, url:`/admin/lay_sp_theo_id_ncc?page=${page1}&id=${id}`});
+                if(ketqua.status){
+                    seterr(ketqua.message);
+                }
+                if(ketqua.ThanhCong){
+                    setsanpham(ketqua.dulieu);
+                }
+            } catch (error) {
+                console.error('Lỗi:'+ error)
+            } finally {
+                setloading(false)
+            }
+        };
+        laydulieu()
+    },[page1,id])
 
     // --- Loading UI ---
     if (loading) {
@@ -324,22 +345,7 @@ function ChiTietNhaCungCap() {
                     className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-400"
                 />
             </div>
-            
-            {/* Các nút hành động */}
-            <div className="flex gap-2 w-full sm:w-auto justify-end">
-                <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
-                    <i className="fa-solid fa-list"></i>
-                    <span className="hidden sm:inline">Danh mục</span>
-                </button>
-                <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
-                    <i className="fa-solid fa-filter"></i>
-                    <span className="hidden sm:inline">Lọc tồn kho</span>
-                </button>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 flex items-center gap-2 shadow-sm transition-colors">
-                    <i className="fa-solid fa-plus"></i>
-                    <span>Thêm mới</span>
-                </button>
-            </div>
+        
         </div>
 
         {/* --- 2. BẢNG SẢN PHẨM (PRODUCT TABLE) --- */}
@@ -348,8 +354,7 @@ function ChiTietNhaCungCap() {
                 <thead className="bg-slate-50 sticky top-0 z-10">
                     <tr>
                         <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 w-16 text-center">Ảnh</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Tên sản phẩm / SKU</th>
-                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Danh mục</th>
+                        <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200">Tên sản phẩm / ID</th>
                         <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Giá vốn</th>
                         <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-right">Giá bán</th>
                         <th className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-200 text-center">Tồn kho</th>
@@ -358,130 +363,68 @@ function ChiTietNhaCungCap() {
                     </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                    
+                    {
+                        sanpham && sanpham.length>0 ? (
+                            sanpham.map((sp,index)=>(
+                                 <tr key={index} className="hover:bg-slate-50 transition-colors group">
+                        <td className="px-4 py-3 align-middle">
+                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
+                               <img src={` http://localhost:3001/${sp.HINHANH}`} alt="" />
+                            </div>
+                        </td>
+                        <td className="px-4 py-3 align-middle">
+                            <div className="font-medium text-slate-700 text-sm group-hover:text-blue-600 transition-colors">{sp.TENSANPHAM}</div>
+                            <div className="text-xs text-slate-400">ID:{sp.IDSANPHAM} </div>
+                        </td>
+                        
+                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">{fun.formatCurrency(sp.GIANHAP)}</td>
+                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-700 text-right">{fun.formatCurrency(sp.GIABAN)}</td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <span className="font-medium text-slate-700">{sp.SOLUONG}</span>
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            {
+                                sp.TRANGTHAI ===1 ? (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
+                                        Đang bán
+                                    </span>
+                                ):(
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">
+                                         Đã ngừng kinh doanh
+                                    </span>
+                                )
+                            }
+                            
+                        </td>
+                        <td className="px-4 py-3 align-middle text-center">
+                            <div className="flex items-center justify-center gap-2">
+                                <Link to={`/admin/sanpham/ChiTiet/${sp.IDSANPHAM}`} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết"> xem chi tiết <i className="fas fa-arrow-right ml-1"></i></Link>
+                            </div>
+                        </td>
+                    </tr>
+
+                            ))
+                        ):(
+                            <tr class="hover:bg-transparent">
+                                    <td colspan="100%" class="p-0">
+                                        < div class="flex flex-col items-center justify-center py-16 bg-gray-50/50 border-y border-dashed border-gray-200">
+                                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                                                 <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                                </svg>
+                                            </div>
+                                            <h3 class="text-gray-700 font-semibold">Danh sách trống</h3>
+                                            <p class="text-gray-500 text-sm max-w-xs text-center mt-2"> Hiện tại hệ thống chưa ghi nhận dữ liệu nào trong mục này.</p>
+                                             <Link to={`/admin/PhieuNhapHang/themPhieuNhap/${id}`} class="mt-6 px-4 py-2 bg-teal-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors shadow-sm">
+                                                <i class="fa-solid fa-plus"></i> + Thêm dữ liệu đầu tiên
+                                            </Link>
+                                          </div>
+                                     </td>
+                                </tr>
+                        )
+                    }
                     {/* Sản phẩm 1: Bình thường */}
-                    <tr className="hover:bg-slate-50 transition-colors group">
-                        <td className="px-4 py-3 align-middle">
-                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
-                                <i className="fa-brands fa-apple text-xl text-slate-400"></i>
-                            </div>
-                        </td>
-                        <td className="px-4 py-3 align-middle">
-                            <div className="font-medium text-slate-700 text-sm group-hover:text-blue-600 transition-colors">iPhone 15 Pro Max 256GB</div>
-                            <div className="text-xs text-slate-400">SKU: IP15-PM-256</div>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-sm text-slate-600">Điện thoại</td>
-                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">28.500.000</td>
-                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-700 text-right">32.990.000</td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <span className="font-medium text-slate-700">12</span>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
-                                Đang bán
-                            </span>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <div className="flex items-center justify-center gap-2">
-                                <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors" title="Sửa">
-                                    <i className="fa-solid fa-pen-to-square"></i>
-                                </button>
-                                <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors" title="Xóa">
-                                    <i className="fa-solid fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    {/* Sản phẩm 2: Sắp hết hàng (Warning) */}
-                    <tr className="hover:bg-slate-50 transition-colors group">
-                        <td className="px-4 py-3 align-middle">
-                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
-                                <i className="fa-solid fa-laptop text-lg text-slate-400"></i>
-                            </div>
-                        </td>
-                        <td className="px-4 py-3 align-middle">
-                            <div className="font-medium text-slate-700 text-sm group-hover:text-blue-600 transition-colors">MacBook Air M2 2023</div>
-                            <div className="text-xs text-slate-400">SKU: MB-AIR-M2</div>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-sm text-slate-600">Laptop</td>
-                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">24.000.000</td>
-                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-700 text-right">28.490.000</td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <span className="font-bold text-amber-600">2</span>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700">
-                                Đang bán
-                            </span>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <div className="flex items-center justify-center gap-2">
-                                <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><i className="fa-solid fa-pen-to-square"></i></button>
-                                <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"><i className="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    {/* Sản phẩm 3: Hết hàng (Error) */}
-                    <tr className="hover:bg-slate-50 transition-colors group">
-                        <td className="px-4 py-3 align-middle">
-                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
-                                <i className="fa-solid fa-headphones text-lg text-slate-400"></i>
-                            </div>
-                        </td>
-                        <td className="px-4 py-3 align-middle">
-                            <div className="font-medium text-slate-700 text-sm group-hover:text-blue-600 transition-colors">AirPods Pro Gen 2</div>
-                            <div className="text-xs text-slate-400">SKU: APP-GEN2</div>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-sm text-slate-600">Phụ kiện</td>
-                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">4.800.000</td>
-                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-700 text-right">5.990.000</td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <span className="font-bold text-red-500">0</span>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-700">
-                                Hết hàng
-                            </span>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <div className="flex items-center justify-center gap-2">
-                                <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><i className="fa-solid fa-pen-to-square"></i></button>
-                                <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"><i className="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-
-                    {/* Sản phẩm 4: Ngừng kinh doanh (Inactive) */}
-                    <tr className="hover:bg-slate-50 transition-colors group opacity-70">
-                        <td className="px-4 py-3 align-middle">
-                            <div className="w-10 h-10 rounded border border-slate-200 bg-slate-100 flex items-center justify-center overflow-hidden">
-                                <i className="fa-solid fa-mobile-screen text-lg text-slate-400"></i>
-                            </div>
-                        </td>
-                        <td className="px-4 py-3 align-middle">
-                            <div className="font-medium text-slate-600 text-sm group-hover:text-blue-600 transition-colors">Samsung Galaxy S20 (Cũ)</div>
-                            <div className="text-xs text-slate-400">SKU: SS-S20-OLD</div>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-sm text-slate-600">Điện thoại</td>
-                        <td className="px-4 py-3 align-middle text-sm text-slate-500 text-right">5.000.000</td>
-                        <td className="px-4 py-3 align-middle text-sm font-medium text-slate-600 text-right">7.500.000</td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <span className="font-medium text-slate-500">5</span>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600">
-                                Ngừng bán
-                            </span>
-                        </td>
-                        <td className="px-4 py-3 align-middle text-center">
-                            <div className="flex items-center justify-center gap-2">
-                                <button className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"><i className="fa-solid fa-pen-to-square"></i></button>
-                                <button className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"><i className="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>
+                   
                 </tbody>
             </table>
         </div>
@@ -490,14 +433,11 @@ function ChiTietNhaCungCap() {
         <div className="p-3 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between text-sm text-slate-500 gap-3">
             <span>Hiển thị 1-4 trên 150 sản phẩm</span>
             <div className="flex gap-1">
-                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-50">
+                <button onClick={()=>{setpage1(p=>p-1)}} disabled={page1===1} className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-50">
                     <i className="fa-solid fa-chevron-left text-xs"></i>
                 </button>
-                <button className="w-8 h-8 flex items-center justify-center rounded bg-blue-600 text-white font-medium border border-blue-600">1</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-600">2</button>
-                <span className="w-8 h-8 flex items-center justify-center text-slate-400">...</span>
-                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 text-slate-600">10</button>
-                <button className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50">
+                <span className="w-8 h-8 flex items-center justify-center text-slate-400">{page1}</span>
+                <button onClick={()=>{setpage1(p=>p+1)}} className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50">
                     <i className="fa-solid fa-chevron-right text-xs"></i>
                 </button>
             </div>

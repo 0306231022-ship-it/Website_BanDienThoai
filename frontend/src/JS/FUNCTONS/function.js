@@ -120,6 +120,8 @@ export const validateImage = (file) => {
                   return "Không xác định";
           }
       }
-
+export  const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    };
 
 
