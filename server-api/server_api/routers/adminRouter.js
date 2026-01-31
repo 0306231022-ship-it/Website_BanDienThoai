@@ -17,6 +17,7 @@ import { PhieuNhapValidate } from "../validation/ValidatePhieuNhap.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
 import NhaCungCapController from "../controllers/NhaCungCapController.js";
 import PhieuNhapController from "../controllers/PhieuNhapController.js";
+import SanPhamController from "../controllers/SanPhamController.js";
 import { parseNewProductState } from "../middleware/ChuyenDL.js";
 import adminModel from "../models/adminModel.js";
 const adminRouter = Router();
@@ -221,6 +222,8 @@ adminRouter.get('/HuyPhieuNhap', authMiddleware, PhieuNhapController.HuyPhieuNha
 adminRouter.get('/lay_phieunhap_daxoa', authMiddleware, PhieuNhapController.LayDanhSachPhieuNhap);
 adminRouter.get('/laythongke_phieunhap' , authMiddleware , PhieuNhapController.laythongke_phieunhap);
 adminRouter.get('/dulieu_hoadon_nhapkho' , authMiddleware , PhieuNhapController.dulieu_hoadon_nhapkho);
+adminRouter.get('/lay_ds_sanpham' , authMiddleware , SanPhamController.lay_ds_sanpham);
+//
 //=========================================
 console.log("✅ adminRouter loaded");
 export default adminRouter;

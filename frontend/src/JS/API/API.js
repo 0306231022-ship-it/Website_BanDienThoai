@@ -43,9 +43,11 @@ export async function CallAPI(dulieu = null, yeucau) {
 
         return await response.json();
     } catch (error) {
+        console.log(error)
+        //đây sẽ là debug sau này hoàn tất sẽ trả về tin nhắn
        return {
             status : true,
-            message :'Không thể kết nối đến hệ thống!',
+            message: error.message || String(error),
        }
     }
 }
