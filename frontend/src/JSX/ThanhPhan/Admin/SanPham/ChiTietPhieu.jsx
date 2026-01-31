@@ -2,6 +2,7 @@ import { useParams, useNavigate ,Link } from "react-router-dom";
 import * as API from '../../../../JS/API/API';
 import { useState, useEffect } from "react";
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+import * as fun from '../../../../JS/FUNCTONS/function';
 
 function ChiTietPhieu() {
     const { id } = useParams();
@@ -43,28 +44,11 @@ function ChiTietPhieu() {
         Laydata();
     }, [id])
 
-    const Map=(obj)=> {
-        switch (obj) {
-            case 'HEDIEUHANH':
-                return "Hệ điều hành";
-            case 'MANHINH':
-                return "Màn Hình";
-            case 'RAM':
-                return "RAM";
-            case 'BONHOTRONG':
-                return "Bộ nhớ trong";
-            case 'PIN':
-                return "Dung lượng Pin";
-            case 'MAUSAC':
-                return "Màu sắc";
-            default:
-                return "Không xác định";
-        }
-    }
+    
     const parseThongSo = (jsonString) => {
      const thongSo = JSON.parse(jsonString);
      return Object.entries(thongSo)
-         .map(([key, value]) => `${Map(key)}: ${value}`)
+         .map(([key, value]) => `${fun.Map(key)}: ${value}`)
          .join(', ');
     }
     const DuyetPhieuNhap=async()=> {

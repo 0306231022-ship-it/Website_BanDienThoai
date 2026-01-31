@@ -223,6 +223,7 @@ adminRouter.get('/lay_phieunhap_daxoa', authMiddleware, PhieuNhapController.LayD
 adminRouter.get('/laythongke_phieunhap' , authMiddleware , PhieuNhapController.laythongke_phieunhap);
 adminRouter.get('/dulieu_hoadon_nhapkho' , authMiddleware , PhieuNhapController.dulieu_hoadon_nhapkho);
 adminRouter.get('/lay_ds_sanpham' , authMiddleware , SanPhamController.lay_ds_sanpham);
+adminRouter.get('/layChiTietSP_theoid' , authMiddleware , SanPhamController.layChiTietSP_theoid);
 //
 //=========================================
 console.log("✅ adminRouter loaded");

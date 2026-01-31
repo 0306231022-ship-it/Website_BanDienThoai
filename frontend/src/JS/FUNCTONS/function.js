@@ -102,6 +102,24 @@ export const validateImage = (file) => {
       return true;
     }
   };
+  export const Map=(obj)=> {
+          switch (obj) {
+              case 'HEDIEUHANH':
+                  return "Hệ điều hành";
+              case 'MANHINH':
+                  return "Màn Hình";
+              case 'RAM':
+                  return "RAM";
+              case 'BONHOTRONG':
+                  return "Bộ nhớ trong";
+              case 'PIN':
+                  return "Dung lượng Pin";
+              case 'MAUSAC':
+                  return "Màu sắc";
+              default:
+                  return "Không xác định";
+          }
+      }
 
 
 
