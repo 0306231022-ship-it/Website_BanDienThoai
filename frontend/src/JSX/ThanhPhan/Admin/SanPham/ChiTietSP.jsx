@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
 
@@ -39,18 +39,23 @@ function ChiTietSanPham() {
         fetchDetail();
     }, [id]);
 
-    const formatVND = (price) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price || 0);
-    const handleXoa = () => {
-        Swal.fire({
-            title: 'Bạn có chắc chắn?',
-            text: "Dữ liệu sẽ bị xóa vĩnh viễn!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#ef4444',
-            confirmButtonText: 'Xác nhận xóa'
-        }).then((result) => {
-            if (result.isConfirmed) navigate('/admin/sanpham');
-        });
+    const handleXoa = async() => {
+      const xacnhan= await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn xóa sản phẩm này khỏi phiếu nhập không?');
+      if(!xacnhan) return ;
+      try {
+        const ketqua = await API.CallAPI(undefined,{PhuongThuc:2 , url :`/admin/CapNhat_TT_TT_SP?id=${id}`});
+        alert(JSON.stringify(ketqua))
+        if(ketqua.ThanhCong){
+            navigate(-1);
+            ThongBao.ThongBao_ThanhCong(ketqua.message);
+            return;
+        }else{
+            ThongBao.ThongBao_Loi(ketqua.message);
+            return;
+        }
+      } catch (error) {
+        console.error('Có lỗi sãy ra:'+ error)
+      }
     };
 
     if (loading || !sanpham) return (
@@ -116,16 +121,16 @@ function ChiTietSanPham() {
                     <div className="bg-white p-8 rounded-[40px] shadow-sm border border-gray-100">
                         <span className="inline-block px-3 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-lg mb-4">ID: {sanpham.IDSANPHAM}</span>
                         <h1 className="text-4xl font-black text-slate-900 mb-2">{sanpham.TENSANPHAM}</h1>
-                        <p className="text-3xl font-black text-indigo-600 mb-8">{formatVND(sanpham.GIABAN)}</p>
+                        <p className="text-3xl font-black text-indigo-600 mb-8">{fun.formatCurrency(sanpham.GIABAN)}</p>
 
                         <div className="grid grid-cols-2 gap-4 mb-8">
                             <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
                                 <p className="text-[10px] font-bold text-emerald-600 uppercase">Giá nhập</p>
-                                <p className="text-lg font-black text-emerald-800">{formatVND(sanpham.GIANHAP)}</p>
+                                <p className="text-lg font-black text-emerald-800">{fun.formatCurrency(sanpham.GIANHAP)}</p>
                             </div>
                             <div className="p-4 bg-orange-50 rounded-2xl border border-orange-100">
                                 <p className="text-[10px] font-bold text-orange-600 uppercase">Lợi nhuận</p>
-                                <p className="text-lg font-black text-orange-800">+{formatVND(sanpham.GIABAN - sanpham.GIANHAP)}</p>
+                                <p className="text-lg font-black text-orange-800">+{fun.formatCurrency(sanpham.GIABAN - sanpham.GIANHAP)}</p>
                             </div>
                         </div>
 

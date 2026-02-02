@@ -2,3 +2,8 @@
  0 : lưu bản nháp
  1 : bản chính chức
  2 : đã xóa kèm theo DELETE_AT = NOW();
+ ====================================
+ 2. Bảng sản phẩm
+ 1: sản phẩm bán
+ 0 : sản phẩm đã xóa 
+ 2 : sản phẩm ngừng bán 

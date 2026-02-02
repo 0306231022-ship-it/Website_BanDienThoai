@@ -34,7 +34,7 @@ export default class SanPhamController{
                 message:'Vui lòng kiểm tra lại dữ liệu truyền đi!'
             })
         }
-        const kiemtra = SanPhamModel.kiemtra_id_sp(id);
+        const kiemtra = await SanPhamModel.kiemtra_id_sp(id);
         if(!kiemtra){
             return res.json({
                 status:true,
@@ -62,5 +62,53 @@ export default class SanPhamController{
                 message:'Lỗi khi truy vấn dữ liệu!'
             })
         }
+   }
+   static async CapNhat_TT_TT_SP(req,res){
+        const id = req.query.id;
+        if(!id){
+            return res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại dữ liệu truyền đi!'
+            })
+        }
+        const kiemtra = await SanPhamModel.kiemtra_id_sp(id);
+        if(!kiemtra){
+            return res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại dữ liệu!'
+            })
+        }
+        try {
+            const ketqqua = await SanPhamModel.CapNhat_TT_TT_SP(id);
+            if(ketqqua){
+                return res.json({
+                    ThanhCong:true,
+                    message: 'Đã chuyển sản phẩm này vào thùng rác!'
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Chuyển vào thùng rác thất bại!'
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+   }
+   static async sanpham_daxoa(req,res){
+         const page = parseInt(req.query.page) || 1;
+         try {
+            const ketqqua = await SanPhamModel.anpham_daxoa(page);
+         } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+         }
    }
 }

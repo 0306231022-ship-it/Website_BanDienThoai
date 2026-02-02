@@ -20,6 +20,7 @@ export default class SanPhamModel{
                      ON sp.IDSANPHAM = ct.IDSANPHAM
             INNER JOIN thuonghieu AS th 
             ON th.IDTHUONGHIEU = sp.IDTHUONGHIEU
+            WHERE sp.TRANGTHAI = 1
             GROUP BY sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU
             LIMIT ? OFFSET ?;
                 `,[limit,opset])
@@ -90,6 +91,26 @@ export default class SanPhamModel{
                 status:true,
                 message: 'Lỗi truy vấn dữ liệu. Vui lòng kiểm tra lại!'
             }
+        }
+   }
+   static async CapNhat_TT_TT_SP(id){
+        try {
+            const [CapNhat] = await execute(`
+                UPDATE sanpham 
+                SET TRANGTHAI = ? , DELETE_AT = NOW()
+                WHERE IDSANPHAM=?
+                `,[0,id]);
+            return CapNhat.affectedRows>0 ? true : false;
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return false;
+        }
+   }
+   static async anpham_daxoa(page){
+        try {
+            const [SanPham] = await execute
+        } catch (error) {
+            
         }
    }
 }

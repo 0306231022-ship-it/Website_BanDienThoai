@@ -225,6 +225,8 @@ adminRouter.get('/dulieu_hoadon_nhapkho' , authMiddleware , PhieuNhapController.
 adminRouter.get('/lay_ds_sanpham' , authMiddleware , SanPhamController.lay_ds_sanpham);
 adminRouter.get('/layChiTietSP_theoid' , authMiddleware , SanPhamController.layChiTietSP_theoid);
 adminRouter.get('/lay_sp_theo_id_ncc' ,authMiddleware,NhaCungCapController.lay_sp_theo_id_ncc);
+adminRouter.get('/CapNhat_TT_TT_SP' ,authMiddleware , SanPhamController.CapNhat_TT_TT_SP);
+adminRouter.get('/sanpham_daxoa', authMiddleware,SanPhamController.sanpham_daxoa);
 //
 //=========================================
 console.log("✅ adminRouter loaded");

@@ -22,6 +22,7 @@ import NhaCungCap from '../NhaCungCap/DanhSachNhaCC';
 import PhieuNhapHang from '../SanPham/PhieuNhapHang';
 import ThemPhieuNhap from '../SanPham/ThemPhieuNhap';
 import HoaDonNhapKho from '../SanPham/HoaDonNhapHang';
+import ThungRacSanPham from '../SanPham/ThungRacSanPham';
 import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
 import ChiTietNhaCungCap from '../NhaCungCap/ChiTietNhaCungCap';
 import ChiTietPhieu from '../SanPham/ChiTietPhieu';
@@ -161,7 +162,7 @@ function QuanLiTT() {
 
           <li>
             <NavLink
-              to="/admin/PhieuNhapHang/ThungRac"
+              to="/admin/sanpham/thungrac"
               className={({ isActive }) =>
                 `flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all ${
                   isActive ? "text-red-600 bg-red-50" : "text-gray-500 hover:text-red-600 hover:bg-red-50"
@@ -223,6 +224,7 @@ function QuanLiTT() {
                     <Route path='PhieuNhapHang/themPhieuNhap/:id' element={<ThemPhieuNhap/>} />
                     <Route path='PhieuNhapHang/ChiTiet/:id' element={<ChiTietPhieu/>} />
                     <Route path='PhieuNhapHang/hoadon/:id' element={<HoaDonNhapKho/>} />
+                    <Route path="PhieuNhapHang/ThungRac" element={<ThungRacPhieuNhap />} />
                     <Route path="hoso" element={<HoSo />} />
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     
@@ -232,6 +234,7 @@ function QuanLiTT() {
                     <Route path="sanpham" element={<DanhSachSanPham />} />
                     <Route path="sanpham/ThemSanPham" element={<ThemSanPham />} />
                     <Route path="sanpham/chitiet/:id" element={<ChiTietSanPham />} />
+                    <Route path="sanpham/thungrac" element={<ThungRacSanPham/>} />
                     
                     <Route path="khachhang" element={<DanhSachKhachHang />} />
                     <Route path="baocao" element={<BaoCao />} />
@@ -241,7 +244,7 @@ function QuanLiTT() {
                     <Route path="hotro" element={<HoTroKhachHang />} />
                     <Route path="BinhLuan" element={<BinhLuan />} />
                     <Route path="BinhLuan/xem" element={< Xem />} />
-                    <Route path="PhieuNhapHang/ThungRac" element={<ThungRacPhieuNhap />} />
+                    
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                    
                 </Routes>
