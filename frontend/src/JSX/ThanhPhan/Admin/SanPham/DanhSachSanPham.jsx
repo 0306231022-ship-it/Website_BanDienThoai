@@ -13,7 +13,6 @@ function DanhSachSanPham() {
             setloading(true);
             try {
                 const ketqua = await API.CallAPI(undefined, { PhuongThuc: 2, url: `/admin/lay_ds_sanpham?page=${page}` });
-                 //alert(JSON.stringify(ketqua)) // Tắt alert khi đã chạy ổn
                 if (ketqua.ThanhCong) {
                     setSanPham(ketqua.DuLieu);
                 } else if (ketqua.status) {

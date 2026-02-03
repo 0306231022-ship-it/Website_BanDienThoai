@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import * as API from '../../../../JS/API/API';
 import '../../../../CSS/ThanhCuon.css';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+import * as fun from '../../../../JS/FUNCTONS/function';
 
 function PhieuNhapHang() {
     const [Trang, setTrang] = useState(1);
@@ -58,10 +59,6 @@ function PhieuNhapHang() {
         );
     });
 
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount || 0);
-    };
-
     const handlePrevPage = () => {
         if (Trang > 1) setTrang(prev => prev - 1);
     };
@@ -97,15 +94,15 @@ function PhieuNhapHang() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                         <div className="bg-white rounded-lg shadow p-5 border-l-4 border-blue-500">
                             <p className="text-sm text-gray-500 uppercase font-bold">Tổng nhập (Tháng { new Date().getMonth() + 1} / {new Date().getFullYear()})</p>
-                            <p className="text-2xl font-bold text-blue-700 mt-1">{formatCurrency(ThongKe.TongTien)}</p>
+                            <p className="text-2xl font-bold text-blue-700 mt-1">{fun.formatCurrency(ThongKe.TongTien)}</p>
                         </div>
                         <div className="bg-white rounded-lg shadow p-5 border-l-4 border-green-500">
                             <p className="text-sm text-gray-500 uppercase font-bold">Đã thanh toán (Tháng { new Date().getMonth() + 1} / {new Date().getFullYear()})</p>
-                            <p className="text-2xl font-bold text-green-700 mt-1">{formatCurrency(ThongKe.DaThanhToan)}</p>
+                            <p className="text-2xl font-bold text-green-700 mt-1">{fun.formatCurrency(ThongKe.DaThanhToan)}</p>
                         </div>
                         <div className="bg-white rounded-lg shadow p-5 border-l-4 border-red-500">
                             <p className="text-sm text-gray-500 uppercase font-bold">Nợ Nhà Cung Cấp (Tháng { new Date().getMonth() + 1} / {new Date().getFullYear()})</p>
-                            <p className="text-2xl font-bold text-red-600 mt-1">{formatCurrency(ThongKe.No)}</p>
+                            <p className="text-2xl font-bold text-red-600 mt-1">{fun.formatCurrency(ThongKe.No)}</p>
                         </div>
                     </div>
 
@@ -149,7 +146,7 @@ function PhieuNhapHang() {
                                                 <td className="px-6 py-4 font-bold text-blue-600">{item.IDPN}</td>
                                                 <td className="px-6 py-4">{item.TENNCC}</td>
                                                 <td className="px-6 py-4">{item.HOTEN}</td>
-                                                <td className="px-6 py-4 text-right font-bold">{formatCurrency(item.TONGTIEN)}</td>
+                                                <td className="px-6 py-4 text-right font-bold">{fun.formatCurrency(item.TONGTIEN)}</td>
                                                 <td className="px-6 py-4 text-center">
                                                     <span className={`px-2 py-1 text-xs font-semibold rounded-full ${item.TRANGTHAI === 1 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                                                         {item.TRANGTHAI === 1 ? 'Đã hoàn thành' : 'Chưa hoàn thành'}

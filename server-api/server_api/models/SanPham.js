@@ -106,11 +106,23 @@ export default class SanPhamModel{
             return false;
         }
    }
-   static async anpham_daxoa(page){
+   static async anpham_daxoa(limit, offset){
         try {
-            const [SanPham] = await execute
+            const [SanPham] = await execute(`
+                SELECT sp.IDSANPHAM,sp.TENSANPHAM,sp.DELETE_AT 
+                WHERE TRANGTHAI=?
+                 LIMIT ? OFFSET ?
+                `,[0,limit,offset]);
+            return {
+                ThanhCong:true,
+                dulieu:SanPham
+            }
         } catch (error) {
-            
+            console.error('Có lỗi sãy ra:' + error);
+            return {
+                status:true,
+                message :'Không thể kết nối đến hệ thống vui lòng thử lại sau!'
+            }
         }
    }
 }

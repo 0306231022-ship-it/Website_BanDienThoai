@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas';
 import { useParams } from 'react-router-dom';
 import * as API from '../../../../JS/API/API';
 import { useAppContext } from '../../../../CONTEXT/TrangChuAdmin';
+import * as fun from '../../../../JS/FUNCTONS/function'
 
 const HoaDonNhapKho = () => {
     const { id } = useParams();
@@ -54,7 +55,7 @@ const HoaDonNhapKho = () => {
         pdf.save(`PhieuNhap_${id}.pdf`);
     };
 
-    const formatVND = (so) => new Intl.NumberFormat('vi-VN').format(Math.round(so || 0)) + ' ₫';
+    
 
     if (loading) {
         return (
@@ -123,8 +124,8 @@ const HoaDonNhapKho = () => {
                                         <p className="text-[10px] text-blue-500 font-bold tracking-tighter italic">IMEI: {item.MA_IMEI || 'Đang cập nhật'}</p>
                                     </td>
                                     <td className="py-4 px-4 text-center font-bold text-sm">{item.SOLUONG}</td>
-                                    <td className="py-4 px-4 text-right text-sm">{formatVND(item.GIANHAP)}</td>
-                                    <td className="py-4 px-4 text-right font-bold text-sm">{formatVND(item.SOLUONG * item.GIANHAP)}</td>
+                                    <td className="py-4 px-4 text-right text-sm">{fun.formatCurrency(item.GIANHAP)}</td>
+                                    <td className="py-4 px-4 text-right font-bold text-sm">{fun.formatCurrency(item.SOLUONG * item.GIANHAP)}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -135,15 +136,15 @@ const HoaDonNhapKho = () => {
                         <div className="w-72 space-y-3">
                             <div className="flex justify-between text-sm text-slate-600">
                                 <span>Cộng tiền hàng:</span>
-                                <span className="font-medium">{formatVND(tongTienHang)}</span>
+                                <span className="font-medium">{fun.formatCurrency(tongTienHang)}</span>
                             </div>
                             <div className="flex justify-between text-sm text-slate-600">
                                 <span>Thuế GTGT (VAT 10%):</span>
-                                <span className="font-medium">{formatVND(tienThue)}</span>
+                                <span className="font-medium">{fun.formatCurrency(tienThue)}</span>
                             </div>
                             <div className="flex justify-between py-3 px-4 bg-slate-900 text-white rounded-lg shadow-lg">
                                 <span className="font-bold uppercase text-xs">Tổng thanh toán:</span>
-                                <span className="text-lg font-black text-yellow-400">{formatVND(tongThanhToan)}</span>
+                                <span className="text-lg font-black text-yellow-400">{fun.formatCurrency(tongThanhToan)}</span>
                             </div>
                         </div>
                     </div>

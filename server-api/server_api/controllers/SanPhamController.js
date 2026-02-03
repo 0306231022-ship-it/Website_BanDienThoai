@@ -101,8 +101,21 @@ export default class SanPhamController{
    }
    static async sanpham_daxoa(req,res){
          const page = parseInt(req.query.page) || 1;
+         const offset = (page - 1) * 10;
          try {
-            const ketqqua = await SanPhamModel.anpham_daxoa(page);
+            const ketqqua = await SanPhamModel.anpham_daxoa(10,offset);
+            if(ketqqua.status){
+                return res.json({
+                    status:true,
+                    message:ketqqua.message
+                })
+            }
+            if(ketqqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqqua.dulieu
+                })
+            }
          } catch (error) {
             console.error('Có lỗi sãy ra:' + error);
             return res.json({

@@ -22,7 +22,6 @@ function ThungRacPhieuNhap() {
         }
     };
     useEffect(() => { fetchData(); }, []);
-    const formatVND = (value) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
     const Khoi_Phuc = async(id)=>{
         const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn khôi phục phiếu nhập này chứ?');
         if(!XacNhan) return;
@@ -190,7 +189,7 @@ function ThungRacPhieuNhap() {
                                             <span>•</span>
                                             <span>HỦY: {new Date(phieu.DELETE_AT).toLocaleDateString('vi-VN')}</span>
                                             <span>•</span>
-                                            <span className="text-blue-500">GIÁ TRỊ: {formatVND(phieu.TONGTIEN)}</span>
+                                            <span className="text-blue-500">GIÁ TRỊ: {fun.formatCurrency(phieu.TONGTIEN)}</span>
                                         </div>
                                     </div>
 

@@ -1,14 +1,22 @@
 import { useState,useEffect } from "react";
+import { useNavigate} from 'react-router-dom'
 import * as API from '../../../../JS/API/API';
 function ThungRacSanPham(){
     const [page,setpage] = useState(1);
-    const [loading,setloading] = useState(false)
+    const navigate = useNavigate();
+    const [loading,setloading] = useState(false);
+    
+    const [err,seterrr] = useState('');
     useEffect(()=>{
         const LayDL = async()=>{
             setloading(true)
             try {
                 const ketqua = await API.CallAPI(undefined,{PhuongThuc:2, url :`/admin/sanpham_daxoa?page=${page}`});
                 alert(JSON.stringify(ketqua))
+                if(ketqua.status){
+                    seterrr(ketqua.message)
+                }
+
             } catch (error) {
                 console.error('lỗi sãy ra:' + error);
             } finally {
@@ -27,9 +35,24 @@ function ThungRacSanPham(){
             </div>
         );
     }
+     if (err) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] w-full p-6 text-center animate-fadeIn">
+                <div className="bg-red-50 p-8 rounded-3xl border border-red-100 shadow-xl max-w-md">
+                    <i className="fa-solid fa-triangle-exclamation text-7xl text-red-500 mb-6"></i>
+                    <h3 className="text-xl font-extrabold text-gray-800 mb-2">Đã xảy ra lỗi!</h3>
+                    <p className="text-red-600 font-medium mb-6">{err}</p>
+                    <div className="flex gap-3 justify-center">
+                        <button onClick={() => window.location.reload()} className="px-6 py-2.5 bg-red-500 text-white rounded-xl font-bold shadow-lg hover:bg-red-600 transition-all">Thử lại</button>
+                        <button onClick={() => navigate(-1)} className="px-6 py-2.5 bg-white text-gray-600 border border-gray-200 rounded-xl font-bold hover:bg-gray-50 transition-all">Quay lại</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     return (
         <>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl mx-auto p-4">
     <div className="flex justify-between items-end mb-6">
         <div>
             <h1 className="text-2xl font-bold text-gray-800">Thùng rác hệ thống</h1>
@@ -60,10 +83,8 @@ function ThungRacSanPham(){
             <table className="w-full text-left border-collapse">
                 <thead>
                     <tr className="text-gray-400 uppercase text-[11px] font-bold tracking-wider border-b border-gray-100">
-                        <th className="px-6 py-4 w-10"><input type="checkbox" className="rounded"/></th>
                         <th className="px-6 py-4">Thông tin sản phẩm</th>
                         <th className="px-6 py-4">Mã / Loại</th>
-                        <th className="px-6 py-4">Người xóa</th>
                         <th className="px-6 py-4">Thời gian còn lại</th>
                         <th className="px-6 py-4 text-right">Thao tác</th>
                     </tr>
@@ -71,7 +92,6 @@ function ThungRacSanPham(){
                 <tbody className="divide-y divide-gray-100">
                     
                     <tr className="hover:bg-gray-50 transition">
-                        <td className="px-6 py-4"><input type="checkbox" className="rounded"/></td>
                         <td className="px-6 py-4 flex items-center gap-3">
                             <div className="w-10 h-10 rounded bg-gray-200 overflow-hidden border">
                                 <img src="https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=100" alt="prod"/>
@@ -85,7 +105,6 @@ function ThungRacSanPham(){
                             <span className="block text-gray-600 font-mono text-xs">IP15-PM-BLK</span>
                             <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded uppercase">Điện thoại</span>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">Trần Văn Tú</td>
                         <td className="px-6 py-4">
                             <div className="flex flex-col">
                                 <span className="text-red-600 font-bold flex items-center gap-1">
@@ -101,39 +120,6 @@ function ThungRacSanPham(){
                             <button title="Xóa vĩnh viễn" className="text-gray-400 hover:text-red-600 w-8 h-8 rounded-full transition ml-1"><i className="fa-solid fa-trash-can text-sm"></i></button>
                         </td>
                     </tr>
-
-                    <tr className="hover:bg-gray-50 transition">
-                        <td className="px-6 py-4"><input type="checkbox" className="rounded"/></td>
-                        <td className="px-6 py-4 flex items-center gap-3">
-                            <div className="w-10 h-10 rounded bg-gray-200 overflow-hidden border">
-                                <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=100" alt="prod"/>
-                            </div>
-                            <div>
-                                <div className="font-bold text-gray-800">Nike Air Jordan 1</div>
-                                <div className="text-xs text-gray-400">ID: #SP-5542</div>
-                            </div>
-                        </td>
-                        <td className="px-6 py-4 text-sm">
-                            <span className="block text-gray-600 font-mono text-xs">NK-AJ1-RED</span>
-                            <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded uppercase">Giày dép</span>
-                        </td>
-                        <td className="px-6 py-4 text-sm text-gray-600">Lê Minh Tâm</td>
-                        <td className="px-6 py-4">
-                            <div className="flex flex-col">
-                                <span className="text-green-600 font-semibold flex items-center gap-1">
-                                    Còn 25 ngày
-                                </span>
-                                <div className="w-24 h-1.5 bg-gray-100 rounded-full mt-1 overflow-hidden">
-                                    <div className="bg-green-500 h-full w-[80%]"></div>
-                                </div>
-                            </div>
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                            <button title="Khôi phục" className="text-blue-600 hover:bg-blue-50 w-8 h-8 rounded-full transition"><i className="fa-solid fa-undo text-sm"></i></button>
-                            <button title="Xóa vĩnh viễn" className="text-gray-400 hover:text-red-600 w-8 h-8 rounded-full transition ml-1"><i className="fa-solid fa-trash-can text-sm"></i></button>
-                        </td>
-                    </tr>
-
                 </tbody>
             </table>
         </div>

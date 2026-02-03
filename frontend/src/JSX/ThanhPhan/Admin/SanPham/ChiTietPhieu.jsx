@@ -191,11 +191,11 @@ function ChiTietPhieu() {
                         <div className="bg-white p-4 rounded border border-gray-200 shadow-sm">
                             <div className="flex justify-between mb-1">
                                 <span className="text-gray-600">Tổng tiền:</span>
-                                <span className="font-bold">{Number(ThanhToan?.TONGTIEN || 0).toLocaleString("vi-VN")} ₫</span>
+                                <span className="font-bold">{fun.formatCurrency(ThanhToan?.TONGTIEN)}</span>
                             </div>
                             <div className="flex justify-between mb-1 text-green-600">
                                 <span>Đã thanh toán:</span>
-                                <span className="font-bold">- {Number(ThanhToan?.DA_THANHTOAN || 0).toLocaleString("vi-VN")} ₫</span>
+                                <span className="font-bold">- {fun.formatCurrency(ThanhToan?.DA_THANHTOAN )}</span>
                             </div>
                             <div className="border-t pt-2 mt-2 flex justify-between text-red-600 text-lg font-bold">
                                 <span>Còn nợ:</span>
@@ -256,8 +256,8 @@ function ChiTietPhieu() {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 text-center font-bold text-gray-900">{sp.SOLUONG}</td>
-                                        <td className="px-6 py-4 text-right">{Number(sp.GIANHAP || 0).toLocaleString("vi-VN")}₫</td>
-                                        <td className="px-6 py-4 text-right font-bold text-gray-900">{Number(sp.THANHTIEN || 0).toLocaleString("vi-VN")}₫</td>
+                                        <td className="px-6 py-4 text-right">{fun.formatCurrency(sp.GIANHAP)}</td>
+                                        <td className="px-6 py-4 text-right font-bold text-gray-900">{fun.formatCurrency(sp.THANHTIEN)}</td>
                                     </tr>
                                 ))
                             ) : (
@@ -270,7 +270,7 @@ function ChiTietPhieu() {
                             <tr>
                                 <td colSpan="4" className="px-6 py-3 text-right text-gray-600 uppercase">Tổng cộng</td>
                                 <td className="px-6 py-3 text-right text-xl text-blue-700">
-                                    {Number(ThanhToan?.TONGTIEN || 0).toLocaleString("vi-VN") + "₫"}
+                                    {fun.formatCurrency(ThanhToan?.TONGTIEN)}
                                 </td>
                             </tr>
                         </tfoot>

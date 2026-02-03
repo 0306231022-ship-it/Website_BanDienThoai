@@ -208,12 +208,6 @@ function ThemPhieuNhap() {
         setBangSanPham(prev => prev.filter(sp => sp.id !== item.id));
         seterr({});
     }
-
-    const formatCurrency = (value) => {
-        if (!value) return '0 ₫';
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
-    };
-
     const handlePhieuChange = (field, value) => {
         setThongTinPhieu(prev => ({ ...prev, [field]: value }));
     };
@@ -575,8 +569,8 @@ function ThemPhieuNhap() {
                                             {item.ThongSoKyThuat.Ram} / {item.ThongSoKyThuat.BoNhoTrong} ({item.ThongSoKyThuat.MauSac})
                                         </td>
                                         <td className="px-6 py-4 text-center font-bold">{item.SoLuong}</td>
-                                        <td className="px-6 py-4">{formatCurrency(item.GiaNhap)}</td>
-                                        <td className="px-6 py-4 font-bold text-gray-900">{formatCurrency(item.ThanhTien)}</td>
+                                        <td className="px-6 py-4">{fun.formatCurrency(item.GiaNhap)}</td>
+                                        <td className="px-6 py-4 font-bold text-gray-900">{fun.formatCurrency(item.ThanhTien)}</td>
                                         <td className="px-6 py-4 text-center flex gap-2 justify-center">
                                             <button onClick={() => XemChiTiet(item)} className="text-green-500 p-2"><i className="fas fa-edit"></i></button>
                                             <button onClick={() => XoaKhoiBang(item.id)} className="text-red-500 p-2"><i className="fa-regular fa-trash-can"></i></button>
@@ -595,7 +589,7 @@ function ThemPhieuNhap() {
                     <div className="w-full md:w-1/3 space-y-3">
                         <div className="flex justify-between text-sm text-gray-600">
                             <span>Tổng tiền hàng:</span>
-                            <span className="font-bold text-lg text-blue-800">{formatCurrency(tongTienHang)}</span>
+                            <span className="font-bold text-lg text-blue-800">{fun.formatCurrency(tongTienHang)}</span>
                         </div>
                         <div className="flex justify-between items-center">
                             <label className="text-sm font-medium text-gray-700">Đã thanh toán:</label>
@@ -609,7 +603,7 @@ function ThemPhieuNhap() {
                         </div>
                         <div className="flex justify-between text-lg font-bold text-red-600 border-t pt-2">
                             <span>Còn nợ NCC:</span>
-                            <span>{formatCurrency(conNoNCC > 0 ? conNoNCC : 0)}</span>
+                            <span>{fun.formatCurrency(conNoNCC > 0 ? conNoNCC : 0)}</span>
                         </div>
                     </div>
                     <div className="flex flex-col gap-4">
