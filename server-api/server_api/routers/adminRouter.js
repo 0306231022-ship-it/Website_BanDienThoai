@@ -5,21 +5,16 @@ import authMiddleware from "../middleware/auth.js";
 import createUpload from '../middleware/upload.js';
 import multer from "multer";
 import { body, validationResult } from "express-validator";
-import { validateImages } from "../validation/KTimage.js";
 import {validateSocialLinks} from '../validation/KiemTraLinkFaceBook.js';
 import { validateIns } from '../validation/KiemTraIns.js';
 import { validateDiaChi } from "../validation/KiemTraDiaChi.js";
 import { validateEmail } from "../validation/KLiemTraEmail.js";
 import { validateSoDienThoai } from "../validation/KiemTraSoDienThoai.js";
-import { validateThemTH } from "../validation/KiemTrDLThuongHieu.js";
 import { validateCungCap } from "../validation/KiemTraThemCungCap.js";
-import { PhieuNhapValidate } from "../validation/ValidatePhieuNhap.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
 import NhaCungCapController from "../controllers/NhaCungCapController.js";
 import PhieuNhapController from "../controllers/PhieuNhapController.js";
 import SanPhamController from "../controllers/SanPhamController.js";
-import { parseNewProductState } from "../middleware/ChuyenDL.js";
-import adminModel from "../models/adminModel.js";
 const adminRouter = Router();
 const upload = multer();
 //==========================================
@@ -66,7 +61,7 @@ adminRouter.post('/ChinhSuaTenUS', upload.none(),  [
     next();
 }, CanhanADController.CapNhatTen);
 //=========================================
-//adminRouter.post('/ThemThuongHieu', pload.array("files", 2), validateThemTH,validateImages,ThuongHieuController.ThemThuongHieu);
+
 adminRouter.post('/SuaTenThuongHieu', upload.none(),  [
     body('Ten')
     .notEmpty()
@@ -81,7 +76,6 @@ adminRouter.post('/SuaTenThuongHieu', upload.none(),  [
     }
     next();
 }, ThuongHieuController.SuaTenThuongHieu);
-//adminRouter.post('/SuaAnhThuongHieu', pload.array("files", 2), validateImages, ThuongHieuController.SuaAnhThuongHieu);
 adminRouter.post('/ChinhSuaTrangThai', upload.none(),  [
     body('TrangThai')
     .notEmpty()
@@ -197,6 +191,13 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
     }
     next();
 }, NhaCungCapController.CapNhatSoTaiKhoan);
+//bên trên chưa được chỉnh sửa
+
+// PHẦN I : ĐỊNH NGHĨA ROUTE POST
+//=========================================
+// Xử lí thương hiệu
+adminRouter.post('/ThemThuongHieu', createUpload('thuonghieu').any(),ThuongHieuController.ThemThuongHieu);
+adminRouter.post('/SuaAnhThuongHieu', createUpload('thuonghieu').any(), ThuongHieuController.SuaAnhThuongHieu);
 //=========================================
 // Xử lý Phiếu Nhập
 adminRouter.post('/ThemPhieuNhap',createUpload('sanpham').any(), authMiddleware,PhieuNhapController.ThemPhieuNhap);
@@ -207,9 +208,17 @@ adminRouter.post('/xoa_tatca_phieunhap' , upload.none(), authMiddleware, PhieuNh
 // xử lí sản phẩm 
 adminRouter.post('/khoiphuc_sanpham' , authMiddleware , SanPhamController.khoiphuc_sanpham);
 adminRouter.post('/xoa_tatca_sanpham' , authMiddleware , SanPhamController.xoa_tatca_sanpham);
-//Phương thức get
-adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
+//PHẦN II : ĐỊNH NGHĨA ROUTE GET
+//===========================================
+// xử lí sản phẩm
+//===========================================
+// xử lí thương hiệu
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
+
+
+//Bên dưới chưa được chỉnh sửa
+adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
+
 adminRouter.get('/ChiTietThuongHieu', authMiddleware, ThuongHieuController.LayChiTietThuongHieu);
 adminRouter.get('/layTTnhacungcap', authMiddleware, NhaCungCapController.LayDanhSachNhaCungCap);
 adminRouter.get('/ChiTietNhaCungCap' ,authMiddleware , NhaCungCapController.layChiTiet);

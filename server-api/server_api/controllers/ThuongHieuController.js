@@ -1,28 +1,63 @@
-import { hash, compare } from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import ThuongHieuModel from '../models/ThuongHieu.js';
-import { validationResult } from "express-validator";
-
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
-const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
-
+import { body, validationResult } from "express-validator";
 export default class ThuongHieuController{
-    static async generateToken(user){
-        return jwt.sign(
-            {id : user.id},
-            JWT_SECRET,
-            {expiresIn:JWT_EXPIRES_IN}
-        );
-    }
     static async ThemThuongHieu(req,res){
+       await Promise.all([
+            body('TenTT')
+                .trim()
+                .notEmpty().withMessage('Vui lòng nhập tên thương hiệu')
+                .isLength({ max: 100 }).withMessage('Tên thương hiệu không được vượt quá 100 ký tự'),
+            body('MoTa')
+                .trim()
+                .notEmpty().withMessage('Vui lòng nhập mô tả thương hiệu')
+                .isLength({ max: 255 }).withMessage('Mô tả thương hiệu không được vượt quá 255 ký tự'),
+        ]);
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+             return res.json({
+                 Validate: true, 
+                 errors: errors.array()
+             })
+        }
          const { TenTT, MoTa } = req.body;
          const files = req.files;
-         const pathFile = files[0].path.replace(/\\/g, '/');
+         let pathFile = files[0].filename;
+         let DuongDan = 'uploads/thuonghieu/' + pathFile;
          if(!pathFile){
             return res.json({
                 Status:true,
                 message:'Lỗi tải ảnh!'
+            })
+        };
+        try {
+             const ThemTH= await ThuongHieuModel.ThemThuongHieu(TenTT, MoTa, DuongDan);
+             if(ThemTH){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Thêm thương hiệu thành công!'
+                })
+             }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Thêm thương hiệu thất bại!'
+                })
+             }
+        } catch (error) {
+            console.error('lỗi sãy ra:' + error);
+            return res.json({
+                status:true,
+                message:'lỗi hệ thống, vui lòng thử lại sau!'
+            })
+        }
+    }
+     static async SuaAnhThuongHieu(req, res) {
+        const files = req.files;
+        const id = req.body.id || null;
+        const pathFile = files[0].path.replace(/\\/g, '/');
+        if (!pathFile) {
+            return res.json({
+                Status: true,
+                message: 'Lỗi tải ảnh!'
             })
         };
         const errors = validationResult(req);
@@ -32,25 +67,18 @@ export default class ThuongHieuController{
                 errors: errors.array()
             });
         }
-        const ThemTH= await ThuongHieuModel.ThemThuongHieu(TenTT, MoTa, pathFile);
-            if(ThemTH===1){
-                return res.json({
-                    Status:true,
-                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
-                })
-            };
-            if(ThemTH){
-                return res.json({
-                     ThanhCong:true,
-                     message:'Thêm thương hiệu thành công!'
-                })
-            };
-            if(!ThemTH){
-                return res.json({
-                    ThatBai:true,
-                    message:'Thêm thương hiệu thất bại!'
-                })
-            };
+        const capNhatThanhCong = await ThuongHieuModel.CapNhatAnhThuongHieu(id, pathFile);
+        if (capNhatThanhCong) {
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật ảnh thương hiệu thành công!'
+            });
+        } else {
+            return res.json({
+                ThatBai: true,
+                message: 'Cập nhật ảnh thương hiệu thất bại!'
+            });
+        }
     }
     static async LayDanhSachThuongHieu(req,res){
         try {
@@ -114,36 +142,7 @@ export default class ThuongHieuController{
         }
     }
     
-    static async SuaAnhThuongHieu(req, res) {
-        const files = req.files;
-        const id = req.body.id || null;
-        const pathFile = files[0].path.replace(/\\/g, '/');
-        if (!pathFile) {
-            return res.json({
-                Status: true,
-                message: 'Lỗi tải ảnh!'
-            })
-        };
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.json({
-                validation: true,
-                errors: errors.array()
-            });
-        }
-        const capNhatThanhCong = await ThuongHieuModel.CapNhatAnhThuongHieu(id, pathFile);
-        if (capNhatThanhCong) {
-            return res.json({
-                ThanhCong: true,
-                message: 'Cập nhật ảnh thương hiệu thành công!'
-            });
-        } else {
-            return res.json({
-                ThatBai: true,
-                message: 'Cập nhật ảnh thương hiệu thất bại!'
-            });
-        }
-    }
+   
     static async ChinhSuaTrangThai(req,res){
         const { id, TrangThai } = req.body;
         const errors = validationResult(req);

@@ -8,13 +8,12 @@ export default class ThuongHieuModel{
             'INSERT INTO thuonghieu (IDTHUONGHIEU, TENTHUONGHIEU, MOTA, LOGO, TRANGTHAI, NGAYTAO) VALUES (?,?,?,?,?,?)',
             [TaoID('TH'), TenThuongHieu, MoTa, HinhAnh, 1, today]
         );
-
         return ketqua.affectedRows > 0 ? true : false;
     } catch (error) {
         console.error('Lỗi khi thêm thương hiệu:', error);
         return false;
     }
-}
+ }
     static async LayDanhSachThuongHieu(offset, limit) {
         try {
             const [rows]= await execute(`

@@ -55,7 +55,7 @@ const HoaDonNhapKho = () => {
         pdf.save(`PhieuNhap_${id}.pdf`);
     };
 
-    
+   
 
     if (loading) {
         return (
