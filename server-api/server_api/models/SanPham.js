@@ -109,9 +109,24 @@ export default class SanPhamModel{
    static async anpham_daxoa(limit, offset){
         try {
             const [SanPham] = await execute(`
-                SELECT sp.IDSANPHAM,sp.TENSANPHAM,sp.DELETE_AT 
-                WHERE TRANGTHAI=?
-                 LIMIT ? OFFSET ?
+               SELECT sp.IDSANPHAM,
+                      sp.TENSANPHAM,
+                      sp.DELETE_AT,
+                      ct.IDPN,
+                      ha.HINHANH
+            FROM sanpham sp
+            JOIN chitiet_phieunhap ct ON sp.IDSANPHAM = ct.IDSANPHAM
+            JOIN (
+                SELECT IDSANPHAM, HINHANH
+                FROM hinhanh_sanpham
+                WHERE IDHA = (
+                      SELECT MIN(IDHA)
+                      FROM hinhanh_sanpham h2
+                      WHERE h2.IDSANPHAM = hinhanh_sanpham.IDSANPHAM
+                )
+            ) ha ON sp.IDSANPHAM = ha.IDSANPHAM
+            WHERE sp.TRANGTHAI = ?
+            LIMIT ? OFFSET ?;
                 `,[0,limit,offset]);
             return {
                 ThanhCong:true,
@@ -123,6 +138,51 @@ export default class SanPhamModel{
                 status:true,
                 message :'Không thể kết nối đến hệ thống vui lòng thử lại sau!'
             }
+        }
+   }
+   static async khoiphuc_sanpham(id){
+        try {
+            const [xoa] = await execute(`
+               UPDATE sanpham 
+               SET TRANGTHAI = ? , DELETE_AT = NULL
+               WHERE IDSANPHAM=?
+                `,[1,id]);
+            return xoa.affectedRows>0 ? true : false
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error)
+            return false;
+        }
+   }
+   static async xoa_sanpham_theoid(id){
+        try {
+           //Bước 1 : xóa kho_imei 
+           const [xoa_kho_imei] = await execute(`
+            DELETE FROM kho_imei 
+            WHERE IDSANPHAM =?
+            `,[id]);
+            if(xoa_kho_imei.affectedRows===0) return false;
+            
+
+        } catch (error) {
+            
+        }
+   }
+   static async xoa_tatca_sanpham(){
+        try {
+            const [LayID_SP_DaXoa]= await execute(`
+                SELECT IDSANPHAM
+                FROM sanpham 
+                WHERE TRANGTHAI = ?
+                `,[0])
+            const sanpham_xoa = LayID_SP_DaXoa.map(row => row.IDSANPHAM);
+            const xoa_sp = await Promise.all(sanpham_xoa.map(id => SanPhamModel.xoa_sanpham_theoid(id)));
+            if (xoa_sp.some(kq => !kq)) {
+                return false;
+            }
+            return true;
+        } catch (error) {
+            console.error('Có lỗi sãy ra :' + error);
+            return false;
         }
    }
 }

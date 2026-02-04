@@ -123,5 +123,21 @@ export const validateImage = (file) => {
 export  const formatCurrency = (amount) => {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
     };
+export  const tinhThoiGian = (deleteAt) => {
+        if (!deleteAt) return { soNgay: 0, phanTram: 0 };
+        
+        const ngayXoa = new Date(deleteAt);
+        const ngayHetHan = new Date(ngayXoa.getTime() + 30 * 24 * 60 * 60 * 1000);
+        const bayGio = new Date();
+        
+        const diffTime = ngayHetHan - bayGio;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const phanTram = Math.max(0, Math.min(100, (diffDays / 30) * 100));
+        
+        return {
+            soNgay: diffDays > 0 ? diffDays : 0,
+            phanTram: phanTram
+        };
+    };
 
 

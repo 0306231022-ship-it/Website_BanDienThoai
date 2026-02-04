@@ -204,6 +204,9 @@ adminRouter.post('/khoiphuc_phieunhap' , authMiddleware , PhieuNhapController.kh
 adminRouter.post('/xoa_phieunhap_theoid' , upload.none(), authMiddleware , PhieuNhapController.xoa_phieunhap_theoid);
 adminRouter.post('/xoa_tatca_phieunhap' , upload.none(), authMiddleware, PhieuNhapController.xoa_tatca_phieunhap );
 //========================================= );
+// xử lí sản phẩm 
+adminRouter.post('/khoiphuc_sanpham' , authMiddleware , SanPhamController.khoiphuc_sanpham);
+adminRouter.post('/xoa_tatca_sanpham' , authMiddleware , SanPhamController.xoa_tatca_sanpham);
 //Phương thức get
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);

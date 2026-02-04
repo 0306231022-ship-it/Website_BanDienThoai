@@ -124,4 +124,51 @@ export default class SanPhamController{
             })
          }
    }
+   static async khoiphuc_sanpham(req,res){
+        const id = req.query.id;
+        if(!id){
+            return res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại dữ liệu truyền đi!'
+            })
+        }
+        const kiemtra = await SanPhamModel.kiemtra_id_sp(id);
+        if(!kiemtra){
+            return res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại dữ liệu!'
+            })
+        }
+        try {
+            const ketqua = await SanPhamModel.khoiphuc_sanpham(id);
+            if(ketqua){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Khôi phục sản phẩm thành công!'
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Khôi phục sản phẩm thát bại!'
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+   }
+   static async xoa_tatca_sanpham(req,res){
+        try {
+            const ketqqua = await SanPhamModel.xoa_tatca_sanpham();
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+   }
 }
