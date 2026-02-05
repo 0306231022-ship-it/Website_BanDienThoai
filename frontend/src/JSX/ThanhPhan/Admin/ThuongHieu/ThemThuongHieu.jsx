@@ -30,9 +30,8 @@ function ThemThuongHieu() {
         if(fileInput) fileInput.value = '';
     };
 
-    // --- XỬ LÝ THÊM MỚI ---
+   
     const Them = async () => {
-        // 1. Kiểm tra dữ liệu rỗng
         const kiemtra = fun.KiemTraRong(dulieu);
         if (!kiemtra.Status) {
             kiemtra.ErrorKeys.forEach((key) => {
@@ -42,9 +41,6 @@ function ThemThuongHieu() {
             });
             return;
         }
-
-        // 2. Chuẩn bị dữ liệu gửi API
-        // Lưu ý: Clone object để không ảnh hưởng state gốc khi delete
         const dataToSend = { ...dulieu };
         const img = dataToSend.img;
         delete dataToSend.img;
@@ -52,7 +48,7 @@ function ThemThuongHieu() {
         try {
             dispatch({ type: 'SET_LOADING', payload: true });
             const ketqqua = await API.CallAPI(formdata, { PhuongThuc: 1,  url: '/admin/ThemThuongHieu', fileArray: [img] });
-            if (ketqqua.Status) {
+            if (ketqqua.status) {
                 dispatch({ type: 'SET_ERR_HT', payload: { err: ketqqua.message } });
                 return;
             }
@@ -67,6 +63,9 @@ function ThemThuongHieu() {
             if (ketqqua.ThanhCong) {
                 resetGiaTri();
                 dispatch({ type: 'SET_HT', payload: { ThanhCong: ketqqua.message } });
+                return;
+            }else{
+                dispatch({ type: 'SET_ERR_HT', payload: { err: ketqqua.message } });
                 return;
             }
         } catch (error) {

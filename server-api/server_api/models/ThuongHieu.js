@@ -14,6 +14,19 @@ export default class ThuongHieuModel{
         return false;
     }
  }
+    static async kiemtraid(id){
+        try {
+            const [idTH] = await execute(`
+                SELECT IDTHUONGHIEU
+                FROM thuonghieu
+                WHERE IDTHUONGHIEU = ?
+                `,[id]);
+            return idTH.affectedRows>0 ? true :false;
+        } catch (error) {
+            console.error('Có lỗi sãy ra :' + error);
+            return false;
+        }
+    }
     static async LayDanhSachThuongHieu(offset, limit) {
         try {
             const [rows]= await execute(`

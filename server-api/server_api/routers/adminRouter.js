@@ -62,20 +62,7 @@ adminRouter.post('/ChinhSuaTenUS', upload.none(),  [
 }, CanhanADController.CapNhatTen);
 //=========================================
 
-adminRouter.post('/SuaTenThuongHieu', upload.none(),  [
-    body('Ten')
-    .notEmpty()
-    .withMessage('Vui lòng nhập đầy đủ thông tin!')
-    .isLength({max:50})
-    .withMessage('Vượt quá kí tự cho phép!'),
-],
-(req, res, next) => {
-     const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-            return res.json({ Validate: true, errors: errors.array() });
-    }
-    next();
-}, ThuongHieuController.SuaTenThuongHieu);
+
 adminRouter.post('/ChinhSuaTrangThai', upload.none(),  [
     body('TrangThai')
     .notEmpty()
@@ -89,20 +76,7 @@ adminRouter.post('/ChinhSuaTrangThai', upload.none(),  [
     }
     next();
 }, ThuongHieuController.ChinhSuaTrangThai);
-adminRouter.post('/SuaMoTathuongHieu', upload.none(),  [
-    body('MoTa')
-     .notEmpty()
-      .withMessage('Vui lòng nhập đầy đủ thông tin!')
-      .isLength({max:255})
-      .withMessage('Vượt quá kí tự cho phép!'),
-],
-(req, res, next) => {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-            return res.json({ Validate: true, errors: errors.array() });
-    }
-    next();
-},ThuongHieuController.SuaMoTathuongHieu );
+
 //========================================
 adminRouter.post('/Themcc', authMiddleware , upload.none() , validateCungCap, NhaCungCapController.ThemCungCap );
 adminRouter.post('/ChinhSuaTenNhaCungCap' , authMiddleware , upload.none(), [
@@ -198,6 +172,8 @@ adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(),[
 // Xử lí thương hiệu
 adminRouter.post('/ThemThuongHieu', createUpload('thuonghieu').any(),ThuongHieuController.ThemThuongHieu);
 adminRouter.post('/SuaAnhThuongHieu', createUpload('thuonghieu').any(), ThuongHieuController.SuaAnhThuongHieu);
+adminRouter.post('/SuaTenThuongHieu', upload.none(), ThuongHieuController.SuaTenThuongHieu);
+adminRouter.post('/SuaMoTathuongHieu', upload.none(),ThuongHieuController.SuaMoTathuongHieu );
 //=========================================
 // Xử lý Phiếu Nhập
 adminRouter.post('/ThemPhieuNhap',createUpload('sanpham').any(), authMiddleware,PhieuNhapController.ThemPhieuNhap);
@@ -214,19 +190,20 @@ adminRouter.post('/xoa_tatca_sanpham' , authMiddleware , SanPhamController.xoa_t
 //===========================================
 // xử lí thương hiệu
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
-
-
+adminRouter.get('/ChiTietThuongHieu', authMiddleware, ThuongHieuController.LayChiTietThuongHieu);
+adminRouter.get('/laythuonghieu' , authMiddleware , ThuongHieuController.layth );
+adminRouter.get('/laysp_thuonghieu',authMiddleware,ThuongHieuController.laysp_thuonghieu);
 //Bên dưới chưa được chỉnh sửa
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 
-adminRouter.get('/ChiTietThuongHieu', authMiddleware, ThuongHieuController.LayChiTietThuongHieu);
+
 adminRouter.get('/layTTnhacungcap', authMiddleware, NhaCungCapController.LayDanhSachNhaCungCap);
 adminRouter.get('/ChiTietNhaCungCap' ,authMiddleware , NhaCungCapController.layChiTiet);
 adminRouter.get('/laynhacchoatdong' , authMiddleware , NhaCungCapController.LayDShd);
-adminRouter.get('/laythuonghieu' , authMiddleware , ThuongHieuController.layth );
+
 adminRouter.get('/getPhieu', authMiddleware,PhieuNhapController.layDL);
 adminRouter.get('/ChiTietPhieuNhap' ,authMiddleware, PhieuNhapController.layChiTietPN);
-adminRouter.get('/laysp_thuonghieu',authMiddleware,ThuongHieuController.laysp_thuonghieu);
+
 adminRouter.get('/laydspn_idncc' ,authMiddleware, PhieuNhapController.LayPhieuNhap_theo_id_trang);
 adminRouter.get('/kiemtra_id_ncc' ,authMiddleware , NhaCungCapController.kiemtraid);
 adminRouter.get('/DuyetPhieuNhap', authMiddleware, PhieuNhapController.DuyetPhieuNhap);

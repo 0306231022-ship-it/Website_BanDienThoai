@@ -25,7 +25,7 @@ export default class ThuongHieuController{
          let DuongDan = 'uploads/thuonghieu/' + pathFile;
          if(!pathFile){
             return res.json({
-                Status:true,
+                status:true,
                 message:'Lỗi tải ảnh!'
             })
         };
@@ -53,7 +53,15 @@ export default class ThuongHieuController{
      static async SuaAnhThuongHieu(req, res) {
         const files = req.files;
         const id = req.body.id || null;
-        const pathFile = files[0].path.replace(/\\/g, '/');
+        const kiemtra = await ThuongHieuModel.kiemtraid(value);
+        if(!kiemtra){
+            return res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại thông tin gửi đi!'
+            })
+        }
+         let pathFile = files[0].filename;
+         let DuongDan = 'uploads/thuonghieu/' + pathFile;
         if (!pathFile) {
             return res.json({
                 Status: true,
@@ -63,11 +71,11 @@ export default class ThuongHieuController{
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return res.json({
-                validation: true,
+                validate: true,
                 errors: errors.array()
             });
         }
-        const capNhatThanhCong = await ThuongHieuModel.CapNhatAnhThuongHieu(id, pathFile);
+        const capNhatThanhCong = await ThuongHieuModel.CapNhatAnhThuongHieu(id, DuongDan);
         if (capNhatThanhCong) {
             return res.json({
                 ThanhCong: true,
@@ -77,6 +85,46 @@ export default class ThuongHieuController{
             return res.json({
                 ThatBai: true,
                 message: 'Cập nhật ảnh thương hiệu thất bại!'
+            });
+        }
+    }
+     static async SuaTenThuongHieu(req, res) {
+        await Promise.all([
+            body('Ten')
+                .trim()
+                .notEmpty().withMessage('Vui lòng nhập tên thương hiệu')
+                .isLength({ max: 100 }).withMessage('Tên thương hiệu không được vượt quá 100 ký tự'),
+            body('id')
+                .trim()
+                .notEmpty().withMessage('Vui lòng kiểm tra lại dữ liệu gửi lên!')
+                .custom(async (value) => {
+                    const kiemtra = await ThuongHieuModel.kiemtraid(value);
+                    if(!kiemtra){
+                        return Promise.reject('Thương hiệu không tồn tại hoặc không hoạt động!');
+                    }
+                })
+                .isLength({ max: 255 }).withMessage(' Kiểm tra lại thông tin id gửi đi!'),
+        ]);
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+             return res.json({
+                 Validate: true, 
+                 errors: errors.array()
+             })
+        }
+        const { Ten } = req.body;
+        const id = req.body.id || null;
+       
+        const capNhatThanhCong = await ThuongHieuModel.CapNhatTenThuongHieu(id, Ten);
+        if (capNhatThanhCong) {
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật tên thương hiệu thành công!'
+            });
+        } else {
+            return res.json({
+                ThatBai: true,
+                message: 'Cập nhật tên thương hiệu thất bại!'
             });
         }
     }
@@ -119,28 +167,7 @@ export default class ThuongHieuController{
             return res.status(500).json({ message: 'Đã xảy ra lỗi hệ thống.' });
          }
     }
-    static async SuaTenThuongHieu(req, res) {
-        const { Ten } = req.body;
-        const id = req.body.id || null;
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.json({ Validate: true, errors: errors.array() });
-        }
-        // Logic cập nhật tên thương hiệu dựa trên ID
-        // Giả sử bạn có một phương thức trong model để cập nhật tên thương hiệu
-        const capNhatThanhCong = await ThuongHieuModel.CapNhatTenThuongHieu(id, Ten);
-        if (capNhatThanhCong) {
-            return res.json({
-                ThanhCong: true,
-                message: 'Cập nhật tên thương hiệu thành công!'
-            });
-        } else {
-            return res.json({
-                ThatBai: true,
-                message: 'Cập nhật tên thương hiệu thất bại!'
-            });
-        }
-    }
+   
     
    
     static async ChinhSuaTrangThai(req,res){
@@ -163,6 +190,24 @@ export default class ThuongHieuController{
         }
     }
     static async SuaMoTathuongHieu(req,res){
+        await Promise.all([
+             body('MoTa')
+                .notEmpty()
+                .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                .isLength({max:255})
+                .withMessage('Vượt quá kí tự cho phép!'),
+            body('id')
+                .trim()
+                .notEmpty().withMessage('Vui lòng kiểm tra lại dữ liệu gửi lên!')
+                .custom(async (value) => {
+                    const kiemtra = await ThuongHieuModel.kiemtraid(value);
+                    if(!kiemtra){
+                        return Promise.reject('Thương hiệu không tồn tại hoặc không hoạt động!');
+                    }
+                })
+                .isLength({ max: 255 }).withMessage('Kiểm tra lại thông tin id!'),
+        ])
+         
         const { id, MoTa } = req.body;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

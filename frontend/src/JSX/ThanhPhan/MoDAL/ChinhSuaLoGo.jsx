@@ -55,7 +55,7 @@ function ChinhSuaLoGo({DuLieu , url}) {
         PhuongThuc: 1 
       });
 
-      if (ketqua.Status) {
+      if (ketqua.status) {
         seterr(ketqua.message);
         return;
       }

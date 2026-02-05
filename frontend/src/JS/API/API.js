@@ -36,7 +36,7 @@ export async function CallAPI(dulieu = null, yeucau) {
         if (!response.ok) {
             const errorText = await response.text();
             return {
-                Status: true,
+                status: true,
                 message: `Lỗi HTTP ${response.status}: ${errorText.substring(0, 50)}...`
             };
         }
