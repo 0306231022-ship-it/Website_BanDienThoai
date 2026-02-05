@@ -94,7 +94,7 @@ export default class ThuongHieuModel{
                 'UPDATE thuonghieu SET TRANGTHAI = ? WHERE IDTHUONGHIEU = ?',
                 [TrangThai, id]
             );
-            return result.affectedRows > 0;
+            return result.affectedRows > 0 ? true : false;
         } catch (error) {
             console.error('Lỗi khi cập nhật trạng thái thương hiệu:', error);
             return false;

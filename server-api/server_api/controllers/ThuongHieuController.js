@@ -1,3 +1,4 @@
+import { promises } from 'dns';
 import ThuongHieuModel from '../models/ThuongHieu.js';
 import { body, validationResult } from "express-validator";
 export default class ThuongHieuController{
@@ -114,7 +115,6 @@ export default class ThuongHieuController{
         }
         const { Ten } = req.body;
         const id = req.body.id || null;
-       
         const capNhatThanhCong = await ThuongHieuModel.CapNhatTenThuongHieu(id, Ten);
         if (capNhatThanhCong) {
             return res.json({
@@ -167,15 +167,32 @@ export default class ThuongHieuController{
             return res.status(500).json({ message: 'Đã xảy ra lỗi hệ thống.' });
          }
     }
-   
-    
-   
     static async ChinhSuaTrangThai(req,res){
-        const { id, TrangThai } = req.body;
+        await Promise.all([
+            body('TrangThai')
+                .notEmpty()
+                .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                .isIn([0,1])
+                .withMessage('Trạng thái không hợp lệ!'),
+            body('id')
+                .trim()
+                .notEmpty().withMessage('Vui lòng kiểm tra lại dữ liệu gửi lên!')
+                .custom(async (value) => {
+                    const kiemtra = await ThuongHieuModel.kiemtraid(value);
+                    if(!kiemtra){
+                        return Promise.reject('Thương hiệu không tồn tại hoặc không hoạt động!');
+                    }
+                })
+                .isLength({ max: 255 }).withMessage(' Kiểm tra lại thông tin id gửi đi!'),
+        ])
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.json({ Validate: true, errors: errors.array() });
+             return res.json({
+                 Validate: true, 
+                 errors: errors.array()
+             })
         }
+        const { id, TrangThai } = req.body;
         const capNhatThanhCong = await ThuongHieuModel.CapNhatTrangThaiThuongHieu(id, TrangThai);
         if (capNhatThanhCong) {
             return res.json({   
@@ -207,7 +224,6 @@ export default class ThuongHieuController{
                 })
                 .isLength({ max: 255 }).withMessage('Kiểm tra lại thông tin id!'),
         ])
-         
         const { id, MoTa } = req.body;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -221,7 +237,7 @@ export default class ThuongHieuController{
             });
         } else {
             return res.json({
-                ThatBai: true,
+                ThanhCong: true,
                 message: 'Cập nhật mô tả thương hiệu thất bại!'
             });
         }
@@ -247,6 +263,4 @@ export default class ThuongHieuController{
          const ketqqua = await ThuongHieuModel.laysp_thuonghieu(offset,limit,id);
          return res.json({ketqqua});
     }
-
-
 }

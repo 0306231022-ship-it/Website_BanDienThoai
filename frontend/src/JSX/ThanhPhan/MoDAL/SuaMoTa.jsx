@@ -38,13 +38,15 @@ function SuaMoTa({DuLieu,url}) {
         try {
             const KetQua = await API.CallAPI(DuLieu, { url: url , PhuongThuc: 1 });
 
-            if (KetQua.Status) {
+            if (KetQua.status) {
                 seterr(KetQua.message);
             } else if (KetQua.Validate) {
                 seterr(KetQua.errors[0]?.msg || 'Dữ liệu không hợp lệ');
             } else if (KetQua.ThanhCong) {
                 setok(KetQua.message);
                 GetTTwebsite();
+            }else {
+                seterr(KetQua.message)
             }
         } catch (error) {
             seterr('Không thể kết nối đến hệ thống, Vui lòng thử lại sau!');

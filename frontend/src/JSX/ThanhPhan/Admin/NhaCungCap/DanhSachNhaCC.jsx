@@ -2,6 +2,7 @@ import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 import { useEffect, useState } from "react";
 import * as API from '../../../../JS/API/API';
 import { Link } from 'react-router-dom';
+import * as fun from '../../../../JS/FUNCTONS/function';
 
 function NhaCungCap() {
     const { OpenMoDal } = useModalContext();
@@ -12,12 +13,7 @@ function NhaCungCap() {
     const [Timkiem, setTimKiem] = useState([]);
     const [key, setkey] = useState(null);
 
-    // --- STATE MỚI CHO MENU ---
-    const [openMenu, setOpenMenu] = useState(false);
 
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
-    };
 
     useEffect(() => {
         const LoadDL = async () => {
@@ -175,7 +171,7 @@ function NhaCungCap() {
                                                         </div>
                                                     </td>
                                                     <td className="px-6 py-4">
-                                                        <div className="text-red-600 font-bold">{formatCurrency(item.CONGNO || 0)}</div>
+                                                        <div className="text-red-600 font-bold">{fun.formatCurrency(item.CONGNO || 0)}</div>
                                                         <div className="text-xs text-slate-400">Hiện tại</div>
                                                     </td>
                                                     <td className="px-6 py-4">

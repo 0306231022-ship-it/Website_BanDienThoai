@@ -242,7 +242,7 @@ function ChiTietThuongHieu() {
                                             <i className="fas fa-chevron-left text-xs"></i>
                                         </button>
                                         <span aria-current="page" className="relative z-10 inline-flex items-center bg-teal-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600">{page}</span>
-                                        <button disabled={page === totalPages} onClick={()=>{setpage(p=>p+1)}} className="relative inline-flex items-center rounded-r-md px-3 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
+                                        <button disabled={page === totalPages || totalPages === 0 } onClick={()=>{setpage(p=>p+1)}} className="relative inline-flex items-center rounded-r-md px-3 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0">
                                             <span className="sr-only">Next</span>
                                             <i className="fas fa-chevron-right text-xs"></i>
                                         </button>
