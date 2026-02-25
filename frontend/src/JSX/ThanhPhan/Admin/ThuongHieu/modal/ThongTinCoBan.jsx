@@ -53,8 +53,6 @@ function ThongTinCoBan({ DuLieu }) {
           </div>
           <i className="fa-solid fa-chevron-right text-gray-300 group-hover:translate-x-1 transition-transform"></i>
         </button>
-
-     
         <button disabled={DuLieu.TrangThai !==1} onClick={() => OpenMoDal({
           DuLieu: DuLieu.LoGo,
           id:DuLieu.id,

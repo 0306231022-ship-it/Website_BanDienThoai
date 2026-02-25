@@ -1,4 +1,3 @@
-import { promises } from 'dns';
 import ThuongHieuModel from '../models/ThuongHieu.js';
 import { body, validationResult } from "express-validator";
 export default class ThuongHieuController{
