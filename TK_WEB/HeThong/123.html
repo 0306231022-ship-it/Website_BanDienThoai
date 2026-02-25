@@ -3,153 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iPhone - Danh sách sản phẩm | TechZ</title>
+    <title>Báo cáo Thương hiệu | TechZ Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
 </head>
-<body class="bg-gray-50">
-
-    <nav class="bg-white shadow-sm py-4">
-        <div class="container mx-auto px-4 flex items-center justify-between">
-            <div class="text-2xl font-black text-slate-900">TECH<span class="text-blue-600">Z</span></div>
-            <div class="hidden md:flex gap-8 font-semibold text-sm uppercase">
-                <a href="#" class="hover:text-blue-600 transition">Điện thoại</a>
-                <a href="#" class="text-blue-600">iPhone</a>
-                <a href="#" class="hover:text-blue-600 transition">Samsung</a>
-                <a href="#" class="hover:text-blue-600 transition">Phụ kiện</a>
+<body class="bg-[#F9FAFB] flex">
+<div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    
+    <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-300">
+        
+        <div class="bg-emerald-500 p-8 text-white text-center relative">
+            <div class="absolute top-4 right-6 opacity-20 text-6xl rotate-12">
+                <i class="fa-solid fa-file-excel"></i>
             </div>
-            <div class="flex gap-4 text-xl"><i class="fa-solid fa-magnifying-glass"></i><i class="fa-solid fa-cart-shopping"></i></div>
+            <div class="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-4 border border-white/30">
+                <i class="fa-solid fa-file-export text-3xl"></i>
+            </div>
+            <h2 class="text-xl font-bold">Xuất Báo Cáo Dữ Liệu</h2>
+            <p class="text-emerald-100 text-sm">Định dạng Microsoft Excel (.xlsx)</p>
         </div>
-    </nav>
 
-    <div class="container mx-auto px-4 py-4 text-sm text-gray-500">
-        <a href="#" class="hover:text-blue-600">Trang chủ</a> <i class="fa-solid fa-chevron-right text-[10px] mx-2"></i> 
-        <a href="#" class="hover:text-blue-600">Điện thoại</a> <i class="fa-solid fa-chevron-right text-[10px] mx-2"></i> 
-        <span class="text-slate-900 font-bold">iPhone</span>
+        <div class="p-8 space-y-6">
+            <div>
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 block">Phạm vi dữ liệu</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <label class="cursor-pointer">
+                        <input type="radio" name="range" class="peer hidden" checked>
+                        <div class="border-2 border-gray-100 p-3 rounded-xl text-center peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition">
+                            <span class="block font-bold text-sm">Tất cả</span>
+                            <span class="text-[10px] text-gray-500">1,284 sản phẩm</span>
+                        </div>
+                    </label>
+                    <label class="cursor-pointer">
+                        <input type="radio" name="range" class="peer hidden">
+                        <div class="border-2 border-gray-100 p-3 rounded-xl text-center peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition">
+                            <span class="block font-bold text-sm">Trang hiện tại</span>
+                            <span class="text-[10px] text-gray-500">50 sản phẩm</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-widest block">Bao gồm thông tin</label>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2">
+                        <input type="checkbox" checked class="accent-emerald-500"> Giá bán
+                    </span>
+                    <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2">
+                        <input type="checkbox" checked class="accent-emerald-500"> Tồn kho
+                    </span>
+                    <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2">
+                        <input type="checkbox" checked class="accent-emerald-500"> Thông số kỹ thuật
+                    </span>
+                </div>
+            </div>
+
+            <div id="export-progress" class="hidden">
+                <div class="flex justify-between text-xs mb-2">
+                    <span class="text-emerald-600 font-bold">Đang xử lý dữ liệu...</span>
+                    <span class="text-gray-400">80%</span>
+                </div>
+                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                    <div class="bg-emerald-500 h-full w-[80%]"></div>
+                </div>
+            </div>
+
+            <div class="flex gap-3 pt-4">
+                <button class="flex-1 px-6 py-3 border-2 border-gray-100 rounded-2xl font-bold text-gray-400 hover:bg-gray-50 transition">Hủy</button>
+                <button onclick="startExport()" class="flex-1 px-6 py-3 bg-emerald-500 text-white rounded-2xl font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-600 transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-download"></i> Tải file về
+                </button>
+            </div>
+        </div>
     </div>
-
-    <main class="container mx-auto px-4 py-6">
-        <div class="flex flex-col md:flex-row gap-8">
-            
-            <aside class="w-full md:w-64 space-y-8 shrink-0">
-                <div>
-                    <h3 class="font-bold text-lg mb-4 flex items-center justify-between">
-                        Thương hiệu <i class="fa-solid fa-chevron-up text-xs"></i>
-                    </h3>
-                    <div class="space-y-3">
-                        <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" checked class="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                            <span class="text-sm font-medium">Apple (iPhone)</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer text-gray-500">
-                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300">
-                            <span class="text-sm">Samsung</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer text-gray-500">
-                            <input type="checkbox" class="w-5 h-5 rounded border-gray-300">
-                            <span class="text-sm">Xiaomi</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Khoảng giá</h3>
-                    <div class="space-y-3">
-                        <button class="w-full text-left px-3 py-2 rounded-lg bg-white border border-gray-200 text-sm hover:border-blue-500 transition">Dưới 10 triệu</button>
-                        <button class="w-full text-left px-3 py-2 rounded-lg bg-blue-50 border border-blue-500 text-blue-700 text-sm font-bold">10 - 25 triệu</button>
-                        <button class="w-full text-left px-3 py-2 rounded-lg bg-white border border-gray-200 text-sm hover:border-blue-500 transition">Trên 25 triệu</button>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="font-bold text-lg mb-4">Dung lượng (ROM)</h3>
-                    <div class="grid grid-cols-2 gap-2 text-center text-xs font-bold">
-                        <div class="py-2 border border-blue-500 bg-blue-50 rounded-md cursor-pointer">128GB</div>
-                        <div class="py-2 border border-gray-200 bg-white rounded-md cursor-pointer hover:border-blue-500">256GB</div>
-                        <div class="py-2 border border-gray-200 bg-white rounded-md cursor-pointer hover:border-blue-500">512GB</div>
-                        <div class="py-2 border border-gray-200 bg-white rounded-md cursor-pointer hover:border-blue-500">1TB</div>
-                    </div>
-                </div>
-            </aside>
-
-            <div class="flex-1">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 rounded-2xl mb-6 gap-4 shadow-sm">
-                    <h1 class="text-xl font-black">iPhone (<span class="text-blue-600">24</span> sản phẩm)</h1>
-                    <div class="flex items-center gap-2">
-                        <span class="text-sm text-gray-500 italic">Sắp xếp:</span>
-                        <select class="bg-gray-50 border-none text-sm font-bold rounded-lg px-3 py-2 focus:ring-0">
-                            <option>Mới ra mắt</option>
-                            <option>Giá thấp đến cao</option>
-                            <option>Giá cao đến thấp</option>
-                            <option>Bán chạy nhất</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    
-                    <div class="group bg-white rounded-3xl p-4 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
-                        <div class="relative overflow-hidden rounded-2xl bg-gray-50 aspect-square flex items-center justify-center mb-4">
-                            <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-1inch-naturaltitanium?wid=512&fmt=p-jpg" 
-                                class="w-40 group-hover:scale-105 transition-transform" alt="iPhone 15">
-                            <button class="absolute top-3 right-3 w-8 h-8 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition">
-                                <i class="fa-regular fa-heart"></i>
-                            </button>
-                        </div>
-                        <div class="space-y-2">
-                            <h3 class="font-bold text-slate-800 line-clamp-2 min-h-[3rem]">iPhone 15 Pro Max 256GB - Chính hãng VN/A</h3>
-                            <div class="flex gap-2 text-[10px] font-bold uppercase mb-2">
-                                <span class="bg-gray-100 px-2 py-0.5 rounded text-gray-500">6.7 inch</span>
-                                <span class="bg-gray-100 px-2 py-0.5 rounded text-gray-500">A17 Pro</span>
-                            </div>
-                            <div class="flex items-center justify-between border-t border-gray-50 pt-3">
-                                <span class="text-xl font-black text-blue-600">28.990.000đ</span>
-                                <button class="bg-slate-900 text-white w-10 h-10 rounded-xl hover:bg-orange-500 transition flex items-center justify-center">
-                                    <i class="fa-solid fa-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="group bg-white rounded-3xl p-4 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
-                        <div class="relative overflow-hidden rounded-2xl bg-gray-50 aspect-square flex items-center justify-center mb-4">
-                            <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded-lg z-10">-15%</span>
-                            <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-finish-select-202207-pink?wid=512&fmt=p-jpg" 
-                                class="w-40 group-hover:scale-105 transition-transform" alt="iPhone 13">
-                        </div>
-                        <div class="space-y-2">
-                            <h3 class="font-bold text-slate-800 line-clamp-2 min-h-[3rem]">iPhone 13 128GB - Hồng</h3>
-                            <div class="flex gap-2 text-[10px] font-bold uppercase">
-                                <span class="bg-gray-100 px-2 py-0.5 rounded text-gray-500">6.1 inch</span>
-                                <span class="bg-gray-100 px-2 py-0.5 rounded text-gray-500">A15 Bionic</span>
-                            </div>
-                            <div class="flex items-center justify-between border-t border-gray-50 pt-3">
-                                <div>
-                                    <p class="text-xl font-black text-blue-600">13.590.000đ</p>
-                                    <p class="text-xs text-gray-400 line-through">15.990.000đ</p>
-                                </div>
-                                <button class="bg-slate-900 text-white w-10 h-10 rounded-xl hover:bg-orange-500 transition flex items-center justify-center">
-                                    <i class="fa-solid fa-cart-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    </div>
-
-                <div class="mt-12 flex justify-center gap-2">
-                    <button class="w-10 h-10 rounded-xl border bg-white flex items-center justify-center hover:bg-blue-600 hover:text-white transition">1</button>
-                    <button class="w-10 h-10 rounded-xl border bg-blue-600 text-white flex items-center justify-center">2</button>
-                    <button class="w-10 h-10 rounded-xl border bg-white flex items-center justify-center hover:bg-blue-600 hover:text-white transition">3</button>
-                    <button class="w-10 h-10 rounded-xl border bg-white flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i class="fa-solid fa-chevron-right text-xs"></i></button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-slate-900 text-gray-500 py-10 mt-12 text-center text-sm">
-        <p>© 2026 TechZ Store. Tất cả quyền được bảo lưu.</p>
-    </footer>
-
+</div>
 </body>
 </html>

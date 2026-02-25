@@ -70,7 +70,7 @@ export default class ThuongHieuModel{
                 'UPDATE thuonghieu SET TENTHUONGHIEU = ? WHERE IDTHUONGHIEU = ?',
                 [Ten, id]
             );
-            return result.affectedRows > 0;
+            return result.affectedRows > 0 ? true :false;
         } catch (error) {
             console.error('Lỗi khi cập nhật tên thương hiệu:', error);
             return false;
@@ -82,7 +82,7 @@ export default class ThuongHieuModel{
                 'UPDATE thuonghieu SET LOGO = ? WHERE IDTHUONGHIEU = ?',
                 [Logo, id]
             );
-            return result.affectedRows > 0;
+            return result.affectedRows > 0 ? true : false;
         } catch (error) {
             console.error('Lỗi khi cập nhật ảnh thương hiệu:', error);
             return false;
@@ -106,7 +106,7 @@ export default class ThuongHieuModel{
                 'UPDATE thuonghieu SET MOTA = ? WHERE IDTHUONGHIEU = ?',
                 [MoTa, id]
             );
-            return result.affectedRows > 0;
+            return result.affectedRows > 0 ? true : false;
         } catch (error) {
             console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
             return false;
