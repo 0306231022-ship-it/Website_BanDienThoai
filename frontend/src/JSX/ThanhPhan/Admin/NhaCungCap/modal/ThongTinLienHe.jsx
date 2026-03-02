@@ -38,8 +38,6 @@ function ThongTinLienHe({ DuLieu }) {
 
             {/* --- BODY --- */}
             <div className="flex-1 p-4 space-y-3 overflow-y-auto">
-                
-                {/* 1. NGƯỜI ĐẠI DIỆN */}
                 <button 
                     onClick={() => OpenMoDal(
                         { 
@@ -64,7 +62,7 @@ function ThongTinLienHe({ DuLieu }) {
 
                 {/* 2. SỐ ĐIỆN THOẠI */}
                 <button 
-                    onClick={() => OpenMoDal({ DuLieu: contactData.SDT, id: contactData.id }, { TenTrang: 'ChinhSuaLienHe', url: '/admin/ChinhSuaSDT' })} 
+                    onClick={() => OpenMoDal({ DuLieu: contactData.SDT, id: contactData.id }, { TenTrang: 'ChinhSuaSo', url: '/admin/ChinhSuaSDT' })} 
                     className="w-full flex items-center p-3 bg-slate-50 border border-slate-100 rounded-xl transition-all group hover:bg-white hover:shadow-md hover:border-emerald-200 hover:scale-[1.01]"
                 >
                     <div className="w-10 h-10 bg-white shadow-sm text-emerald-500 rounded-lg flex items-center justify-center border border-slate-100 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300 shrink-0">
@@ -81,7 +79,7 @@ function ThongTinLienHe({ DuLieu }) {
 
                 {/* 3. EMAIL */}
                 <button 
-                    onClick={() => OpenMoDal({ DuLieu: contactData.Email, id: contactData.id }, { TenTrang: 'ChinhSuaLienHe', url: '/admin/ChinhSuaEmail' })} 
+                    onClick={() => OpenMoDal({ DuLieu: contactData.Email, id: contactData.id }, { TenTrang: 'ChinhSuaEmail', url: '/admin/ChinhSuaEmailNCC' })} 
                     className="w-full flex items-center p-3 bg-slate-50 border border-slate-100 rounded-xl transition-all group hover:bg-white hover:shadow-md hover:border-rose-200 hover:scale-[1.01]"
                 >
                     <div className="w-10 h-10 bg-white shadow-sm text-rose-500 rounded-lg flex items-center justify-center border border-slate-100 group-hover:bg-rose-500 group-hover:text-white transition-colors duration-300 shrink-0">

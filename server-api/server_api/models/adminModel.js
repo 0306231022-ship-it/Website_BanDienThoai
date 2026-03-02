@@ -8,6 +8,19 @@ export default class adminModel{
          return false
        }
     }
+    static async kiemtraid(id){
+        try {
+            const [idnd] = await execute(`
+                SELECT IDND 
+                FROM nguoidung
+                WHERE IDND = ?
+                `,[id]);
+            return idnd.affectedRows>0 ? true : false;
+        } catch (error) {
+            console.error('Có lỗi sãy ra :'+ error);
+            return false;
+        }
+    }
     static async login(Data){
         try {
             const [update] = await execute('UPDATE nguoidung SET DANGNHAPLANCUOI = NOW() WHERE EMAIL = ?',[Data]);

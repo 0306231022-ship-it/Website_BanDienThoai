@@ -1,4 +1,5 @@
 import {execute} from '../config/db.js';
+import { TaoID } from '../function.js';
 export default class NhaCungCapModel{
     static async LayDanhSachNhaCungCap(offset, limit) {
         try {
@@ -14,6 +15,42 @@ export default class NhaCungCapModel{
         } catch (error) {
             console.error('Lỗi khi lấy danh sách thương hiệu:', error);
             return { nhacungcap: [], totalItems: 0 };
+        }
+    }
+    static async kiemtraid(id){
+        try {
+            const [ketqua] = await execute(`
+                SELECT IDNCC
+                FROM nhacungcap
+                WHERE IDNCC = ? AND TRANGTHAI=1
+                `,[id]);
+            return ketqua.length > 0 ? true : false;
+        }
+            catch (error) {
+            console.error('Có lỗi sãy ra :'+ error);
+            return false;
+        }
+    }
+    static async CapNhatSDT(sdt,id){
+        try {
+            const [ketqqua] = await execute(
+                'UPDATE nhacungcap SET SDT=? WHERE IDNCC= ?',[sdt,id]
+            );
+           return ketqqua.affectedRows > 0 ? true : false;
+        } catch (error) {
+             console.error('Lỗi khi cập nhật số điện thoại nhà cung cấp:', error);
+             return  false;
+        }
+    }
+    static async CapNhatEmail(email,id){
+        try {
+            const [ketqqua] = await execute(
+                'UPDATE nhacungcap SET EMAIL=? WHERE IDNCC= ?',[email,id]
+            );
+              return ketqqua.affectedRows > 0 ? true : false;
+        } catch (error) {
+             console.error('Lỗi khi cập nhật email nhà cung cấp:', error);
+            return false;
         }
     }
     static async CapNhatTen(Ten,id){
@@ -127,17 +164,13 @@ export default class NhaCungCapModel{
     }
     static async ThemCungCap(dulieu) {
         const today = new Date();
-        let month = today.getMonth() + 1;
-        let ID ="NCC-" + today.getFullYear().toString().slice(-2) 
-        + (month < 10 ? "0" + month : month.toString()) + "-" 
-        + Math.floor(1000 + Math.random() * 9000).toString();
          try {
             const [row] = await execute(
                 `INSERT INTO nhacungcap 
                  (IDNCC, MAVACH, TENNCC, SDT, LIENHE_DOITAC, EMAIL, DIACHI, MST, STK_NGANHANG, TEN_NGANHANG, NGAY_HOPTAC, GHICHU) 
                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
-          ID,
+          TaoID('NCC'),
           dulieu?.DinhDanh?.MaDinhDanh ?? null,
           dulieu?.DinhDanh?.TenNhaCungCap ?? null,
           dulieu?.NguoiLienHe?.SDT ?? null,

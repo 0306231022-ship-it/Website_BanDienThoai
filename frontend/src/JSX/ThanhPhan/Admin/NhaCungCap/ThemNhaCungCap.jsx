@@ -63,7 +63,7 @@ function ThemCungCap() {
         const formData = fun.objectToFormData(DuLieu);
         try {
             const ketqua = await API.CallAPI(formData, { url: '/admin/Themcc', PhuongThuc: 1 });
-            if (ketqua.Status) {
+            if (ketqua.status) {
                 seterrHT(ketqua.message);
                 return;
             };
@@ -108,16 +108,10 @@ function ThemCungCap() {
                 : 'border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-50/50 hover:border-gray-300'
         }`;
     };
-
-    // --- RENDER GIAO DIỆN ---
-    // Lưu ý: Không còn thẻ bao fixed inset-0 nữa
     return (
         <div className="flex flex-col h-full bg-gray-50/30">
-            
-            {/* PHẦN NỘI DUNG FORM (Có thanh cuộn) */}
+       
             <div className="flex-1 overflow-y-auto p-2 custom-scrollbar">
-                
-                {/* Error Banner nếu có lỗi hệ thống */}
                 {errHT && (
                     <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3 text-red-700 animate-fadeIn">
                         <i className="fa-solid fa-triangle-exclamation text-xl"></i>

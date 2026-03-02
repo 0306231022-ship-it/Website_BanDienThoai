@@ -3,64 +3,68 @@ import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
 
-function ChinhSuaSo({ DuLieu, url }) {
+function ChinhSuaEmail({ DuLieu, url }) {
   const { GetTTwebsite } = useAppContext();
-  
-  // Ánh xạ dữ liệu đầu vào
-  const stkCu = DuLieu?.DuLieu;
+  const emailCu = DuLieu?.DuLieu;
   const id = DuLieu?.id;
 
-  const [soTaiKhoan, setSoTaiKhoan] = useState('');
+  const [email, setEmail] = useState('');
   const [err, setErr] = useState('');
-  const [errValidate, seterr] = useState({});
+  const [errValidate, setErrValidate] = useState({});
   const [ok, setOk] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Hàm xử lý chỉ cho phép nhập số
-  const handleChangeInput = (e) => {
-    const value = e.target.value;
-    // Regex: Chỉ cho phép nhập số
-    if (!value || /^[0-9]+$/.test(value)) {
-        setSoTaiKhoan(value);
-    }
+  const validateEmailFormat = (value) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   };
 
   const handleUpdate = async () => {
     setLoading(true);
     setErr('');
     setOk('');
-    seterr({});
+    setErrValidate({});
 
-    // 1. Validate cơ bản
-    if (soTaiKhoan === stkCu) {
-      setErr('Bạn chưa thay đổi nội dung cần cập nhật!');
+    if (email === emailCu) {
+      setErr('Bạn chưa thay đổi email cần cập nhật!');
       setLoading(false);
       return;
     }
 
-    if (!soTaiKhoan || !soTaiKhoan.trim()) {
-      setErr('Vui lòng nhập thông tin mới!');
+    if (!email || !email.trim()) {
+      setErr('Vui lòng nhập email!');
+      setLoading(false);
+      return;
+    }
+
+    if (!validateEmailFormat(email)) {
+      setErr('Email không đúng định dạng!');
       setLoading(false);
       return;
     }
 
     if (!url) {
-      setErr('Vui lòng kiểm tra lại hệ thống (URL)!');
+      setErr('Vui lòng kiểm tra lại hệ thống!');
       setLoading(false);
       return;
     }
 
-    if (soTaiKhoan.length < 8 || soTaiKhoan.length > 20) {
-      setErr('Số tài khoản thường có độ dài từ 8 đến 20 ký tự!');
+    if (email.length > 255) {
+      setErr('Email không được vượt quá 255 ký tự!');
       setLoading(false);
       return;
     }
 
     try {
-      const FormData = fun.objectToFormData({ So: soTaiKhoan, id: id || null });
+      const DuLieuGui = fun.objectToFormData({
+        Email: email,
+        id: id || null
+      });
 
-      const ketqua = await API.CallAPI(FormData, { PhuongThuc: 1, url: url });
-    
+      const ketqua = await API.CallAPI(DuLieuGui, {
+        PhuongThuc: 1,
+        url: url
+      });
+
       if (ketqua.Status) {
         setErr(ketqua.message);
         setLoading(false);
@@ -72,18 +76,16 @@ function ChinhSuaSo({ DuLieu, url }) {
         ketqua.errors.forEach(Err => {
           errorsFromServer[Err.path] = Err.msg;
         });
-        seterr(errorsFromServer);
+        setErrValidate(errorsFromServer);
         setLoading(false);
         return;
       }
 
       if (ketqua.ThanhCong) {
-        setLoading(false);
         setOk(ketqua.message);
-        GetTTwebsite(); // Cập nhật lại context
+        GetTTwebsite();
+        setLoading(false);
         return;
-      }else{
-        setErr(ketqua.message || 'Cập nhật thất bại, vui lòng thử lại!');
       }
 
     } catch (error) {
@@ -97,38 +99,35 @@ function ChinhSuaSo({ DuLieu, url }) {
     <div className="w-full bg-white animate-fadeIn">
       <div className="p-8">
         <div className="space-y-6">
-          
+
           <div className="space-y-2">
-            {/* LABEL & OLD DATA */}
             <div className="flex justify-between items-end px-1">
               <label className="text-[13px] font-bold text-gray-400 uppercase tracking-wider">
-                Số thông tin cần cập nhật
+                Email hiển thị
               </label>
-              <span className="text-[11px] text-blue-500 font-medium italic font-mono">
-                Dữ liệu cũ: {stkCu}
+              <span className="text-[11px] text-blue-500 font-medium italic">
+                Email cũ: {emailCu}
               </span>
             </div>
 
-            {/* INPUT FIELD */}
             <div className="relative group">
               <input
-                type="text"
-                inputMode="numeric"
-                value={soTaiKhoan}
-                onChange={handleChangeInput}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 disabled={loading}
-                className={`w-full px-5 py-4 rounded-2xl outline-none transition-all font-medium font-mono text-lg shadow-sm
-                  ${(err || errValidate.SoTaiKhoan) ? "bg-red-50 border-2 border-red-500 text-red-900" 
-                        : "bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white text-gray-800"}
+                className={`w-full px-5 py-4 rounded-2xl outline-none transition-all font-medium text-lg shadow-sm
+                  ${(err || errValidate.Email)
+                    ? "bg-red-50 border-2 border-red-500 text-red-900"
+                    : "bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white text-gray-800"}
                   ${loading ? "opacity-50 cursor-not-allowed" : ""}
-                  `}
-                placeholder="Nhập thông tin mới..."
+                `}
+                placeholder="Nhập email mới..."
               />
-              
-              {/* Button Clear Input */}
-              {soTaiKhoan && !loading && (
+
+              {email && !loading && (
                 <button
-                  onClick={() => setSoTaiKhoan('')}
+                  onClick={() => setEmail('')}
                   type="button"
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-300 hover:text-red-500 transition-all active:scale-90"
                 >
@@ -137,13 +136,14 @@ function ChinhSuaSo({ DuLieu, url }) {
               )}
             </div>
 
-            {/* STATUS MESSAGES */}
             <div className="min-h-[20px] px-1">
-              {errValidate.SoTaiKhoan ? (
-                 <div className="flex items-center gap-2 animate-shake">
-                    <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
-                    <p className="text-[12px] text-red-600 font-bold">{errValidate.SoTaiKhoan}</p>
-                 </div>
+              {errValidate.Email ? (
+                <div className="flex items-center gap-2 animate-shake">
+                  <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
+                  <p className="text-[12px] text-red-600 font-bold">
+                    {errValidate.Email}
+                  </p>
+                </div>
               ) : err ? (
                 <div className="flex items-center gap-2 animate-shake">
                   <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
@@ -158,25 +158,24 @@ function ChinhSuaSo({ DuLieu, url }) {
                 <div className="flex items-start gap-2">
                   <i className="fa-solid fa-circle-info text-blue-400 mt-1 text-[10px]"></i>
                   <p className="text-[12px] text-gray-400 leading-relaxed">
-                    STK mới nhập là: <strong className="text-gray-600 font-mono">"{soTaiKhoan}"</strong>.
+                    Email hiện tại là <strong className="text-gray-600">"{email}"</strong>.
                   </p>
                 </div>
               )}
             </div>
           </div>
 
-          {/* SUBMIT BUTTON */}
           <div className="pt-4">
             <button
               onClick={handleUpdate}
-              className={`w-full py-4 rounded-2xl font-bold shadow-lg transition-all active:scale-[0.97] flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white shadow-blue-100`}
+              className="w-full py-4 rounded-2xl font-bold shadow-lg transition-all active:scale-[0.97] flex items-center justify-center gap-3 bg-blue-600 hover:bg-blue-700 text-white shadow-blue-100"
             >
               {loading ? (
                 <i className="fa-solid fa-spinner animate-spin"></i>
               ) : (
-                <i className="fa-solid fa-floppy-disk"></i>
+                <i className="fa-solid fa-cloud-arrow-up"></i>
               )}
-              {loading ? "Đang xử lý..." : "Lưu thay đổi"}
+              {loading ? "Đang xử lý..." : "Cập nhật Email"}
             </button>
           </div>
 
@@ -186,4 +185,4 @@ function ChinhSuaSo({ DuLieu, url }) {
   );
 }
 
-export default ChinhSuaSo;
+export default ChinhSuaEmail;

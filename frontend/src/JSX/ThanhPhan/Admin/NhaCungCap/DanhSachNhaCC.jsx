@@ -88,8 +88,8 @@ function NhaCungCap() {
 
     return (
         <>
-            <div className="flex h-screen overflow-hidden p-2">
-                <main className="flex-1 flex flex-col h-screen overflow-y-auto">
+            <div className="flex overflow-hidden mx-6 mt-6">
+                <main className="flex-1 flex flex-col overflow-y-auto">
                     <header className="bg-white shadow-sm h-16 flex items-center justify-between px-6 sticky top-0 z-20">
                         <h1 className="text-xl font-bold text-slate-800">Danh sách Nhà Cung Cấp</h1>    
                     </header>
