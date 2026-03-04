@@ -371,9 +371,26 @@ export default class NhaCungCapController{
                 });
             }
         }
-        static async CapNhatTenNguoiDung(req,res) {
+        static async CapNhatNguoiDaiDien(req,res) {
             const { Ten } = req.body;
             const id = req.body.id || null;
+            await Promise.all([
+                body('Ten')
+                    .trim().notEmpty().withMessage('Tên người đại diện không được bỏ trống!')
+                    .isLength({ max: 255 }).withMessage('Tên người đại diện không được quá 255 ký tự!')
+                    .run(req),
+                body('id')
+                    .trim().notEmpty().withMessage('ID nhà cung cấp không được bỏ trống!')
+                    .isLength({ max: 20 }).withMessage('ID nhà cung cấp không được quá 20 ký tự!')
+                    .custom(async (value) => {
+                        const exists = await NhaCungCapModel.kiemtraid(value);
+                        if (!exists) {
+                            throw new Error('Hệ thống không tìm thấy nhà cung cấp!');
+                        }
+                        return true;
+                    })
+                    .run(req),
+            ]);
             const errors = validationResult(req);
              if (!errors.isEmpty()) {
                 return res.json({ 

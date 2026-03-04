@@ -83,6 +83,7 @@ adminRouter.post('/ChinhSuaDiaChiNhaCungCap', authMiddleware , upload.none(), Nh
 adminRouter.post('/ChinhSuaMoTaNhaCungCap', authMiddleware , upload.none(),NhaCungCapController.CapNhatMoTa );
 adminRouter.post('/ChinhSuaTenNganHang' , authMiddleware , upload.none(), NhaCungCapController.CapNhatTenNganHang);
 adminRouter.post('/ChinhSuaSoTaiKhoan', authMiddleware , upload.none(), NhaCungCapController.CapNhatSoTaiKhoan);
+adminRouter.post('/ChinhSuaNguoiDaiDienNhaCungCap', authMiddleware , upload.none(), NhaCungCapController.CapNhatNguoiDaiDien);
 //=========================================
 // Xử lý Phiếu Nhập
 adminRouter.post('/ThemPhieuNhap',createUpload('sanpham').any(), authMiddleware,PhieuNhapController.ThemPhieuNhap);

@@ -102,6 +102,25 @@ function ThongTinChung({ DuLieu }) {
             <i className="fa-solid fa-chevron-right"></i>
           </div>
         </button>
+        
+         {/* BUTTON 3: TÀI CHÍNH VÀ THUẾ */}
+        <button 
+          onClick={() => OpenMoDal({tennganhang:DuLieu.DuLieu.TEN_NGANHANG , sotaikhoan:DuLieu.DuLieu.STK_NGANHANG , chutaikhoan: DuLieu.DuLieu.LIENHE_DOITAC , id: DuLieu.DuLieu.IDNCC }, { TenTrang: 'ThongTinTaiChinh' })} 
+          className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-rose-100 rounded-2xl transition-all group"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white shadow-sm text-rose-500 rounded-2xl flex items-center justify-center border border-slate-100 group-hover:bg-rose-500 group-hover:text-white group-hover:border-rose-500 transition-all duration-300">
+              <i className="fa-solid fa-landmark text-xl"></i>
+            </div>
+            <div className="text-left">
+              <span className="block text-[15px] font-bold text-slate-700 group-hover:text-rose-600 transition-colors">Tài chính & Thuế</span>
+              <span className="text-xs font-medium text-slate-400">MST, ngân hàng, hóa đơn</span>
+            </div>
+          </div>
+          <div className="w-8 h-8 flex items-center justify-center text-slate-300 group-hover:text-rose-500 group-hover:translate-x-1 transition-all">
+            <i className="fa-solid fa-chevron-right"></i>
+          </div>
+        </button>
 
       </div>
     </div>
