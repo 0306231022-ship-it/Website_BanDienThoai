@@ -1,13 +1,44 @@
 import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
-
+import * as ThongBao from '../../../../../JS/FUNCTONS/ThongBao';
+import * as API from '../../../../../JS/API/API';
+import * as fun from '../../../../../JS/FUNCTONS/function';
 function ThongTinChung({ DuLieu }) {
   const { OpenMoDal } = useModalContext();
-
   const mockData = {
     DuLieu: DuLieu.DuLieu,
     MaVietTat: DuLieu.DuLieu.MAVACH,
     ...DuLieu, 
   };
+  const TrangThai = async(trangthai, url)=>{
+    const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn thay đổi trạng thái hoạt động của nhà cung cấp này không?');
+    if(!XacNhan) return;
+    try {
+      const formdata = fun.objectToFormData({TrangThai : trangthai , id:DuLieu.DuLieu.IDNCC});
+      const ketqua = await API.CallAPI(formdata ,{PhuongThuc:1 , url:url});
+      alert(JSON.stringify(ketqua));
+      if(ketqua.status){
+        ThongBao.ThongBao_Loi(ketqua.message);
+        return;
+      }
+      if(ketqua.Validate){
+        ThongBao.ThongBao_CanhBao('Vui lòng kiểm tra lại thông tin!');
+        return;
+      }
+      if(ketqua.ThanhCong){
+        ThongBao.ThongBao_ThanhCong(ketqua.message);
+        return;
+      }else{
+        ThongBao.ThongBao_Loi(ketqua.message);
+        return;
+      }
+      
+    } catch (error) {
+      console.error('Lỗi khi thay đổi trạng thái:', error);
+      ThongBao.ThongBao_Loi('Đã có lỗi xảy ra khi thay đổi trạng thái. Vui lòng thử lại sau.');
+    }
+
+  }
+
 
   return (
     <div className="w-full bg-white">
@@ -76,7 +107,7 @@ function ThongTinChung({ DuLieu }) {
             </div>
             <div className="text-left">
               <span className="block text-[15px] font-bold text-slate-700 group-hover:text-teal-600 transition-colors">Thông tin liên hệ</span>
-              <span className="text-xs font-medium text-slate-400">Địa chỉ, hotline, email</span>
+              <span className="text-xs font-medium text-slate-400">Địa chỉ, hotline, email </span>
             </div>
           </div>
           <div className="w-8 h-8 flex items-center justify-center text-slate-300 group-hover:text-teal-500 group-hover:translate-x-1 transition-all">
@@ -104,23 +135,45 @@ function ThongTinChung({ DuLieu }) {
         </button>
         
          {/* BUTTON 3: TÀI CHÍNH VÀ THUẾ */}
-        <button 
-          onClick={() => OpenMoDal({tennganhang:DuLieu.DuLieu.TEN_NGANHANG , sotaikhoan:DuLieu.DuLieu.STK_NGANHANG , chutaikhoan: DuLieu.DuLieu.LIENHE_DOITAC , id: DuLieu.DuLieu.IDNCC }, { TenTrang: 'ThongTinTaiChinh' })} 
-          className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-rose-100 rounded-2xl transition-all group"
-        >
+         {
+           Number(DuLieu.DuLieu.TRANGTHAI) === 1 ? (
+            <button onClick={()=>{TrangThai(1 , '/admin/CapNhat_TrangThai')}}  className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-rose-100 rounded-2xl transition-all group">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-white shadow-sm text-rose-500 rounded-2xl flex items-center justify-center border border-slate-100 group-hover:bg-rose-500 group-hover:text-white group-hover:border-rose-500 transition-all duration-300">
-              <i className="fa-solid fa-landmark text-xl"></i>
+              <i className="fa-solid fa-circle-check text-green-500 text-xl"></i>
             </div>
             <div className="text-left">
-              <span className="block text-[15px] font-bold text-slate-700 group-hover:text-rose-600 transition-colors">Tài chính & Thuế</span>
-              <span className="text-xs font-medium text-slate-400">MST, ngân hàng, hóa đơn</span>
+              <span className="block text-[15px] font-bold text-slate-700 group-hover:text-rose-600 transition-colors">Trạng thái hoạt động</span>
+              <span className="text-xs font-medium text-slate-400">Nhà cung cấp đang được hợp tác</span>
             </div>
           </div>
           <div className="w-8 h-8 flex items-center justify-center text-slate-300 group-hover:text-rose-500 group-hover:translate-x-1 transition-all">
             <i className="fa-solid fa-chevron-right"></i>
           </div>
         </button>
+          ) : (
+             <button 
+              onClick={()=>{TrangThai(0 , '/admin/CapNhat_TrangThai')}}
+          className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-rose-100 rounded-2xl transition-all group"
+        >
+             <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-white shadow-sm text-rose-500 rounded-2xl flex items-center justify-center border border-slate-100 group-hover:bg-rose-500 group-hover:text-white group-hover:border-rose-500 transition-all duration-300">
+             <i className="fa-solid fa-handshake-slash text-red-500 text-xl"></i>
+            </div>
+            <div className="text-left">
+              <span className="block text-[15px] font-bold text-slate-700 group-hover:text-rose-600 transition-colors">Trạng thái hoạt động</span>
+              <span className="text-xs font-medium text-slate-400">Nhà cung cấp đã ngưng hợp tác</span>
+            </div>
+          </div>
+          <div className="w-8 h-8 flex items-center justify-center text-slate-300 group-hover:text-rose-500 group-hover:translate-x-1 transition-all">
+            <i className="fa-solid fa-chevron-right"></i>
+          </div>
+
+        
+        </button>
+          )
+         }
+       
 
       </div>
     </div>

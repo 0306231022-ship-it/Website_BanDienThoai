@@ -601,4 +601,44 @@ export default class NhaCungCapController{
             }
 
         }
+            static async CapNhatTrangThai(req,res){
+            const { id, TrangThai } = req.body;
+            await Promise.all([
+                body('TrangThai')
+                    .trim().notEmpty().withMessage('Trạng thái hoạt động không được bỏ trống!')
+                    .isIn(['0', '1']).withMessage('Trạng thái hoạt động không hợp lệ! Chỉ nhận giá trị 0 hoặc 1.')
+                    .run(req),
+                body('id')
+                    .trim().notEmpty().withMessage('ID nhà cung cấp không được bỏ trống!')
+                    .isLength({ max: 20 }).withMessage('ID nhà cung cấp không được quá 20 ký tự!')
+                    .custom(async (value) => {
+                        const exists = await NhaCungCapModel.kiemtraid(value);
+                        if (!exists) {
+                            throw new Error('Hệ thống không tìm thấy nhà cung cấp!');
+                        }
+                        return true;
+                    })
+                    .run(req),
+            ]);
+            const errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    return res.json({
+                        Validate: true,
+                        errors: errors.array()
+                    });
+                }
+               /* const CapNhat = await NhaCungCapModel.CapNhatTrangThai(id, TrangThai);
+                if (CapNhat) {
+                    return res.json({
+                        ThanhCong: true,
+                        message: 'Cập nhật trạng thái hoạt động nhà cung cấp thành công!'
+                    });
+                }
+                else {
+                    return res.json({
+                        ThanhCong: false,
+                        message: 'Cập nhật trạng thái hoạt động nhà cung cấp thất bại! Vui lòng thử lại sau.'
+                    });
+                }*/
+        }
 }

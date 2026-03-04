@@ -236,6 +236,25 @@ export default class NhaCungCapModel{
             }
         }
   }
+  static async CapNhatTrangThai(id,trangthai){
+    try {
+        if (trangthai === 1) {
+            const [ketqqua] = await execute(
+                'UPDATE nhacungcap SET TRANGTHAI=? AND NGAY_HUY = NULL AND NGAY_HOPTAC=? WHERE IDNCC= ?',[0, new Date(), id]
+            );
+           return ketqqua.affectedRows > 0 ? true : false;
+        }
+        else {
+            const [ketqqua] = await execute(
+                'UPDATE nhacungcap SET TRANGTHAI=? AND NGAY_HUY=? WHERE IDNCC= ?',[1, new Date(), id]
+            );
+           return ketqqua.affectedRows > 0 ? true : false;
+        }
+    } catch (error) {
+        console.error('Lỗi khi cập nhật trạng thái nhà cung cấp:', error);
+        return false;
+    }
+}
 
 
 
