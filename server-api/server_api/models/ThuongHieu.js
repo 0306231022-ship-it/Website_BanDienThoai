@@ -21,7 +21,7 @@ export default class ThuongHieuModel{
             FROM thuonghieu
             WHERE IDTHUONGHIEU = ?
                 `,[id]);
-            return idTH.affectedRows>0 ? true :false;
+            return idTH.length > 0 ? true :false;
     } catch (error) {
         console.error('Có lỗi sãy ra :' + error);
         return false;

@@ -603,7 +603,7 @@ export default class NhaCungCapController{
         }
             static async CapNhatTrangThai(req,res){
             const { id, TrangThai } = req.body;
-            await Promise.all([
+           await Promise.all([
                 body('TrangThai')
                     .trim().notEmpty().withMessage('Trạng thái hoạt động không được bỏ trống!')
                     .isIn(['0', '1']).withMessage('Trạng thái hoạt động không hợp lệ! Chỉ nhận giá trị 0 hoặc 1.')
@@ -627,7 +627,7 @@ export default class NhaCungCapController{
                         errors: errors.array()
                     });
                 }
-               /* const CapNhat = await NhaCungCapModel.CapNhatTrangThai(id, TrangThai);
+               const CapNhat = await NhaCungCapModel.CapNhatTrangThai(id, TrangThai);
                 if (CapNhat) {
                     return res.json({
                         ThanhCong: true,
@@ -639,6 +639,6 @@ export default class NhaCungCapController{
                         ThanhCong: false,
                         message: 'Cập nhật trạng thái hoạt động nhà cung cấp thất bại! Vui lòng thử lại sau.'
                     });
-                }*/
+                }
         }
 }

@@ -195,7 +195,7 @@ export default class NhaCungCapModel{
     try {
         const [ketqua] = await execute(`
             SELECT * FROM nhacungcap
-            WHERE IDNCC=? AND TRANGTHAI=1
+            WHERE IDNCC=?
             `,[id]);
        const exists= ketqua.length>0 ? true : false
        return exists;
@@ -236,25 +236,39 @@ export default class NhaCungCapModel{
             }
         }
   }
-  static async CapNhatTrangThai(id,trangthai){
+
+static async CapNhatTrangThai(id, trangthai) {
     try {
-        if (trangthai === 1) {
-            const [ketqqua] = await execute(
-                'UPDATE nhacungcap SET TRANGTHAI=? AND NGAY_HUY = NULL AND NGAY_HOPTAC=? WHERE IDNCC= ?',[0, new Date(), id]
-            );
-           return ketqqua.affectedRows > 0 ? true : false;
+        const dateStr = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        let query, params;
+
+        if (parseInt(trangthai) === 1) {
+            query = `
+                UPDATE nhacungcap 
+                SET TRANGTHAI = ?, NGAY_HUY = null, NGAY_HOPTAC = ? 
+                WHERE IDNCC = ?
+            `;
+            params = [trangthai, dateStr, id];
+        } else {
+            query = `
+                UPDATE nhacungcap 
+                SET TRANGTHAI = ?, NGAY_HUY = ? 
+                WHERE IDNCC = ?
+            `;
+            params = [trangthai, dateStr, id];
         }
-        else {
-            const [ketqqua] = await execute(
-                'UPDATE nhacungcap SET TRANGTHAI=? AND NGAY_HUY=? WHERE IDNCC= ?',[1, new Date(), id]
-            );
-           return ketqqua.affectedRows > 0 ? true : false;
-        }
+
+        const [ketqua] = await execute(query, params);
+        return ketqua.affectedRows > 0 ? true : false;
     } catch (error) {
         console.error('Lỗi khi cập nhật trạng thái nhà cung cấp:', error);
         return false;
     }
 }
+
+
+
+
 
 
 

@@ -191,7 +191,7 @@ function ChiTietNhaCungCap() {
                         />
                         <StatRow
                             label="Số đơn hàng"
-                            value="32" // Nếu có data từ API thì thay bằng {dulieu.SODON}
+                            value="100" // Nếu có data từ API thì thay bằng {dulieu.SODON}
                             color="slate"
                             icon="fa-receipt"
                         />

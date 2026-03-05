@@ -53,7 +53,7 @@ export default class ThuongHieuController{
      static async SuaAnhThuongHieu(req, res) {
         const files = req.files;
         const id = req.body.id || null;
-        const kiemtra = await ThuongHieuModel.kiemtraid(value);
+        const kiemtra = await ThuongHieuModel.kiemtraid(id);
         if(!kiemtra){
             return res.json({
                 status:true,

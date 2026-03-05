@@ -137,7 +137,7 @@ function ThongTinChung({ DuLieu }) {
          {/* BUTTON 3: TÀI CHÍNH VÀ THUẾ */}
          {
            Number(DuLieu.DuLieu.TRANGTHAI) === 1 ? (
-            <button onClick={()=>{TrangThai(1 , '/admin/CapNhat_TrangThai')}}  className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-rose-100 rounded-2xl transition-all group">
+            <button onClick={()=>{TrangThai(0 , '/admin/CapNhat_TrangThai')}}  className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-rose-100 rounded-2xl transition-all group">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-white shadow-sm text-rose-500 rounded-2xl flex items-center justify-center border border-slate-100 group-hover:bg-rose-500 group-hover:text-white group-hover:border-rose-500 transition-all duration-300">
               <i className="fa-solid fa-circle-check text-green-500 text-xl"></i>
@@ -153,7 +153,7 @@ function ThongTinChung({ DuLieu }) {
         </button>
           ) : (
              <button 
-              onClick={()=>{TrangThai(0 , '/admin/CapNhat_TrangThai')}}
+              onClick={()=>{TrangThai(1 , '/admin/CapNhat_TrangThai')}}
           className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-white hover:shadow-md border border-slate-100 hover:border-rose-100 rounded-2xl transition-all group"
         >
              <div className="flex items-center gap-4">
