@@ -66,6 +66,34 @@ export default class PhieuNhapModal {
             return null;
         }
     }
+    static async Tong_PhieuNhap_Theo_IDNCC(idncc){
+        try {
+            const [rows] = await execute(
+                `SELECT COUNT(*) AS TotalPhieuNhap
+                 FROM phieunhap
+                    WHERE IDNCC = ?`,
+                [idncc]
+            );
+            return rows.length > 0 ? rows[0] : null;
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin nhà cung cấp:', error);
+            return null;
+        }
+    }
+    static async Tong_ThuNhap_Theo_IDNCC_Thang(idncc){ 
+        try {
+            const [rows] = await execute(
+                `SELECT COALESCE(SUM(TONGTIEN), 0) AS TongThuNhap
+                    FROM phieunhap
+                    WHERE IDNCC = ? AND MONTH(NGAYNHAP) = MONTH(CURRENT_DATE()) AND YEAR(NGAYNHAP) = YEAR(CURRENT_DATE())`,
+                [idncc]
+            );
+            return rows.length > 0 ? rows[0].TongThuNhap : 0;
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin nhà cung cấp:', error);
+            return null;
+        }
+    }
     static async layTT_ND(Idpn){ 
         try {
             const [rows] = await execute(

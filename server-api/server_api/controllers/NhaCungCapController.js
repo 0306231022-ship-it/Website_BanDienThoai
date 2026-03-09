@@ -1,6 +1,7 @@
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import NhaCungCapModel from '../models/NhaCungCapModel.js';
+import PhieuNhapModel from '../models/PhieuNhapMoDel.js';
 import { body, validationResult } from "express-validator";
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -219,7 +220,11 @@ export default class NhaCungCapController{
                 });
              }
              try {
-                const NhaCungCap= await NhaCungCapModel.layChiTiet(id);
+                const [NhaCungCap , TongPhieuNhap , TongThuNhap] = await Promise.all([
+                    NhaCungCapModel.layChiTiet(id),
+                    PhieuNhapModel.Tong_PhieuNhap_Theo_IDNCC(id),
+                    PhieuNhapModel.Tong_ThuNhap_Theo_IDNCC_Thang(id)
+                ]);
                 if(!NhaCungCap){
                     return res.json({
                         Status:true,
@@ -228,8 +233,10 @@ export default class NhaCungCapController{
                 };
                 return res.json({
                     ThanhCong:true,
-                    DuLieu:NhaCungCap
-            })
+                    DuLieu:NhaCungCap,
+                    TongPhieuNhap: TongPhieuNhap,
+                    TongThuNhap: TongThuNhap
+                });
              } catch (error) {
                 console.error('Đã sãy ra lỗi trên hệ thống : ' + error);
                 return res.json({

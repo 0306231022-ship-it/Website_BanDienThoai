@@ -1,6 +1,6 @@
 import React from 'react';
 
-const StatRow = ({ label, value, color, icon, action }) => {
+const StatRow = ({ label, value, color, icon, action , DonVi }) => {
 
     const isZero = Number(value) === 0 || value === "0";
     const colors = {
@@ -39,7 +39,7 @@ const StatRow = ({ label, value, color, icon, action }) => {
         <div className={`flex-1 flex items-center justify-between p-4 rounded-xl border ${colors[color] || colors.slate} relative overflow-hidden`}>
              <div className="z-10">
                 <p className="text-xs font-semibold opacity-70 uppercase mb-1">{label}</p>
-                <p className="text-xl font-bold">{new Intl.NumberFormat('vi-VN').format(value)} VND</p>
+                <p className="text-xl font-bold">{value} {DonVi}</p>
              </div>
              <div className="flex flex-col items-end gap-2 z-10">
                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-white/60 text-xl shadow-sm backdrop-blur-sm">

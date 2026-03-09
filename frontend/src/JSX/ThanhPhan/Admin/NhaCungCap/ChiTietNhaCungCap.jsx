@@ -18,13 +18,15 @@ function ChiTietNhaCungCap() {
     const [PhieuNhap_theo_idncc,setPhieu] = useState([]);
     const [PhanTrang_phieunhap,setPhanTrang_PhieuNhap] = useState({})
     const [page1,setpage1] = useState(1);
-    const [sanpham,setsanpham] = useState([])
+    const [sanpham,setsanpham] = useState([]);
+    const [TongPhieuNhap,setTongPhieuNhap] = useState(0);
+    const[TongThuNhap,setTongThuNhap] = useState(0);
     useEffect(() => {
         const layDL = async () => {
             setloading(true);
             try {
-        
                 const ketqua = await API.CallAPI(undefined, { url: `/admin/ChiTietNhaCungCap?id=${id}`, PhuongThuc: 2 });
+                //alert(JSON.stringify(ketqua));
                 if (ketqua.Status) {
                     seterr(ketqua.message);
                     setloading(false);
@@ -32,6 +34,8 @@ function ChiTietNhaCungCap() {
                 };
                 if (ketqua) {
                     setdulieu(ketqua.DuLieu);
+                    setTongPhieuNhap(ketqua.TongPhieuNhap?.TotalPhieuNhap);
+                    setTongThuNhap(ketqua.TongThuNhap);
                     setloading(false);
                     return;
                 }
@@ -178,22 +182,24 @@ function ChiTietNhaCungCap() {
                     <div className="flex flex-col gap-3 h-full">
                         <StatRow
                             label="Công nợ hiện tại"
-                            value={dulieu.CONGNO}
+                            value={fun.formatCurrency(dulieu.CONGNO)}
                             color={`${dulieu.CONGNO === 0 ? 'green-700' : 'red'}`}
                             icon="fa-sack-dollar"
                             action="Thanh toán"
                         />
                         <StatRow
                             label="Tổng nhập tháng này"
-                            value={150000} 
+                            value={fun.formatCurrency(TongThuNhap)} 
                             color="blue"
                             icon="fa-chart-line"
+                            DonVi={''}
                         />
                         <StatRow
                             label="Số đơn hàng"
-                            value="100" // Nếu có data từ API thì thay bằng {dulieu.SODON}
+                            value={TongPhieuNhap} 
                             color="slate"
                             icon="fa-receipt"
+                            DonVi={'Đơn'}
                         />
                     </div>
                     <div className="h-1/2">
