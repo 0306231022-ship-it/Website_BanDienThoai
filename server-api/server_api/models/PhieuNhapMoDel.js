@@ -186,9 +186,6 @@ export default class PhieuNhapModal {
             };
         }
     }
-
-
-
     static async layTT_PhieuNhap(Idpn){
         try {
             const [rows] = await execute(
@@ -209,6 +206,7 @@ export default class PhieuNhapModal {
         try {
             //Bước 1 Thêm phiếu nhập
             const IDPN = TaoID('PN');
+            const ConLai = Number(ThongTin.THANHTOAN.TONGTIEN) - Number(ThongTin.THANHTOAN.DA_THANHTOAN);
             const [resultPhieuNhap] = await execute(
                 'INSERT INTO phieunhap (IDPN, IDNCC, IDND, TONGTIEN, DA_THANHTOAN, NGAYNHAP, TRANGTHAI, GHICHU) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)',
                 [IDPN, ThongTin.IDNCC, ThongTin.IDND, ThongTin.THANHTOAN.TONGTIEN, ThongTin.THANHTOAN.DA_THANHTOAN , ThongTin.CheDoLuu, ThongTin.GHICHU ]
@@ -216,6 +214,13 @@ export default class PhieuNhapModal {
             if (resultPhieuNhap.affectedRows === 0) {
                 throw new Error('Không thể tạo phiếu nhập mới.');
             }
+            const [updateNCC] = await execute(
+                'UPDATE nhacungcap SET CONGNO = CONGNO + ? WHERE IDNCC = ?',
+                [ConLai, ThongTin.IDNCC]
+            );
+                if (updateNCC.affectedRows === 0) {
+                    throw new Error('Không thể cập nhật công nợ nhà cung cấp.');
+                }
             // Bước 2: Thêm chi tiết phiếu nhập và sản phẩm
             //tẠO MẢNG ĐỂ LƯU TẤT CẢ IDSẢNPHẨM MỚI
             const IDSANPHAM_MOI = [];
@@ -549,6 +554,59 @@ export default class PhieuNhapModal {
             return [];
         }
     }
+    static async timkiem_phieunhap(key){
+        //Từ khóa tìm kiếm: { idncc: '', idnd: 'undefined', idpn: '' }
+        try {            
+            let query = `
+                SELECT 
+                    pn.IDPN,
+                    pn.NGAYNHAP,
+                    pn.TONGTIEN,
+                    pn.TRANGTHAI,
+                    nd.HOTEN,
+                    ncc.TENNCC
+                FROM PHIEUNHAP pn
+                JOIN NGUOIDUNG nd ON pn.IDND = nd.IDND
+                JOIN NHACUNGCAP ncc ON pn.IDNCC = ncc.IDNCC`
+            const params = [];
+            if (key.idncc) {
+                query += ` WHERE pn.IDNCC = ?`;
+                params.push(key.idncc);
+            }
+            if (key.idnd && key.idnd !== 'undefined') {
+                query += params.length > 0 ? ` AND` : ` WHERE`;
+                query += ` pn.IDND = ?`;
+                params.push(key.idnd);
+            }
+            if (key.idpn) {
+                query += params.length > 0 ? ` AND` : ` WHERE`;
+                query += ` pn.IDPN = ?`;
+                params.push(key.idpn);
+            }
+            const [ketqqua] = await execute(query, params);
+            return ketqqua;
+        }
+        catch (error) {
+            console.error('Lỗi khi tìm kiếm phiếu nhập:', error);
+            return [];
+        }
+    }
+
+    static async LayDS_NCC(){
+        try {
+            const [rows] = await execute(`
+                SELECT DISTINCT ncc.IDNCC, ncc.TENNCC
+                FROM phieunhap pn
+                JOIN nhacungcap ncc ON pn.IDNCC = ncc.IDNCC
+            `);
+            return rows;
+        }
+        catch (error) {
+            console.error('Lỗi khi lấy danh sách nhà cung cấp:', error);
+            return [];
+        }
+    }
+
 
     static async laythongke_phieunhap(){
         try {
@@ -731,6 +789,4 @@ export default class PhieuNhapModal {
         SANPHAM
     };
 }
-
-   
 }

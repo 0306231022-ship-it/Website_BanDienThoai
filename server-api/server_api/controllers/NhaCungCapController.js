@@ -576,7 +576,8 @@ export default class NhaCungCapController{
                 if(ketqua.ThanhCong){
                     return res.json({
                         ThanhCong:true,
-                        dulieu: ketqua.dulieu
+                        dulieu: ketqua.dulieu,
+                        message: ketqua.message
                     })
                 }
                 if(ketqua.status){

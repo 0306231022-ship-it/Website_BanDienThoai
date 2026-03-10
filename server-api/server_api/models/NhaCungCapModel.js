@@ -224,9 +224,19 @@ export default class NhaCungCapModel{
             WHERE pn.IDNCC = ?
             LIMIT ? OFFSET ?
         `, [id, limit, offset]);
+        // lấy sp bắt đầu, sp kết thúc, tổng số sp
+        const [countRows] = await execute(`
+            SELECT COUNT(*) as totalItems
+            FROM phieunhap pn
+            JOIN chitiet_phieunhap ct ON pn.IDPN = ct.IDPN
+            JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
+            WHERE pn.IDNCC = ?
+        `, [id]);
+        const totalItems = countRows[0].totalItems;
         return {
             ThanhCong:true,
-            dulieu:Mang_SANPHAM
+            dulieu:Mang_SANPHAM,
+            message :'Hiển thị ' + (offset + 1) + '-' + (offset + Mang_SANPHAM.length) + ' trên tổng số ' + totalItems + ' sản phẩm',
         };
         } catch (error) {
             console.error('Lỗi sãy ra:'+ error);
@@ -294,11 +304,4 @@ static async CapNhatTrangThai(id, trangthai) {
         return false;
     }
 }
-
-
-
-
-
-
-
 };

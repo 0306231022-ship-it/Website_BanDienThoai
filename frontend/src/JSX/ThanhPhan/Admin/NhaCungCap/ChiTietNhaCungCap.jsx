@@ -70,6 +70,7 @@ function ChiTietNhaCungCap() {
     },[page,id, khoidong])
     //lấy sản phẩm thuộc nhà cung cấp
     const [khoidong1,setKhoiDong1] = useState(true);
+    const [message,setmessage] = useState('');
     useEffect(()=>{
         const laydulieu = async()=>{
             setloading(true)
@@ -80,6 +81,7 @@ function ChiTietNhaCungCap() {
                 }
                 if(ketqua.ThanhCong){
                     setsanpham(ketqua.dulieu);
+                    setmessage(ketqua.message);
                 }
             } catch (error) {
                 console.error('Lỗi:'+ error)
@@ -592,7 +594,7 @@ function ChiTietNhaCungCap() {
             </table>
         </div>
         <div className="p-3 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between text-sm text-slate-500 gap-3">
-            <span>Hiển thị 1-4 trên 150 sản phẩm</span>
+            <span>{message}</span>
             <div className="flex gap-1">
                 <button onClick={()=>{setpage1(p=>p-1)}} disabled={page1===1} className="w-8 h-8 flex items-center justify-center rounded border border-slate-300 bg-white hover:bg-slate-50 disabled:opacity-50">
                     <i className="fa-solid fa-chevron-left text-xs"></i>

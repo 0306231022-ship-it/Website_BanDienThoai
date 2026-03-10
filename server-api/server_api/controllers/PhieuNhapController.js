@@ -557,5 +557,51 @@ export default class PhieuNhapController{
             })
         }
     }
-
+    static async LayDS_NCC(req,res){
+        try {
+            const ketqua = await PhieuNhapModal.LayDS_NCC();
+            if(ketqua){
+                return res.json({
+                    ThanhCong:true,
+                    DuLieu:ketqua
+                })
+            }
+            return res.json({
+                ThanhCong:false,
+                message:'Không tìm thấy nhà cung cấp nào!'
+            })
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách nhà cung cấp:', error);
+            return res.json({
+                status:true,
+                message:'Đã có lỗi sảy ra vui lòng kiểm tra lại hệ thống!'
+            })
+        }
+    }
+    static async timkiem_phieunhap(req,res){
+        const key = {
+            idncc: req.query.idncc?.trim(),
+            idnd: req.query.idnd || '',
+            idpn: req.query.idpn || ''
+        };
+        try {
+            const ketqua = await PhieuNhapModal.timkiem_phieunhap(key);
+            if(ketqua){
+                return res.json({
+                    ThanhCong:true,
+                    DuLieu:ketqua
+                })
+            }
+            return res.json({
+                ThanhCong:false,
+                message:'Không tìm thấy phiếu nhập nào phù hợp với từ khóa!'
+            })
+        } catch (error) {
+            console.error('Lỗi khi tìm kiếm phiếu nhập:', error);
+            return res.json({
+                status:true,
+                message:'Đã có lỗi sảy ra vui lòng kiểm tra lại hệ thống!'
+            })
+        }
+    }
 }

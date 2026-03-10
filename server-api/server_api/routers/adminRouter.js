@@ -116,7 +116,8 @@ adminRouter.get('/getTT_users', authMiddleware, PhieuNhapController.GetTTusers);
 adminRouter.get('/timkiem_sp_theo_idncc' , authMiddleware , NhaCungCapController.timkiem_sp_theo_idncc);
 //xử lí phiếu nhập
 adminRouter.get('/timkiem_phieunhap_idncc' , authMiddleware , PhieuNhapController.timkiem_phieunhap_idncc);
-
+adminRouter.get('/layTTnhacchoatdong' , authMiddleware , PhieuNhapController.LayDS_NCC);
+adminRouter.get('/timkiem_phieunhap' , authMiddleware , PhieuNhapController.timkiem_phieunhap);
 //Bên dưới chưa được chỉnh sửa
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 
