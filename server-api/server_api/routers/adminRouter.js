@@ -112,6 +112,10 @@ adminRouter.get('/layTTnhacungcap', authMiddleware, NhaCungCapController.LayDanh
 adminRouter.get('/ChiTietNhaCungCap' ,authMiddleware , NhaCungCapController.layChiTiet);
 adminRouter.get('/laydspn_idncc' ,authMiddleware, PhieuNhapController.LayPhieuNhap_theo_id_trang);
 adminRouter.get('/lay_sp_theo_id_ncc' ,authMiddleware,NhaCungCapController.lay_sp_theo_id_ncc);
+adminRouter.get('/getTT_users', authMiddleware, PhieuNhapController.GetTTusers);
+adminRouter.get('/timkiem_sp_theo_idncc' , authMiddleware , NhaCungCapController.timkiem_sp_theo_idncc);
+//xử lí phiếu nhập
+adminRouter.get('/timkiem_phieunhap_idncc' , authMiddleware , PhieuNhapController.timkiem_phieunhap_idncc);
 
 //Bên dưới chưa được chỉnh sửa
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );

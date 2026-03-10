@@ -236,6 +236,35 @@ export default class NhaCungCapModel{
             }
         }
   }
+  static async timkiem_sp_theo_idncc(id, searchTerm) {
+    try {
+        //Tìm kiếm theo tên sản phẩm hoặc mã sản phẩm
+        const [Mang_SANPHAM] = await execute(`
+            SELECT sp.IDSANPHAM, sp.TENSANPHAM, sp.TRANGTHAI,
+                     ct.SOLUONG, ct.GIANHAP, ct.GIABAN,
+                        ha.HINHANH
+            FROM phieunhap pn
+            JOIN chitiet_phieunhap ct ON pn.IDPN = ct.IDPN
+            JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
+            LEFT JOIN (
+                SELECT IDSANPHAM, MIN(HINHANH) AS HINHANH
+                FROM hinhanh_sanpham
+                GROUP BY IDSANPHAM
+            ) ha ON sp.IDSANPHAM = ha.IDSANPHAM
+            WHERE pn.IDNCC = ? AND (sp.TENSANPHAM LIKE ? OR sp.IDSANPHAM LIKE ?)
+        `, [id, `%${searchTerm}%`, `%${searchTerm}%`]);
+        return {
+            ThanhCong:true,
+            dulieu:Mang_SANPHAM
+        };
+    } catch (error) {
+        console.error('Lỗi sãy ra:'+ error);
+        return {
+            status:true,
+            message:'Đã sãy ra lỗi trong quá trình truy vấn!'
+        }
+    }
+    }
 
 static async CapNhatTrangThai(id, trangthai) {
     try {

@@ -491,6 +491,65 @@ export default class PhieuNhapModal {
             return false;
         }
     }
+    static async timkiem_phieunhap_idncc(idncc,key){
+        try {
+            let query = `
+                SELECT 
+                    pn.IDPN,
+                    pn.NGAYNHAP,
+                    pn.TONGTIEN,
+                    pn.TRANGTHAI,
+                    nd.HOTEN
+                FROM PHIEUNHAP pn
+                JOIN NGUOIDUNG nd ON pn.IDND = nd.IDND
+                WHERE pn.IDNCC = ? AND pn.TRANGTHAI != 2
+            `;
+            const params = [idncc];
+            if (key.TimKiem) {
+                query += ` AND (pn.IDPN LIKE ? OR nd.HOTEN LIKE ?)`;
+                params.push(`%${key.TimKiem}%`, `%${key.TimKiem}%`);
+            }
+            if (key.NguoiTao) {
+                query += ` AND nd.HOTEN LIKE ?`;
+                params.push(`%${key.NguoiTao}%`);
+            }
+            if (key.TrangThai) {
+                query += ` AND pn.TRANGTHAI = ?`;
+                params.push(key.TrangThai);
+            }
+            if (key.TuNgay) {
+                query += ` AND pn.NGAYNHAP >= ?`;
+                params.push(key.TuNgay);
+            }
+            if (key.DenNgay) {
+                query += ` AND pn.NGAYNHAP <= ?`;
+                params.push(key.DenNgay);
+            }
+                const [ketqqua] = await execute(query, params);
+            return ketqqua;
+        } catch (error) {
+            console.error('Lỗi khi tìm kiếm phiếu nhập theo ID nhà cung cấp:', error);
+            return {
+                ThanhCong: false,
+                DuLieu: [],
+                message: 'Lỗi hệ thống khi tìm kiếm phiếu nhập!'
+            };
+        }
+    }
+    static async GetTTusers(){
+        try {
+            const [rows] = await execute(`
+                SELECT DISTINCT nd.IDND, nd.HOTEN
+                FROM phieunhap pn
+                JOIN nguoidung nd ON pn.IDND = nd.IDND
+            `);
+            return rows;
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin người dùng:', error);
+            return [];
+        }
+    }
+
     static async laythongke_phieunhap(){
         try {
             const [ketqua1, ketqua2 ] = await Promise.all([

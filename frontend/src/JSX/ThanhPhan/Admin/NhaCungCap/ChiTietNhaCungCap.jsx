@@ -26,7 +26,6 @@ function ChiTietNhaCungCap() {
             setloading(true);
             try {
                 const ketqua = await API.CallAPI(undefined, { url: `/admin/ChiTietNhaCungCap?id=${id}`, PhuongThuc: 2 });
-                //alert(JSON.stringify(ketqua));
                 if (ketqua.Status) {
                     seterr(ketqua.message);
                     setloading(false);
@@ -49,6 +48,7 @@ function ChiTietNhaCungCap() {
         layDL();
     }, [id]);
     //Lấy API lịch sử nhập hàng theo IDNCC
+    const [khoidong,setKhoiDong] = useState(true);
     useEffect(()=>{
         setloading2(true)
         const laydata= async()=>{
@@ -67,8 +67,9 @@ function ChiTietNhaCungCap() {
         };
         laydata();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[page,id])
+    },[page,id, khoidong])
     //lấy sản phẩm thuộc nhà cung cấp
+    const [khoidong1,setKhoiDong1] = useState(true);
     useEffect(()=>{
         const laydulieu = async()=>{
             setloading(true)
@@ -87,9 +88,76 @@ function ChiTietNhaCungCap() {
             }
         };
         laydulieu()
-    },[page1,id])
-
-    // --- Loading UI ---
+    },[page1,id, khoidong1])
+    //Thực hiện chức năng tìm kiếm lịch sử nhập 
+     const [key,setkey] = useState({
+        TimKiem:'',
+        NguoiTao:'',
+        TrangThai:'',
+        TuNgay:'',
+        DenNgay:''
+     });
+     const [HoTen,setHoTen] = useState([]);
+     useEffect(()=>{
+        const layHoTen = async()=>{
+            try {
+                const ketqua = await API.CallAPI(undefined,{PhuongThuc:2, url:'/admin/getTT_users'});
+                setHoTen(ketqua.DuLieu);
+            } catch (error) {
+                console.error('Lỗi:'+ error)
+            }
+        };
+        layHoTen();
+    },[]);
+    const handleChange = (e)=>{
+        setkey({...key,[e.target.name]:e.target.value})
+    }
+    const handleSearch = async()=>{
+        setloading2(true);
+            try {
+                const ketqua = await API.CallAPI(undefined,{PhuongThuc:2, url:`/admin/timkiem_phieunhap_idncc?id=${id}&TimKiem=${key.TimKiem}&NguoiTao=${key.NguoiTao}&TrangThai=${key.TrangThai}&TuNgay=${key.TuNgay}&DenNgay=${
+                    key.DenNgay
+                }`});
+                if(ketqua.ThanhCong){
+                    setPhieu(ketqua.DuLieu);
+                }
+            } catch (error) {
+                console.error('Lỗi:'+ error)
+            } finally {
+                setloading2(false)
+            }
+        }
+        const handleReset = async()=>{
+            setkey({
+                TimKiem:'',
+                NguoiTao:'',
+                TrangThai:'',
+                TuNgay:'',
+                DenNgay:''
+            });
+            setpage(1);
+            setKhoiDong(!khoidong);
+        }
+    //Thực hiện chức năng tìm kiếm sản phâm theo IDNCC
+  const [searchTerm, setSearchTerm] = useState("");
+  const Reset_GTSP = ()=>{
+    setSearchTerm("");
+    setpage1(1);
+    setKhoiDong1(!khoidong1);
+    }
+    const handleSearchSP = async()=>{
+        setloading(true);
+        try {
+            const ketqua = await API.CallAPI(undefined,{PhuongThuc:2, url:`/admin/timkiem_sp_theo_idncc?id=${id}&TimKiem=${searchTerm}`});
+            if(ketqua.ThanhCong){
+                setsanpham(ketqua.dulieu);
+            }
+        } catch (error) {
+            console.error('Lỗi:'+ error)
+        } finally {
+            setloading(false)
+        }
+    }
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-4">
@@ -101,8 +169,6 @@ function ChiTietNhaCungCap() {
             </div>
         );
     }
-
-    // --- Error UI ---
     if (err) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] w-full p-6 text-center animate-fadeIn">
@@ -120,12 +186,9 @@ function ChiTietNhaCungCap() {
             </div>
         );
     }
-
     if (!dulieu) return null;
-
     return (
         <div className="bg-slate-50 min-h-screen pb-10">
-            {/* --- HEADER --- */}
             <header className="bg-white border-b border-slate-200 px-4 sm:px-8 py-4 sticky top-0 z-20 shadow-sm">
                 <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div className="flex items-center gap-4">
@@ -182,17 +245,16 @@ function ChiTietNhaCungCap() {
                     <div className="flex flex-col gap-3 h-full">
                         <StatRow
                             label="Công nợ hiện tại"
-                            value={fun.formatCurrency(dulieu.CONGNO)}
-                            color={`${dulieu.CONGNO === 0 ? 'green-700' : 'red'}`}
+                            value={(dulieu.CONGNO)}
+                            color={`${dulieu.CONGNO === 0 ? 'green' : 'red'}`}
                             icon="fa-sack-dollar"
                             action="Thanh toán"
                         />
                         <StatRow
                             label="Tổng nhập tháng này"
-                            value={fun.formatCurrency(TongThuNhap)} 
+                            value={TongThuNhap} 
                             color="blue"
-                            icon="fa-chart-line"
-                            DonVi={''}
+                            icon="fa-chart-line"    
                         />
                         <StatRow
                             label="Số đơn hàng"
@@ -238,20 +300,94 @@ function ChiTietNhaCungCap() {
                         {activeTab === 'history' && (
                             <div className="flex flex-col bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
                                 <div className="p-4 border-b border-slate-100 flex justify-between items-center gap-4 bg-slate-50/50">
-                                    <div className="relative flex-1 max-w-md">
-                                        <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                                        <input type="text"  placeholder="Tìm theo mã phiếu, nhà cung cấp..."  className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-400" />
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
-                                            <i className="fa-regular fa-calendar"></i>
-                                            <span>Ngày tháng</span>
-                                        </button>
-                                        <button className="px-3 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 hover:bg-slate-50 flex items-center gap-2 transition-colors">
-                                             <i className="fa-solid fa-filter"></i>
-                                             <span>Lọc trạng thái</span>
-                                        </button>
-                                    </div>
+                                  <div className="bg-white p-4 rounded-lg shadow-sm border border-slate-200 space-y-4">
+    {/* Hàng 1: Tìm kiếm chính và Các bộ lọc nhanh */}
+    <div className="flex flex-wrap items-center gap-3">
+        {/* Tìm kiếm theo mã phiếu / Nhà cung cấp */}
+        <div className="relative flex-1 min-w-[300px]">
+            <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input 
+                type="text"
+                name="TimKiem"
+                value={key.TimKiem}
+                onChange={handleChange}
+                placeholder="Tìm theo mã phiếu nhập (PN...), nhà cung cấp..." 
+                className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+        </div>
+
+        {/* Lọc theo Người tạo (Dropdown) */}
+        <div className="relative">
+            <select 
+                name="NguoiTao"
+                value={key.NguoiTao}
+                onChange={handleChange}
+                className="appearance-none pl-10 pr-8 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            >
+                <option value="">Người tạo: Tất cả</option>
+                {HoTen.map((item,index)=>(
+                    <option key={index} value={item.HOTEN}>{item.HOTEN}</option>
+                ))}
+            </select>
+            <i className="fa-solid fa-user-pen absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <i className="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[10px] pointer-events-none"></i>
+        </div>
+
+        {/* Lọc theo Trạng thái */}
+        <div className="relative">
+            <select 
+                name="TrangThai"
+                value={key.TrangThai}
+                onChange={handleChange}
+                className="appearance-none pl-10 pr-8 py-2 bg-white border border-slate-300 rounded-md text-sm text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            >
+                <option value="">Trạng thái: Tất cả</option>
+                <option value="1">Đã nhập hàng</option>
+                <option value="0">Ngừng hoạt động</option>
+            </select>
+            <i className="fa-solid fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <i className="fa-solid fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-[10px] pointer-events-none"></i>
+        </div>
+    </div>
+
+    <hr className="border-slate-100" />
+
+    {/* Hàng 2: Bộ lọc thời gian chuyên sâu */}
+    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600">
+        <div className="flex items-center gap-2">
+            <i className="fa-regular fa-calendar-days text-blue-500"></i>
+            <span className="font-medium">Thời gian:</span>
+        </div>
+        
+        <div className="flex items-center gap-2">
+            <div className="relative">
+                <input 
+                    type="date"
+                    name="TuNgay"
+                    value={key.TuNgay}
+                    onChange={handleChange}
+                    className="pl-3 pr-3 py-1.5 border border-slate-300 rounded-md focus:ring-1 focus:ring-blue-500 outline-none text-slate-600"
+                />
+            </div>
+            <span className="text-slate-400">đến</span>
+            <div className="relative">
+                <input 
+                    type="date" 
+                    name="DenNgay"
+                    value={key.DenNgay}
+                    onChange={handleChange}
+                    className="pl-3 pr-3 py-1.5 border border-slate-300 rounded-md focus:ring-1 focus:ring-blue-500 outline-none text-slate-600"
+                />
+            </div>
+        </div>
+         <button onClick={handleReset} className="ml-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium transition-shadow shadow-sm active:scale-95">
+            quay lại
+        </button>
+        <button onClick={handleSearch} className="ml-auto px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium transition-shadow shadow-sm active:scale-95">
+            Áp dụng bộ lọc
+        </button>
+    </div>
+</div>
                                 </div>
                         <div className="flex-1 overflow-auto">
             <table className="w-full text-left border-collapse">
@@ -268,13 +404,19 @@ function ChiTietNhaCungCap() {
                 <tbody className="divide-y divide-slate-100">
                     {
                         loading2 ? (
-                            <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-4">
-                                <div className="relative">
-                                    <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
-                                    <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
-                                </div>
-                                <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang tải dữ liệu...</p>
-                            </div>
+                            <tr>
+            <td colSpan="100%">
+                <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-4">
+                    <div className="relative">
+                        <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+                        <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+                    </div>
+                    <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">
+                        Đang tải dữ liệu...
+                    </p>
+                </div>
+            </td>
+        </tr>
                         ):(
                             PhieuNhap_theo_idncc && PhieuNhap_theo_idncc.length>0 ? (
                                 PhieuNhap_theo_idncc.map((phieu)=>(
@@ -343,14 +485,31 @@ function ChiTietNhaCungCap() {
         {/* --- 1. THANH CÔNG CỤ (TOOLBAR) --- */}
         <div className="p-4 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-50/50">
             {/* Tìm kiếm */}
-            <div className="relative flex-1 w-full sm:max-w-md">
-                <i className="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input 
-                    type="text" 
-                    placeholder="Tìm tên sản phẩm, mã SKU, mã vạch..." 
-                    className="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-slate-400"
-                />
-            </div>
+            <div className="relative flex-1 w-full sm:max-w-md group">
+        <button 
+            onClick={handleSearchSP}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-blue-500 transition-colors z-10"
+        >
+            <i className="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <input 
+            type="text" 
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === 'Enter' && handleSearchSP()} 
+            placeholder="Tìm kiếm tên sản phẩm..." 
+            className="w-full pl-10 pr-10 py-2.5 bg-white border border-slate-200 rounded-xl text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 placeholder-slate-400"
+        />
+        {searchTerm && (
+            <button 
+                onClick={Reset_GTSP}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-red-50 hover:text-red-500 transition-all"
+                title="Xóa tìm kiếm"
+            >
+                <i className="fa-solid fa-xmark text-xs"></i>
+            </button>
+        )}
+    </div>
         
         </div>
 
@@ -429,13 +588,9 @@ function ChiTietNhaCungCap() {
                                 </tr>
                         )
                     }
-                    {/* Sản phẩm 1: Bình thường */}
-                   
                 </tbody>
             </table>
         </div>
-
-        {/* --- 3. PHÂN TRANG (PAGINATION) --- */}
         <div className="p-3 border-t border-slate-200 bg-slate-50 flex flex-col sm:flex-row items-center justify-between text-sm text-slate-500 gap-3">
             <span>Hiển thị 1-4 trên 150 sản phẩm</span>
             <div className="flex gap-1">
@@ -450,6 +605,8 @@ function ChiTietNhaCungCap() {
         </div>
     </div>
 )}
+
+{/** Đã sửa đến đây */}
         {activeTab === 'debt' && (
     <div className="flex flex-col h-full space-y-4">
         

@@ -1,6 +1,7 @@
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import PhieuNhapModal from '../models/PhieuNhapMoDel.js';
+import NhaCungCapModel from '../models/NhaCungCapModel.js';
 import { body, validationResult } from "express-validator";
 import { mapFilesByProduct } from '../function.js';
 
@@ -490,6 +491,71 @@ export default class PhieuNhapController{
                 message:'Đã có lỗi sảy ra vui lòng kiểm tra lại!'
             })
          }
+    }
+    static async timkiem_phieunhap_idncc(req,res){
+        const idncc = req.query.id;
+            const key = {
+                TimKiem: req.query.TimKiem?.trim(),
+                NguoiTao: req.query.NguoiTao || '',
+                TrangThai: req.query.TrangThai || '',
+                TuNgay: req.query.TuNgay || '',
+                DenNgay: req.query.DenNgay || ''
+            };
+        
+        if(!idncc){
+            return res.json({
+                status:true,
+                message:'Vui lòng kiểm tra lại dữ liệu!'
+            })
+        }
+        const kiemtra = await PhieuNhapModal.kiemtraidncc(idncc);
+        if(!kiemtra){
+            return res.json({
+                status:true,
+                message:'Nhà cung cấp không tồn tại hoặc không hoạt động!'
+            })
+        }
+        try {
+            const ketqua = await PhieuNhapModal.timkiem_phieunhap_idncc(idncc,key);
+            if(ketqua){
+                return res.json({
+                    ThanhCong:true,
+                    DuLieu:ketqua
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Không tìm thấy phiếu nhập nào phù hợp với từ khóa!'
+                })
+            }
+        } catch (error) {
+            console.error('Lỗi khi tìm kiếm phiếu nhập:', error);
+            return res.json({
+                status:true,
+                message:'Đã có lỗi sảy ra vui lòng kiểm tra lại hệ thống!'
+            })
+        }
+    }
+    static async GetTTusers(req,res){
+        try {
+            const ketqua = await PhieuNhapModal.GetTTusers();
+            if(ketqua){
+                return res.json({
+                    ThanhCong:true,
+                    DuLieu:ketqua
+                })
+            }
+            return res.json({
+                ThanhCong:false,
+                message:'Không tìm thấy thông tin người dùng nào!'
+            })
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin người dùng:', error);
+            return res.json({
+                status:true,
+                message:'Đã có lỗi sảy ra vui lòng kiểm tra lại hệ thống!'
+            })
+        }
     }
 
 }

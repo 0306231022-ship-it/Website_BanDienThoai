@@ -1,4 +1,19 @@
 import crypto from 'crypto';
+import { hash, compare } from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+
+const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
+const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
+
+export const generateToken = (user) => {
+    return jwt.sign(
+        { id: user.id },
+        JWT_SECRET,
+        { expiresIn: JWT_EXPIRES_IN }
+    );
+    }
 export const TaoID = (bien) => {
     const prefix = bien.toString().slice(0, 2);
     const timePart = Date.now().toString().slice(-4);

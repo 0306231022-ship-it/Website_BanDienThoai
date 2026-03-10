@@ -1,21 +1,7 @@
-import { hash, compare } from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import NhaCungCapModel from '../models/NhaCungCapModel.js';
 import PhieuNhapModel from '../models/PhieuNhapMoDel.js';
 import { body, validationResult } from "express-validator";
-
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
-const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
-
 export default class NhaCungCapController{
-    static async generateToken(user){
-        return jwt.sign(
-            {id : user.id},
-            JWT_SECRET,
-            {expiresIn:JWT_EXPIRES_IN}
-        );
-    }
     static async ThemCungCap(req,res) {
             await Promise.all([
                   body('DinhDanh.MaDinhDanh')
@@ -647,5 +633,30 @@ export default class NhaCungCapController{
                         message: 'Cập nhật trạng thái hoạt động nhà cung cấp thất bại! Vui lòng thử lại sau.'
                     });
                 }
+        }
+        static async timkiem_sp_theo_idncc(req,res){
+            const id = req.query.id;
+            const searchTerm = req.query.TimKiem || '';
+           try {
+                const ketqua = await NhaCungCapModel.timkiem_sp_theo_idncc(id, searchTerm);
+                if(ketqua.ThanhCong){
+                    return res.json({
+                        ThanhCong:true,
+                        dulieu: ketqua.dulieu
+                    })
+                }
+                if(ketqua.status){
+                    return res.json({
+                        status:true,
+                        message:ketqua.message
+                    })
+                }
+            } catch (error) {
+                console.error('Looix sãy ra:'+ error);
+                return res.json({
+                    status:true,
+                    message:'Không thể kết nối với hệ thống,Vui lòng thực hiện sau!'
+                })
+            }
         }
 }
