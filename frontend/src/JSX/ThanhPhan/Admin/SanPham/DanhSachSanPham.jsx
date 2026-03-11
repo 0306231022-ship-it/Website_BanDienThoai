@@ -7,7 +7,8 @@ function DanhSachSanPham() {
     const [loading, setloading] = useState(false);
     const [sanpham, setSanPham] = useState([]);
     const [page, setpage] = useState(1);
-
+    const [total, setTotal] = useState(0);
+    const [khoiphuc, setKhoiPhuc] = useState(false);
     useEffect(() => {
         const layDL = async () => {
             setloading(true);
@@ -15,6 +16,7 @@ function DanhSachSanPham() {
                 const ketqua = await API.CallAPI(undefined, { PhuongThuc: 2, url: `/admin/lay_ds_sanpham?page=${page}` });
                 if (ketqua.ThanhCong) {
                     setSanPham(ketqua.DuLieu);
+                    setTotal(ketqua.total);
                 } else if (ketqua.status) {
                     ThongBao.ThongBao_CanhBao(ketqua.message);
                 }
@@ -25,7 +27,37 @@ function DanhSachSanPham() {
             }
         };
         layDL();
-    }, [page]);
+    }, [page ,khoiphuc]);
+    //Thực hiện chức năng tìm kiếm sản phẩm theo tên hoặc mã sản phẩm
+    const [key, setKey] = useState({
+        ten: '',
+        ma: '',
+        trangthai: ''
+    });
+    const handleSearch = async () => {
+        setloading(true);
+        try {
+            const TimKiem = await API.CallAPI(undefined, { PhuongThuc: 2, url: `/admin/timkiem_sanpham?ten=${key.ten}&ma=${key.ma}&trangthai=${key.trangthai}` });
+            alert(JSON.stringify(TimKiem));
+            if (TimKiem.ThanhCong) {
+                setSanPham(TimKiem.DuLieu);
+            } else if (TimKiem.status) {
+                ThongBao.ThongBao_CanhBao(TimKiem.message);
+            }
+        } catch (error) {
+            console.error('Đã có lỗi xảy ra:' + error);
+        } finally {
+            setloading(false);
+        }
+    };
+    const handleKhoiPhuc = async () => {
+        setKey({ ten: '',
+            ma: '',
+            trangthai: ''
+        });
+        setKhoiPhuc(p => !p);
+    }
+
 
     return (
         <section className="p-6 bg-[#f8fafc] min-h-screen font-sans text-gray-800">
@@ -43,18 +75,62 @@ function DanhSachSanPham() {
 
             </div>
 
-            {/* Filter Bar */}
-            <div className="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 mb-6 flex flex-wrap md:flex-nowrap gap-4">
-                <div className="flex-1 relative">
-                    <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" placeholder="Tìm tên, mã sản phẩm..." className="w-full pl-11 pr-4 py-2 bg-gray-50 border-none rounded-xl focus:ring-2 focus:ring-indigo-500 transition text-sm"/>
-                </div>
-                <select className="bg-gray-50 border-none rounded-xl py-2 px-4 text-sm focus:ring-2 focus:ring-indigo-500 cursor-pointer min-w-[160px]">
-                    <option>Tất cả trạng thái</option>
-                    <option>Còn hàng</option>
-                    <option>Sắp hết hàng</option>
-                </select>
-            </div>
+           <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-wrap gap-4 items-center">
+    {/* Tìm theo tên sản phẩm */}
+    <div className="flex-1 min-w-[200px] relative">
+        <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input 
+            type="text"
+            onChange={(e)=>setKey({...key,ten:e.target.value})}
+            placeholder="Tìm tên sản phẩm..." 
+            className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition text-sm"
+        />
+    </div>
+
+    {/* Tìm theo mã sản phẩm */}
+    <div className="flex-[0.7] min-w-[150px] relative">
+        <i className="fas fa-barcode absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+        <input 
+            onChange={(e)=>setKey({...key,ma:e.target.value})}
+            type="text" 
+            placeholder="Mã SP..." 
+            className="w-full pl-11 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition text-sm"
+        />
+    </div>
+
+    {/* Lọc theo trạng thái */}
+    <div className="min-w-[160px]">
+        <select onChange={(e) => setKey({ ...key, trangthai: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl py-2.5 px-4 text-sm focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none cursor-pointer transition text-gray-700">
+            <option value="">Tất cả trạng thái</option>
+            <option value="1">Dang bán</option>
+            <option value="0">Ngừng kinh doanh</option>
+
+        </select>
+    </div>
+
+    {/* Nhóm Nút hành động */}
+    <div className="flex items-center gap-3 w-full sm:w-auto">
+        {/* Nút Quay lại */}
+        <button 
+            onClick={handleKhoiPhuc}
+            type="button"
+            className="flex-1 sm:flex-none justify-center bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-4 py-2.5 rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-sm"
+        >
+            <i className="fas fa-arrow-left text-gray-500"></i>
+            <span>Quay lại</span>
+        </button>
+        
+        {/* Nút Lọc */}
+        <button 
+                onClick={handleSearch}
+            type="button"
+            className="flex-1 sm:flex-none justify-center bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-sm"
+        >
+            <i className="fas fa-filter"></i>
+            <span>Lọc</span>
+        </button>
+    </div>
+</div>
 
             {/* Table Card */}
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -150,7 +226,8 @@ function DanhSachSanPham() {
                         </span>
 
                         <button 
-                            onClick={() => setpage(p => p + 1)} 
+                            onClick={() => setpage(p => p + 1)}
+                            disabled={page * 10 >= total}
                             className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-400 hover:text-indigo-600 transition-all shadow-sm"
                         >
                             <i className="fas fa-chevron-right text-xs"></i>

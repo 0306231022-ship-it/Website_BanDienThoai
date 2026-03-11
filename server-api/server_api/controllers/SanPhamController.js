@@ -9,7 +9,8 @@ export default class SanPhamController{
             if(ketqqua.ThanhCong){
                 return res.json({
                     ThanhCong:true,
-                    DuLieu:ketqqua.sanpham
+                    DuLieu:ketqqua.sanpham,
+                    total:ketqqua.total
                 })
             }
             if(ketqqua.status){
@@ -26,6 +27,7 @@ export default class SanPhamController{
             })
         }
    }
+
    static async layChiTietSP_theoid(req,res){
         const id = req.query.id;
         if(!id){
@@ -171,4 +173,32 @@ export default class SanPhamController{
             })
         }
    }
+    static async timkiem_sanpham(req,res){
+       const key = {
+        ten: req.query.ten || '',
+        ma: req.query.ma || '',
+        trangthai: req.query.trangthai || ''
+       }
+        try {
+            const ketqqua = await SanPhamModel.timkiem_sanpham(key);
+            if(ketqqua.status){
+                return res.json({
+                    status:true,
+                    message:ketqqua.message
+                })
+            }
+            if(ketqqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqqua.dulieu
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
 }

@@ -24,9 +24,17 @@ export default class SanPhamModel{
             GROUP BY sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU
             LIMIT ? OFFSET ?;
                 `,[limit,opset])
+            // lấy tổng số sản phẩm và tổng số trang
+            const [[{total}]] = await execute(`
+                SELECT COUNT(*) AS total    
+                FROM sanpham
+                WHERE TRANGTHAI = 1
+            `);
+
             return {
                 ThanhCong:true,
-                sanpham:sanpham
+                sanpham:sanpham,
+                total:total
             }
         } catch (error) {
             console.error('lỗi sãy ra:'+ error);
@@ -185,4 +193,36 @@ export default class SanPhamModel{
             return false;
         }
    }
+   static async timkiem_sanpham(key){
+        try {
+          // tìm kiếm dựa trên 1 trong 3 thông ssos 
+            const [ketqqua] = await execute(`
+                SELECT sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.GIABAN, ct.SOLUONG, ha.HINHANH
+                FROM sanpham sp
+                JOIN thuonghieu th ON sp.IDTHUONGHIEU = th.IDTHUONGHIEU
+                JOIN chitiet_phieunhap ct ON sp.IDSANPHAM = ct.IDSANPHAM
+                JOIN (
+                    SELECT IDSANPHAM, HINHANH
+                    FROM hinhanh_sanpham
+                    WHERE IDHA = (
+                        SELECT MIN(IDHA)
+                        FROM hinhanh_sanpham h2
+                        WHERE h2.IDSANPHAM = hinhanh_sanpham.IDSANPHAM
+                    )
+                ) ha ON sp.IDSANPHAM = ha.IDSANPHAM
+                WHERE sp.TRANGTHAI = 1 AND (sp.TENSANPHAM LIKE ? OR sp.IDSANPHAM LIKE ?)
+                GROUP BY sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.GIABAN, ct.SOLUONG, ha.HINHANH
+                `,[`%${key.ten}%`, `%${key.ma}%`]);
+            return {
+                ThanhCong:true,
+                dulieu:ketqqua
+                }
+            } catch (error) {
+                console.error('Có lỗi sãy ra:' + error);
+                return {
+                    status:true,
+                    message:'Lỗi khi truy vấn dữ liệu!'
+                }
+             }
+        }
 }

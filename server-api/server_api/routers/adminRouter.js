@@ -100,6 +100,8 @@ adminRouter.post('/xoa_tatca_sanpham' , authMiddleware , SanPhamController.xoa_t
 //PHẦN II : ĐỊNH NGHĨA ROUTE GET
 //===========================================
 // xử lí sản phẩm
+adminRouter.get('/lay_ds_sanpham' , authMiddleware , SanPhamController.lay_ds_sanpham);
+adminRouter.get('/timkiem_sanpham', authMiddleware, SanPhamController.timkiem_sanpham);
 //===========================================
 // xử lí thương hiệu
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
@@ -118,6 +120,7 @@ adminRouter.get('/timkiem_sp_theo_idncc' , authMiddleware , NhaCungCapController
 adminRouter.get('/timkiem_phieunhap_idncc' , authMiddleware , PhieuNhapController.timkiem_phieunhap_idncc);
 adminRouter.get('/layTTnhacchoatdong' , authMiddleware , PhieuNhapController.LayDS_NCC);
 adminRouter.get('/timkiem_phieunhap' , authMiddleware , PhieuNhapController.timkiem_phieunhap);
+adminRouter.get('/DuyetPhieuNhap', authMiddleware, PhieuNhapController.DuyetPhieuNhap);
 //Bên dưới chưa được chỉnh sửa
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 
@@ -131,12 +134,12 @@ adminRouter.get('/ChiTietPhieuNhap' ,authMiddleware, PhieuNhapController.layChiT
 
 
 adminRouter.get('/kiemtra_id_ncc' ,authMiddleware , NhaCungCapController.kiemtraid);
-adminRouter.get('/DuyetPhieuNhap', authMiddleware, PhieuNhapController.DuyetPhieuNhap);
+
 adminRouter.get('/HuyPhieuNhap', authMiddleware, PhieuNhapController.HuyPhieuNhap);
 adminRouter.get('/lay_phieunhap_daxoa', authMiddleware, PhieuNhapController.LayDanhSachPhieuNhap);
 adminRouter.get('/laythongke_phieunhap' , authMiddleware , PhieuNhapController.laythongke_phieunhap);
 adminRouter.get('/dulieu_hoadon_nhapkho' , authMiddleware , PhieuNhapController.dulieu_hoadon_nhapkho);
-adminRouter.get('/lay_ds_sanpham' , authMiddleware , SanPhamController.lay_ds_sanpham);
+
 adminRouter.get('/layChiTietSP_theoid' , authMiddleware , SanPhamController.layChiTietSP_theoid);
 
 adminRouter.get('/CapNhat_TT_TT_SP' ,authMiddleware , SanPhamController.CapNhat_TT_TT_SP);
