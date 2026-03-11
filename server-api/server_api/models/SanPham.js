@@ -103,6 +103,16 @@ export default class SanPhamModel{
    }
    static async CapNhat_TT_TT_SP(id){
         try {
+            //kiểm tra idpn đã đc xác nhận chưa, nếu đã xác nhận thì không được xóa
+           const [kiemtra] = await execute(`
+            SELECT IDPN
+            FROM chitiet_phieunhap ct
+            JOIN phieunhap pn ON ct.IDPN = pn.IDPN
+            WHERE ct.IDSANPHAM = ? AND pn.TRANGTHAI = ?
+            `,[id, 1]);
+            if (!kiemtra) {
+                return false;
+            }
             const [CapNhat] = await execute(`
                 UPDATE sanpham 
                 SET TRANGTHAI = ? , DELETE_AT = NOW()
@@ -136,9 +146,15 @@ export default class SanPhamModel{
             WHERE sp.TRANGTHAI = ?
             LIMIT ? OFFSET ?;
                 `,[0,limit,offset]);
+            const [[{total}]] = await execute(`
+                SELECT COUNT(*) AS total    
+                FROM sanpham
+                WHERE TRANGTHAI = 0
+            `);
             return {
                 ThanhCong:true,
-                dulieu:SanPham
+                dulieu:SanPham,
+                tongso:total
             }
         } catch (error) {
             console.error('Có lỗi sãy ra:' + error);
@@ -210,7 +226,7 @@ export default class SanPhamModel{
                         WHERE h2.IDSANPHAM = hinhanh_sanpham.IDSANPHAM
                     )
                 ) ha ON sp.IDSANPHAM = ha.IDSANPHAM
-                WHERE sp.TRANGTHAI = 1 AND (sp.TENSANPHAM LIKE ? OR sp.IDSANPHAM LIKE ?)
+                WHERE (sp.TENSANPHAM LIKE ? OR sp.IDSANPHAM LIKE ?)
                 GROUP BY sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.GIABAN, ct.SOLUONG, ha.HINHANH
                 `,[`%${key.ten}%`, `%${key.ma}%`]);
             return {

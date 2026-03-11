@@ -115,7 +115,8 @@ export default class SanPhamController{
             if(ketqqua.ThanhCong){
                 return res.json({
                     ThanhCong:true,
-                    dulieu:ketqqua.dulieu
+                    dulieu:ketqqua.dulieu,
+                    tongso:ketqqua.tongso
                 })
             }
          } catch (error) {

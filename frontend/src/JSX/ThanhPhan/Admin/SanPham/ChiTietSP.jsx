@@ -44,7 +44,6 @@ function ChiTietSanPham() {
       if(!xacnhan) return ;
       try {
         const ketqua = await API.CallAPI(undefined,{PhuongThuc:2 , url :`/admin/CapNhat_TT_TT_SP?id=${id}`});
-        alert(JSON.stringify(ketqua))
         if(ketqua.ThanhCong){
             navigate(-1);
             ThongBao.ThongBao_ThanhCong(ketqua.message);

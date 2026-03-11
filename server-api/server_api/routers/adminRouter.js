@@ -102,6 +102,8 @@ adminRouter.post('/xoa_tatca_sanpham' , authMiddleware , SanPhamController.xoa_t
 // xử lí sản phẩm
 adminRouter.get('/lay_ds_sanpham' , authMiddleware , SanPhamController.lay_ds_sanpham);
 adminRouter.get('/timkiem_sanpham', authMiddleware, SanPhamController.timkiem_sanpham);
+adminRouter.get('/CapNhat_TT_TT_SP' ,authMiddleware , SanPhamController.CapNhat_TT_TT_SP);
+adminRouter.get('/sanpham_daxoa', authMiddleware,SanPhamController.sanpham_daxoa);
 //===========================================
 // xử lí thương hiệu
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
@@ -142,8 +144,8 @@ adminRouter.get('/dulieu_hoadon_nhapkho' , authMiddleware , PhieuNhapController.
 
 adminRouter.get('/layChiTietSP_theoid' , authMiddleware , SanPhamController.layChiTietSP_theoid);
 
-adminRouter.get('/CapNhat_TT_TT_SP' ,authMiddleware , SanPhamController.CapNhat_TT_TT_SP);
-adminRouter.get('/sanpham_daxoa', authMiddleware,SanPhamController.sanpham_daxoa);
+
+
 //
 //=========================================
 console.log("✅ adminRouter loaded");

@@ -38,7 +38,6 @@ function DanhSachSanPham() {
         setloading(true);
         try {
             const TimKiem = await API.CallAPI(undefined, { PhuongThuc: 2, url: `/admin/timkiem_sanpham?ten=${key.ten}&ma=${key.ma}&trangthai=${key.trangthai}` });
-            alert(JSON.stringify(TimKiem));
             if (TimKiem.ThanhCong) {
                 setSanPham(TimKiem.DuLieu);
             } else if (TimKiem.status) {

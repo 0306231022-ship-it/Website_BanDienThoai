@@ -10,7 +10,7 @@ function ThungRacSanPham() {
     const [loading, setloading] = useState(false);
     const [sanpham, setsanpham] = useState([]);
     const [err, seterrr] = useState('');
-
+    const [tongso, settongso] = useState(0);
     useEffect(() => {
         const LayDL = async () => {
             setloading(true);
@@ -24,6 +24,7 @@ function ThungRacSanPham() {
                 }
                 if (ketqua.ThanhCong) {
                     setsanpham(ketqua.dulieu);
+                    settongso(ketqua.tongso);
                 }
             } catch (error) {
                 console.error('lỗi xảy ra:' + error);
@@ -224,8 +225,12 @@ function ThungRacSanPham() {
                         >
                             <i className="fa-solid fa-chevron-left text-xs"></i>
                         </button>
+                        <span className="p-2 w-10 h-10 flex items-center justify-center border border-gray-200 rounded-xl">
+                           {page}
+                        </span>
                         <button 
-                            onClick={() => setpage(p => p + 1)} 
+                            onClick={() => setpage(p => p + 1)}
+                            disabled={page >= Math.ceil(tongso / 10)}
                             className="p-2 w-10 h-10 flex items-center justify-center bg-white border border-gray-200 rounded-xl hover:shadow-md transition cursor-pointer font-bold text-gray-700"
                         >
                             <i className="fa-solid fa-chevron-right text-xs"></i>

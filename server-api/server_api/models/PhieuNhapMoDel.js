@@ -639,46 +639,46 @@ export default class PhieuNhapModal {
         }
     }
     static async xoa_phieunhap_theoid(id){
-        //Bước 1 : lấy IDSANPHAM từ bảng chitiet_sanpham
-        const [idsp] = await execute(`
-            SELECT IDSANPHAM 
-            FROM chitiet_phieunhap
-            WHERE IDPN = ?
-            `,[id]);
-         const IDSP = idsp.map(row => row.IDSANPHAM);
-         //Bước 2 : Duyệt qua mảng IDSP
-        for(const idsanpham of IDSP){
-            //Bước 2.1 : Xóa bảng hinhanh_sanpham có IDSP
-            const [XoaAnh] = await execute(`
-                DELETE FROM hinhanh_sanpham
-                WHERE IDSANPHAM = ?
-                `,[idsanpham]);
-            if(XoaAnh.affectedRows<=0) return false;
-            //Bước 2.2 : xóa bảng kho_imei
-            const [xoa_imei] = await execute(`
-                DELETE FROM kho_imei
-                WHERE IDSANPHAM = ? AND ID_PHIEUNHAP =?
-                ` , [idsanpham,id]);
-            if(xoa_imei.affectedRows<=0) return false;
-            //Bước 2.3 : xóa chitiet_phieunhap
-            const [xoa_chitiet] = await execute(`
-                DELETE FROM chitiet_phieunhap
-                WHERE IDPN = ? AND IDSANPHAM =?
-                `,[id,idsanpham]);
-            if(xoa_chitiet.affectedRows<=0) return false;
-            //Bước 2.4 : xóa bảng sanpham
-            const [xoa_sanpham] = await execute(`
-                DELETE FROM sanpham 
-                WHERE IDSANPHAM = ?
-                `,[idsanpham]);
-            if(xoa_sanpham.affectedRows<=0) return false;
+        try {            // Bước 1: Lấy danh sách ID sản phẩm thuộc phiếu nhập này
+            const [sanphamRows] = await execute(
+                `SELECT IDSANPHAM FROM chitiet_phieunhap WHERE IDPN = ?`, 
+                [id]
+            );
+            const idsanphamList = sanphamRows.map(row => row.IDSANPHAM);
+            // Bước 2: Xóa dữ liệu ở các bảng con dựa trên ID sản phẩm
+            for (const idsanpham of idsanphamList) {
+                // Xóa hình ảnh sản phẩm
+                await execute(
+                    `DELETE FROM hinhanh_sanpham WHERE IDSANPHAM = ?`,
+                    [idsanpham]
+                );
+                // Xóa kho IMEI (Rất quan trọng vì IMEI đi theo phiếu nhập cụ thể)
+                await execute(
+                    `DELETE FROM kho_imei WHERE IDSANPHAM = ? AND ID_PHIEUNHAP = ?`,
+                    [idsanpham, id]
+                );
+                // Xóa chi tiết phiếu nhập (Bảng trung gian)
+                await execute(
+                    `DELETE FROM chitiet_phieunhap WHERE IDPN = ? AND IDSANPHAM = ?`,
+                    [id, idsanpham]
+                );
+                // Xóa bảng sản phẩm chính 
+                // CẢNH BÁO: Chỉ xóa nếu SP này không còn tồn tại trong bất kỳ phiếu nhập nào khác
+                await execute(
+                    `DELETE FROM sanpham WHERE IDSANPHAM = ?`,
+                    [idsanpham]
+                );
+            }
+            // Bước 3: Cuối cùng mới xóa bản ghi ở bảng phieunhap
+            const [xoaPN] = await execute(
+                `DELETE FROM phieunhap WHERE IDPN = ?`,
+                [id]
+            );
+            return xoaPN.affectedRows > 0 ? true : false;
+        } catch (error) {
+            console.error('Lỗi tại PhieuNhapModal.xoa_phieunhap_theoid:', error);
+            return false;
         }
-        //Bước 3 : xóa bảng phiểu nhâp;
-        const [xoa_phieunhap] = await execute(`
-            DELETE FROM phieunhap 
-            WHERE IDPN =?
-            `,[id]);
-         return xoa_phieunhap.affectedRows>0 ? true : false;
     }
     static async xoa_tatca_phieunhap(){
         //lấy tất cả id có TRANGTHAI = 2 của bảng phieunhap;

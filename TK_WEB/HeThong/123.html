@@ -3,84 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Báo cáo Thương hiệu | TechZ Admin</title>
+    <title>Đăng nhập & Đăng ký</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { font-family: 'Inter', sans-serif; }
+        .tab-active { background-color: white; color: #4f46e5; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .tab-inactive { color: #6b7280; }
+        .tab-inactive:hover { color: #374151; }
     </style>
 </head>
-<body class="bg-[#F9FAFB] flex">
-<div class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    
-    <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-300">
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen flex items-center justify-center p-4">
+
+    <div class="bg-white/80 backdrop-blur-xl w-full max-w-md rounded-[2rem] shadow-2xl shadow-indigo-100/50 border border-white p-8 relative overflow-hidden">
         
-        <div class="bg-emerald-500 p-8 text-white text-center relative">
-            <div class="absolute top-4 right-6 opacity-20 text-6xl rotate-12">
-                <i class="fa-solid fa-file-excel"></i>
-            </div>
-            <div class="w-20 h-20 bg-white/20 rounded-3xl flex items-center justify-center mx-auto mb-4 border border-white/30">
-                <i class="fa-solid fa-file-export text-3xl"></i>
-            </div>
-            <h2 class="text-xl font-bold">Xuất Báo Cáo Dữ Liệu</h2>
-            <p class="text-emerald-100 text-sm">Định dạng Microsoft Excel (.xlsx)</p>
-        </div>
+        <div class="absolute -top-10 -right-10 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
+        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-200 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
 
-        <div class="p-8 space-y-6">
-            <div>
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 block">Phạm vi dữ liệu</label>
-                <div class="grid grid-cols-2 gap-3">
-                    <label class="cursor-pointer">
-                        <input type="radio" name="range" class="peer hidden" checked>
-                        <div class="border-2 border-gray-100 p-3 rounded-xl text-center peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition">
-                            <span class="block font-bold text-sm">Tất cả</span>
-                            <span class="text-[10px] text-gray-500">1,284 sản phẩm</span>
-                        </div>
-                    </label>
-                    <label class="cursor-pointer">
-                        <input type="radio" name="range" class="peer hidden">
-                        <div class="border-2 border-gray-100 p-3 rounded-xl text-center peer-checked:border-emerald-500 peer-checked:bg-emerald-50 transition">
-                            <span class="block font-bold text-sm">Trang hiện tại</span>
-                            <span class="text-[10px] text-gray-500">50 sản phẩm</span>
-                        </div>
-                    </label>
+        <div class="relative z-10">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-600 text-white mb-4 shadow-lg shadow-indigo-200">
+                    <i class="fa-solid fa-gem text-xl"></i>
                 </div>
+                <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Chào mừng trở lại</h2>
+                <p class="text-sm text-gray-500 mt-1">Vui lòng đăng nhập hoặc tạo tài khoản mới</p>
             </div>
 
-            <div class="space-y-3">
-                <label class="text-xs font-bold text-gray-400 uppercase tracking-widest block">Bao gồm thông tin</label>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2">
-                        <input type="checkbox" checked class="accent-emerald-500"> Giá bán
-                    </span>
-                    <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2">
-                        <input type="checkbox" checked class="accent-emerald-500"> Tồn kho
-                    </span>
-                    <span class="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium flex items-center gap-2">
-                        <input type="checkbox" checked class="accent-emerald-500"> Thông số kỹ thuật
-                    </span>
-                </div>
-            </div>
-
-            <div id="export-progress" class="hidden">
-                <div class="flex justify-between text-xs mb-2">
-                    <span class="text-emerald-600 font-bold">Đang xử lý dữ liệu...</span>
-                    <span class="text-gray-400">80%</span>
-                </div>
-                <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                    <div class="bg-emerald-500 h-full w-[80%]"></div>
-                </div>
-            </div>
-
-            <div class="flex gap-3 pt-4">
-                <button class="flex-1 px-6 py-3 border-2 border-gray-100 rounded-2xl font-bold text-gray-400 hover:bg-gray-50 transition">Hủy</button>
-                <button onclick="startExport()" class="flex-1 px-6 py-3 bg-emerald-500 text-white rounded-2xl font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-600 transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-download"></i> Tải file về
+            <div class="bg-gray-100/80 p-1 rounded-2xl flex mb-8">
+                <button id="tab-login" onclick="switchTab('login')" class="flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 tab-active">
+                    Đăng nhập
+                </button>
+                <button id="tab-register" onclick="switchTab('register')" class="flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 tab-inactive">
+                    Đăng ký
                 </button>
             </div>
+
+            <form id="form-login" class="space-y-4 transition-all duration-300">
+                <div class="relative">
+                    <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="email" placeholder="Nhập email của bạn" class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition text-sm" required>
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="password" placeholder="Nhập mật khẩu" class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition text-sm" required>
+                </div>
+                <div class="flex items-center justify-between text-sm mt-2">
+                    <label class="flex items-center gap-2 cursor-pointer text-gray-600">
+                        <input type="checkbox" class="rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+                        <span>Ghi nhớ tôi</span>
+                    </label>
+                    <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-700">Quên mật khẩu?</a>
+                </div>
+                <button type="button" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-indigo-200 mt-4 active:scale-[0.98]">
+                    Đăng Nhập
+                </button>
+                
+                <div class="relative flex items-center justify-center mt-6">
+                    <div class="border-t border-gray-200 w-full absolute"></div>
+                    <span class="bg-white px-4 text-xs text-gray-400 relative z-10 uppercase font-bold tracking-widest">Hoặc</span>
+                </div>
+
+                <button type="button" class="w-full bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 shadow-sm mt-4">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+                    Đăng nhập bằng Google
+                </button>
+            </form>
+
+            <form id="form-register" class="space-y-4 hidden transition-all duration-300">
+                <div class="relative">
+                    <i class="fa-solid fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" placeholder="Họ và tên" class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition text-sm" required>
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="email" placeholder="Email đăng ký" class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition text-sm" required>
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="password" placeholder="Tạo mật khẩu" class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition text-sm" required>
+                </div>
+                <div class="relative">
+                    <i class="fa-solid fa-shield-check absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="password" placeholder="Xác nhận mật khẩu" class="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:bg-white outline-none transition text-sm" required>
+                </div>
+                <button type="button" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-200 mt-2 active:scale-[0.98]">
+                    Tạo Tài Khoản
+                </button>
+                <p class="text-xs text-center text-gray-500 mt-4">
+                    Bằng việc đăng ký, bạn đồng ý với <a href="#" class="text-indigo-600 font-semibold">Điều khoản dịch vụ</a> và <a href="#" class="text-indigo-600 font-semibold">Chính sách bảo mật</a> của chúng tôi.
+                </p>
+            </form>
+
         </div>
     </div>
-</div>
+
+    <script>
+        function switchTab(tab) {
+            const formLogin = document.getElementById('form-login');
+            const formRegister = document.getElementById('form-register');
+            const tabLogin = document.getElementById('tab-login');
+            const tabRegister = document.getElementById('tab-register');
+
+            if (tab === 'login') {
+                formLogin.classList.remove('hidden');
+                formRegister.classList.add('hidden');
+                
+                tabLogin.className = "flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 tab-active";
+                tabRegister.className = "flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 tab-inactive";
+            } else {
+                formRegister.classList.remove('hidden');
+                formLogin.classList.add('hidden');
+                
+                tabRegister.className = "flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 tab-active";
+                tabLogin.className = "flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 tab-inactive";
+            }
+        }
+    </script>
 </body>
 </html>
