@@ -26,6 +26,8 @@ import ThungRacSanPham from '../SanPham/ThungRacSanPham';
 import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
 import ChiTietNhaCungCap from '../NhaCungCap/ChiTietNhaCungCap';
 import ChiTietPhieu from '../SanPham/ChiTietPhieu';
+import DanhSachBanner from '../QuanLiBanner/DanhSachBanner';
+import ThemBanner from '../QuanLiBanner/ThemBanner';
 import '../../../../CSS/ThanhCuon.css';
 import { Routes, Route } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
@@ -46,10 +48,16 @@ function QuanLiTT() {
             {[
                 { to: "/admin", icon: "fa-chart-line", label: "Tổng Quan", end: true },
                 { to: "/admin/CaiDat", icon: "fa-cogs", label: "Cài Đặt Hệ Thống" },
+                { to: "/admin/banner", icon: "fa-solid fa-bolt", label: "Quản Lý Banner" ,isDropdown:true },
             ].map((item) => (
                 <li key={item.to}>
                     <NavLink
+                        onClick={() => {
+                            if (item.isDropdown) {
+                                setIsPhieuNhapOpen(!isPhieuNhapOpen);
+                            }
 
+                        }}
                         to={item.to}
                         end={item.end}
                         className={({ isActive }) =>
@@ -63,7 +71,38 @@ function QuanLiTT() {
                         <i className={`fas ${item.icon} w-6 text-lg transition-transform group-hover:scale-110`}></i>
                         <span className="ml-2 text-sm">{item.label}</span>
                     </NavLink>
-                   
+                    {/**Tạo 1 icon để ẩn hiện menu con */}
+                   {
+                    item.isDropdown && (
+                        <ul className="mt-1 ml-9 space-y-1 border-l-2 border-teal-100 pl-2 transition-all animate-in slide-in-from-top-2">
+                            <li>
+                                <NavLink
+                                  
+                                    to="/admin/banner"
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all ${
+                                            isActive ? "text-teal-600 bg-teal-50" : "text-gray-500 hover:text-teal-600 hover:bg-gray-50"
+                                        }`
+                                    }
+                                >
+                                    <i className="fas fa-eye mr-2 opacity-70"></i> Xem Banner
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    to="/admin/banner/them"
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 rounded-lg text-xs font-medium transition-all ${
+                                            isActive ? "text-teal-600 bg-teal-50" : "text-gray-500 hover:text-teal-600 hover:bg-gray-50"
+                                        }`
+                                    }
+                                >
+                                    <i className="fas fa-plus mr-2 opacity-70"></i> Thêm Banner
+                                </NavLink>
+                            </li>
+                        </ul>
+                    )
+                   }
                 </li>
             ))}
         </ul>
@@ -227,6 +266,10 @@ function QuanLiTT() {
                     <Route path="PhieuNhapHang/ThungRac" element={<ThungRacPhieuNhap />} />
                     <Route path="hoso" element={<HoSo />} />
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
+                    <Route path="banner" element={<DanhSachBanner />} />
+                    <Route path="banner/them" element={<ThemBanner />} />
+
+
                     
                     <Route index element={<BangChinh />} />
                     <Route path="DonHang" element={<DonHang />} />
