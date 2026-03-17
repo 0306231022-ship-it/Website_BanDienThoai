@@ -1,4 +1,7 @@
+import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
+
 function DanhSachBanner() {
+    const { OpenMoDal } = useModalContext();
     return (
         <>
          <div className="flex h-screen overflow-hidden">

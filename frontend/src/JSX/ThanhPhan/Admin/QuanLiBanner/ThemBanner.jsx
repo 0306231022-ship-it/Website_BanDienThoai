@@ -1,4 +1,6 @@
+import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 function ThemBanner() {
+    const { OpenMoDal } = useModalContext();
   return (
     <>
       <div className="flex h-screen">
@@ -16,7 +18,6 @@ function ThemBanner() {
                   </label>
                   <input
                     type="text"
-                    defaultValue="Flash Sale Mừng Lương Về"
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
@@ -24,9 +25,7 @@ function ThemBanner() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Trạng thái
                   </label>
-                  {/* Chuyển selected thành defaultValue trong React */}
                   <select
-                    defaultValue="active"
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-green-50 text-green-700 font-medium border-green-200"
                   >
                     <option value="active">Đang Bật (Active)</option>
@@ -35,11 +34,10 @@ function ThemBanner() {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Màu sắc nền (Tùy chọn)
+                   Mã màu sắc nền (Tùy chọn)
                   </label>
                   <input
-                    type="color"
-                    defaultValue="#ef4444"
+                    type="text"
                     className="w-full h-[42px] border border-gray-300 rounded-md p-1 cursor-pointer"
                   />
                 </div>
@@ -49,7 +47,6 @@ function ThemBanner() {
                   </label>
                   <input
                     type="datetime-local"
-                    defaultValue="2026-10-25T20:00"
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -59,7 +56,6 @@ function ThemBanner() {
                   </label>
                   <input
                     type="datetime-local"
-                    defaultValue="2026-10-25T23:59"
                     className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
@@ -69,7 +65,7 @@ function ThemBanner() {
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <div className="flex justify-between items-center border-b pb-3 mb-4">
                 <h2 className="text-lg font-semibold">Sản phẩm khuyến mãi</h2>
-                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition flex items-center gap-2">
+                <button onClick={()=>{OpenMoDal(undefined,{TenTrang:'ThemSanPham' , TieuDe:'Thêm sản phẩm vào Flash Sale'})}} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition flex items-center gap-2">
                   + Thêm Sản Phẩm
                 </button>
               </div>

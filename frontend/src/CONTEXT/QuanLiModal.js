@@ -15,6 +15,7 @@ import SuaDiaChi from "../JSX/ThanhPhan/MoDAL/ChinhSuaDiaChi";
 import ThongTinTaiChinh from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTinTaiChinh";
 import ChinhSuaSo from "../JSX/ThanhPhan/MoDAL/CapNhatSo";
 import ChinhSuaEmail from "../JSX/ThanhPhan/MoDAL/CapNhatEmail";
+import ThemSanPham from "../JSX/ThanhPhan/Admin/QuanLiBanner/DanhSachSanPhamThem";
 
 const MoDalContext = createContext();
 
@@ -35,6 +36,7 @@ const MODAL_REGISTRY = {
     'ThongTinTaiChinh' : ThongTinTaiChinh,
     'ChinhSuaSo' : ChinhSuaSo,
     'ChinhSuaEmail' : ChinhSuaEmail,
+    'ThemSanPham' : ThemSanPham,
 };
 
 export function AppProvider({ children }) {
