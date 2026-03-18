@@ -1,193 +1,194 @@
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
+import { useFlashSaleContext } from "../../../../CONTEXT/QuanLi_FlashSale";
+import { useState } from 'react'; 
+import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+import * as fun from '../../../../JS/FUNCTONS/function';
+import * as API from '../../../../JS/API/API';
+
 function ThemBanner() {
     const { OpenMoDal } = useModalContext();
-  return (
-    <>
-      <div className="flex h-screen">
-        {/* Thêm các class ẩn scrollbar vào thẻ main chứa overflow-y-auto */}
-        <main className="flex-1 flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <div className="p-6">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-              <h2 className="text-lg font-semibold border-b pb-3 mb-4">
-                Thông tin chung
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="lg:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Tên chiến dịch
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Trạng thái
-                  </label>
-                  <select
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-green-50 text-green-700 font-medium border-green-200"
-                  >
-                    <option value="active">Đang Bật (Active)</option>
-                    <option value="inactive">Đã Tắt (Inactive)</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                   Mã màu sắc nền (Tùy chọn)
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full h-[42px] border border-gray-300 rounded-md p-1 cursor-pointer"
-                  />
-                </div>
-                <div className="lg:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Bắt đầu lúc
-                  </label>
-                  <input
-                    type="datetime-local"
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-                <div className="lg:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Kết thúc lúc
-                  </label>
-                  <input
-                    type="datetime-local"
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                </div>
-              </div>
-            </div>
+    const { setSanPham, SanPham } = useFlashSaleContext();
+    const [thongTinChung, setThongTinChung] = useState({
+        TenChienDich: '',
+        TrangThai: 'active',
+        MauNen: '',
+        BatDau: '',
+        KetThuc: ''
+    });
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setThongTinChung(prev => ({ ...prev, [name]: value }));
+    };
+    const handleUpdateSP = (id, field, value) => {
+        setSanPham(prev => prev.map(sp => 
+            sp.IDSANPHAM === id ? { ...sp, [field]: value } : sp
+        ));
+    };
 
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <div className="flex justify-between items-center border-b pb-3 mb-4">
-                <h2 className="text-lg font-semibold">Sản phẩm khuyến mãi</h2>
-                <button onClick={()=>{OpenMoDal(undefined,{TenTrang:'ThemSanPham' , TieuDe:'Thêm sản phẩm vào Flash Sale'})}} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition flex items-center gap-2">
-                  + Thêm Sản Phẩm
-                </button>
-              </div>
+    const XoaSP = async (id) => {
+        const ketqua = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn xóa sản phẩm này?');
+        if (!ketqua) return;
+        setSanPham(prev => prev.filter(sp => sp.IDSANPHAM !== id));
+        ThongBao.ThongBao_ThanhCong('Đã xóa!');
+    }
 
-              <div className="overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-                <table className="w-full text-left text-sm text-gray-600">
-                  <thead className="bg-gray-50 text-gray-700">
-                    <tr>
-                      <th className="px-4 py-3 font-medium rounded-tl-md">
-                        Sản phẩm
-                      </th>
-                      <th className="px-4 py-3 font-medium">Giá Gốc</th>
-                      <th className="px-4 py-3 font-medium">Giá Flash Sale</th>
-                      <th className="px-4 py-3 font-medium w-24">Mở bán</th>
-                      <th className="px-4 py-3 font-medium w-24">
-                        Đã bán (Ảo)
-                      </th>
-                      <th className="px-4 py-3 font-medium text-right rounded-tr-md">
-                        Thao tác
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    <tr className="hover:bg-gray-50 transition">
-                      <td className="px-4 py-3 flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-200 rounded flex-shrink-0"></div>
-                        <span className="font-medium text-gray-800 line-clamp-1">
-                          iPhone 14 Pro Max 256GB
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 line-through text-gray-400">
-                        29.990.000đ
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="text"
-                          defaultValue="24990000"
-                          className="w-full border border-gray-300 rounded px-2 py-1 text-red-600 font-bold focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="number"
-                          defaultValue="100"
-                          className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="number"
-                          defaultValue="80"
-                          className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <button className="text-blue-600 hover:text-blue-800 mr-3 font-medium">
-                          Lưu
-                        </button>
-                        <button className="text-red-500 hover:text-red-700 font-medium">
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
+    const LuuChienDich = async () => {
+        // Kiểm tra dữ liệu sơ bộ
+        const dataGuiDi = {
+            ...thongTinChung,
+            DanhSachSanPham: SanPham 
+        };
+        alert(JSON.stringify(dataGuiDi, null, 2)); // Hiển thị dữ liệu trước khi gửi để kiểm tra
 
-                    <tr className="hover:bg-gray-50 transition">
-                      <td className="px-4 py-3 flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-200 rounded flex-shrink-0"></div>
-                        <span className="font-medium text-gray-800 line-clamp-1">
-                          Samsung Galaxy S23 Ultra
-                        </span>
-                      </td>
-                      <td className="px-4 py-3 line-through text-gray-400">
-                        25.990.000đ
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="text"
-                          defaultValue="16990000"
-                          className="w-full border border-gray-300 rounded px-2 py-1 text-red-600 font-bold focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="number"
-                          defaultValue="50"
-                          className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          type="number"
-                          defaultValue="30"
-                          className="w-full border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        />
-                      </td>
-                      <td className="px-4 py-3 text-right">
-                        <button className="text-blue-600 hover:text-blue-800 mr-3 font-medium">
-                          Lưu
-                        </button>
-                        <button className="text-red-500 hover:text-red-700 font-medium">
-                          Xóa
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
+       
+        
+        // Gọi API ở đây...
+        // const res = await API.CallAPI(dataGuiDi, { PhuongThuc: 1, url: '/admin/them_flashsale' });
+    }
 
-            <div className="mt-6 flex justify-end">
-              <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-md font-medium mr-3 transition">
-                Hủy
-              </button>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-8 py-2 rounded-md font-medium shadow-md transition">
-                Lưu Chiến Dịch
-              </button>
-            </div>
-          </div>
-        </main>
-      </div>
-    </>
-  );
+    return (
+        <div className="flex h-screen bg-gray-50">
+            <main className="flex-1 flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden">
+                <div className="p-6">
+                    {/* THÔNG TIN CHUNG */}
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                        <h2 className="text-lg font-semibold border-b pb-3 mb-4">Thông tin chung</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <div className="lg:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Tên chiến dịch</label>
+                                <input
+                                    name="TenChienDich"
+                                    value={thongTinChung.TenChienDich}
+                                    onChange={handleInputChange}
+                                    type="text"
+                                    className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
+                                <select
+                                    name="TrangThai"
+                                    value={thongTinChung.TrangThai}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    <option value="active">Đang Bật (Active)</option>
+                                    <option value="inactive">Đã Tắt (Inactive)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Màu nền</label>
+                                <input
+                                    name="MauNen"
+                                    value={thongTinChung.MauNen}
+                                    onChange={handleInputChange}
+                                    type="color"
+                                    className="w-full h-[42px] border border-gray-300 rounded-md p-1 cursor-pointer"
+                                />
+                            </div>
+                            <div className="lg:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Bắt đầu lúc</label>
+                                <input
+                                    name="BatDau"
+                                    value={thongTinChung.BatDau}
+                                    onChange={handleInputChange}
+                                    type="datetime-local"
+                                    className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
+                                />
+                            </div>
+                            <div className="lg:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Kết thúc lúc</label>
+                                <input
+                                    name="KetThuc"
+                                    value={thongTinChung.KetThuc}
+                                    onChange={handleInputChange}
+                                    type="datetime-local"
+                                    className="w-full border border-gray-300 rounded-md px-3 py-2 outline-none"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* DANH SÁCH SẢN PHẨM */}
+                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div className="flex justify-between items-center border-b pb-3 mb-4">
+                            <h2 className="text-lg font-semibold">Sản phẩm khuyến mãi ({SanPham.length})</h2>
+                            <button onClick={() => OpenMoDal(undefined, { TenTrang: 'ThemSanPham', TieuDe: 'Thêm sản phẩm vào Flash Sale' })} className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+                                + Thêm Sản Phẩm
+                            </button>
+                        </div>
+
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left text-sm text-gray-600">
+                                <thead className="bg-gray-50 text-gray-700">
+                                    <tr>
+                                        <th className="px-4 py-3 font-medium">Sản phẩm</th>
+                                        <th className="px-4 py-3 font-medium">Giá Gốc</th>
+                                        <th className="px-4 py-3 font-medium">Giá Flash Sale</th>
+                                        <th className="px-4 py-3 font-medium w-24">Mở bán</th>
+                                        <th className="px-4 py-3 font-medium w-24">Đã bán (Ảo)</th>
+                                        <th className="px-4 py-3 font-medium text-right">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {SanPham.length === 0 ? (
+                                        <tr><td colSpan="6" className="px-4 py-6 text-center text-gray-500">Chưa có sản phẩm.</td></tr>
+                                    ) : (
+                                        SanPham.map((sp) => (
+                                            <tr key={sp.IDSANPHAM} className="hover:bg-gray-50 transition">
+                                                <td className="px-4 py-3 flex items-center gap-3">
+                                                    <img src={`http://localhost:3001/${sp.HINHANH}`} alt="" className="w-10 h-10 object-cover rounded" />
+                                                    <span className="font-medium text-gray-800 line-clamp-1">{sp.TENSANPHAM}</span>
+                                                </td>
+                                                <td className="px-4 py-3 line-through text-gray-400">{fun.formatCurrency(sp.GIABAN)}</td>
+                                                <td className="px-4 py-3">
+                                                    <input
+                                                        type="number"
+                                                        value={sp.GIAFLASHSALE || ''}
+                                                        onChange={(e) => handleUpdateSP(sp.IDSANPHAM, 'GIAFLASHSALE', e.target.value)}
+                                                        className="w-full border border-gray-300 rounded px-2 py-1 text-red-600 font-bold outline-none focus:ring-1 focus:ring-blue-500"
+                                                    />
+                                                </td>
+                                                <td className="px-4 py-3">
+                                                    <input
+                                                        type="number"
+                                                        value={sp.SOLUONG_MOBAN || 0}
+                                                        onChange={(e) => handleUpdateSP(sp.IDSANPHAM, 'SOLUONG_MOBAN', e.target.value)}
+                                                        className="w-full border border-gray-300 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-blue-500"
+                                                    />
+                                                </td>
+                                                <td className="px-4 py-3">
+                                                    <input
+                                                        type="number"
+                                                        value={sp.DABAN_AO || 0}
+                                                        onChange={(e) => handleUpdateSP(sp.IDSANPHAM, 'DABAN_AO', e.target.value)}
+                                                        className="w-full border border-gray-300 rounded px-2 py-1 outline-none focus:ring-1 focus:ring-blue-500"
+                                                    />
+                                                </td>
+                                                <td className="px-4 py-3 text-right">
+                                                    <button onClick={() => XoaSP(sp.IDSANPHAM)} className="text-red-500 hover:text-red-700 font-medium">Xóa</button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div className="mt-6 flex justify-end">
+                        <button className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-md font-medium mr-3">Hủy</button>
+                        <button 
+                            onClick={LuuChienDich}
+                            className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-2 rounded-md font-medium shadow-md transition"
+                        >
+                            Lưu Chiến Dịch
+                        </button>
+                    </div>
+                </div>
+            </main>
+        </div>
+    );
 }
 
 export default ThemBanner;

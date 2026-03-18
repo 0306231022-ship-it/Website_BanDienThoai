@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useAppContext } from '../../CONTEXT/TrangChuAdmin';
 import { AppProvider } from '../../CONTEXT/QuanLiModal';
 import { useADContext } from '../../CONTEXT/QuanLiCaNhanAdmin';
-
+import { AppProviderFS } from '../../CONTEXT/QuanLi_FlashSale';
 
 import QuanLiTT from '../ThanhPhan/Admin/Menu/QuanLiTT';
 import QuanLiTTCaNhan from '../ThanhPhan/Admin/Menu/QuanLiTTCaNhan';
@@ -163,11 +163,14 @@ function TrangChuAdmin() {
 
       <div className="flex">
         <AppProvider>
+          <AppProviderFS>
           <Routes>
             <Route path="*" element={<QuanLiTT />} />
             <Route path="/CaiDat/*" element={<QuanLiTTCaNhan />} />
           </Routes>
+          </AppProviderFS>
         </AppProvider>
+
       </div>
     </>
   );
