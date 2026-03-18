@@ -241,4 +241,35 @@ export default class SanPhamModel{
                 }
              }
         }
+    static async TimKiem_sanpham_flash(key){
+        try {
+            const [ketqqua] = await execute(`
+                SELECT sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.GIABAN, ct.SOLUONG, ha.HINHANH
+                FROM sanpham sp
+                JOIN thuonghieu th ON sp.IDTHUONGHIEU = th.IDTHUONGHIEU
+                JOIN chitiet_phieunhap ct ON sp.IDSANPHAM = ct.IDSANPHAM
+                JOIN (
+                    SELECT IDSANPHAM, HINHANH
+                    FROM hinhanh_sanpham
+                    WHERE IDHA = (
+                        SELECT MIN(IDHA)
+                        FROM hinhanh_sanpham h2
+                        WHERE h2.IDSANPHAM = hinhanh_sanpham.IDSANPHAM
+                    )
+                ) ha ON sp.IDSANPHAM = ha.IDSANPHAM
+                WHERE sp.IDSANPHAM LIKE ? AND sp.IDTHUONGHIEU LIKE ?
+                GROUP BY sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.GIABAN, ct.SOLUONG, ha.HINHANH
+                `,[`%${key.IDSP}%`, `%${key.IDTHUONGHIEU}%`]);
+            return {
+                ThanhCong:true,
+                DuLieu:ketqqua
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return {
+                status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            }
+        }
+   }
 }

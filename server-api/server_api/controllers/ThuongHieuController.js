@@ -262,4 +262,23 @@ export default class ThuongHieuController{
          const ketqqua = await ThuongHieuModel.laysp_thuonghieu(offset,limit,id);
          return res.json({ketqqua});
     }
+    static async lay_ds_thuonghieu(req,res){
+        try {
+            const thuonghieu = await ThuongHieuModel.lay_ds_thuonghieu();
+            if(thuonghieu){
+                return res.json({
+                    ThanhCong:true,
+                    DuLieu:thuonghieu
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Không tìm thấy thương hiệu nào!'
+                })
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách thương hiệu:', error);
+            return res.json({ message: 'Đã xảy ra lỗi hệ thống.' });
+        }
+    }
 }

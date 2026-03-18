@@ -104,12 +104,14 @@ adminRouter.get('/lay_ds_sanpham' , authMiddleware , SanPhamController.lay_ds_sa
 adminRouter.get('/timkiem_sanpham', authMiddleware, SanPhamController.timkiem_sanpham);
 adminRouter.get('/CapNhat_TT_TT_SP' ,authMiddleware , SanPhamController.CapNhat_TT_TT_SP);
 adminRouter.get('/sanpham_daxoa', authMiddleware,SanPhamController.sanpham_daxoa);
+adminRouter.get('/TimKiem_sanpham_flash', authMiddleware, SanPhamController.TimKiem_sanpham_flash);
 //===========================================
 // xử lí thương hiệu
 adminRouter.get('/thuonghieu', authMiddleware, ThuongHieuController.LayDanhSachThuongHieu);
 adminRouter.get('/ChiTietThuongHieu', authMiddleware, ThuongHieuController.LayChiTietThuongHieu);
 adminRouter.get('/laythuonghieu' , authMiddleware , ThuongHieuController.layth );
 adminRouter.get('/laysp_thuonghieu',authMiddleware,ThuongHieuController.laysp_thuonghieu);
+adminRouter.get('/lay_ds_thuonghieu', authMiddleware, ThuongHieuController.lay_ds_thuonghieu);
 //============================================
 //xử lí nhà cung cấp
 adminRouter.get('/layTTnhacungcap', authMiddleware, NhaCungCapController.LayDanhSachNhaCungCap);

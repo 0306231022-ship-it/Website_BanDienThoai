@@ -158,6 +158,22 @@ export default class ThuongHieuModel{
         }
     }
 }
+    static async lay_ds_thuonghieu() {
+        try {
+            const [ketqua] = await execute(`
+                SELECT th.IDTHUONGHIEU, th.TENTHUONGHIEU
+                FROM thuonghieu th
+                LEFT JOIN sanpham sp ON th.IDTHUONGHIEU = sp.IDTHUONGHIEU
+                GROUP BY th.IDTHUONGHIEU, th.TENTHUONGHIEU
+            `);
+            return ketqua || null;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật mô tả thương hiệu:', error);
+            return {
+                Status:true
+            }
+        }
+    }
 
    
 
