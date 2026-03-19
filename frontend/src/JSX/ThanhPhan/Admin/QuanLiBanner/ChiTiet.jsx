@@ -1,11 +1,8 @@
 function ChiTietFlashSale() {
     return (
         <>
-           <div class="flex h-screen overflow-hidden">
-
-    
-
-        <main class="flex-1 flex flex-col overflow-y-auto">
+           <div class="flex bg-gray-100">
+        <main class="flex-1 flex flex-col">
             
             <header class="bg-white shadow-sm px-6 py-4 z-10">
                 <nav class="flex text-sm text-gray-500 mb-2">
@@ -72,7 +69,7 @@ function ChiTietFlashSale() {
                         </div>
                         <div class="text-2xl font-bold text-gray-900">310 / 500 <span class="text-sm font-normal text-gray-500">sp</span></div>
                         <div class="w-full bg-gray-200 rounded-full h-1.5 mt-3">
-                            <div class="bg-orange-500 h-1.5 rounded-full" style="width: 62%"></div>
+                            <div class="bg-orange-500 h-1.5 rounded-full" Style="width: 62%"></div>
                         </div>
                     </div>
 
@@ -123,7 +120,7 @@ function ChiTietFlashSale() {
                                             <span class="text-red-500 font-bold">95%</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
-                                            <div class="bg-red-500 h-1.5 rounded-full" style="width: 95%"></div>
+                                            <div class="bg-red-500 h-1.5 rounded-full" Style="width: 95%"></div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-right font-bold text-gray-900">
@@ -147,7 +144,7 @@ function ChiTietFlashSale() {
                                             <span class="text-blue-500 font-bold">24%</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
-                                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: 24%"></div>
+                                            <div class="bg-blue-500 h-1.5 rounded-full" SStyle="width: 24%"></div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-right font-bold text-gray-900">
@@ -175,7 +172,7 @@ function ChiTietFlashSale() {
                                             <span class="text-gray-500 font-bold">100%</span>
                                         </div>
                                         <div class="w-full bg-gray-200 rounded-full h-1.5">
-                                            <div class="bg-gray-500 h-1.5 rounded-full" style="width: 100%"></div>
+                                            <div class="bg-gray-500 h-1.5 rounded-full" Style="width: 100%"></div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-right font-bold text-gray-900">

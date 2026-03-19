@@ -15,6 +15,7 @@ function ThemBanner() {
         BatDau: '',
         KetThuc: ''
     });
+    const [errValidate, setErrValidate] = useState({});
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setThongTinChung(prev => ({ ...prev, [name]: value }));
@@ -33,17 +34,68 @@ function ThemBanner() {
     }
 
     const LuuChienDich = async () => {
-        // Kiểm tra dữ liệu sơ bộ
+        const DanhSachSanPham = SanPham.map(sp => ({
+            IDSANPHAM: sp.IDSANPHAM,
+            GIAFLASHSALE: sp.GIAFLASHSALE,
+            SOLUONG_MOBAN: sp.SOLUONG_MOBAN,
+            DABAN_AO: sp.DABAN_AO
+        }));
         const dataGuiDi = {
             ...thongTinChung,
-            DanhSachSanPham: SanPham 
+            DanhSachSanPham: DanhSachSanPham
         };
-        alert(JSON.stringify(dataGuiDi, null, 2)); // Hiển thị dữ liệu trước khi gửi để kiểm tra
-
-       
-        
-        // Gọi API ở đây...
-        // const res = await API.CallAPI(dataGuiDi, { PhuongThuc: 1, url: '/admin/them_flashsale' });
+        const formData = new FormData();
+        for (const [key, value] of Object.entries(dataGuiDi)) {
+            if (Array.isArray(value)) {
+                value.forEach((item, index) => {
+                    for (const [subKey, subValue] of Object.entries(item)) {
+                        formData.append(`${key}[${index}][${subKey}]`, subValue);
+                    }
+                });
+            } else {
+                formData.append(key, value);
+            }
+        }
+        const kiemtra = fun.KiemTraRong(thongTinChung);
+        if (!kiemtra.Status) {
+            ThongBao.ThongBao_Loi('Vui lòng điền đầy đủ thông tin!');
+            return;
+        }
+        const kiemtra2 = fun.isFormDataEmpty(formData);
+        if (kiemtra2) {
+            ThongBao.ThongBao_Loi('Vui lòng thêm ít nhất một sản phẩm vào Flash Sale!');
+            return;
+        }
+        try {
+            const res = await API.CallAPI(formData, { PhuongThuc: 1, url: '/admin/them_flashsale' });
+            if(res.Validate){
+                const errors = {};
+                res.errors.forEach(err => {
+                    const key = err.path.includes('.') 
+                        ? err.path.split('.').slice(1).join('.') 
+                        : err.path;
+                    errors[key] = err.msg;
+                });
+                setErrValidate(errors);
+            } else if(res.ThanhCong){
+                ThongBao.ThongBao_ThanhCong('Thêm chiến dịch Flash Sale thành công!');
+                setErrValidate({});
+                setThongTinChung({
+                    TenChienDich: '',
+                    TrangThai: 'active',
+                    MauNen: '',
+                    BatDau: '',
+                    KetThuc: ''
+                });
+                setSanPham([]);
+            } else {
+                ThongBao.ThongBao_Loi(res.message || 'Thêm chiến dịch Flash Sale thất bại!');
+            }
+        } catch (error) {
+            ThongBao.ThongBao_Loi('Đã xảy ra lỗi khi thêm chiến dịch Flash Sale!');
+            console.error('Lỗi khi gọi API:', error);
+            setErrValidate({});
+        }
     }
 
     return (
@@ -53,6 +105,18 @@ function ThemBanner() {
                     {/* THÔNG TIN CHUNG */}
                     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
                         <h2 className="text-lg font-semibold border-b pb-3 mb-4">Thông tin chung</h2>
+                         {
+                        Object.keys(errValidate).length > 0 && (
+                            <div className="mb-6 p-4 bg-red-100 text-red-700 rounded">
+                                <h3 className="font-semibold mb-2">Có lỗi xảy ra:</h3>
+                                <ul className="list-disc list-inside">
+                                    {Object.entries(errValidate).map(([key, msg]) => (
+                                        <li key={key}>{msg}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )
+                    }
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             <div className="lg:col-span-2">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Tên chiến dịch</label>

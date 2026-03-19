@@ -1,7 +1,36 @@
-import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
-
+import * as API from '../../../../JS/API/API';
+import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+import * as fun from '../../../../JS/FUNCTONS/function';
+import { useState , useEffect, } from 'react';
+import { Link } from 'react-router-dom';
 function DanhSachBanner() {
-    const { OpenMoDal } = useModalContext();
+    const [page, setPage] = useState(1);
+    const [loading,setloading] = useState(false);
+    const [DanhSachFlashSale, setDanhSachFlashSale] = useState([]);
+    const pageSize = 10; // Số mục hiển thị trên mỗi trang
+    const totalItems = DanhSachFlashSale.length; // Tổng số mục (có thể lấy từ API)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setloading(true);
+                const ketqua = await API.CallAPI(undefined,{PhuongThuc:2, url:'/admin/danhsach_flashsale?page='+page});
+                if(ketqua.status){
+                    ThongBao.ThongBao_Loi(ketqua.message);
+                    return;
+                }
+                if(ketqua.ThanhCong){
+                    setDanhSachFlashSale(ketqua.dulieu);
+                }
+            } catch (error) {
+                console.error('Có lỗi sãy ra:' + error);
+                ThongBao.ThongBao_Loi('Có lỗi xảy ra khi lấy danh sách Flash Sale!');
+            } finally{
+                setloading(false);
+            }
+        }
+        fetchData();
+    }, [page]);
     return (
         <>
          <div className="flex h-screen overflow-hidden">
@@ -43,89 +72,73 @@ function DanhSachBanner() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                
-                                <tr className="hover:bg-blue-50/50 transition">
-                                    <td className="px-6 py-4">
-                                        <div className="font-bold text-gray-900 text-base mb-1">Flash Sale Cuối Tuần</div>
-                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-800">Flash Sale</span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-gray-800">10:00 - 25/10/2026</div>
-                                        <div className="text-gray-400 text-xs">Đến 23:59 - 26/10/2026</div>
-                                    </td>
+                                {
+                                    loading ? (
+                                        <tr>
+                                            <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                                                Đang tải dữ liệu...
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        DanhSachFlashSale.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                                                    Không có chiến dịch nào!
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            DanhSachFlashSale.map((flash) => (
+                                        <tr className="hover:bg-blue-50/50 transition">
+                                            <td className="px-6 py-4">
+                                                <div className="font-bold text-gray-900 text-base mb-1">{flash.TENFS}</div>
+                                                <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-[${flash.MAUNEN}] text-white`}>#{flash.IDFS}</span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="text-gray-800"> Bắt đầu :{fun.formatTime(flash.THOIGIAN_BATDAU)} - {fun.formatDate(flash.THOIGIAN_BATDAU)}</div>
+                                                <div className="text-gray-400 text-xs">Kết thúc: {fun.formatTime(flash.THOIGIAN_KETTHUC)} - {fun.formatDate(flash.THOIGIAN_KETTHUC)}</div>
+                                            </td>
                                     <td className="px-6 py-4 text-center">
-                                        <span className="font-semibold text-gray-800">12</span>
+                                        <span className="font-semibold text-gray-800">{flash.SoSanPham}</span>
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 border border-green-200">
-                                            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                                            Đang chạy
-                                        </span>
+                                        {
+                                            flash.TRANGTHAI === 1 ? (
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 border border-green-200">
+                                                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                                                    Đang chạy
+                                                </span>
+                                            ) : (
+                                                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+                                                    <span className="w-1.5 h-1.5 bg-gray-500 rounded-full"></span>
+                                                    Đã kết thúc
+                                                </span>
+                                            )
+                                        }
                                     </td>
                                     <td className="px-6 py-4 text-right font-medium">
-                                        <a href="#"  className="text-blue-600 hover:text-blue-900 mr-4">Sửa</a>
-                                        <a href="#" className="text-red-500 hover:text-red-700">Xóa</a>
+                                      < div className="flex justify-center gap-1.5">
+                                                    <Link to={`chitiet/${flash.IDFS}`} className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết">
+                                                        xem chi tiết <i className="fas fa-arrow-right ml-1"></i>
+                                                    </Link>
+                                                </div>
                                     </td>
                                 </tr>
-
-                                <tr className="hover:bg-blue-50/50 transition">
-                                    <td className="px-6 py-4">
-                                        <div className="font-bold text-gray-900 text-base mb-1">Pre-order iPhone 15</div>
-                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-purple-100 text-purple-800">Banner Hero</span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <div className="text-gray-800">00:00 - 01/11/2026</div>
-                                        <div className="text-gray-400 text-xs">Đến 23:59 - 15/11/2026</div>
-                                    </td>
-                                    <td className="px-6 py-4 text-center">
-                                        <span className="font-semibold text-gray-800">4</span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 border border-yellow-200">
-                                            <span className="w-1.5 h-1.5 bg-yellow-500 rounded-full"></span>
-                                            Sắp diễn ra
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-right font-medium">
-                                        <a href="#" className="text-blue-600 hover:text-blue-900 mr-4">Sửa</a>
-                                        <a href="#" className="text-red-500 hover:text-red-700">Xóa</a>
-                                    </td>
-                                </tr>
-
-                                <tr className="hover:bg-blue-50/50 transition bg-gray-50/50">
-                                    <td className="px-6 py-4">
-                                        <div className="font-bold text-gray-500 text-base mb-1">Tuần lễ Samsung</div>
-                                        <span className="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-medium bg-blue-100 text-blue-800 opacity-70">Tab Danh Mục</span>
-                                    </td>
-                                    <td className="px-6 py-4 text-gray-500">
-                                        <div className="line-through">00:00 - 01/10/2026</div>
-                                        <div className="text-xs">Đến 23:59 - 07/10/2026</div>
-                                    </td>
-                                    <td className="px-6 py-4 text-center text-gray-500">
-                                        <span className="font-semibold">25</span>
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200">
-                                            Đã kết thúc
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-4 text-right font-medium">
-                                        <a href="#" className="text-gray-400 hover:text-blue-600 mr-4">Xem lại</a>
-                                        <a href="#" className="text-red-400 hover:text-red-700">Xóa</a>
-                                    </td>
-                                </tr>
+                            ))
+                                        )
+                                    )
+                                }
+                               
 
                             </tbody>
                         </table>
                     </div>
                     
                     <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
-                        <span className="text-sm text-gray-500">Hiển thị <span className="font-medium text-gray-800">1</span> đến <span className="font-medium text-gray-800">3</span> của <span className="font-medium text-gray-800">12</span> chiến dịch</span>
+                        <span className="text-sm text-gray-500">Hiển thị <span className="font-medium text-gray-800">{(page - 1) * pageSize + 1}</span> đến <span className="font-medium text-gray-800">{Math.min(page * pageSize, totalItems)}</span> của <span className="font-medium text-gray-800">{DanhSachFlashSale.length}</span> chiến dịch</span>
                         <div className="flex items-center gap-1">
-                            <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-white transition" disabled>&larr; Trước</button>
-                            <button className="px-3 py-1 bg-blue-600 text-white rounded text-sm font-medium shadow-sm">1</button>
-                            <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-white transition">2</button>
-                            <button className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-white transition">Sau &rarr;</button>
+                            <button onClick={()=>{setPage(p=>p-1)}} disabled={page === 1} className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-500 hover:bg-white transition" >&larr; Trước</button>
+                            <span className="px-3 py-1 bg-blue-600 text-white rounded text-sm font-medium shadow-sm">{page}</span>
+                            <button onClick={()=>{setPage(p=>p+1)}}  disabled={page * pageSize >= totalItems} className="px-3 py-1 border border-gray-300 rounded text-sm text-gray-700 hover:bg-white transition">Sau &rarr;</button>
                         </div>
                     </div>
 

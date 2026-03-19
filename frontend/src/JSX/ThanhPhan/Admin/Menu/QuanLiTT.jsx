@@ -28,6 +28,7 @@ import ChiTietNhaCungCap from '../NhaCungCap/ChiTietNhaCungCap';
 import ChiTietPhieu from '../SanPham/ChiTietPhieu';
 import DanhSachBanner from '../QuanLiBanner/DanhSachBanner';
 import ThemBanner from '../QuanLiBanner/ThemBanner';
+import ChiTietFlashSale from '../QuanLiBanner/ChiTiet';
 import '../../../../CSS/ThanhCuon.css';
 import { Routes, Route } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
@@ -268,6 +269,7 @@ function QuanLiTT() {
                     <Route path="xemThongTin" element={<XemThongTinWebsite />} />
                     <Route path="banner" element={<DanhSachBanner />} />
                     <Route path="banner/them" element={<ThemBanner />} />
+                    <Route path="banner/chitiet/:id" element={<ChiTietFlashSale />} />
 
 
                     

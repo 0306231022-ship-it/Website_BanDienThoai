@@ -209,7 +209,6 @@ export default class SanPhamController{
         }
             try {
                 const ketqqua = await SanPhamModel.TimKiem_sanpham_flash(key);
-                console.log(ketqqua)
                 if(ketqqua.status){
                     return res.json({
                         status:true,
