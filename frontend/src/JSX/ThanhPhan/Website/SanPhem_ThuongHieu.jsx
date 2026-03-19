@@ -1,21 +1,13 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập & Đăng ký</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-</head>
-<body>
-
- <div class="bg-gray-50 min-h-screen font-sans text-slate-900">
+import { useParams } from "react-router-dom";
+import { useEffect ,useState } from "react";
+function SanPhamThuongHieu() {
+        const { id, name } = useParams();
+    return (
+        <div class="bg-gray-50 min-h-screen font-sans text-slate-900">
     <div class="bg-white border-b border-gray-100 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center gap-8">
             <div class="w-32 h-32 bg-white rounded-3xl border border-gray-100 shadow-xl flex items-center justify-center p-4">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Brand Logo" class="h-full w-full object-contain">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Brand Logo" class="h-full w-full object-contain"/>
             </div>
             <div class="flex-1 text-center md:text-left">
                 <h1 class="text-4xl font-black tracking-tighter uppercase mb-2">Apple Ecosystem</h1>
@@ -48,15 +40,15 @@
                     <h3 class="text-sm font-black uppercase tracking-widest mb-4 border-l-4 border-red-600 pl-3">Khoảng giá</h3>
                     <div class="space-y-3">
                         <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500">
+                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500"/>
                             <span class="text-sm text-slate-600 group-hover:text-red-600 transition-colors">Dưới 10 Triệu</span>
                         </label>
                         <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500">
+                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500"/>
                             <span class="text-sm text-slate-600 group-hover:text-red-600 transition-colors">10 - 20 Triệu</span>
                         </label>
                         <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500">
+                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500"/>
                             <span class="text-sm text-slate-600 group-hover:text-red-600 transition-colors">Trên 20 Triệu</span>
                         </label>
                     </div>
@@ -65,7 +57,7 @@
                 <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] p-6 text-white relative overflow-hidden">
                     <div class="relative z-10">
                         <p class="text-[10px] font-bold text-red-500 uppercase mb-2">Hot Deal</p>
-                        <h4 class="text-lg font-black leading-tight mb-4">iPhone 15 Pro Max <br> Giảm 2 Triệu</h4>
+                        <h4 class="text-lg font-black leading-tight mb-4">iPhone 15 Pro Max <br/> Giảm 2 Triệu</h4>
                         <button class="bg-white text-slate-900 text-[10px] font-black px-4 py-2 rounded-full uppercase">Mua ngay</button>
                     </div>
                     <div class="absolute -right-4 -bottom-4 opacity-20 w-24 h-24 bg-white rounded-full"></div>
@@ -91,7 +83,7 @@
                         <div class="absolute top-4 left-4 z-10 bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-lg">-15%</div>
                         <div class="aspect-square bg-slate-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-6 overflow-hidden group-hover:bg-white transition-colors">
                             <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-naturaltitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845702708" 
-                                 class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700">
+                                 class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700"/>
                         </div>
                         <div class="px-2">
                             <h3 class="text-sm font-bold text-slate-800 truncate uppercase mb-2 group-hover:text-red-600 transition-colors">iPhone 15 Pro Max 256GB</h3>
@@ -106,7 +98,7 @@
                     <div class="group bg-white rounded-[2rem] border border-gray-100 p-4 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative">
                         <div class="aspect-square bg-slate-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-6 overflow-hidden group-hover:bg-white transition-colors">
                             <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665" 
-                                 class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700">
+                                 class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700"/>
                         </div>
                         <div class="px-2">
                             <h3 class="text-sm font-bold text-slate-800 truncate uppercase mb-2 group-hover:text-red-600 transition-colors">MacBook Air M2 13"</h3>
@@ -130,5 +122,6 @@
         </div>
     </div>
 </div>
-</body>
-</html>
+    )
+};
+export default SanPhamThuongHieu;

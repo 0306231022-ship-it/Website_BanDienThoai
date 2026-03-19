@@ -1,8 +1,10 @@
 import { Router } from "express";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
+import FlashSaleController from "../controllers/flashSaleController.js";
 const websiteRoute = Router();
 import multer from "multer";
 const upload = multer();
 websiteRoute.get('/laydsTH', upload.none(), ThuongHieuController.LayDanhSachThuongHieu);
+websiteRoute.get('/laydsSPflashsale', upload.none(), FlashSaleController.LayDanhSachFlashSale);
 console.log("✅ websiteRoute loaded");
 export default websiteRoute;

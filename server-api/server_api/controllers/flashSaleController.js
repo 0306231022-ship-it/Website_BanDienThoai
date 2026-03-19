@@ -132,5 +132,29 @@ export default class FlashSaleController{
             })
         }
     }
-            
+    static async LayDanhSachFlashSale(req,res){
+        try {
+            const ketqua = await FlashSaleModel.LayDanhSachFlashSale();
+            if(ketqua.status){
+                return res.json({
+                    status:true,
+                    message:ketqua.message
+                })
+            }
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqua.dulieu,
+                    tongso:ketqua.tongso
+                })
+            }
+
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Có lỗi xảy ra khi lấy danh sách Flash Sale!'
+            })
+        }
+    }
 }
