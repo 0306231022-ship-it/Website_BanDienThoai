@@ -281,4 +281,40 @@ export default class ThuongHieuController{
             return res.json({ message: 'Đã xảy ra lỗi hệ thống.' });
         }
     }
+    static async LaySanPhamTheoThuongHieu(req,res){
+        const id = req.query.id || null;
+        const limit = parseInt(req.query.limit) || 10;
+        const page = parseInt(req.query.page) || 1;
+        const offset = (page - 1) * limit;
+        if (!id) {
+            return res.json({
+                status: true,
+                message: 'Vui lòng kiểm tra lại thông tin gửi đi!'
+            });
+        }
+        const kiemtra = await ThuongHieuModel.kiemtraid(id);
+        if (!kiemtra) {
+            return res.json({
+                status: true,
+                message: 'Thương hiệu không tồn tại hoặc không hoạt động!'
+            });
+        }
+        try {
+            const sanpham = await ThuongHieuModel.LaySanPhamTheoThuongHieu(offset, limit, id);
+            if (sanpham) {
+                return res.json({
+                    ThanhCong: true,
+                    DuLieu: sanpham
+                });
+            } else {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Không tìm thấy sản phẩm nào thuộc thương hiệu này!'
+                });
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy sản phẩm theo thương hiệu:', error);
+            return res.json({ message: 'Đã xảy ra lỗi hệ thống.' });
+        }
+    }   
 }

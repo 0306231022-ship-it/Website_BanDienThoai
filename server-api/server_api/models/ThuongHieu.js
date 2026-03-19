@@ -1,4 +1,4 @@
-import {execute} from '../config/db.js';
+import {execute , beginTransaction , rollbackTransaction , commitTransaction} from '../config/db.js';
 import { TaoID } from '../function.js';
 export default class ThuongHieuModel{
   static async ThemThuongHieu(TenThuongHieu, MoTa, HinhAnh) {
@@ -173,6 +173,60 @@ export default class ThuongHieuModel{
                 Status:true
             }
         }
+    }
+    static async LaySanPhamTheoThuongHieu(offset, limit, id) {
+        const transaction = await beginTransaction();
+        try {
+            const [ketqua] = await transaction.query(`
+                SELECT IDTHUONGHIEU , TENTHUONGHIEU , MOTA, LOGO
+                FROM thuonghieu
+                WHERE IDTHUONGHIEU = ?`, [id]);
+                if(ketqua.length === 0){
+                    await commitTransaction(transaction);
+                    return {
+                        status:true,
+                        message:'Không tìm thấy thương hiệu!'
+                    };
+                }
+           const [sanpham] = await transaction.query(`
+    SELECT sp.IDSANPHAM, sp.TENSANPHAM, sp.SOLUONG,
+        (SELECT ha.HINHANH
+         FROM hinhanh_sanpham ha
+         WHERE ha.IDSANPHAM = sp.IDSANPHAM
+         LIMIT 1) AS HINHANH,
+        (SELECT GIABAN
+         FROM chitiet_phieunhap ctpn
+         WHERE ctpn.IDSANPHAM = sp.IDSANPHAM
+         LIMIT 1) AS GIABAN,
+        (SELECT KHUYENMAI
+         FROM chitiet_phieunhap ctpn
+         WHERE ctpn.IDSANPHAM = sp.IDSANPHAM
+         LIMIT 1) AS KHUYENMAI
+    FROM sanpham sp
+    WHERE sp.IDTHUONGHIEU = ?
+    LIMIT ? OFFSET ?`, [id, limit, offset]);
+
+
+            const [countResult] = await transaction.query(`SELECT COUNT(*) AS total FROM sanpham WHERE IDTHUONGHIEU = ?`,[id]);
+            const total = countResult[0].total;
+            const start = offset + 1;
+            const end = Math.min(offset + limit, total);
+            const ketqua1 = {
+                thuonghieu: ketqua[0],
+                sanpham: sanpham,
+                phantrang:{
+                    batdau:start,
+                    ketthuc:end,
+                    tong:total
+                }
+            };
+            await commitTransaction(transaction);
+            return ketqua1;
+        } catch (error) {
+            await rollbackTransaction(transaction);
+            throw error;
+        }
+        
     }
 
    

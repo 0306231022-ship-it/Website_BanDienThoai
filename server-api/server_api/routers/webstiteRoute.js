@@ -6,5 +6,6 @@ import multer from "multer";
 const upload = multer();
 websiteRoute.get('/laydsTH', upload.none(), ThuongHieuController.LayDanhSachThuongHieu);
 websiteRoute.get('/laydsSPflashsale', upload.none(), FlashSaleController.LayDanhSachFlashSale);
+websiteRoute.get('/thuonghieu_sanpham', upload.none(), ThuongHieuController.LaySanPhamTheoThuongHieu);
 console.log("✅ websiteRoute loaded");
 export default websiteRoute;

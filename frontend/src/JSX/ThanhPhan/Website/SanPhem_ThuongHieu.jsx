@@ -1,21 +1,72 @@
-import { useParams } from "react-router-dom";
+import { useParams ,Link , useNavigate} from "react-router-dom";
 import { useEffect ,useState } from "react";
+import * as API from '../../../JS/API/API';
+import * as fun from '../../../JS/FUNCTONS/function';
 function SanPhamThuongHieu() {
-        const { id, name } = useParams();
+        const { id } = useParams();
+        const navigate = useNavigate();
+        const [loading, setLoading] = useState(false);
+        const [page, setPage] = useState(1);
+        const [ThuongHieu, setThuongHieu] = useState({});
+        const [PhanTrang, setPhanTrang] = useState({});
+        const [DanhSachSanPham, setDanhSachSanPham] = useState([]);
+         useEffect(() => {
+            const fetchData = async () => {
+                setLoading(true);
+                try {
+                    const response = await API.CallAPI(undefined,{url :`/website/thuonghieu_sanpham?id=${id}&page=${page}`, PhuongThuc:2});
+                    if(response.ThanhCong){
+                        setThuongHieu(response.DuLieu.thuonghieu);
+                        setPhanTrang(response.DuLieu.phantrang);
+                        setDanhSachSanPham(response.DuLieu.sanpham);
+                    }
+                } catch (error) {
+                    console.error("Lỗi khi lấy dữ liệu thương hiệu:", error);
+                } finally {
+                    setLoading(false);
+                }
+            };
+            if (id) {
+                fetchData();
+            }
+         }, [id, page]);
+        if (!id) {
+            return <div class="flex items-center justify-center h-screen">
+                <p class="text-2xl font-bold text-gray-500">Không tìm thấy thương hiệu</p>
+            </div>;
+        }
+        if (loading) {
+            return <div class="flex items-center justify-center h-screen">
+                <p class="text-2xl font-bold text-gray-500">Đang tải...</p>
+            </div>;
+        }
+       
+
     return (
         <div class="bg-gray-50 min-h-screen font-sans text-slate-900">
+            <div className="bg-white">
+                <div className="max-w-7xl mx-auto px-4 pt-6">
+                    <button 
+                        onClick={() => navigate(-1)} 
+                        className="group flex items-center gap-2 text-slate-400 hover:text-red-600 transition-all font-black text-[10px] uppercase tracking-[0.2em]"
+                    >
+                        <i className="fas fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
+                        Quay lại
+                    </button>
+                </div>
+            </div>
     <div class="bg-white border-b border-gray-100 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row items-center gap-8">
             <div class="w-32 h-32 bg-white rounded-3xl border border-gray-100 shadow-xl flex items-center justify-center p-4">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Brand Logo" class="h-full w-full object-contain"/>
+                <img src={`http://localhost:3001/${ThuongHieu.LOGO}`} alt="Brand Logo" class="h-full w-full object-contain"/>
             </div>
             <div class="flex-1 text-center md:text-left">
-                <h1 class="text-4xl font-black tracking-tighter uppercase mb-2">Apple Ecosystem</h1>
+                <h1 class="text-4xl font-black tracking-tighter uppercase mb-2">{ThuongHieu.TENTHUONGHIEU}</h1>
                 <p class="text-slate-500 max-w-2xl leading-relaxed italic">
-                    Khám phá những sản phẩm công nghệ tiên tiến nhất từ Apple. Từ iPhone, MacBook đến các phụ kiện cao cấp, tất cả đều được thiết kế để mang lại trải nghiệm hoàn hảo.
+                    {ThuongHieu.MOTA || 'Đây là mô tả của thương hiệu. Thông tin chi tiết về thương hiệu sẽ được hiển thị ở đây.'}
                 </p>
                 <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
-                    <span class="bg-slate-100 px-4 py-1.5 rounded-full text-xs font-bold text-slate-600 uppercase tracking-widest">128 Sản phẩm</span>
+                    <span class="bg-slate-100 px-4 py-1.5 rounded-full text-xs font-bold text-slate-600 uppercase tracking-widest"> {PhanTrang.tong || 0} Sản phẩm</span>
                     <span class="bg-green-100 px-4 py-1.5 rounded-full text-xs font-bold text-green-600 uppercase tracking-widest">Đang có ưu đãi</span>
                 </div>
             </div>
@@ -26,47 +77,90 @@ function SanPhamThuongHieu() {
         <div class="flex flex-col lg:flex-row gap-8">
             
             <aside class="w-full lg:w-64 space-y-8 shrink-0">
-                <div>
-                    <h3 class="text-sm font-black uppercase tracking-widest mb-4 border-l-4 border-red-600 pl-3">Danh mục</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="flex justify-between items-center text-sm font-medium text-slate-600 hover:text-red-600 transition-all">iPhone <span class="bg-slate-100 px-2 py-0.5 rounded-md text-[10px]">42</span></a></li>
-                        <li><a href="#" class="flex justify-between items-center text-sm font-medium text-slate-600 hover:text-red-600 transition-all">MacBook <span class="bg-slate-100 px-2 py-0.5 rounded-md text-[10px]">18</span></a></li>
-                        <li><a href="#" class="flex justify-between items-center text-sm font-medium text-slate-600 hover:text-red-600 transition-all">iPad <span class="bg-slate-100 px-2 py-0.5 rounded-md text-[10px]">12</span></a></li>
-                        <li><a href="#" class="flex justify-between items-center text-sm font-medium text-slate-600 hover:text-red-600 transition-all">Phụ kiện <span class="bg-slate-100 px-2 py-0.5 rounded-md text-[10px]">56</span></a></li>
-                    </ul>
-                </div>
+           <div>
+        <div className="flex items-center gap-2 mb-6">
+            <div className="w-1.5 h-6 bg-red-600 rounded-full"></div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-800">Danh mục</h3>
+        </div>
+        <ul className="space-y-3">
+            {[
+                { name: "iPhone", count: 42 },
+                { name: "MacBook", count: 18 },
+                { name: "iPad", count: 12 },
+                { name: "Phụ kiện", count: 56 }
+            ].map((item) => (
+                <li key={item.name}>
+                    <button 
+                        type="button"
+                        className="w-full flex justify-between items-center py-2 px-3 rounded-xl text-sm font-bold text-slate-500 hover:text-red-600 hover:bg-red-50 transition-all group"
+                    >
+                        <span>{item.name}</span>
+                        <span className="bg-slate-100 group-hover:bg-red-100 group-hover:text-red-600 px-2.5 py-1 rounded-lg text-[10px] transition-colors">
+                            {item.count}
+                        </span>
+                    </button>
+                </li>
+            ))}
+        </ul>
+    </div>
 
-                <div>
-                    <h3 class="text-sm font-black uppercase tracking-widest mb-4 border-l-4 border-red-600 pl-3">Khoảng giá</h3>
-                    <div class="space-y-3">
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500"/>
-                            <span class="text-sm text-slate-600 group-hover:text-red-600 transition-colors">Dưới 10 Triệu</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500"/>
-                            <span class="text-sm text-slate-600 group-hover:text-red-600 transition-colors">10 - 20 Triệu</span>
-                        </label>
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                            <input type="checkbox" class="w-4 h-4 rounded border-gray-300 text-red-600 focus:ring-red-500"/>
-                            <span class="text-sm text-slate-600 group-hover:text-red-600 transition-colors">Trên 20 Triệu</span>
-                        </label>
-                    </div>
-                </div>
+    <hr className="border-gray-50" />
 
-                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-[2rem] p-6 text-white relative overflow-hidden">
-                    <div class="relative z-10">
-                        <p class="text-[10px] font-bold text-red-500 uppercase mb-2">Hot Deal</p>
-                        <h4 class="text-lg font-black leading-tight mb-4">iPhone 15 Pro Max <br/> Giảm 2 Triệu</h4>
-                        <button class="bg-white text-slate-900 text-[10px] font-black px-4 py-2 rounded-full uppercase">Mua ngay</button>
+    {/* KHOẢNG GIÁ - Thiết kế Checkbox tùy chỉnh */}
+    <div>
+        <div className="flex items-center gap-2 mb-6">
+            <div className="w-1.5 h-6 bg-red-600 rounded-full"></div>
+            <h3 className="text-sm font-black uppercase tracking-widest text-slate-800">Khoảng giá</h3>
+        </div>
+        <div className="space-y-4">
+            {[
+                "Dưới 10 Triệu",
+                "10 - 20 Triệu",
+                "Trên 20 Triệu"
+            ].map((price) => (
+                <label key={price} className="flex items-center group cursor-pointer">
+                    <div className="relative flex items-center justify-center">
+                        <input type="checkbox" className="peer appearance-none w-5 h-5 border-2 border-slate-200 rounded-md checked:bg-red-600 checked:border-red-600 transition-all" />
+                        <i className="fas fa-check absolute text-[10px] text-white opacity-0 peer-checked:opacity-100 transition-opacity"></i>
                     </div>
-                    <div class="absolute -right-4 -bottom-4 opacity-20 w-24 h-24 bg-white rounded-full"></div>
-                </div>
+                    <span className="ml-3 text-sm font-bold text-slate-500 group-hover:text-slate-800 transition-colors uppercase tracking-tight">
+                        {price}
+                    </span>
+                </label>
+            ))}
+        </div>
+    </div>
+
+    {/* BANNER QC - Thiết kế hiện đại hơn */}
+    <div className="relative group overflow-hidden rounded-[2rem] bg-slate-900 p-6 transition-all hover:shadow-2xl hover:shadow-red-100/50">
+        {/* Background Pattern */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/20 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-red-600/30 transition-colors"></div>
+        
+        <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-3">
+                <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                </span>
+                <p className="text-[10px] font-black text-red-500 uppercase tracking-[0.2em]">Hot Deal</p>
+            </div>
+            
+            <h4 className="text-xl font-black text-white leading-tight mb-2 italic">iPhone 15 Pro</h4>
+            <p className="text-slate-400 text-[11px] font-medium mb-5">Giảm ngay 2.000.000đ khi thanh toán qua thẻ.</p>
+            
+            <button className="w-full bg-white hover:bg-red-600 hover:text-white text-slate-900 text-[11px] font-black py-3 rounded-xl uppercase tracking-widest transition-all active:scale-95">
+                Nhận ưu đãi
+            </button>
+        </div>
+
+        {/* Decor icon */}
+        <i className="fab fa-apple absolute -right-2 -bottom-2 text-7xl text-white/5 group-hover:text-white/10 transition-all rotate-12"></i>
+    </div>
             </aside>
 
             <main class="flex-1">
                 <div class="flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded-2xl border border-gray-100 shadow-sm mb-8 gap-4">
-                    <p class="text-sm text-slate-500">Hiển thị <span class="font-bold text-slate-900">1 - 12</span> của 128 sản phẩm</p>
+                    <p class="text-sm text-slate-500">Hiển thị <span class="font-bold text-slate-900"> {PhanTrang.batdau || 0} - {PhanTrang.ketthuc || 0} </span>  của {PhanTrang.tong || 0} sản phẩm</p>
                     <div class="flex items-center gap-4">
                         <span class="text-xs font-bold text-slate-400 uppercase tracking-tighter">Sắp xếp:</span>
                         <select class="text-sm font-bold bg-slate-50 border-none rounded-xl focus:ring-0 cursor-pointer">
@@ -79,44 +173,51 @@ function SanPhamThuongHieu() {
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="group bg-white rounded-[2rem] border border-gray-100 p-4 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative">
-                        <div class="absolute top-4 left-4 z-10 bg-red-600 text-white text-[10px] font-black px-3 py-1 rounded-lg">-15%</div>
+                    {
+                        DanhSachSanPham.length === 0 ? (
+                            <div class="col-span-full text-center py-20">
+                                <p class="text-2xl font-bold text-gray-500">Không có sản phẩm nào!</p>
+                            </div>
+                        ) : (
+                            DanhSachSanPham.map((sanpham) => (
+                                   <div class="group bg-white rounded-[2rem] border border-gray-100 p-4 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative">
+                                    {
+                                        sanpham.SOLUONG > 0 ? (
+                                            <div class="absolute top-4 left-4 z-10 bg-green-600 text-white text-[10px] font-black px-3 py-1 rounded-lg">Còn hàng</div>
+                                        ) : (
+                                            <div class="absolute top-4 left-4 z-10 bg-gray-600 text-white text-[10px] font-black px-3 py-1 rounded-lg">Hết hàng</div>
+                                        )
+                                    }
+   {
+    (sanpham.KHUYENMAI && sanpham.KHUYENMAI > 0 && sanpham.KHUYENMAI < sanpham.GIABAN) ? (
+        <div class="absolute top-4 right-4 z-10 bg-red-600 text-white text-[10px] font-black px-2 py-1 rounded-lg">
+            -{Math.round(((sanpham.KHUYENMAI - sanpham.GIABAN) / sanpham.KHUYENMAI) * 100)}%
+        </div>
+    ) : null
+}
                         <div class="aspect-square bg-slate-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-6 overflow-hidden group-hover:bg-white transition-colors">
-                            <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/iphone-15-pro-finish-select-202309-6-7inch-naturaltitanium?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1692845702708" 
-                                 class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700"/>
+                            <img src={`http://localhost:3001/${sanpham.HINHANH}`} alt={sanpham.TENSANPHAM}
+                                 class="w-full h-full object-contain mix-blend-multipy group-hover:scale-110 transition-transform duration-700"/>
                         </div>
                         <div class="px-2">
-                            <h3 class="text-sm font-bold text-slate-800 truncate uppercase mb-2 group-hover:text-red-600 transition-colors">iPhone 15 Pro Max 256GB</h3>
+                            <h3 class="text-sm font-bold text-slate-800 truncate uppercase mb-2 group-hover:text-red-600 transition-colors">{sanpham.TENSANPHAM}</h3>
                             <div class="flex items-baseline gap-2 mb-4">
-                                <span class="text-lg font-black text-red-600">29.990.000đ</span>
-                                <span class="text-[10px] text-slate-400 line-through">34.990.000đ</span>
+                                <span class="text-lg font-black text-red-600">{fun.formatCurrency(sanpham.GIABAN)}</span>
+                                <span class="text-[10px] text-slate-400 line-through">{fun.formatCurrency(sanpham.KHUYENMAI)}</span>
                             </div>
-                            <button class="w-full bg-slate-900 text-white py-3 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95 shadow-lg shadow-slate-100">Xem chi tiết</button>
+                            <Link to={`/chi-tiet-san-pham/${sanpham.IDSANPHAM}`} class="w-full bg-slate-900 text-white p-4 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95 shadow-lg shadow-slate-100">Xem chi tiết</Link>
                         </div>
                     </div>
+                            ))
+                        )
 
-                    <div class="group bg-white rounded-[2rem] border border-gray-100 p-4 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative">
-                        <div class="aspect-square bg-slate-50 rounded-[1.5rem] mb-4 flex items-center justify-center p-6 overflow-hidden group-hover:bg-white transition-colors">
-                            <img src="https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-midnight-select-20220606?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1653084303665" 
-                                 class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700"/>
-                        </div>
-                        <div class="px-2">
-                            <h3 class="text-sm font-bold text-slate-800 truncate uppercase mb-2 group-hover:text-red-600 transition-colors">MacBook Air M2 13"</h3>
-                            <div class="flex items-baseline gap-2 mb-4">
-                                <span class="text-lg font-black text-slate-900">24.500.000đ</span>
-                            </div>
-                            <button class="w-full bg-slate-900 text-white py-3 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-red-600 transition-all active:scale-95">Xem chi tiết</button>
-                        </div>
-                    </div>
-
+                    }
                     </div>
 
                 <div class="mt-12 flex justify-center gap-2">
-                    <button class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center font-bold text-sm text-slate-400 hover:border-red-600 hover:text-red-600 transition-all">&larr;</button>
-                    <button class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center font-bold text-sm text-white shadow-lg shadow-red-200">1</button>
-                    <button class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center font-bold text-sm text-slate-600 hover:border-red-600 transition-all">2</button>
-                    <button class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center font-bold text-sm text-slate-600 hover:border-red-600 transition-all">3</button>
-                    <button class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center font-bold text-sm text-slate-400 hover:border-red-600 hover:text-red-600 transition-all">&rarr;</button>
+                    <button onClick={()=>{setPage(p=>p-1)}} disabled={page === 1} class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center font-bold text-sm text-slate-400 hover:border-red-600 hover:text-red-600 transition-all">Trước</button>
+                    <span class="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center font-bold text-sm text-white shadow-lg shadow-red-200">{page}</span>
+                    <button onClick={()=>{setPage(p=>p+1)}} disabled={page === Math.ceil(PhanTrang.tong / 10)} class="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center font-bold text-sm text-slate-400 hover:border-red-600 hover:text-red-600 transition-all">Sau</button>
                 </div>
             </main>
         </div>
