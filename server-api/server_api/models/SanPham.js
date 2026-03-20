@@ -272,4 +272,45 @@ export default class SanPhamModel{
             }
         }
    }
+    static async layDanhSachSanPhamMoi(){
+        //lấy 4 sản phẩm mới nhất dựa trên ngày tạo ,NGAYNHAP nằm ở bảng phieunhap
+        try {
+            const [ketqqua] = await execute(`
+                SELECT sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.GIABAN, ct.SOLUONG, ha.HINHANH
+                FROM sanpham sp
+                JOIN thuonghieu th ON sp.IDTHUONGHIEU = th.IDTHUONGHIEU
+                JOIN chitiet_phieunhap ct ON sp.IDSANPHAM = ct.IDSANPHAM
+                JOIN phieunhap pn ON ct.IDPN = pn.IDPN
+                JOIN (
+                    SELECT IDSANPHAM, HINHANH
+                    FROM hinhanh_sanpham
+                    WHERE IDHA = (
+                        SELECT MIN(IDHA)
+                        FROM hinhanh_sanpham h2
+                        WHERE h2.IDSANPHAM = hinhanh_sanpham.IDSANPHAM
+                    )
+                ) ha ON sp.IDSANPHAM = ha.IDSANPHAM
+                WHERE sp.TRANGTHAI = 1
+                ORDER BY pn.NGAYNHAP DESC
+                LIMIT 4;
+                `,[]);
+                if(ketqqua.length === 0){
+                    return {
+                        ThanhCong:false,
+                        message:'Không có sản phẩm mới nào!'
+                    }
+                }
+            return {
+                ThanhCong:true,
+                dulieu:ketqqua
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return {
+                status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            }
+        }
+
+    }
 }

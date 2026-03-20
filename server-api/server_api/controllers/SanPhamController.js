@@ -229,4 +229,32 @@ export default class SanPhamController{
                 })
             }
     }
+    static async layDanhSachSanPhamMoi(req,res){
+        try {
+            const ketqqua = await SanPhamModel.layDanhSachSanPhamMoi();
+            if(ketqqua.status){
+                return res.json({
+                    status:true,
+                    message:ketqqua.message
+                })
+            }
+            if(ketqqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqqua.dulieu
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Không có sản phẩm mới nào!'
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
 }

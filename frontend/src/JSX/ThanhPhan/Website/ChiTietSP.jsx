@@ -16,7 +16,7 @@ function ChiTietSanPhamUser() {
         const fetchDetail = async () => {
             setLoading(true);
             try {
-                const LayDL = await API.CallAPI(undefined, { PhuongThuc: 2, url: `/admin/layChiTietSP_theoid?id=${id}` });
+                const LayDL = await API.CallAPI(undefined, { PhuongThuc: 2, url: `/website/layChiTietSP_theoid?id=${id}` });
                 if (LayDL.ThanhCong) {
                     setImages(LayDL.dulieu.hinhanh);
                     setSanPham(LayDL.dulieu.sanpham[0]);

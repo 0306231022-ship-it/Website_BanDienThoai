@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useState, useEffect } from "react";
+import SanPhamMoi from "./SanPhamMoi";
 
 const SanPhamTrangChu = () => {
     const [ThuongHieu, setThuongHieu] = useState([]);
@@ -207,8 +208,6 @@ const SanPhamTrangChu = () => {
                         </div>
                     </div>
                 </div>
-
-                {/* --- SECTION 3: THƯƠNG HIỆU --- */}
                 <section className="py-10">
                     <div className="flex justify-between items-center mb-10">
                         <div className="flex items-center gap-4">
@@ -233,6 +232,7 @@ const SanPhamTrangChu = () => {
                         )}
                     </div>
                 </section>
+                <SanPhamMoi />
             </div>
         </div>
     );
