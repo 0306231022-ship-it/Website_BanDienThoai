@@ -7,10 +7,13 @@ const upload = multer();
 //=========================================
 // PHẦN II : ĐỊNH NGHĨA ROUTE POST NguoiDung
 NguoiDungRoute.post('/DangKy', upload.none(), CanhanADController.DangKy_NguoiDung);
+NguoiDungRoute.post('/dangnhap', upload.none(), CanhanADController.DangNhap_NguoiDung);
+NguoiDungRoute.post('/kiemtra',upload.none(), CanhanADController.KiemTraDangNhap_NguoiDung);
 //=========================================
 // PHẦN III : ĐỊNH NGHĨA ROUTE GET admin
 //=========================================
 // PHẦN IV : ĐỊNH NGHĨA ROUTE GET NguoiDung
+NguoiDungRoute.get('/ThongTin',upload.none(), CanhanADController.ThongTin_NguoiDung);
 //=========================================
 
 console.log("✅ NguoiDungRoute loaded");

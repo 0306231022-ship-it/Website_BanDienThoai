@@ -29,6 +29,7 @@ function TrangChuWeb() {
                     <Route path="/san-pham/:id/:name" element={<SanPhamThuongHieu />} />
                     <Route path="/chi-tiet-san-pham/:id" element={<ChiTietSanPhamUser />} />
                     <Route path="*" element={<Trang404 />} />
+
                 </Routes>
             </main>
             <footer className="bg-text text-gray-400 pt-12 pb-8 bg-gray-800">

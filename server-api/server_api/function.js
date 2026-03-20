@@ -9,7 +9,7 @@ const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
 
 export const generateToken = (user) => {
     return jwt.sign(
-        { id: user.id },
+        { id: user.IDND },
         JWT_SECRET,
         { expiresIn: JWT_EXPIRES_IN }
     );

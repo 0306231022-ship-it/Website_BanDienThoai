@@ -23,6 +23,7 @@ root.render(
           <Route path="/*" element={<TrangChuWeb />} />
           <Route path="/500" element={<ServerErrorPage />} />
           <Route path="/quen-mat-khau" element={<QuenMatKhau />} />
+        
         </Routes>
         </AppADProvider>
       </AppMDProvider>

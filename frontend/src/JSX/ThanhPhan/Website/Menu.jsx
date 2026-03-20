@@ -1,13 +1,28 @@
 import '../../../CSS/Menu.css';
 import { Link } from "react-router-dom";
-import { useEffect} from 'react';
+import { useEffect ,useState} from 'react';
 import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
+import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
+import MenuND from './MenuND';
 function Menu() {
     const {GetTTwebsite,TTwebsite}= useAppContext();
     const { OpenMoDal } = useModalContext();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
+ 
+    
      useEffect(() => {
-        GetTTwebsite(); 
+        GetTTwebsite();
+        const fetchData = async () => {
+            const loggedIn = await KiemTra();
+            setIsLoggedIn(loggedIn);
+            if (loggedIn) {
+                const userInfo = await LayThongTinNguoiDung();
+                setUser(userInfo);
+            }
+        }
+        fetchData();
         //eslint-disable-next-line react-hooks/exhaustive-deps 
     },[]);
     // Hàm để lấy lời chào dựa trên thời gian hiện tại
@@ -35,12 +50,12 @@ function Menu() {
             <div className="contact-auth-group flex items-center space-x-4">
                 <span className="support-email hidden md:inline">Email hỗ trợ: {TTwebsite.Email}</span> 
                 <span className="auth-links font-bold">
-                    <button 
-                        className="auth-link text-yellow-300 hover:text-white transition duration-200"
-                        onClick={() => OpenMoDal(null, { TenTrang: 'DangNhap', TieuDe: 'Đăng Nhập' })}
-                    >
-                        Đăng nhập
-                    </button>
+                    {
+                       isLoggedIn ? (
+                        <MenuND user={user} />
+                       ) : (
+                        <>
+                
                     <span className="mx-1">/</span>
                     <button 
                         className="auth-link text-yellow-300 hover:text-white transition duration-200"
@@ -48,6 +63,17 @@ function Menu() {
                     >
                         Đăng ký
                     </button>
+                                  <button 
+                        className="auth-link text-yellow-300 hover:text-white transition duration-200"
+                        onClick={() => OpenMoDal(null, { TenTrang: 'DangNhap', TieuDe: 'Đăng Nhập' })}
+                    >
+                        Đăng nhập
+                    </button>
+                        </>
+                       )
+
+                    }
+              
                 </span>
             </div>
         </div>
