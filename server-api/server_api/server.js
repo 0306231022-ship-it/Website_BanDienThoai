@@ -6,6 +6,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import adminRouter from './routers/adminRouter.js';
 import websiteRoute from './routers/webstiteRoute.js';
+import NguoiDungRoute from './routers/userRouter.js';
 
 import './CleanDB.js';
 const app = express();
@@ -23,6 +24,7 @@ app.use("/uploads", express.static("uploads"));
 app.get('/', (req, res) => res.json({ message: 'Server API running' }));
 app.use('/api/admin', adminRouter);
 app.use('/api/website', websiteRoute);
+app.use('/api/NguoiDung', NguoiDungRoute);
 
 app.use((req, res) => 
   res.json({

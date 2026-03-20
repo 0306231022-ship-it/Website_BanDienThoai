@@ -2,8 +2,10 @@ import '../../../CSS/Menu.css';
 import { Link } from "react-router-dom";
 import { useEffect} from 'react';
 import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
+import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 function Menu() {
     const {GetTTwebsite,TTwebsite}= useAppContext();
+    const { OpenMoDal } = useModalContext();
      useEffect(() => {
         GetTTwebsite(); 
         //eslint-disable-next-line react-hooks/exhaustive-deps 
@@ -33,9 +35,19 @@ function Menu() {
             <div className="contact-auth-group flex items-center space-x-4">
                 <span className="support-email hidden md:inline">Email hỗ trợ: {TTwebsite.Email}</span> 
                 <span className="auth-links font-bold">
-                    <Link to="#" className="auth-link text-yellow-300 hover:text-white transition duration-200">Đăng nhập</Link>
+                    <button 
+                        className="auth-link text-yellow-300 hover:text-white transition duration-200"
+                        onClick={() => OpenMoDal(null, { TenTrang: 'DangNhap', TieuDe: 'Đăng Nhập' })}
+                    >
+                        Đăng nhập
+                    </button>
                     <span className="mx-1">/</span>
-                    <Link to="#" className="auth-link text-yellow-300 hover:text-white transition duration-200">Đăng ký</Link>
+                    <button 
+                        className="auth-link text-yellow-300 hover:text-white transition duration-200"
+                        onClick={() => OpenMoDal(null, { TenTrang: 'DangKy', TieuDe: 'Đăng Ký' })}
+                    >
+                        Đăng ký
+                    </button>
                 </span>
             </div>
         </div>

@@ -16,6 +16,8 @@ import ThongTinTaiChinh from "../JSX/ThanhPhan/Admin/NhaCungCap/modal/ThongTinTa
 import ChinhSuaSo from "../JSX/ThanhPhan/MoDAL/CapNhatSo";
 import ChinhSuaEmail from "../JSX/ThanhPhan/MoDAL/CapNhatEmail";
 import ThemSanPham from "../JSX/ThanhPhan/Admin/QuanLiBanner/DanhSachSanPhamThem";
+import DangNhap from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/DangNhap";
+import DangKy from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/DangKy";
 
 const MoDalContext = createContext();
 
@@ -37,9 +39,12 @@ const MODAL_REGISTRY = {
     'ChinhSuaSo' : ChinhSuaSo,
     'ChinhSuaEmail' : ChinhSuaEmail,
     'ThemSanPham' : ThemSanPham,
+    'DangNhap' : DangNhap,
+    'DangKy' : DangKy
+
 };
 
-export function AppProvider({ children }) {
+export function AppMDProvider({ children }) {
     const [modalStack, setModalStack] = useState([]);
     const OpenMoDal = (dulieu, yeucau) => {
         setModalStack((prev) => [

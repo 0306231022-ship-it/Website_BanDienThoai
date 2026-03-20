@@ -2,15 +2,12 @@ import { Link } from "react-router-dom";
 import { useADContext } from '../../../../CONTEXT/QuanLiCaNhanAdmin';
 import { useAppContext } from "../../../../CONTEXT/TrangChuAdmin";
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
-import ChinhSuaImgaeVaTen from "./Modal/ChinhSuaLoGo&Ten";
-import ChinhSuaTen from "./Modal/Conmodal/ChinhSuaTen";
-import Trang404 from "../../../TRANG/err/404";
 import { useEffect } from "react";
 
 function HoSo() {
     const { TTCaNhan, GetTTCaNhan } = useADContext();
     const { TTwebsite, GetTTwebsite } = useAppContext();
-    const { modalState, MoModal, DongModal, ChinhSuaModel } = useModalContext();
+    const { MoModal, } = useModalContext();
 
     useEffect(() => {
         GetTTwebsite();

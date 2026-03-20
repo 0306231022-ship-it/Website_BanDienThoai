@@ -1,4 +1,5 @@
 import {execute} from '../config/db.js';
+import { TaoID } from '../function.js';
 export default class adminModel{
     static async LayTT_ID(adminId){
      try {
@@ -30,6 +31,18 @@ export default class adminModel{
             }
             
         } catch (error) {
+            return false;
+        }
+    }
+    static async DangKy_NguoiDung(Data){
+        try {
+            const [insert] = await execute(`
+                INSERT INTO nguoidung (IDND, HOTEN, SDT, EMAIL, MATKHAU, NGAYTHAMGIA, TRANGTHAI ,LOAIND) 
+                VALUES (?, ?, ?, ?, ?, NOW(), 1, 0)
+            `, [TaoID('ND'), Data.name, Data.phone, Data.email, Data.password]);
+            return insert.affectedRows > 0 ? true : false;
+        } catch (error) {
+            console.error('Lỗi trong quá trình đăng ký:', error);
             return false;
         }
     }

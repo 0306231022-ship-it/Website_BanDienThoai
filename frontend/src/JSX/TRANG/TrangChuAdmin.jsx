@@ -3,7 +3,6 @@ import { Link, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import { useAppContext } from '../../CONTEXT/TrangChuAdmin';
-import { AppProvider } from '../../CONTEXT/QuanLiModal';
 import { useADContext } from '../../CONTEXT/QuanLiCaNhanAdmin';
 import { AppProviderFS } from '../../CONTEXT/QuanLi_FlashSale';
 
@@ -162,15 +161,12 @@ function TrangChuAdmin() {
     </header>
 
       <div className="flex">
-        <AppProvider>
           <AppProviderFS>
           <Routes>
             <Route path="*" element={<QuanLiTT />} />
             <Route path="/CaiDat/*" element={<QuanLiTTCaNhan />} />
           </Routes>
           </AppProviderFS>
-        </AppProvider>
-
       </div>
     </>
   );

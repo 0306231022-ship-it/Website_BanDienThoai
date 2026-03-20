@@ -23,7 +23,6 @@ import PhieuNhapHang from '../SanPham/PhieuNhapHang';
 import ThemPhieuNhap from '../SanPham/ThemPhieuNhap';
 import HoaDonNhapKho from '../SanPham/HoaDonNhapHang';
 import ThungRacSanPham from '../SanPham/ThungRacSanPham';
-import { AppProvider } from '../../../../CONTEXT/QuanLiModal';
 import ChiTietNhaCungCap from '../NhaCungCap/ChiTietNhaCungCap';
 import ChiTietPhieu from '../SanPham/ChiTietPhieu';
 import DanhSachBanner from '../QuanLiBanner/DanhSachBanner';
@@ -252,7 +251,6 @@ function QuanLiTT() {
          </aside>
     
         <main className="flex-grow ml-72 overflow-y-auto min-h-screen py-2" role="main" aria-label="Nội dung quản trị">
-            <AppProvider>
                 <Routes>
                     <Route path="thuonghieu" element={<DanhSachThuongHieu />} />
                     <Route path="thuonghieu/ThemThuongHieu" element={<ThemThuongHieu />} />
@@ -293,7 +291,6 @@ function QuanLiTT() {
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                    
                 </Routes>
-            </AppProvider>
         </main>
         </>
     );
