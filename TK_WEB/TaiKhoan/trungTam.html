@@ -3,164 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hồ sơ cá nhân | PhoneStore</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .text-primary { color: #D70018; }
-        .bg-primary { background-color: #D70018; }
-        .border-primary { border-color: #D70018; }
-    </style>
+    <title>Giỏ hàng trống</title>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 h-screen flex items-center justify-center">
 
-    <header class="bg-white shadow-sm py-4 px-6 md:px-12 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <div class="bg-primary p-1.5 rounded-lg">
-                <i class="fas fa-mobile-alt text-white text-xl"></i>
+    <div class="max-w-md w-full bg-white p-10 rounded-2xl shadow-lg text-center mx-4">
+        <div class="mb-6">
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-red-50 rounded-full mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
             </div>
-            <span class="text-xl font-black text-primary tracking-tighter uppercase">PhoneStore</span>
         </div>
-        <a href="/" class="text-sm font-bold text-gray-600 hover:text-primary"><i class="fas fa-arrow-left mr-2"></i>Quay lại trang chủ</a>
-    </header>
 
-    <main class="max-w-6xl mx-auto py-10 px-4">
-        <div class="flex flex-col md:flex-row gap-8">
-            
-            <aside class="w-full md:w-1/4">
-                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
-                    <div class="p-6 text-center border-b border-gray-100">
-                        <div class="relative inline-block">
-                            <img src="https://ui-avatars.com/api/?name=Nguyen+Van+A&background=D70018&color=fff" 
-                                 alt="Avatar" class="w-24 h-24 rounded-full border-4 border-red-50 mx-auto">
-                            <button class="absolute bottom-0 right-0 bg-white shadow-md p-1.5 rounded-full text-primary border border-gray-100 hover:bg-gray-50">
-                                <i class="fas fa-camera text-xs"></i>
-                            </button>
-                        </div>
-                        <h2 class="mt-4 font-bold text-lg text-gray-800">Nguyễn Văn A</h2>
-                        <p class="text-gray-500 text-sm italic">Khách hàng thân thiết</p>
-                    </div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-3">Giỏ hàng của bạn đang trống</h2>
+        <p class="text-gray-500 mb-8 px-4">
+            Có vẻ như bạn vẫn chưa chọn được món đồ ưng ý. Đừng lo, hàng ngàn ưu đãi đang chờ bạn khám phá!
+        </p>
 
-                    <nav class="p-4">
-                        <ul class="space-y-1">
-                            <li>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl bg-red-50 text-primary font-bold">
-                                    <i class="fas fa-user-circle w-6"></i>
-                                    <span>Thông tin cá nhân</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-primary transition">
-                                    <i class="fas fa-shopping-bag w-6"></i>
-                                    <span>Đơn hàng của tôi</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-primary transition">
-                                    <i class="fas fa-map-marker-alt w-6"></i>
-                                    <span>Sổ địa chỉ</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="flex items-center space-x-3 p-3 rounded-xl text-gray-600 hover:bg-gray-50 hover:text-primary transition">
-                                    <i class="fas fa-bell w-6"></i>
-                                    <span>Thông báo</span>
-                                </a>
-                            </li>
-                            <li class="pt-4 mt-4 border-t border-gray-100">
-                                <button class="flex items-center space-x-3 p-3 rounded-xl text-red-600 hover:bg-red-50 w-full transition font-medium">
-                                    <i class="fas fa-sign-out-alt w-6"></i>
-                                    <span>Đăng xuất</span>
-                                </button>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </aside>
-
-            <section class="w-full md:w-3/4">
-                <div class="bg-white rounded-2xl shadow-sm p-6 md:p-8">
-                    <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-                        <span class="w-2 h-8 bg-primary rounded-full mr-3"></span>
-                        Hồ sơ của tôi
-                    </h3>
-
-                    <form class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Họ và tên</label>
-                                <input type="text" value="Nguyễn Văn A" 
-                                       class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-primary outline-none transition">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Số điện thoại</label>
-                                <input type="text" value="0901234xxx" 
-                                       class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-primary outline-none transition">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                                <input type="email" value="nguyenvana@gmail.com" disabled
-                                       class="w-full p-3 border border-gray-100 bg-gray-50 text-gray-500 rounded-xl cursor-not-allowed">
-                                <p class="text-[10px] text-gray-400 mt-1 uppercase">* Không thể thay đổi Email đăng nhập</p>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-gray-700 mb-2">Giới tính</label>
-                                <div class="flex items-center space-x-6 mt-3">
-                                    <label class="flex items-center cursor-pointer">
-                                        <input type="radio" name="gender" class="w-4 h-4 text-primary focus:ring-red-500" checked>
-                                        <span class="ml-2 text-sm">Nam</span>
-                                    </label>
-                                    <label class="flex items-center cursor-pointer">
-                                        <input type="radio" name="gender" class="w-4 h-4 text-primary focus:ring-red-500">
-                                        <span class="ml-2 text-sm">Nữ</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-bold text-gray-700 mb-2">Địa chỉ nhận hàng mặc định</label>
-                            <textarea rows="3" 
-                                      class="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-primary outline-none transition">Số 123, Đường ABC, Quận 1, TP. Hồ Chí Minh</textarea>
-                        </div>
-
-                        <div class="pt-4 border-t border-gray-100 flex justify-end space-x-4">
-                            <button type="button" class="px-6 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-bold hover:bg-gray-50 transition">Hủy bỏ</button>
-                            <button type="submit" class="px-8 py-2.5 rounded-xl bg-primary text-white font-bold hover:bg-red-700 shadow-lg shadow-red-200 transition">Lưu thay đổi</button>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8 text-white">
-                    <div class="bg-primary p-6 rounded-2xl shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-red-100 text-xs uppercase font-bold tracking-wider">Đơn hàng</p>
-                            <p class="text-2xl font-black">12</p>
-                        </div>
-                        <i class="fas fa-box-open text-3xl opacity-30"></i>
-                    </div>
-                    <div class="bg-gray-800 p-6 rounded-2xl shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-gray-400 text-xs uppercase font-bold tracking-wider">Điểm tích lũy</p>
-                            <p class="text-2xl font-black">2.450</p>
-                        </div>
-                        <i class="fas fa-coins text-3xl opacity-30 text-yellow-400"></i>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
-                        <div class="text-gray-800">
-                            <p class="text-gray-400 text-xs uppercase font-bold tracking-wider">Hạng thẻ</p>
-                            <p class="text-2xl font-black text-primary italic">GOLD</p>
-                        </div>
-                        <i class="fas fa-crown text-3xl text-yellow-500"></i>
-                    </div>
-                </div>
-            </section>
+        <div class="space-y-3">
+            <a href="#" class="block w-full py-3 px-6 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl transition duration-300">
+                Tiếp tục mua sắm
+            </a>
+            <a href="#" class="block w-full py-3 px-6 bg-white border border-gray-200 hover:bg-gray-50 text-gray-600 font-medium rounded-xl transition duration-300">
+                Xem sản phẩm yêu thích
+            </a>
         </div>
-    </main>
 
-    <footer class="text-center py-10 text-gray-400 text-xs">
-        © 2026 PhoneStore - Hệ thống bán lẻ ủy quyền
-    </footer>
+        <p class="mt-8 text-sm text-gray-400">
+            Cần hỗ trợ? <a href="#" class="text-blue-500 hover:underline">Chat với chúng tôi</a>
+        </p>
+    </div>
 
 </body>
 </html>

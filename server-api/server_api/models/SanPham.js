@@ -411,8 +411,26 @@ export default class SanPhamModel{
         return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };
     }
 }
-
-
-
-
+    static async GioHang_NguoiDung(IDNGUOIDUNG){
+        try {
+            //LẤY 1 HÌNH ẢNH CHO MỖI SAN PHẨM, NẾU CÓ NHIỀU HÌNH ẢNH THÌ LẤY HÌNH CÓ IDHA NHỎ NHẤT
+            const [giohang] = await execute(`
+                SELECT sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.DONGIA, ct.SOLUONG, ha.HINHANH 
+                FROM donhang dh
+                JOIN chitiet_donhang ct ON dh.IDDH = ct.IDDH
+                JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
+                JOIN thuonghieu th ON sp.IDTHUONGHIEU = th.IDTHUONGHIEU
+                JOIN hinhanh_sanpham ha ON sp.IDSANPHAM = ha.IDSANPHAM AND ha.IDHA = (
+                    SELECT MIN(IDHA) 
+                    FROM hinhanh_sanpham 
+                    WHERE IDSANPHAM = sp.IDSANPHAM
+                )
+                WHERE dh.IDKH = ?
+            `,[IDNGUOIDUNG]);
+            return { ThanhCong:true, dulieu:giohang };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };
+        }
+    }
 }

@@ -19,6 +19,7 @@ NguoiDungRoute.post('/ThemGioHang',upload.none(), SanPhamController.ThemGioHang_
 //=========================================
 // PHẦN IV : ĐỊNH NGHĨA ROUTE GET NguoiDung
 NguoiDungRoute.get('/ThongTin',upload.none(), CanhanADController.ThongTin_NguoiDung);
+NguoiDungRoute.get('/giohang',upload.none(), SanPhamController.GioHang_NguoiDung);
 //=========================================
 
 console.log("✅ NguoiDungRoute loaded");

@@ -1,6 +1,6 @@
 import '../../../CSS/Menu.css';
 import { Link } from "react-router-dom";
-import { use, useEffect ,useState} from 'react';
+import {  useEffect ,useState} from 'react';
 import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 import {KiemTra  , LayThongTinNguoiDung  } from '../../../hook/KiemTraDangNhap';
@@ -112,7 +112,7 @@ function Menu() {
                     </div>
                 </li>
                 <li className="widget cart-widget flex items-center gap-2">
-                    <span className="widget-icon text-xl text-red-700 w-6 text-center"><i className="fas fa-shopping-cart"></i></span>
+                    <Link to="/gio-hang" className="widget-icon text-xl text-red-700 w-6 text-center"><i className="fas fa-shopping-cart"></i></Link>
                     <div className="widget-text-group leading-tight">
                         <p className="widget-title text-xs text-gray-500 m-0">Giỏ hàng</p>
                         <p className="widget-value cart-count text-base font-bold text-red-700 m-0">({cartCount}) sản phẩm</p>

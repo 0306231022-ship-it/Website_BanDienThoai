@@ -294,4 +294,33 @@ export default class SanPhamController{
             })
         }
     }
+    static async GioHang_NguoiDung(req,res){
+        const idnd = req.query.idnd;
+        const kiemtra_IDND = await adminModel.kiemtraid(idnd);
+        if(!kiemtra_IDND){
+            return res.json({
+                ThanhCong:false,
+                message:'Người dùng không tồn tại!'
+            })
+        }
+        try {
+            const ketqua = await SanPhamModel.GioHang_NguoiDung(idnd);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqua.dulieu
+                })
+            }
+            return res.json({
+                ThanhCong:false,
+                message:ketqua.message
+            })
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
 }
