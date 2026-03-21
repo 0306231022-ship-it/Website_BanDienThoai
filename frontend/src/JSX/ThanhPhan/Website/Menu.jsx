@@ -1,17 +1,16 @@
 import '../../../CSS/Menu.css';
 import { Link } from "react-router-dom";
-import { useEffect ,useState} from 'react';
+import { use, useEffect ,useState} from 'react';
 import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
-import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
+import {KiemTra  , LayThongTinNguoiDung  } from '../../../hook/KiemTraDangNhap';
 import MenuND from './MenuND';
 function Menu() {
     const {GetTTwebsite,TTwebsite}= useAppContext();
     const { OpenMoDal } = useModalContext();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
- 
-    
+    const [cartCount, setCartCount] = useState(0);
      useEffect(() => {
         GetTTwebsite();
         const fetchData = async () => {
@@ -37,8 +36,8 @@ function Menu() {
             return 'Buổi tối vui vẻ bên nười thân và gia đình';
         }
     }
-    // Giả sử số lượng sản phẩm trong giỏ hàng là 3 (bạn có thể thay đổi giá trị này tùy ý)
-    const cartCount = 3;
+    
+   
 
 
 
@@ -55,7 +54,12 @@ function Menu() {
                         <MenuND user={user} />
                        ) : (
                         <>
-                
+                                       <button 
+                        className="auth-link text-yellow-300 hover:text-white transition duration-200"
+                        onClick={() => OpenMoDal(null, { TenTrang: 'DangNhap', TieuDe: 'Đăng Nhập' })}
+                    >
+                        Đăng nhập
+                    </button>
                     <span className="mx-1">/</span>
                     <button 
                         className="auth-link text-yellow-300 hover:text-white transition duration-200"
@@ -63,12 +67,7 @@ function Menu() {
                     >
                         Đăng ký
                     </button>
-                                  <button 
-                        className="auth-link text-yellow-300 hover:text-white transition duration-200"
-                        onClick={() => OpenMoDal(null, { TenTrang: 'DangNhap', TieuDe: 'Đăng Nhập' })}
-                    >
-                        Đăng nhập
-                    </button>
+           
                         </>
                        )
 

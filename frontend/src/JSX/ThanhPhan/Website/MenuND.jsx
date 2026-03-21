@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { DangXuat } from '../../../hook/KiemTraDangNhap';
 function Menu({ user }) {
     const [showUserMenu, setShowUserMenu] = useState(false); // State đóng mở menu
-    const handleLogout = () => {
-
-    };
     return (
         <div className="relative inline-block text-left">
             <button 
@@ -36,7 +34,7 @@ function Menu({ user }) {
                             </Link>
                             <hr className="border-gray-100" />
                             <button 
-                                onClick={handleLogout}
+                                onClick={DangXuat}
                                 className="flex items-center w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-600 hover:text-white transition"
                             >
                                 <i className="fas fa-sign-out-alt w-5"></i> Đăng xuất

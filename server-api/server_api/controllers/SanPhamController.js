@@ -1,3 +1,4 @@
+import adminModel from '../models/adminModel.js';
 import SanPhamModel from '../models/SanPham.js';
 export default class SanPhamController{
    static async lay_ds_sanpham(req,res){
@@ -253,6 +254,42 @@ export default class SanPhamController{
             console.error('Có lỗi sãy ra:' + error);
             return res.json({
                 status:true,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
+    static async ThemGioHang_NguoiDung(req,res){
+        const { IDSANPHAM, SOLUONG, IDNGUOIDUNG , GIABAN } = req.body;
+        const kiemtra_sanpham = await SanPhamModel.kiemtra_id_sp(IDSANPHAM);
+        if(!kiemtra_sanpham){
+            return res.json({
+                ThanhCong:false,
+                message:'Sản phẩm không tồn tại!'
+            })
+        }
+        const kiemtra_IDND = await adminModel.kiemtraid(IDNGUOIDUNG);
+        if(!kiemtra_IDND){
+            return res.json({
+                ThanhCong:false,
+                message:'Người dùng không tồn tại!'
+            })
+        }
+        try {
+            const ketqua = await SanPhamModel.ThemGioHang_NguoiDung(IDSANPHAM, SOLUONG, IDNGUOIDUNG , GIABAN);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    message:ketqua.message
+                })
+            }
+            return res.json({
+                ThanhCong:false,
+                message:ketqua.message
+            })
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
                 message:'Lỗi khi truy vấn dữ liệu!'
             })
         }

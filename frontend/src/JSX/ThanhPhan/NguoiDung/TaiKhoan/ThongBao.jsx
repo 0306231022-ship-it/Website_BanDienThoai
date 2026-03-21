@@ -34,7 +34,7 @@ function ThongBao() {
                 </button>
             </div>
 
-            <button className="mt-4 text-gray-400 hover:text-gray-600 text-sm underline transition duration-200">
+            <button onClick={CloseAllModals} className="mt-4 text-gray-400 hover:text-gray-600 text-sm underline transition duration-200">
                 Để sau, tôi muốn xem thêm
             </button>
         </div>

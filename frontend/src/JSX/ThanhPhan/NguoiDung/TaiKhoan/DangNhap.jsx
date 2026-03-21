@@ -4,6 +4,7 @@ import { useState } from 'react';
 import * as fun  from '../../../../JS/FUNCTONS/function';
 import * as API from '../../../../JS/API/API';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
+
 function DangNhap() {
     const { OpenMoDal , CloseAllModals } = useModalContext();
     const [formData, setFormData] = useState({
@@ -40,7 +41,7 @@ function DangNhap() {
         try {
             const formdata_send = fun.objectToFormData(formData);
             const ketqua = await API.CallAPI(formdata_send,{url:'/NguoiDung/dangnhap',PhuongThuc:1});
-            alert(JSON.stringify(ketqua));
+            //alert(JSON.stringify(ketqua));
             if(ketqua.ThanhCong){
                 // Xử lý đăng nhập thành công
                 ThongBao.ThongBao_ThanhCong(ketqua.message);

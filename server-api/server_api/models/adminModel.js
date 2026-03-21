@@ -16,7 +16,7 @@ export default class adminModel{
                 FROM nguoidung
                 WHERE IDND = ?
                 `,[id]);
-            return idnd.affectedRows>0 ? true : false;
+            return idnd.length > 0 ? true : false;
         } catch (error) {
             console.error('Có lỗi sãy ra :'+ error);
             return false;

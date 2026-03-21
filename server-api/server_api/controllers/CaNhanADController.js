@@ -230,7 +230,6 @@ export default class CanhanADController{
     }
     static async ThongTin_NguoiDung(req,res){
         const token = req.cookies.token_nguoidung;
-       
         if (!token) {
             return res.json({
                 ThanhCong: false,
@@ -398,8 +397,16 @@ export default class CanhanADController{
                 }
                 
             }
-
-
-
-  
+            static async DangXuat_NguoiDung(req, res) {
+                res.clearCookie('token_nguoidung', {
+                    httpOnly: true,
+                    sameSite: 'lax',
+                    secure: false,
+                    path: '/'
+                });
+                return res.json({
+                    ThanhCong: true,
+                    message: 'Bạn đã đăng xuất thành công!'
+                });
+            }
 }

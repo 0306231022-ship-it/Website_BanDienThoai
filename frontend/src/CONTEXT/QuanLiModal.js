@@ -18,6 +18,7 @@ import ChinhSuaEmail from "../JSX/ThanhPhan/MoDAL/CapNhatEmail";
 import ThemSanPham from "../JSX/ThanhPhan/Admin/QuanLiBanner/DanhSachSanPhamThem";
 import DangNhap from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/DangNhap";
 import DangKy from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/DangKy";
+import ThongBao from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/ThongBao";
 
 const MoDalContext = createContext();
 
@@ -40,7 +41,8 @@ const MODAL_REGISTRY = {
     'ChinhSuaEmail' : ChinhSuaEmail,
     'ThemSanPham' : ThemSanPham,
     'DangNhap' : DangNhap,
-    'DangKy' : DangKy
+    'DangKy' : DangKy,
+    'ThongBao' : ThongBao
 
 };
 
