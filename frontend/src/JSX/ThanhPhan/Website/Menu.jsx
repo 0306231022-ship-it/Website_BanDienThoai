@@ -5,6 +5,7 @@ import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 import {KiemTra  , LayThongTinNguoiDung  } from '../../../hook/KiemTraDangNhap';
 import MenuND from './MenuND';
+import {Lay_SoLuong_GioHang } from '../../../hook/ThongTinHienThi_Website';
 function Menu() {
     const {GetTTwebsite,TTwebsite}= useAppContext();
     const { OpenMoDal } = useModalContext();
@@ -19,11 +20,17 @@ function Menu() {
             if (loggedIn) {
                 const userInfo = await LayThongTinNguoiDung();
                 setUser(userInfo);
+                const cartQuantity = await Lay_SoLuong_GioHang(userInfo.IDND);
+                if(cartQuantity){
+                    setCartCount(cartQuantity);
+                }else{
+                    setCartCount(0);
+                }
             }
         }
         fetchData();
         //eslint-disable-next-line react-hooks/exhaustive-deps 
-    },[]);
+    },[Lay_SoLuong_GioHang]);
     // Hàm để lấy lời chào dựa trên thời gian hiện tại
     function getCurrentTime() {
         const now = new Date(); 
@@ -36,11 +43,6 @@ function Menu() {
             return 'Buổi tối vui vẻ bên nười thân và gia đình';
         }
     }
-    
-   
-
-
-
     return (
         <>
           <header className="main-header fixed top-0 w-full z-30 shadow-md">

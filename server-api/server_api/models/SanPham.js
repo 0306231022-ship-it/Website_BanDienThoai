@@ -415,7 +415,7 @@ export default class SanPhamModel{
         try {
             //LẤY 1 HÌNH ẢNH CHO MỖI SAN PHẨM, NẾU CÓ NHIỀU HÌNH ẢNH THÌ LẤY HÌNH CÓ IDHA NHỎ NHẤT
             const [giohang] = await execute(`
-                SELECT sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.DONGIA, ct.SOLUONG, ha.HINHANH 
+                SELECT dh.IDDH, sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.DONGIA, ct.SOLUONG, ha.HINHANH 
                 FROM donhang dh
                 JOIN chitiet_donhang ct ON dh.IDDH = ct.IDDH
                 JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
@@ -428,6 +428,80 @@ export default class SanPhamModel{
                 WHERE dh.IDKH = ?
             `,[IDNGUOIDUNG]);
             return { ThanhCong:true, dulieu:giohang };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };
+        }
+    }
+    static async CapNhat_SoLuong_GioHang_NguoiDung(data){
+        try {
+            for (const item of data) {
+                const { IDSANPHAM, SOLUONG, IDDH } = item;
+                const [capnhat] = await execute(`
+                    UPDATE chitiet_donhang 
+                    SET SOLUONG = ?, THANHTIEN = DONGIA * ?
+                    WHERE IDDH = ? AND IDSANPHAM = ?
+                `,[SOLUONG, SOLUONG, IDDH, IDSANPHAM]);
+                if(capnhat.affectedRows === 0){
+                    return false;
+                }
+            }
+            return true;
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return false;
+        }
+    }
+    static async kiemtra_id_dh(id){
+        try {
+            const [kiemtra] = await execute(`
+                SELECT IDDH
+                FROM donhang dh
+                WHERE IDDH = ?
+                LIMIT 1
+            `,[id]);
+            return kiemtra.length > 0 ? true : false;
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return false;
+        }
+    }
+    static async Xoa_GioHang_NguoiDung( IDSANPHAM, IDDH){
+        let conn;
+        try {
+            conn = await beginTransaction();
+            const [xoa] = await conn.query(`
+                DELETE FROM chitiet_donhang 
+                WHERE IDDH = ? AND IDSANPHAM = ?
+            `,[IDDH, IDSANPHAM]);
+            if(xoa.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return { ThanhCong:false, message:'Xóa sản phẩm khỏi giỏ hàng thất bại!' };
+            }
+            const [xoa_dh] = await conn.query(`
+                DELETE FROM donhang 
+                WHERE IDDH = ? 
+                `,[IDDH]);
+            if(xoa_dh.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return { ThanhCong:false, message:'Xóa đơn hàng thất bại!' };
+            }
+            await commitTransaction(conn);
+            return { ThanhCong:true, message:'Xóa sản phẩm khỏi giỏ hàng thành công!' };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { ThanhCong:false, message:'Xóa sản phẩm khỏi giỏ hàng thất bại!' }  ;
+        }
+    }
+    static async SoLuong_GioHang_NguoiDung(IDNGUOIDUNG){
+        try {
+            const [ketqqua] = await execute(`
+                SELECT SUM(ct.SOLUONG) AS SOLUONG
+                FROM chitiet_donhang ct
+                JOIN donhang dh ON ct.IDDH = dh.IDDH
+                WHERE dh.IDKH = ?
+            `,[IDNGUOIDUNG]);
+            return { ThanhCong:true, dulieu:ketqqua[0].SOLUONG };
         } catch (error) {
             console.error('Có lỗi xảy ra:' + error);
             return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };

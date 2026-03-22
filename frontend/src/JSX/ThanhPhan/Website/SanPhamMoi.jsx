@@ -27,7 +27,6 @@ function SanPhamMoi() {
         const isLoggedIn = await KiemTra();
         !isLoggedIn && OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
         if(isLoggedIn){
-            //lấy IDND từ thông tin người dùng
             const thongtinND = await LayThongTinNguoiDung();
             const IDND = thongtinND.IDND;
             const formdata = fun.objectToFormData({ IDSANPHAM: productId, SOLUONG: 1, IDNGUOIDUNG: IDND , GIABAN: DonGia });

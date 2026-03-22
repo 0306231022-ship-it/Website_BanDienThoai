@@ -3,45 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng nhập - PhoneStore</title>
+    <title>Sự Kiện Siêu Sale Công Nghệ 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-<div class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4">
-    
-    <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden transform transition-all scale-100">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
         
-        <div class="bg-[#e11d48] p-6 text-center">
-            <div class="inline-flex items-center justify-center w-16 h-16 bg-white bg-opacity-20 rounded-full mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-            </div>
-            <h3 class="text-xl font-bold text-white uppercase tracking-wide">Dừng lại một chút!</h3>
-        </div>
+        /* Hiệu ứng phát sáng cho tag giảm giá */
+        .animate-glow {
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 5px #ef4444, 0 0 10px #ef4444; }
+            to { box-shadow: 0 0 20px #ef4444, 0 0 30px #ef4444; }
+        }
 
-        <div class="p-8 text-center">
-            <p class="text-gray-600 mb-6 leading-relaxed">
-                Bạn cần <span class="font-bold text-[#e11d48]">Đăng nhập</span> hoặc <span class="font-bold text-[#e11d48]">Đăng ký</span> thành viên để sử dụng chức năng tuyệt vời này.
-            </p>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-gray-50 text-slate-900">
 
-            <div class="flex flex-col gap-3">
-                <button class="bg-[#e11d48] text-white font-bold py-3 rounded-xl hover:bg-red-700 transition duration-300 shadow-md">
-                    ĐĂNG NHẬP NGAY
-                </button>
+    <section class="relative bg-[#0f172a] text-white py-20 px-6 overflow-hidden">
+        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/10 blur-[120px] rounded-full -mr-48 -mt-48"></div>
+        <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-blue-600/10 blur-[100px] rounded-full -ml-24 -mb-24"></div>
+
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 relative z-10">
+            <div class="flex-1 space-y-8 text-center md:text-left">
+                <div class="inline-flex items-center gap-2 bg-red-600/20 text-red-400 px-5 py-2 rounded-full text-xs font-black uppercase tracking-[0.2em] border border-red-600/30">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+                    </span>
+                    Live: Đại tiệc công nghệ 2026
+                </div>
+
+                <h1 class="text-6xl md:text-8xl font-black tracking-tighter leading-[0.9] m-0 italic uppercase">
+                    Săn Sale <br> <span class="text-red-500 text-glow">Huỷ Diệt</span>
+                </h1>
                 
-                <button class="border-2 border-[#e11d48] text-[#e11d48] font-bold py-3 rounded-xl hover:bg-red-50 transition duration-300">
-                    TẠO TÀI KHOẢN MỚI
-                </button>
+                <p class="text-slate-400 max-w-lg text-lg leading-relaxed font-medium">
+                    Đừng bỏ lỡ cơ hội sở hữu iPhone 17, Galaxy S26 với mức giá không tưởng. Giảm trực tiếp đến <span class="text-white font-bold">12 Triệu Đồng</span>.
+                </p>
+
+                <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-[2rem] text-center min-w-[90px]">
+                        <div class="text-4xl font-black">02</div>
+                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-1">Ngày</div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-[2rem] text-center min-w-[90px]">
+                        <div class="text-4xl font-black">14</div>
+                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-1">Giờ</div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 p-5 rounded-[2rem] text-center min-w-[90px]">
+                        <div class="text-4xl font-black">55</div>
+                        <div class="text-[10px] text-slate-500 uppercase font-bold tracking-widest mt-1">Phút</div>
+                    </div>
+                </div>
             </div>
 
-            <button class="mt-4 text-gray-400 hover:text-gray-600 text-sm underline transition duration-200">
-                Để sau, tôi muốn xem thêm
-            </button>
+            <div class="flex-1 relative group">
+                <img src="https://fptshop.com.vn/Uploads/Originals/2023/12/31/638396557833003050_iphone-15-pro-max-all-colors.png" 
+                     alt="Phone" class="w-full max-w-lg mx-auto drop-shadow-[0_35px_35px_rgba(255,255,255,0.1)] group-hover:scale-105 transition-transform duration-700 rotate-3 group-hover:rotate-0">
+            </div>
         </div>
-    </div>
-</div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-6 py-20">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div class="space-y-2">
+                <div class="flex items-center gap-3 text-red-600 font-black uppercase tracking-widest text-sm">
+                    <i class="fas fa-bolt animate-bounce"></i> Flash Sale Giới Hạn
+                </div>
+                <h2 class="text-4xl font-black tracking-tighter uppercase m-0">Săn Ngay <span class="text-gray-400 italic font-medium text-2xl lowercase">/ số lượng có hạn</span></h2>
+            </div>
+            <a href="#" class="px-6 py-3 bg-white border border-slate-200 rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all shadow-sm">Xem tất cả deal</a>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="group bg-white rounded-[2.5rem] border border-gray-100 p-6 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 relative overflow-hidden">
+                <div class="absolute top-5 right-5 z-10 bg-red-600 text-white text-[10px] font-black px-3 py-1.5 rounded-full animate-glow italic">-25% OFF</div>
+                
+                <div class="aspect-square bg-slate-50 rounded-[2rem] mb-6 flex items-center justify-center p-8 group-hover:bg-white transition-colors overflow-hidden">
+                    <img src="https://img.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumb-600x600.jpg" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-slate-800 uppercase tracking-tight truncate m-0">iPhone 15 Pro Max</h3>
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl font-black text-red-600">28.990k</span>
+                        <span class="text-xs text-slate-400 line-through font-medium">34.990k</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px] font-black uppercase tracking-tighter">
+                            <span class="text-red-600">Sắp cháy hàng</span>
+                            <span class="text-slate-400">Đã bán 89%</span>
+                        </div>
+                        <div class="h-2 bg-slate-100 rounded-full overflow-hidden p-[2px] border border-slate-100">
+                            <div class="h-full bg-red-600 rounded-full animate-pulse" style="width: 89%"></div>
+                        </div>
+                    </div>
+
+                    <button class="w-full bg-slate-900 text-white py-4 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] hover:bg-red-600 transition-all active:scale-95 shadow-lg shadow-slate-200">
+                        Mua ngay
+                    </button>
+                </div>
+            </div>
+
+            <div class="group bg-white rounded-[2.5rem] border border-gray-100 p-6 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 relative overflow-hidden">
+                <div class="absolute top-5 right-5 z-10 bg-red-600 text-white text-[10px] font-black px-3 py-1.5 rounded-full animate-glow italic">-40% OFF</div>
+                <div class="aspect-square bg-slate-50 rounded-[2rem] mb-6 flex items-center justify-center p-8 group-hover:bg-white transition-colors overflow-hidden">
+                    <img src="https://img.tgdd.vn/Products/Images/42/301642/oppo-reno10-pro-plus-tim-thumb-600x600.jpg" class="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500">
+                </div>
+                <div class="space-y-4">
+                    <h3 class="text-base font-bold text-slate-800 uppercase tracking-tight truncate m-0">Oppo Reno10 Pro+</h3>
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl font-black text-red-600">14.490k</span>
+                        <span class="text-xs text-slate-400 line-through font-medium">19.990k</span>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-[10px] font-black uppercase tracking-tighter"><span class="text-orange-500 font-bold italic">Bán chạy nhất</span><span class="text-slate-400">Đã bán 45%</span></div>
+                        <div class="h-2 bg-slate-100 rounded-full overflow-hidden p-[2px] border border-slate-100"><div class="h-full bg-slate-900 rounded-full" style="width: 45%"></div></div>
+                    </div>
+                    <button class="w-full bg-slate-900 text-white py-4 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] hover:bg-red-600 transition-all active:scale-95 shadow-lg shadow-slate-200">Mua ngay</button>
+                </div>
+            </div>
+            </div>
+    </section>
+
+    <section class="bg-white py-20 border-y border-gray-100">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="group relative bg-[#1a1a1a] p-10 rounded-[3rem] overflow-hidden text-white flex items-center justify-between shadow-2xl">
+                <div class="relative z-10 space-y-4 max-w-[60%]">
+                    <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-6 border border-white/10 italic font-black">iP</div>
+                    <h3 class="text-3xl font-black uppercase tracking-tighter m-0">Đặc quyền <br> Apple Store</h3>
+                    <p class="text-slate-400 text-sm m-0">Trợ giá lên đời đến 4 Triệu đồng. Bảo hành 1 đổi 1 tận nhà.</p>
+                    <button class="mt-4 px-6 py-3 bg-white text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-red-600 hover:text-white transition-all">Khám phá ngay</button>
+                </div>
+                <img src="https://fptshop.com.vn/Uploads/Originals/2023/12/31/638396557833003050_iphone-15-pro-max-all-colors.png" class="absolute -right-10 -bottom-10 w-64 opacity-20 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-700">
+            </div>
+
+            <div class="group relative bg-blue-700 p-10 rounded-[3rem] overflow-hidden text-white flex items-center justify-between shadow-2xl">
+                <div class="relative z-10 space-y-4 max-w-[60%]">
+                    <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-6 border border-white/10"><i class="fab fa-android text-xl"></i></div>
+                    <h3 class="text-3xl font-black uppercase tracking-tighter m-0 italic">Samsung <br> Universe</h3>
+                    <p class="text-blue-100 text-sm m-0 italic">Tặng kèm Galaxy Buds 3 & Gói Samsung Care+ 2 năm.</p>
+                    <button class="mt-4 px-6 py-3 bg-white text-blue-700 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all">Săn Deal ngay</button>
+                </div>
+                <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 blur-[80px] rounded-full"></div>
+                <i class="fab fa-android absolute -right-4 -bottom-4 text-9xl text-white/10 rotate-12 group-hover:rotate-0 transition-transform duration-700"></i>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-950 py-20 px-6 text-center text-white">
+        <div class="max-w-3xl mx-auto space-y-8">
+            <h2 class="text-4xl md:text-5xl font-black tracking-tighter uppercase m-0 leading-tight">Gia nhập cộng đồng <br> <span class="text-red-500">Tech Hunters</span> ngay hôm nay</h2>
+            <p class="text-slate-400 text-lg m-0">Đăng ký email để nhận mã giảm giá bí mật dành riêng cho bạn vào ngày mở bán.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                <input type="email" placeholder="Địa chỉ email của bạn..." class="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:outline-none focus:border-red-600 transition-colors">
+                <button class="bg-red-600 hover:bg-red-700 text-white font-black uppercase tracking-widest px-8 py-4 rounded-2xl transition-all shadow-lg shadow-red-600/20 active:scale-95">Đăng ký</button>
+            </form>
+            
+            <p class="text-xs text-slate-500 italic m-0">Chúng tôi cam kết không gửi thư rác, chỉ gửi những deal thực sự "ngon".</p>
+        </div>
+    </footer>
 
 </body>
 </html>

@@ -323,4 +323,87 @@ export default class SanPhamController{
             })
         }
     }
+    static async CapNhat_SoLuong_GioHang_NguoiDung(req,res){
+        const dataString = req.query.data;
+        const cartData = JSON.parse(dataString);
+        try {
+             await SanPhamModel.CapNhat_SoLuong_GioHang_NguoiDung(cartData);
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
+    static async Xoa_GioHang_NguoiDung(req,res){
+       const dataString = req.query.data;
+       const cartData = JSON.parse(dataString);
+       const { IDSANPHAM, IDDH } = cartData[0];
+       const [kiemtr_iddh, kiemtra_idsp] = await Promise.all([
+        SanPhamModel.kiemtra_id_dh(IDDH),
+        SanPhamModel.kiemtra_id_sp(IDSANPHAM)
+         ]);
+         if(!kiemtr_iddh){
+            return res.json({
+                ThanhCong:false,
+                message:'Đơn hàng không tồn tại!'
+            })
+         }
+         if(!kiemtra_idsp){
+            return res.json({
+                ThanhCong:false,
+                message:'Sản phẩm không tồn tại!'
+            })
+         }
+         try {
+            const ketqua = await SanPhamModel.Xoa_GioHang_NguoiDung(IDSANPHAM, IDDH);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    message:ketqua.message
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message
+                })
+            }
+         } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+         }
+    }
+    static async SoLuong_GioHang_NguoiDung(req,res){
+        const idnd = req.query.idnd;
+        const kiemtra_IDND = await adminModel.kiemtraid(idnd);
+        if(!kiemtra_IDND){
+            return res.json({
+                ThanhCong:false,
+                message:'Người dùng không tồn tại!'
+            })
+        }
+        try {
+            const ketqua = await SanPhamModel.SoLuong_GioHang_NguoiDung(idnd);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqua.dulieu
+                })
+            }
+            return res.json({
+                ThanhCong:false,
+                message:ketqua.message
+            })
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
 }

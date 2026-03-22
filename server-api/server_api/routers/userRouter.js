@@ -20,6 +20,9 @@ NguoiDungRoute.post('/ThemGioHang',upload.none(), SanPhamController.ThemGioHang_
 // PHẦN IV : ĐỊNH NGHĨA ROUTE GET NguoiDung
 NguoiDungRoute.get('/ThongTin',upload.none(), CanhanADController.ThongTin_NguoiDung);
 NguoiDungRoute.get('/giohang',upload.none(), SanPhamController.GioHang_NguoiDung);
+NguoiDungRoute.get('/CapNhat_SoLuong_GioHang',upload.none(), SanPhamController.CapNhat_SoLuong_GioHang_NguoiDung);
+NguoiDungRoute.get('/Xoa_GioHang',upload.none(), SanPhamController.Xoa_GioHang_NguoiDung);
+NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), SanPhamController.SoLuong_GioHang_NguoiDung);
 //=========================================
 
 console.log("✅ NguoiDungRoute loaded");

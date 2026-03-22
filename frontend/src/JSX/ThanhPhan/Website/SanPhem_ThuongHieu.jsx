@@ -175,9 +175,54 @@ function SanPhamThuongHieu() {
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {
                         DanhSachSanPham.length === 0 ? (
-                            <div class="col-span-full text-center py-20">
-                                <p class="text-2xl font-bold text-gray-500">Không có sản phẩm nào!</p>
-                            </div>
+                            <div className="col-span-full py-20 flex flex-col items-center justify-center animate-fadeIn">
+            {/* Minh họa Icon Empty State */}
+            <div className="relative mb-8">
+                <div className="w-40 h-40 bg-slate-100 rounded-full flex items-center justify-center border-4 border-white shadow-inner">
+                    <i className="fas fa-box-open text-6xl text-slate-300"></i>
+                </div>
+                {/* Decor tiểu tiết */}
+                <div className="absolute -top-2 -right-2 w-10 h-10 bg-red-50 rounded-full flex items-center justify-center animate-bounce">
+                    <i className="fas fa-search text-red-400 text-sm"></i>
+                </div>
+                <div className="absolute -bottom-2 -left-4 w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center animate-pulse">
+                    <i className="fas fa-tag text-blue-300 text-sm"></i>
+                </div>
+            </div>
+
+            {/* Nội dung thông báo */}
+            <div className="text-center max-w-md px-6">
+                <h3 className="text-2xl font-black text-slate-800 uppercase tracking-tighter mb-3 italic">
+                    Chưa có sản phẩm nào!
+                </h3>
+                <p className="text-slate-500 text-sm font-medium leading-relaxed mb-8">
+                    Thương hiệu <span className="text-red-600 font-bold">"{ThuongHieu.TENTHUONGHIEU}"</span> hiện chưa cập nhật sản phẩm trong danh mục này. Vui lòng quay lại sau hoặc khám phá các thương hiệu khác.
+                </p>
+
+                {/* Nút hành động */}
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button 
+                        onClick={() => navigate('/')}
+                        className="px-8 py-3 bg-slate-900 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-red-600 transition-all shadow-xl shadow-slate-200 active:scale-95"
+                    >
+                        Về trang chủ
+                    </button>
+                    <button 
+                        onClick={() => navigate(-1)}
+                        className="px-8 py-3 bg-white border-2 border-slate-100 text-slate-400 text-[11px] font-black uppercase tracking-[0.2em] rounded-2xl hover:border-red-600 hover:text-red-600 transition-all active:scale-95"
+                    >
+                        Quay lại
+                    </button>
+                </div>
+            </div>
+
+            {/* Gợi ý thêm (Optional) */}
+            <div className="mt-16 grid grid-cols-3 gap-8 opacity-30 grayscale">
+                 <i className="fab fa-apple text-4xl"></i>
+                 <i className="fab fa-android text-4xl"></i>
+                 <i className="fas fa-microchip text-4xl"></i>
+            </div>
+        </div>
                         ) : (
                             DanhSachSanPham.map((sanpham) => (
                                    <div class="group bg-white rounded-[2rem] border border-gray-100 p-4 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative">
