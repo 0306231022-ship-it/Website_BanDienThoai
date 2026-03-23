@@ -130,7 +130,7 @@ export default class ThuongHieuController{
     static async LayDanhSachThuongHieu(req,res){
         try {
             const page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 10;
+            const limit = parseInt(req.query.limit) || 6;
             const offset = (page - 1) * limit;
             const { thuongHieu, totalItems } = await ThuongHieuModel.LayDanhSachThuongHieu(offset, limit);
             const totalPages = Math.ceil(totalItems / limit);
@@ -283,7 +283,7 @@ export default class ThuongHieuController{
     }
     static async LaySanPhamTheoThuongHieu(req,res){
         const id = req.query.id || null;
-        const limit = parseInt(req.query.limit) || 10;
+        const limit = parseInt(req.query.limit) || 6;
         const page = parseInt(req.query.page) || 1;
         const offset = (page - 1) * limit;
         if (!id) {

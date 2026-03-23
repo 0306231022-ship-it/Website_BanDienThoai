@@ -215,8 +215,6 @@ function SanPhamThuongHieu() {
                     </button>
                 </div>
             </div>
-
-            {/* Gợi ý thêm (Optional) */}
             <div className="mt-16 grid grid-cols-3 gap-8 opacity-30 grayscale">
                  <i className="fab fa-apple text-4xl"></i>
                  <i className="fab fa-android text-4xl"></i>

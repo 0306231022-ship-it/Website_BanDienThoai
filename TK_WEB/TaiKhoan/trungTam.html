@@ -3,37 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Sản Phẩm - Red Style</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Giỏ hàng trống</title>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: '#dc2626', // Màu đỏ chủ đạo
+                        brandHover: '#b91c1c'
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-gray-100 h-screen flex items-center justify-center">
+<body class="bg-gray-100 p-4 md:p-8">
 
-    <div class="max-w-md w-full bg-white p-10 rounded-2xl shadow-lg text-center mx-4">
-        <div class="mb-6">
-            <div class="inline-flex items-center justify-center w-24 h-24 bg-red-50 rounded-full mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
+    <div class="max-w-7xl mx-auto">
+        <div class="flex items-center justify-between mb-8 border-l-4 border-brand pl-4">
+            <h2 class="text-2xl font-bold text-gray-800 uppercase tracking-tight">Sản phẩm mới nhất</h2>
+            <span class="text-sm text-gray-500">Hiển thị 8 trên 24 sản phẩm</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="h-56 bg-white flex items-center justify-center p-4">
+                    <img src="https://vcdn1-sohoa.vnecdn.net/2023/09/13/iphone-15-finish-select-202309-6463-1694566324.jpg" class="h-full object-contain">
+                </div>
+                <div class="p-4 border-t border-gray-50">
+                    <h3 class="font-bold text-gray-800 truncate">iPhone 15 128GB</h3>
+                    <p class="text-brand font-bold text-lg mt-2">22.990.000đ</p>
+                    <button class="w-full mt-3 bg-brand text-white py-2 rounded font-medium hover:bg-brandHover transition">Chi tiết</button>
+                </div>
             </div>
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="h-56 bg-white flex items-center justify-center p-4">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/s/ss-s24-ultra-xam-2.png" class="h-full object-contain">
+                </div>
+                <div class="p-4 border-t border-gray-50">
+                    <h3 class="font-bold text-gray-800 truncate">Samsung S24 Ultra</h3>
+                    <p class="text-brand font-bold text-lg mt-2">33.990.000đ</p>
+                    <button class="w-full mt-3 bg-brand text-white py-2 rounded font-medium hover:bg-brandHover transition">Chi tiết</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="h-56 bg-white flex items-center justify-center p-4">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno11-xanh-1.png" class="h-full object-contain">
+                </div>
+                <div class="p-4 border-t border-gray-50">
+                    <h3 class="font-bold text-gray-800 truncate">Oppo Reno11 5G</h3>
+                    <p class="text-brand font-bold text-lg mt-2">10.990.000đ</p>
+                    <button class="w-full mt-3 bg-brand text-white py-2 rounded font-medium hover:bg-brandHover transition">Chi tiết</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="h-56 bg-white flex items-center justify-center p-4">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-14-ultra-den-1_1.png" class="h-full object-contain">
+                </div>
+                <div class="p-4 border-t border-gray-50">
+                    <h3 class="font-bold text-gray-800 truncate">Xiaomi 14 Ultra</h3>
+                    <p class="text-brand font-bold text-lg mt-2">32.990.000đ</p>
+                    <button class="w-full mt-3 bg-brand text-white py-2 rounded font-medium hover:bg-brandHover transition">Chi tiết</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="h-56 bg-white flex items-center justify-center p-4">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/r/e/redmi-note-13-pro-4g_1_2.png" class="h-full object-contain">
+                </div>
+                <div class="p-4 border-t border-gray-50">
+                    <h3 class="font-bold text-gray-800 truncate">Redmi Note 13 Pro</h3>
+                    <p class="text-brand font-bold text-lg mt-2">6.990.000đ</p>
+                    <button class="w-full mt-3 bg-brand text-white py-2 rounded font-medium hover:bg-brandHover transition">Chi tiết</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="h-56 bg-white flex items-center justify-center p-4">
+                    <img src="https://p-vn.pstatic.net/2021/11/04/1/52258814-169b-4e01-92be-6a68e646f903.jpg" class="h-full object-contain">
+                </div>
+                <div class="p-4 border-t border-gray-50">
+                    <h3 class="font-bold text-gray-800 truncate">iPhone 8 64GB</h3>
+                    <p class="text-brand font-bold text-lg mt-2">3.200.000đ</p>
+                    <button class="w-full mt-3 bg-brand text-white py-2 rounded font-medium hover:bg-brandHover transition">Chi tiết</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="h-56 bg-white flex items-center justify-center p-4">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-a58-den-1.png" class="h-full object-contain">
+                </div>
+                <div class="p-4 border-t border-gray-50">
+                    <h3 class="font-bold text-gray-800 truncate">Oppo A58 128GB</h3>
+                    <p class="text-brand font-bold text-lg mt-2">4.990.000đ</p>
+                    <button class="w-full mt-3 bg-brand text-white py-2 rounded font-medium hover:bg-brandHover transition">Chi tiết</button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow hover:shadow-lg transition-shadow overflow-hidden border border-gray-200">
+                <div class="h-56 bg-white flex items-center justify-center p-4">
+                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-7-plus-32gb-600x600-600x600.jpg" class="h-full object-contain">
+                </div>
+                <div class="p-4 border-t border-gray-50">
+                    <h3 class="font-bold text-gray-800 truncate">iPhone 7 32GB</h3>
+                    <p class="text-brand font-bold text-lg mt-2">2.400.000đ</p>
+                    <button class="w-full mt-3 bg-brand text-white py-2 rounded font-medium hover:bg-brandHover transition">Chi tiết</button>
+                </div>
+            </div>
+
         </div>
 
-        <h2 class="text-2xl font-bold text-gray-800 mb-3">Giỏ hàng của bạn đang trống</h2>
-        <p class="text-gray-500 mb-8 px-4">
-            Có vẻ như bạn vẫn chưa chọn được món đồ ưng ý. Đừng lo, hàng ngàn ưu đãi đang chờ bạn khám phá!
-        </p>
-
-        <div class="space-y-3">
-            <a href="#" class="block w-full py-3 px-6 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-xl transition duration-300">
-                Tiếp tục mua sắm
-            </a>
-            <a href="#" class="block w-full py-3 px-6 bg-white border border-gray-200 hover:bg-gray-50 text-gray-600 font-medium rounded-xl transition duration-300">
-                Xem sản phẩm yêu thích
-            </a>
+        <div class="mt-12 flex justify-center items-center space-x-2">
+            <button class="px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-600">
+                Trước
+            </button>
+            <button class="px-4 py-2 bg-brand text-white rounded font-bold shadow-md">1</button>
+            <button class="px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-600">2</button>
+            <button class="px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-600">3</button>
+            <span class="px-2 text-gray-400">...</span>
+            <button class="px-4 py-2 bg-white border border-gray-300 rounded hover:bg-gray-50 text-gray-600">
+                Sau
+            </button>
         </div>
-
-        <p class="mt-8 text-sm text-gray-400">
-            Cần hỗ trợ? <a href="#" class="text-blue-500 hover:underline">Chat với chúng tôi</a>
-        </p>
     </div>
 
 </body>

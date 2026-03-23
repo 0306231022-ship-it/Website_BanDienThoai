@@ -1,5 +1,5 @@
 
-import { execute } from '../config/db.js';
+import {execute , beginTransaction , rollbackTransaction , commitTransaction} from '../config/db.js';
 import { TaoID } from '../function.js';
 
 export default class PhieuNhapModal {
@@ -203,18 +203,20 @@ export default class PhieuNhapModal {
     static async ThemPhieuNhap(ThongTinChung) {
         const ThongTin= ThongTinChung.ThongTinChung;
         const SanPham= ThongTinChung.SANPHAM;
+        const connection = await beginTransaction()
         try {
             //Bước 1 Thêm phiếu nhập
             const IDPN = TaoID('PN');
             const ConLai = Number(ThongTin.THANHTOAN.TONGTIEN) - Number(ThongTin.THANHTOAN.DA_THANHTOAN);
-            const [resultPhieuNhap] = await execute(
+            const [resultPhieuNhap] = await connection.execute(
                 'INSERT INTO phieunhap (IDPN, IDNCC, IDND, TONGTIEN, DA_THANHTOAN, NGAYNHAP, TRANGTHAI, GHICHU) VALUES (?, ?, ?, ?, ?, NOW(), ?, ?)',
                 [IDPN, ThongTin.IDNCC, ThongTin.IDND, ThongTin.THANHTOAN.TONGTIEN, ThongTin.THANHTOAN.DA_THANHTOAN , ThongTin.CheDoLuu, ThongTin.GHICHU ]
             );
             if (resultPhieuNhap.affectedRows === 0) {
                 throw new Error('Không thể tạo phiếu nhập mới.');
             }
-            const [updateNCC] = await execute(
+            //Cập nhật công nợ nhà cung cấp
+            const [updateNCC] = await connection.execute(
                 'UPDATE nhacungcap SET CONGNO = CONGNO + ? WHERE IDNCC = ?',
                 [ConLai, ThongTin.IDNCC]
             );
@@ -227,7 +229,7 @@ export default class PhieuNhapModal {
             for (const sanpham of SanPham) {
                 const IdSanPham = TaoID('SP');
                 IDSANPHAM_MOI.push({id: IdSanPham, soluong: sanpham.SOLUONG, gianhap: sanpham.GIANHAP , giaban: sanpham.GIABAN});
-                const themsp=  await execute(
+                const themsp=  await connection.execute(
                         'INSERT INTO sanpham (IDSANPHAM, TENSANPHAM, IDTHUONGHIEU, SOLUONG, THONGSO_KYTHUAT ,DONGMAY , MOTA , TRANGTHAI) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
                         [IdSanPham, sanpham.TENSP, sanpham.HANG, sanpham.SOLUONG, JSON.stringify(sanpham.THONGSO_KYTHUAT), sanpham.DONGMAY, sanpham.MOTASP, 1]
                     );
@@ -237,7 +239,7 @@ export default class PhieuNhapModal {
                 // THÊM VÀO HÌNH ANH SẢN PHẨM
                 const HinhAnh = sanpham.HINHANH || [];
                 for (const hinhanhPath of HinhAnh) {
-                     const ThemHA= await execute(
+                     const ThemHA= await connection.execute(
                         'INSERT INTO hinhanh_sanpham (IDHA , IDSANPHAM, HINHANH, TRANGTHAI) VALUES (?, ?, ?, ?)',
                         [TaoID('HA'), IdSanPham, hinhanhPath, 1]
                     );
@@ -248,7 +250,7 @@ export default class PhieuNhapModal {
                 //tHÊM VÀO IMEI SẢN PHẨM
                 const IMEI = sanpham.IMEI || [];
                 for (const imeiCode of IMEI) {
-                    const ThemIMEI= await execute(
+                    const ThemIMEI= await connection.execute(
                         'INSERT INTO kho_imei (ID_IMEI, IDSANPHAM, MA_IMEI, ID_PHIEUNHAP, TRANGTHAI) VALUES (?, ?, ?, ?, ?)',
                         [TaoID('IMEI'), IdSanPham, imeiCode, IDPN, 1]
                     );
@@ -257,27 +259,28 @@ export default class PhieuNhapModal {
                     }
                 }
             }
-            // THÊM VÀO CHI TIẾT PHIẾU NHẬP , DUYỆT QUA IDSẢNPHẨM MỚI
-                for (const sp of IDSANPHAM_MOI) {
-                    const idCTPN = TaoID('CTPN');
-                   const thanhTien = sp.soluong * sp.gianhap;
-                    const themctpn= await execute(
-                        'INSERT INTO chitiet_phieunhap (IDCTPN, IDPN, IDSANPHAM, SOLUONG, GIANHAP, GIABAN , THANHTIEN) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                        [idCTPN, IDPN, sp.id, sp.soluong, sp.gianhap, sp.giaban, thanhTien]
-                    );
-                    if (themctpn[0].affectedRows === 0) {
-                        throw new Error('Không thể thêm chi tiết phiếu nhập.');
-                    }
-                }
+            // Bước 3: Thêm chi tiết phiếu nhập
+             await Promise.all(IDSANPHAM_MOI.map(sp => {
+                const idCTPN = TaoID('CTPN');
+                const thanhTien = sp.soluong * sp.gianhap;
+                return connection.execute(
+                    `INSERT INTO chitiet_phieunhap 
+                    (IDCTPN, IDPN, IDSANPHAM, SOLUONG, GIANHAP, GIABAN, THANHTIEN) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                    [idCTPN, IDPN, sp.id, sp.soluong, sp.gianhap, sp.giaban, thanhTien]
+                );
+            }));
+            await commitTransaction(connection);
             return {
                 ThanhCong: true,
                 message: 'Thêm phiếu nhập thành công!',
             };
         } catch (error) {
+            await rollbackTransaction(connection);
             console.error('Lỗi khi thêm phiếu nhập:', error);
             return {
                 ThanhCong: false,
-                message: 'Thêm phiếu nhập thất bại do lỗi hệ thống!'
+                message: `Thêm phiếu nhập thất bại: ${error.message}`
             };
         }
     }
