@@ -1,13 +1,14 @@
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
-import { useFlashSaleContext } from "../../../../CONTEXT/QuanLi_FlashSale";
 import { useState } from 'react'; 
+import { useFlashSaleStore } from "../../../../REDUCER/QuanLiFlashSale";
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 import * as fun from '../../../../JS/FUNCTONS/function';
 import * as API from '../../../../JS/API/API';
 
 function ThemBanner() {
     const { OpenMoDal } = useModalContext();
-    const { setSanPham, SanPham } = useFlashSaleContext();
+    const SanPham = useFlashSaleStore((state) => state.sanPham);
+    const setSanPham = useFlashSaleStore((state) => state.setSanPham);
     const [thongTinChung, setThongTinChung] = useState({
         TenChienDich: '',
         TrangThai: 'active',
@@ -21,15 +22,18 @@ function ThemBanner() {
         setThongTinChung(prev => ({ ...prev, [name]: value }));
     };
     const handleUpdateSP = (id, field, value) => {
-        setSanPham(prev => prev.map(sp => 
+        const danhSachCapNhat = SanPham.map(sp => 
             sp.IDSANPHAM === id ? { ...sp, [field]: value } : sp
-        ));
+        );
+        setSanPham(danhSachCapNhat);
+
     };
 
     const XoaSP = async (id) => {
         const ketqua = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn xóa sản phẩm này?');
         if (!ketqua) return;
-        setSanPham(prev => prev.filter(sp => sp.IDSANPHAM !== id));
+        const danhSachMoi = SanPham.filter(sp => sp.IDSANPHAM !== id);
+        setSanPham(danhSachMoi);
         ThongBao.ThongBao_ThanhCong('Đã xóa!');
     }
 

@@ -7,7 +7,7 @@ export default class FlashSaleModel{
             const [ketqua]= await execute(`
                 INSERT INTO flash (IDFS, TENFS, THOIGIAN_BATDAU, THOIGIAN_KETTHUC, TRANGTHAI, MAUNEN) 
                 VALUES (?, ?, ?, ?, ?, ?)`,
-                [IDFS, dulieu.TenChienDich, dulieu.BatDau, dulieu.KetThuc, dulieu.TrangThai, dulieu.MauNen]);
+                [IDFS, dulieu.TenChienDich, dulieu.BatDau, dulieu.KetThuc, 1, dulieu.MauNen]);
             if(ketqua.affectedRows > 0){
                //cÓ THỂ NHIEU SAN PHAM
                 const sanpham = dulieu.DanhSachSanPham;

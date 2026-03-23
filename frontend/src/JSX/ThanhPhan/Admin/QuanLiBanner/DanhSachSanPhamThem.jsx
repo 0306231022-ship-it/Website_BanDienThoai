@@ -1,12 +1,13 @@
 import * as API from '../../../../JS/API/API';
 import { useEffect, useState } from 'react';
 import * as fun from '../../../../JS/FUNCTONS/function';
-import { useFlashSaleContext } from '../../../../CONTEXT/QuanLi_FlashSale';
+import { useFlashSaleStore } from "../../../../REDUCER/QuanLiFlashSale";
 import { useModalContext } from '../../../../CONTEXT/QuanLiModal';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 
 function ThemSanPham() {
-    const {SanPham, setSanPham } = useFlashSaleContext();
+    const sanPham = useFlashSaleStore((state) => state.sanPham);
+   
     const { CloseAllModals } = useModalContext();
     const [DanhSachSanPham, setDanhSachSanPham] = useState([]);
     const [page, setPage] = useState(1);
@@ -108,8 +109,8 @@ function ThemSanPham() {
         }
     };
     const XacNhan=()=>{
-        const newProducts = selectedProducts.filter(sp => !SanPham.some(item => item.IDSANPHAM === sp.IDSANPHAM));
-        setSanPham(prev => [...prev, ...newProducts]);
+        const newProducts = selectedProducts.filter(sp => !sanPham.some(item => item.IDSANPHAM === sp.IDSANPHAM));
+        useFlashSaleStore.getState().setSanPham([...useFlashSaleStore.getState().sanPham, ...newProducts]);
         ThongBao.ThongBao_ThanhCong('Đã thêm ' + newProducts.length + ' sản phẩm vào Flash Sale!');
         CloseAllModals();
     }

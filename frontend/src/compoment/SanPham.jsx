@@ -29,8 +29,6 @@ function ChildSanPham({ product }) {
     }
     return (
                      <div key={product.IDSANPHAM} className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden relative border border-gray-100 flex flex-col">
-                        
-                        {/* Badge */}
                         <span className={`absolute top-4 left-4 z-10 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase`}>
                             {product.TENTHUONGHIEU}
                         </span>

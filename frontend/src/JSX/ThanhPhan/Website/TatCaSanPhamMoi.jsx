@@ -68,7 +68,6 @@ function TatCaSanPhamMoi() {
                         </div>
                     ) : (
                         products.map((product, index) => (
-                            // Đừng quên thêm key khi map() trong React để tránh cảnh báo nhé!
                             <ChildSanPham key={product.id || index} product={product} />
                         ))
                     )}

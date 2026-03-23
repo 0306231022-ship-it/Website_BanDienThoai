@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 
 import { useAppContext } from '../../CONTEXT/TrangChuAdmin';
 import { useADContext } from '../../CONTEXT/QuanLiCaNhanAdmin';
-import { AppProviderFS } from '../../CONTEXT/QuanLi_FlashSale';
 
 import QuanLiTT from '../ThanhPhan/Admin/Menu/QuanLiTT';
 import QuanLiTTCaNhan from '../ThanhPhan/Admin/Menu/QuanLiTTCaNhan';
@@ -161,12 +160,10 @@ function TrangChuAdmin() {
     </header>
 
       <div className="flex">
-          <AppProviderFS>
           <Routes>
             <Route path="*" element={<QuanLiTT />} />
             <Route path="/CaiDat/*" element={<QuanLiTTCaNhan />} />
           </Routes>
-          </AppProviderFS>
       </div>
     </>
   );
