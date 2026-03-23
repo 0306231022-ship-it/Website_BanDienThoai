@@ -273,7 +273,7 @@ export default class SanPhamModel{
             }
         }
    }
-    static async layDanhSachSanPhamMoi(){
+    static async layDanhSachSanPhamMoi(opset, limit){
         //lấy 4 sản phẩm mới nhất dựa trên ngày tạo ,NGAYNHAP nằm ở bảng phieunhap
         try {
             const [ketqqua] = await execute(`
@@ -293,8 +293,16 @@ export default class SanPhamModel{
                 ) ha ON sp.IDSANPHAM = ha.IDSANPHAM
                 WHERE sp.TRANGTHAI = 1
                 ORDER BY pn.NGAYNHAP DESC
-                LIMIT 4;
-                `,[]);
+                LIMIT ? OFFSET ?;
+                `, [limit, opset]);
+                const [[{total}]] = await execute(`
+                    SELECT COUNT(*) AS total    
+                    FROM sanpham sp
+                    JOIN chitiet_phieunhap ct ON sp.IDSANPHAM = ct.IDSANPHAM
+                    JOIN phieunhap pn ON ct.IDPN = pn.IDPN
+                    WHERE sp.TRANGTHAI = 1
+                    ORDER BY pn.NGAYNHAP DESC
+                `);
                 if(ketqqua.length === 0){
                     return {
                         ThanhCong:false,
@@ -303,7 +311,8 @@ export default class SanPhamModel{
                 }
             return {
                 ThanhCong:true,
-                dulieu:ketqqua
+                dulieu:ketqqua,
+                total:total
             }
         } catch (error) {
             console.error('Có lỗi sãy ra:' + error);

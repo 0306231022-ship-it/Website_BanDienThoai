@@ -231,8 +231,11 @@ export default class SanPhamController{
             }
     }
     static async layDanhSachSanPhamMoi(req,res){
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 4;
+        const opset = (page - 1) * limit;
         try {
-            const ketqqua = await SanPhamModel.layDanhSachSanPhamMoi();
+            const ketqqua = await SanPhamModel.layDanhSachSanPhamMoi(opset, limit);
             if(ketqqua.status){
                 return res.json({
                     status:true,
@@ -242,7 +245,8 @@ export default class SanPhamController{
             if(ketqqua.ThanhCong){
                 return res.json({
                     ThanhCong:true,
-                    dulieu:ketqqua.dulieu
+                    dulieu:ketqqua.dulieu,
+                    total:ketqqua.total
                 })
             }else{
                 return res.json({

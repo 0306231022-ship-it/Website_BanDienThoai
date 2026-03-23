@@ -13,6 +13,8 @@ import Trang404 from './err/404';
 import TrangChuNguoiDung from '../ThanhPhan/NguoiDung/TrangChuNguoiDung';
 import SanPhamThuongHieu from '../ThanhPhan/Website/SanPhem_ThuongHieu';
 import ChiTietSanPhamUser from '../ThanhPhan/Website/ChiTietSP';
+import TatCaSanPhamMoi from '../ThanhPhan/Website/TatCaSanPhamMoi';
+import TatCaThuongHieu from '../ThanhPhan/Website/TatCaThuongHieu';
 function TrangChuWeb() {
     return (
         <div className="font-sans text-gray-800">
@@ -27,7 +29,9 @@ function TrangChuWeb() {
                     <Route path="/gio-hang" element={<GioHang />} />
                     <Route path="/nguoi-dung/*" element={<TrangChuNguoiDung />} />
                     <Route path="/san-pham/:id/:name" element={<SanPhamThuongHieu />} />
+                    <Route path="/san-pham-moi" element={<TatCaSanPhamMoi />} />
                     <Route path="/chi-tiet-san-pham/:id" element={<ChiTietSanPhamUser />} />
+                    <Route path='/thuong-hieu' element={<TatCaThuongHieu/>} />
                     <Route path="*" element={<Trang404 />} />
                 </Routes>
             </main>

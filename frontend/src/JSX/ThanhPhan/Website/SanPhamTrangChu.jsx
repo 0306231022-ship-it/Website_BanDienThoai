@@ -6,7 +6,6 @@ import SanPhamMoi from "./SanPhamMoi";
 
 const SanPhamTrangChu = () => {
     const [ThuongHieu, setThuongHieu] = useState([]);
-    const [page, setpage] = useState(1);
     const [loading, setloading] = useState(false);
     const [flashSale, setFlashSale] = useState({});
     const [flashSaleProducts, setFlashSaleProducts] = useState([]);
@@ -40,14 +39,14 @@ const SanPhamTrangChu = () => {
         setloading(true);
         const LayDL = async () => {
             try {
-                const ketqua = await API.CallAPI(undefined, { PhuongThuc: 2, url: `/website/laydsTH?page=${page}` });
+                const ketqua = await API.CallAPI(undefined, { PhuongThuc: 2, url: `/website/laydsTH?page=1` });
                 setThuongHieu(ketqua.thuongHieu);
             } catch (error) {
                 console.error('Lỗi thương hiệu:', error)
             } finally { setloading(false); }
         };
         LayDL();
-    }, [page]);
+    }, []);
 
     // --- 3. LOGIC GỌI API FLASH SALE ---
     useEffect(() => {
@@ -158,9 +157,9 @@ const SanPhamTrangChu = () => {
                                 </div>
                             </div>
                             
-                            <button className="group/btn px-6 py-3 rounded-full bg-gray-50 hover:bg-red-600 transition-all border border-gray-100 flex items-center gap-2 text-sm font-black text-gray-500 hover:text-white">
+                            <Link  className="group/btn px-6 py-3 rounded-full bg-gray-50 hover:bg-red-600 transition-all border border-gray-100 flex items-center gap-2 text-sm font-black text-gray-500 hover:text-white">
                                 XEM TẤT CẢ <span className="transform group-hover/btn:translate-x-1 transition-transform">&rarr;</span>
-                            </button>
+                            </Link>
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
@@ -214,7 +213,7 @@ const SanPhamTrangChu = () => {
                             <h2 className="text-2xl font-black tracking-tight text-slate-800">THƯƠNG HIỆU NỔI BẬT</h2>
                             <div className="h-1 w-12 bg-red-600 rounded-full"></div>
                         </div>
-                        <Link to='' className="text-slate-400 hover:text-red-600 text-sm font-black transition-all">XEM TẤT CẢ &rarr;</Link>
+                        <Link to='/thuong-hieu' className="text-slate-400 hover:text-red-600 text-sm font-black transition-all">XEM TẤT CẢ &rarr;</Link>
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
