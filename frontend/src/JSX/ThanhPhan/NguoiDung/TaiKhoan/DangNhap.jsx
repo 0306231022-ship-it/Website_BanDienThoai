@@ -1,4 +1,4 @@
-import { Link , useNavigate  } from 'react-router-dom';
+import { Link ,  } from 'react-router-dom';
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 import { useState } from 'react';
 import * as fun  from '../../../../JS/FUNCTONS/function';
@@ -13,7 +13,6 @@ function DangNhap() {
     });
     const [err,seterrr] = useState({});
     const [loading, setLoading] = useState(false);
-    const nav = useNavigate();
     const ChuyenTab = ()=>{
         CloseAllModals();
         OpenMoDal(null, { TenTrang: 'DangKy', TieuDe: 'Đăng Ký' })
@@ -45,8 +44,8 @@ function DangNhap() {
             if(ketqua.ThanhCong){
                 // Xử lý đăng nhập thành công
                 ThongBao.ThongBao_ThanhCong(ketqua.message);
-                nav('/'); 
                 CloseAllModals();
+                window.location.reload();
              }else{
                 ThongBao.ThongBao_Loi(ketqua.message);
             }

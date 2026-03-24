@@ -10,5 +10,6 @@ websiteRoute.get('/laydsSPflashsale', upload.none(), FlashSaleController.LayDanh
 websiteRoute.get('/thuonghieu_sanpham', upload.none(), ThuongHieuController.LaySanPhamTheoThuongHieu);
 websiteRoute.get('/layChiTietSP_theoid', upload.none(), SanPhamController.layChiTietSP_theoid);
 websiteRoute.get('/lay_ds_sanpham_moi', upload.none(), SanPhamController.layDanhSachSanPhamMoi);
+websiteRoute.get('/sanpham_deal', upload.none(), SanPhamController.layDanhSachSanPhamDeal);
 console.log("✅ websiteRoute loaded");
 export default websiteRoute;

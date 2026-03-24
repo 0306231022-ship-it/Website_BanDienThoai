@@ -46,4 +46,12 @@ export default class adminModel{
             return false;
         }
     }
+    static async LayTT_Email(email){
+        try {
+           const [ketqua]= await execute('SELECT * FROM nguoidung WHERE EMAIL=? LIMIT 1',[email])
+           return ketqua.length >0 ? true : false
+          } catch (error) {
+            return false
+          }
+    }
 }

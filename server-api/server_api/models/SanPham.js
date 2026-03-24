@@ -516,4 +516,25 @@ export default class SanPhamModel{
             return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };
         }
     }
+    static async layDanhSachSanPhamDeal(ids){
+       // trong mảng ids có chứa các IDSANPHAM cần lấy thông tin
+        try {
+            const [ketqqua] = await execute(`
+                SELECT sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.GIABAN, ct.SOLUONG, ha.HINHANH
+                FROM sanpham sp
+                JOIN thuonghieu th ON sp.IDTHUONGHIEU = th.IDTHUONGHIEU
+                JOIN hinhanh_sanpham ha ON sp.IDSANPHAM = ha.IDSANPHAM AND ha.IDHA = (
+                    SELECT MIN(IDHA) 
+                    FROM hinhanh_sanpham 
+                    WHERE IDSANPHAM = sp.IDSANPHAM
+                )
+                WHERE sp.IDSANPHAM IN (${ids})
+                LIMIT 1
+            `);
+            return { ThanhCong:true, dulieu:ketqqua };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };
+        }
+    }
 }

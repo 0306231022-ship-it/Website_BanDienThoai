@@ -410,4 +410,18 @@ export default class SanPhamController{
             })
         }
     }
+    static async layDanhSachSanPhamDeal(req,res){
+        const idsp = req.query.ids;
+        try {
+            const ketqqua = await SanPhamModel.layDanhSachSanPhamDeal(idsp);
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+            
+    }
+
 }

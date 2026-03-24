@@ -10,6 +10,7 @@ function SanPhamThuongHieu() {
         const [ThuongHieu, setThuongHieu] = useState({});
         const [PhanTrang, setPhanTrang] = useState({});
         const [DanhSachSanPham, setDanhSachSanPham] = useState([]);
+        const [sanPham, setSanPham] = useState([]);
          useEffect(() => {
             const fetchData = async () => {
                 setLoading(true);
@@ -30,6 +31,23 @@ function SanPhamThuongHieu() {
                 fetchData();
             }
          }, [id, page]);
+         useEffect(() => {
+            const fetchSanPham = async () => {
+                //trong SanPham lọc lấy mảng IDSANPHAM
+                if (DanhSachSanPham.length > 0) {
+                    const ids = DanhSachSanPham.map(sp => sp.IDSANPHAM).join(',');
+                    try {
+                        const response = await API.CallAPI(undefined, { url: `/website/sanpham_deal?ids=${ids}`, PhuongThuc: 2 });
+                        if (response.ThanhCong) {
+                            setSanPham(response.DuLieu);
+                        }
+                    } catch (error) {
+                        console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
+                    }
+                }
+
+            }
+         }, []);
         if (!id) {
             return <div class="flex items-center justify-center h-screen">
                 <p class="text-2xl font-bold text-gray-500">Không tìm thấy thương hiệu</p>

@@ -14,13 +14,20 @@ export default class CanhanADController{
                     .isEmail()
                     .withMessage('Email không hợp lệ!')
                     .isLength({ max: 225 })
-                    .withMessage('Vượt quá kí tự quy định!')
+                    .custom(async (value) => {
+                        const existingUser = await adminModel.LayTT_Email(value);
+                        if (existingUser) {
+                            throw new Error('Email đã tồn tại!');
+                        }
+                    })
                     .run(req),
                 body('password')
                     .notEmpty()
                     .withMessage('Mật khẩu không được bỏ trống!')
                     .isLength({ max: 225 })
                     .withMessage('Mật khẩu vượt quá ký tự cho phép!')
+                    .isLength({ min: 6 })
+                    .withMessage('Mật khẩu phải có ít nhất 6 ký tự!')
                     .run(req),
                 body('name')
                     .notEmpty()

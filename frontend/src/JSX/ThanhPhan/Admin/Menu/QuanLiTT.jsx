@@ -33,7 +33,6 @@ import { Routes, Route } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import ThungRacPhieuNhap from '../SanPham/ThungRacPhieuNhap';
-import {AppProviderFS}  from '../../../../CONTEXT/QuanLi_FlashSale';
 function QuanLiTT() {
     const [isPhieuNhapOpen, setIsPhieuNhapOpen] = useState(false);
     const [sanpham,setsanpham] = useState(false);
@@ -252,7 +251,7 @@ function QuanLiTT() {
          </aside>
     
         <main className="flex-grow ml-72 overflow-y-auto min-h-screen py-2" role="main" aria-label="Nội dung quản trị">
-          <AppProviderFS>
+  
                 <Routes>
                     <Route path="thuonghieu" element={<DanhSachThuongHieu />} />
                     <Route path="thuonghieu/ThemThuongHieu" element={<ThemThuongHieu />} />
@@ -293,7 +292,6 @@ function QuanLiTT() {
                     <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
                    
                 </Routes>
-                </AppProviderFS>
         </main>
         </>
     );

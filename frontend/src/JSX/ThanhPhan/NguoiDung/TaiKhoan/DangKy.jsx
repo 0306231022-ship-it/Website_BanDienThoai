@@ -53,6 +53,7 @@ function DangKy() {
                     newErr[error.path] = error.msg;
                 });
                 setErr(newErr);
+                return;
             }
             if(ketqua.ThanhCong){
                 ThongBao.ThongBao_ThanhCong(ketqua.message);

@@ -1,5 +1,22 @@
 import { Link } from "react-router-dom";
+import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
+import { useEffect, useState } from "react";
 function HoSoCaNhan() {
+    const [thongTinNguoiDung, setThongTinNguoiDung] = useState(null);
+
+    useEffect(() => {
+        const fetchThongTinNguoiDung = async () => {
+            try {
+                const userInfo = await LayThongTinNguoiDung();
+                setThongTinNguoiDung(userInfo);
+            } catch (error) {
+                console.error("Lỗi khi lấy thông tin người dùng:", error);
+            }
+        };
+        fetchThongTinNguoiDung();
+    }, []);
+    
+
     return (
         <>
  <div className="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-2">
@@ -12,19 +29,19 @@ function HoSoCaNhan() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label className="block text-sm font-medium text-dark-600">Họ và Tên</label>
-                                <p className="mt-1 text-lg text-dark-900 font-medium">Nguyễn Văn A</p>
+                                <p className="mt-1 text-lg text-dark-900 font-medium">{thongTinNguoiDung?.HOTEN}</p>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-dark-600">Email</label>
-                                <p className="mt-1 text-lg text-dark-900 font-medium">nguyenvana@email.com</p>
+                                <p className="mt-1 text-lg text-dark-900 font-medium">{thongTinNguoiDung?.EMAIL}</p>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-dark-600">Số Điện Thoại</label>
-                                <p className="mt-1 text-lg text-dark-900 font-medium">090****123</p>
+                                <p className="mt-1 text-lg text-dark-900 font-medium">{thongTinNguoiDung?.SDT}</p>
                             </div>
                             <div>
                                 <label class_name="block text-sm font-medium text-dark-600">Địa Chỉ Mặc Định</label>
-                                <p className="mt-1 text-lg text-dark-900 font-medium">123 Nguyễn Văn Linh, Q.7...</p>
+                                <p className="mt-1 text-lg text-dark-900 font-medium">{thongTinNguoiDung?.DIACHI || "Chưa có địa chỉ mặc định"}</p>
                             </div>
                         </div>
                     </div>

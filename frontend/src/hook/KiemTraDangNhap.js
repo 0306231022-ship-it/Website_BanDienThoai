@@ -1,5 +1,7 @@
 import * as API from '../JS/API/API';
 import * as ThongBao from '../JS/FUNCTONS/ThongBao';
+
+
 export async function KiemTra() {
   try {
     const kiemtra = await API.CallAPI(undefined, { url: '/NguoiDung/kiemtra', PhuongThuc: 1 });
@@ -35,13 +37,15 @@ export async function DangXuat() {
       const ketqua = await API.CallAPI(undefined, { url: '/NguoiDung/dangxuat_nguoidung', PhuongThuc: 1 });
       if (ketqua.ThanhCong) {
         ThongBao.ThongBao_ThanhCong(ketqua.message);
-        window.location.reload();
+        return true;
       } else {
         ThongBao.ThongBao_Loi(ketqua.message);
+        return false;
       }
     } catch (error) {
       console.error('Lỗi khi gọi API đăng xuất:', error);
       ThongBao.ThongBao_Loi('Đã xảy ra lỗi khi đăng xuất!');
+      return false;
     }
 }
 
