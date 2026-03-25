@@ -519,19 +519,57 @@ export default class SanPhamModel{
     static async layDanhSachSanPhamDeal(ids){
        // trong mảng ids có chứa các IDSANPHAM cần lấy thông tin
         try {
-            const [ketqqua] = await execute(`
-                SELECT sp.IDSANPHAM, sp.TENSANPHAM, th.TENTHUONGHIEU, ct.GIABAN, ct.SOLUONG, ha.HINHANH
-                FROM sanpham sp
-                JOIN thuonghieu th ON sp.IDTHUONGHIEU = th.IDTHUONGHIEU
-                JOIN hinhanh_sanpham ha ON sp.IDSANPHAM = ha.IDSANPHAM AND ha.IDHA = (
-                    SELECT MIN(IDHA) 
-                    FROM hinhanh_sanpham 
-                    WHERE IDSANPHAM = sp.IDSANPHAM
-                )
-                WHERE sp.IDSANPHAM IN (${ids})
-                LIMIT 1
-            `);
-            return { ThanhCong:true, dulieu:ketqqua };
+            const conn = await beginTransaction();
+            const [ketqqua] = await conn.query(`
+                SELECT ID_FS , IDSP
+                FROM sanpham_flash
+                WHERE IDSP IN (?)
+            `,[ids]);
+            if(ketqqua.length === 0){
+                await rollbackTransaction(conn);
+                return { ThanhCong:false, message:'Không có sản phẩm nào trong danh sách!' };
+            }
+            const id_fs = ketqqua.map(row => row.ID_FS);
+            // kiểm tra trong bảng flash xem ngày hiện tại có nằm trong khoảng THOIGIAN_BAT và THOIGIAN_KETTHUC không
+            const [kiemtra] = await conn.query(`
+                SELECT IDFS
+                FROM flash
+                WHERE IDFS IN (?) AND NOW() BETWEEN THOIGIAN_BATDAU AND THOIGIAN_KETTHUC
+            `,[id_fs]);
+           if(kiemtra.length === 0){
+                await rollbackTransaction(conn);
+                return { ThanhCong:false, message:'Không có sản phẩm nào trong danh sách!' };
+            }
+            if(kiemtra.length > 0){
+                //dựa vào ketqqua lọc ra IDSP nào có ID_FS nằm trong kiemtra
+                const id_fs_hop_le = kiemtra.map(row => row.IDFS);
+                const idsp_hop_le = ketqqua.filter(row => id_fs_hop_le.includes(row.ID_FS)).map(row => row.IDSP);
+                const [ketqqua_sanpham] = await conn.query(`
+                      SELECT sp.IDSANPHAM, 
+                             sp.TENSANPHAM, 
+                            (
+                                SELECT ct.GIABAN
+                                FROM chitiet_phieunhap ct
+                                WHERE ct.IDSANPHAM = sp.IDSANPHAM
+                            ) AS GIABAN_NHAP,
+                            (
+                                SELECT fs.GIABAN
+                                FROM sanpham_flash fs
+                                WHERE fs.IDSP = sp.IDSANPHAM AND fs.ID_FS IN (?)
+                            ) AS GIABAN_FLASH
+                    FROM sanpham sp
+                    WHERE sp.IDSANPHAM IN (?)
+                    LIMIT 1;
+                `,[id_fs_hop_le, idsp_hop_le]);
+                    await commitTransaction(conn);
+                    if(ketqqua_sanpham.length === 0){
+                        return { ThanhCong:false, message:'Không có sản phẩm nào trong danh sách!' };
+                    }
+                    return { ThanhCong:true, dulieu:ketqqua_sanpham };
+            }else {
+                await rollbackTransaction(conn);
+                return { ThanhCong:false, message:'Không có sản phẩm nào trong danh sách!' };
+            }
         } catch (error) {
             console.error('Có lỗi xảy ra:' + error);
             return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };

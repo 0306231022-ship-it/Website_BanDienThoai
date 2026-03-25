@@ -412,8 +412,20 @@ export default class SanPhamController{
     }
     static async layDanhSachSanPhamDeal(req,res){
         const idsp = req.query.ids;
+        let arr = idsp.split(",").map(item => item.trim());
         try {
-            const ketqqua = await SanPhamModel.layDanhSachSanPhamDeal(idsp);
+            const ketqqua = await SanPhamModel.layDanhSachSanPhamDeal(arr);
+            if(ketqqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqqua.dulieu
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message : ketqqua.message
+                })
+            }
         } catch (error) {
             console.error('Có lỗi sãy ra:' + error);
             return res.json({

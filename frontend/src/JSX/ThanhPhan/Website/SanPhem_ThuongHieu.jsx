@@ -10,7 +10,7 @@ function SanPhamThuongHieu() {
         const [ThuongHieu, setThuongHieu] = useState({});
         const [PhanTrang, setPhanTrang] = useState({});
         const [DanhSachSanPham, setDanhSachSanPham] = useState([]);
-        const [sanPham, setSanPham] = useState([]);
+        const [sanPham, setSanPham] = useState({});
          useEffect(() => {
             const fetchData = async () => {
                 setLoading(true);
@@ -38,16 +38,17 @@ function SanPhamThuongHieu() {
                     const ids = DanhSachSanPham.map(sp => sp.IDSANPHAM).join(',');
                     try {
                         const response = await API.CallAPI(undefined, { url: `/website/sanpham_deal?ids=${ids}`, PhuongThuc: 2 });
+                        alert(JSON.stringify(response.dulieu[0]));
                         if (response.ThanhCong) {
-                            setSanPham(response.DuLieu);
+                            setSanPham(response.dulieu[0]);
                         }
                     } catch (error) {
                         console.error("Lỗi khi lấy chi tiết sản phẩm:", error);
                     }
                 }
-
             }
-         }, []);
+                fetchSanPham();
+         }, [ DanhSachSanPham]);
         if (!id) {
             return <div class="flex items-center justify-center h-screen">
                 <p class="text-2xl font-bold text-gray-500">Không tìm thấy thương hiệu</p>
@@ -153,8 +154,9 @@ function SanPhamThuongHieu() {
     <div className="relative group overflow-hidden rounded-[2rem] bg-slate-900 p-6 transition-all hover:shadow-2xl hover:shadow-red-100/50">
         {/* Background Pattern */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/20 blur-3xl rounded-full -mr-16 -mt-16 group-hover:bg-red-600/30 transition-colors"></div>
-        
-        <div className="relative z-10">
+        {
+                Object.keys(sanPham).length !== 0 && (
+                    <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
                 <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -163,14 +165,28 @@ function SanPhamThuongHieu() {
                 <p className="text-[10px] font-black text-red-500 uppercase tracking-[0.2em]">Hot Deal</p>
             </div>
             
-            <h4 className="text-xl font-black text-white leading-tight mb-2 italic">iPhone 15 Pro</h4>
-            <p className="text-slate-400 text-[11px] font-medium mb-5">Giảm ngay 2.000.000đ khi thanh toán qua thẻ.</p>
+            <h4 className="text-xl font-black text-white leading-tight mb-2 italic">{sanPham.TENSANPHAM}</h4>
+            <p className="text-slate-400 text-[11px] font-medium mb-5">Giảm ngay {fun.formatCurrency(sanPham.GIABAN_NHAP - sanPham.GIABAN_FLASH)} khi mua hàng!</p>
             
             <button className="w-full bg-white hover:bg-red-600 hover:text-white text-slate-900 text-[11px] font-black py-3 rounded-xl uppercase tracking-widest transition-all active:scale-95">
                 Nhận ưu đãi
             </button>
         </div>
-
+            )
+        }
+        {
+                Object.keys(sanPham).length === 0 && (
+                    <div className="relative z-10">
+            <div className="flex items-center gap-2 mb-3">
+                <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gray-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-gray-500"></span>
+                </span>
+                <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Không có ưu đãi</p>
+            </div>
+            </div>
+                )
+        }
         {/* Decor icon */}
         <i className="fab fa-apple absolute -right-2 -bottom-2 text-7xl text-white/5 group-hover:text-white/10 transition-all rotate-12"></i>
     </div>
