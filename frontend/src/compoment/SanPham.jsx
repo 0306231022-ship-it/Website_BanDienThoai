@@ -1,32 +1,9 @@
-import { Link } from "react-router-dom"
-import { KiemTra , LayThongTinNguoiDung } from "../hook/KiemTraDangNhap";
-import { useModalContext } from "../CONTEXT/QuanLiModal";
-import * as API from '../JS/API/API';
+import { Link } from "react-router-dom";
 import * as fun from '../JS/FUNCTONS/function';
-import * as ThongBao1 from "../JS/FUNCTONS/ThongBao";
+import { useAddToCart } from '../hook/SanPham';
 function ChildSanPham({ product }) {
-    const { OpenMoDal } = useModalContext();
-     const handleAddToCart = async (productId, DonGia) => {
-        if (!productId) ThongBao1.ThongBao_CanhBao("Không tìm thấy sản phẩm.");
-        const isLoggedIn = await KiemTra();
-        !isLoggedIn && OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
-        if(isLoggedIn){
-            const thongtinND = await LayThongTinNguoiDung();
-            const IDND = thongtinND.IDND;
-            const formdata = fun.objectToFormData({ IDSANPHAM: productId, SOLUONG: 1, IDNGUOIDUNG: IDND , GIABAN: DonGia });
-            try {
-                const response = await API.CallAPI(formdata, { PhuongThuc: 1, url: `/NguoiDung/ThemGioHang` });
-                if(response.ThanhCong){
-                    ThongBao1.ThongBao_ThanhCong(response.message);
-                } else {
-                    ThongBao1.ThongBao_Loi(response.message);
-                }
-            } catch (error) {
-                console.error("Error adding product to cart:", error);
-            }
-            
-        }
-    }
+    const { handleAddToCart } = useAddToCart();
+    
     return (
                      <div key={product.IDSANPHAM} className="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden relative border border-gray-100 flex flex-col">
                         <span className={`absolute top-4 left-4 z-10 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase`}>
@@ -51,7 +28,7 @@ function ChildSanPham({ product }) {
                                     <i className="fas fa-eye"></i>
                                 </Link>
                                 <button
-                                    onClick={() => handleAddToCart(product.IDSANPHAM, product.GIABAN)}
+                                    onClick={() => handleAddToCart(product.IDSANPHAM, product.GIABAN ,undefined)}
                                     className="bg-white text-gray-900 w-12 h-12 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition shadow-lg transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75"
                                     title="Thêm vào giỏ"
                                 >

@@ -54,4 +54,25 @@ export default class adminModel{
             return false
           }
     }
+    static async LayDiaChiMacDinh(IDND){
+        try {
+            const [ketqua] = await execute(`
+                SELECT * FROM diachi_nguoidung
+                WHERE IDND = ?`, [IDND]);
+                if (ketqua.length > 0) {
+                    return {
+                        ThanhCong: true,
+                        DuLieu : ketqua
+                    }
+                }else {
+                    return {
+                        ThanhCong: false,
+                        message: 'Không tìm thấy địa chỉ mặc định'
+                    }
+                }
+        } catch (error) {
+            console.error('Lỗi khi lấy địa chỉ mặc định:', error);
+            return false;
+        }
+    }
 }

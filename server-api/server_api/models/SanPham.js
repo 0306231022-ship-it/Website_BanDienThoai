@@ -327,97 +327,96 @@ export default class SanPhamModel{
     let conn;
     try {
         conn = await beginTransaction();
-
-        // Lấy đúng IDDH thay vì chỉ IDKH
         const [kiemtra] = await conn.query(`
             SELECT dh.IDDH, dh.IDKH
             FROM donhang dh
             WHERE dh.IDKH = ? AND dh.TRANGTHAI = 0
         `,[IDNGUOIDUNG]);
-
-        let IDDH;
-
         if(kiemtra.length > 0){
             let allIDDH = kiemtra.map(item => item.IDDH);
-
+            const IDDH = allIDDH[0];
             // Kiểm tra sản phẩm đã tồn tại trong đơn hàng chưa
             const [kiemtra_sanpham] = await conn.query(`
                 SELECT IDSANPHAM
                 FROM chitiet_donhang
-                WHERE IDDH IN (?) AND IDSANPHAM = ?
-            `,[allIDDH, IDSANPHAM]);
-
+                WHERE IDDH = ? AND IDSANPHAM = ?
+            `,[IDDH, IDSANPHAM]);
             if(kiemtra_sanpham.length > 0){
                 // Nếu sản phẩm đã tồn tại thì cập nhật số lượng và giá bán
                 const [capnhat] = await conn.query(`
                     UPDATE chitiet_donhang 
-                    SET SOLUONG = SOLUONG + ?, DONGIA = ?
-                    WHERE IDDH IN (?) AND IDSANPHAM = ?
-                `,[SOLUONG, GIABAN, allIDDH, IDSANPHAM]);
-
+                    SET SOLUONG = SOLUONG + ?
+                    WHERE IDDH = ? AND IDSANPHAM = ?
+                `,[SOLUONG, IDDH, IDSANPHAM]);
                 if(capnhat.affectedRows === 0){
                     await rollbackTransaction(conn);
-                    return { ThanhCong:false, message:'Cập nhật giỏ hàng thất bại!' };
+                    return { 
+                        ThanhCong:false, 
+                        message:'Cập nhật giỏ hàng thất bại!' 
+                    };
                 }
-
                 await commitTransaction(conn);
-                return { ThanhCong:true, message:'Cập nhật giỏ hàng thành công!' };
+                return { 
+                    ThanhCong:true, 
+                    message:'Cập nhật giỏ hàng thành công!' 
+                };
             } else {
-                // Nếu sản phẩm chưa tồn tại thì thêm mới đơn hàng và chi tiết
-                IDDH = TaoID('DH');
-                const [them] = await conn.query(`
-                    INSERT INTO donhang (IDDH,IDKH , NGAYDAT, TRANGTHAI)
-                    VALUES (?, ?, NOW(), 0)
-                `,[IDDH,IDNGUOIDUNG]);
-
-                if(them.affectedRows === 0){
-                    await rollbackTransaction(conn);
-                    return { ThanhCong:false, message:'Thêm đơn hàng thất bại!' };
-                }
-
+                // Nếu sản phẩm chưa tồn tại thì thêm mới chi tiết đơn hàng
                 const [them_chitiet] = await conn.query(`
-                    INSERT INTO chitiet_donhang (IDCT,IDDH, IDSANPHAM, SOLUONG, DONGIA, THANHTIEN) 
+                    INSERT INTO chitiet_donhang (IDCT, IDDH, IDSANPHAM, SOLUONG, DONGIA, THANHTIEN) 
                     VALUES (?, ?, ?, ?, ?, ?)
                 `,[TaoID('CTDH'), IDDH, IDSANPHAM, SOLUONG, GIABAN, SOLUONG * GIABAN]);
-
                 if(them_chitiet.affectedRows === 0){
                     await rollbackTransaction(conn);
-                    return { ThanhCong:false, message:'Thêm chi tiết đơn hàng thất bại!' };
+                    return { 
+                        ThanhCong:false, 
+                        message:'Thêm chi tiết đơn hàng thất bại!' 
+                    };
                 }
-
                 await commitTransaction(conn);
-                return { ThanhCong:true, message:'Thêm vào giỏ hàng thành công!' };
+                return { 
+                    ThanhCong:true, 
+                    message:'Thêm vào giỏ hàng thành công!' 
+                };
             }
-        } else {
-            // Nếu chưa có đơn hàng nào thì tạo mới
-            IDDH = TaoID('DH');
+        }else {
+            // Nếu chưa có đơn hàng nào thì tạo mới đơn hàng và chi tiết
+            const IDDH = TaoID('DH');
             const [them] = await conn.query(`
-                INSERT INTO donhang (IDDH,IDKH , NGAYDAT, TRANGTHAI)
+                INSERT INTO donhang (IDDH, IDKH, NGAYDAT, TRANGTHAI)
                 VALUES (?, ?, NOW(), 0)
-            `,[IDDH,IDNGUOIDUNG]);
-
+            `,[IDDH, IDNGUOIDUNG]);
             if(them.affectedRows === 0){
                 await rollbackTransaction(conn);
-                return { ThanhCong:false, message:'Thêm đơn hàng thất bại!' };
+                return { 
+                    ThanhCong:false, 
+                    message:'Thêm đơn hàng thất bại!' 
+                };
             }
-
             const [them_chitiet] = await conn.query(`
-                INSERT INTO chitiet_donhang (IDCT,IDDH, IDSANPHAM, SOLUONG, DONGIA, THANHTIEN) 
+                INSERT INTO chitiet_donhang (IDCT, IDDH, IDSANPHAM, SOLUONG, DONGIA, THANHTIEN) 
                 VALUES (?, ?, ?, ?, ?, ?)
             `,[TaoID('CTDH'), IDDH, IDSANPHAM, SOLUONG, GIABAN, SOLUONG * GIABAN]);
-
             if(them_chitiet.affectedRows === 0){
                 await rollbackTransaction(conn);
-                return { ThanhCong:false, message:'Thêm chi tiết đơn hàng thất bại!' };
+                return { 
+                    ThanhCong:false, 
+                    message:'Thêm chi tiết đơn hàng thất bại!' 
+                };
             }
-
             await commitTransaction(conn);
-            return { ThanhCong:true, message:'Thêm vào giỏ hàng thành công!' };
+            return { 
+                ThanhCong:true, 
+                message:'Thêm vào giỏ hàng thành công!' 
+            };
         }
     } catch (error) {
         console.error('Có lỗi xảy ra:' + error);
         if(conn) await rollbackTransaction(conn);
-        return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };
+        return { 
+            ThanhCong:false,
+             message:'Lỗi khi truy vấn dữ liệu!'
+        };
     }
 }
     static async GioHang_NguoiDung(IDNGUOIDUNG){
@@ -485,18 +484,34 @@ export default class SanPhamModel{
             `,[IDDH, IDSANPHAM]);
             if(xoa.affectedRows === 0){
                 await rollbackTransaction(conn);
-                return { ThanhCong:false, message:'Xóa sản phẩm khỏi giỏ hàng thất bại!' };
+                return { 
+                    ThanhCong:false, 
+                    message:'Xóa sản phẩm khỏi giỏ hàng thất bại!' 
+                };
             }
-            const [xoa_dh] = await conn.query(`
-                DELETE FROM donhang 
-                WHERE IDDH = ? 
+            const [kiemtra] = await conn.query(`
+                SELECT IDDH
+                FROM chitiet_donhang
+                WHERE IDDH = ?
+            `,[IDDH]);
+            if(kiemtra.length === 0){
+                const [xoa_dh] = await conn.query(`
+                    DELETE FROM donhang 
+                    WHERE IDDH = ?
                 `,[IDDH]);
-            if(xoa_dh.affectedRows === 0){
-                await rollbackTransaction(conn);
-                return { ThanhCong:false, message:'Xóa đơn hàng thất bại!' };
+                if(xoa_dh.affectedRows === 0){
+                    await rollbackTransaction(conn);
+                    return { 
+                        ThanhCong:false, 
+                        message:'Xóa sản phẩm khỏi giỏ hàng thất bại!' 
+                    };
+                }
             }
             await commitTransaction(conn);
-            return { ThanhCong:true, message:'Xóa sản phẩm khỏi giỏ hàng thành công!' };
+            return { 
+                ThanhCong:true, 
+                message:'Xóa sản phẩm khỏi giỏ hàng thành công!' 
+            };
         } catch (error) {
             console.error('Có lỗi xảy ra:' + error);
             return { ThanhCong:false, message:'Xóa sản phẩm khỏi giỏ hàng thất bại!' }  ;

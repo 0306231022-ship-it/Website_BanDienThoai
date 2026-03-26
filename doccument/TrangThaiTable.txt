@@ -7,3 +7,7 @@
  1: sản phẩm bán
  0 : sản phẩm đã xóa 
  2 : sản phẩm ngừng bán 
+ ====================================
+ 3. Bảng DonHang
+ 0: đơn hàng đó là giỏ hàng
+ 1. đơn hàng đó đã đc mua

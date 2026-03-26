@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams , useNavigate } from 'react-router-dom';
 import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
+import { useAddToCart } from '../../../hook/SanPham';
 
 function ChiTietSanPhamUser() {
     const { id } = useParams();
@@ -10,7 +11,8 @@ function ChiTietSanPhamUser() {
     const [images, setImages] = useState([]);
     const [sanpham, setSanPham] = useState(null);
     const [selectedImage, setSelectedImage] = useState("");
-    const [quantity, setQuantity] = useState(1); // Thêm state số lượng mua
+    const [quantity, setQuantity] = useState(1);
+    const { handleAddToCart , handlebuyproduct } = useAddToCart();
 
     useEffect(() => {
         const fetchDetail = async () => {
@@ -32,8 +34,6 @@ function ChiTietSanPhamUser() {
         };
         fetchDetail();
     }, [id]);
-
-    // Xử lý tăng giảm số lượng
     const handleQuantity = (type) => {
         if (type === 'plus') setQuantity(prev => prev < sanpham.SOLUONG ? prev + 1 : prev);
         else setQuantity(prev => prev > 1 ? prev - 1 : 1);
@@ -108,7 +108,7 @@ function ChiTietSanPhamUser() {
                         <div className="bg-slate-50 p-6 rounded-[2rem] border border-gray-100 mb-8">
                             <h4 className="text-[11px] font-black uppercase text-slate-400 tracking-widest mb-4">Thông số nổi bật</h4>
                             <div className="grid grid-cols-2 gap-y-3">
-                                {Object.entries(JSON.parse(sanpham.THONGSO_KYTHUAT || '{}')).slice(0, 4).map(([key, value]) => (
+                               {Object.entries(JSON.parse(sanpham.THONGSO_KYTHUAT || '{}')).map(([key, value]) => (
                                     <div key={key} className="flex flex-col">
                                         <span className="text-[10px] text-slate-400 font-bold uppercase">{fun.Map(key)}</span>
                                         <span className="text-sm font-bold text-slate-700">{value}</span>
@@ -135,10 +135,16 @@ function ChiTietSanPhamUser() {
 
                         {/* HÀNH ĐỘNG */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <button className="flex-1 bg-slate-900 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] hover:bg-red-600 transition-all active:scale-95 shadow-xl shadow-slate-200">
+                            <button 
+                                onClick={() => handleAddToCart(sanpham.IDSANPHAM, sanpham.GIABAN, quantity)}
+                                className="flex-1 bg-slate-900 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] hover:bg-red-600 transition-all active:scale-95 shadow-xl shadow-slate-200"
+                            >
                                 Thêm vào giỏ hàng
                             </button>
-                            <button className="flex-1 bg-red-600 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] hover:bg-red-700 transition-all active:scale-95 shadow-xl shadow-red-100">
+                            <button 
+                                onClick={() => handlebuyproduct(sanpham.IDSANPHAM, sanpham.GIABAN, quantity)}
+                                className="flex-1 bg-red-600 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] hover:bg-red-700 transition-all active:scale-95 shadow-xl shadow-red-100"
+                            >
                                 Mua ngay
                             </button>
                         </div>

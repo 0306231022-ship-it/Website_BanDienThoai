@@ -3,12 +3,14 @@ import { useEffect, useState, useRef } from 'react';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 import { KiemTra, LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
 import { Lay_SoLuong_GioHang } from '../../../hook/ThongTinHienThi_Website';
+import { useAddToCart } from '../../../hook/SanPham';
 import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 
 function GioHang() {
     const { OpenMoDal } = useModalContext();
+    const { updateCartToServer ,handlebuyproduct } = useAddToCart();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
     const [sanpham, setSanPham] = useState([]);
@@ -44,26 +46,13 @@ function GioHang() {
     }, [sanpham]);
 
     useEffect(() => {
-        const updateCartToServer = async () => {
-            const currentCart = sanPhamRef.current;
-            if (currentCart.length === 0) return;
-            const cartData = currentCart.map(item => ({
-                IDSANPHAM: item.IDSANPHAM, SOLUONG: item.SOLUONG, IDDH: item.IDDH
-            }));
-            try {
-                await API.CallAPI(undefined, {
-                    url: `/NguoiDung/CapNhat_SoLuong_GioHang?data=${encodeURIComponent(JSON.stringify(cartData))}`,
-                    PhuongThuc: 2
-                });
-            } catch (error) { console.error('Lỗi tự động cập nhật:', error); }
-        };
-        const handleBeforeUnload = () => { updateCartToServer(); };
+        const handleBeforeUnload = () => { updateCartToServer(sanPhamRef); };
         window.addEventListener("beforeunload", handleBeforeUnload);
         return () => {
-            updateCartToServer();
+            updateCartToServer(sanPhamRef);
             window.removeEventListener("beforeunload", handleBeforeUnload);
         };
-    }, []); 
+    }, [sanPhamRef, updateCartToServer]); 
 
     const handleTangSoLuong = (id) => {
         setSanPham(prev => prev.map(item => item.IDSANPHAM === id ? { ...item, SOLUONG: item.SOLUONG + 1 } : item));
@@ -174,7 +163,7 @@ function GioHang() {
                                             <span className="font-bold text-gray-900">Tổng thanh toán</span>
                                             <span className="text-3xl font-black text-red-600 leading-none">{fun.formatCurrency(TongTien)}</span>
                                         </div>
-                                        <button className="w-full bg-red-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-red-700 shadow-xl shadow-red-200 transition-all active:scale-95 flex items-center justify-center">
+                                        <button onClick={()=>{handlebuyproduct(sanPhamRef)}} className="w-full bg-red-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-red-700 shadow-xl shadow-red-200 transition-all active:scale-95 flex items-center justify-center">
                                             TIẾP TỤC ĐẶT HÀNG <i className="fas fa-arrow-right ml-3"></i>
                                         </button>
                                     </div>

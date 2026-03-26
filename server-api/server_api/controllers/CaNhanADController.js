@@ -416,4 +416,39 @@ export default class CanhanADController{
                     message: 'Bạn đã đăng xuất thành công!'
                 });
             }
+            static async DiaChi_NguoiDung(req,res){
+                const IDND = req.query.IDND;
+                if(!IDND){
+                    return res.json({
+                        ThanhCong: false,
+                        message: 'Vui lòng kiểm tra lại dữ liệu!'
+                    });
+                }
+                const kiemtra = await adminModel.LayTT_ID(IDND);
+                if(!kiemtra){
+                    return res.json({
+                        ThanhCong: false,
+                        message: 'Không tìm thấy thông tin người dùng!'
+                    });
+                }
+                try {
+                    const ketqua = await adminModel.LayDiaChiMacDinh(IDND);
+                    if(ketqua.ThanhCong){
+                        return res.json({
+                            ThanhCong: true,
+                            DuLieu: ketqua.DuLieu
+                        });
+                    }else{
+                        return res.json({
+                            ThanhCong: false,
+                            message: ketqua.message
+                        });
+                    }
+                } catch (error) {
+                    return res.json({
+                        ThanhCong: false,
+                        message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
+                    });
+                }
+            }
 }

@@ -76,19 +76,21 @@ export default class FlashSaleModel{
             }
             const IDFS = flashSale[0].IDFS;
             const [sanpham] = await conn.query(`
-    SELECT sp.IDSANPHAM, sp.TENSANPHAM,
-       (SELECT ha.HINHANH 
-        FROM hinhanh_sanpham ha 
-        WHERE ha.IDSANPHAM = sp.IDSANPHAM 
-        ORDER BY ha.IDHA ASC LIMIT 1) AS HINHANH,
-       sf.GIABAN AS GIAFLASHSALE,
-       sf.SOLUONG_BAN,
-       sf.DABAN,
-       ct.GIABAN
+                SELECT sp.IDSANPHAM, sp.TENSANPHAM,
+                    (
+                        SELECT ha.HINHANH 
+                        FROM hinhanh_sanpham ha 
+                        WHERE ha.IDSANPHAM = sp.IDSANPHAM 
+                        ORDER BY ha.IDHA ASC LIMIT 1
+                    ) AS HINHANH,
+                    sf.GIABAN AS GIAFLASHSALE,
+                    sf.SOLUONG_BAN,
+                    sf.DABAN,
+                ct.GIABAN
 FROM sanpham sp
 JOIN sanpham_flash sf ON sp.IDSANPHAM = sf.IDSP AND sf.ID_FS = ? AND sf.TRANGTHAI = 1
 JOIN chitiet_phieunhap ct ON sp.IDSANPHAM = ct.IDSANPHAM;
-`, [IDFS, IDFS]);   // truyền 2 lần IDFS
+`, [IDFS, IDFS]);   
             await commitTransaction(conn);
             return {
                 ThanhCong:true,

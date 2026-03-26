@@ -3,115 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin mua hàng - Cửa hàng điện thoại</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Săn Flash Sale Trong Ngày</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        /* Ẩn thanh cuộn nhưng vẫn cho phép cuộn ngang */
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 
-    <nav class="bg-white border-b sticky top-0 z-50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="/" class="group flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-all font-semibold text-sm">
-                <svg className="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Quay lại
-            </a>
-            <div class="font-black text-xl tracking-tighter italic"><span class="text-red-600">FLASH</span>SALE</div>
-            <div class="w-20"></div> </div>
-    </nav>
-
-    <div class="bg-white border-b">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex overflow-x-auto no-scrollbar py-4 px-4 gap-4">
-                
-                <button class="flex-shrink-0 w-32 py-3 rounded-2xl bg-gray-100 text-gray-400 cursor-not-allowed">
-                    <span class="block text-xl font-black">09:00</span>
-                    <span class="text-[10px] uppercase font-bold">Kết thúc</span>
-                </button>
-
-                <button class="flex-shrink-0 w-40 py-4 rounded-2xl bg-red-600 text-white shadow-xl shadow-red-200 ring-4 ring-red-50 relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform"></div>
-                    <span class="relative z-10 block text-2xl font-black">12:00</span>
-                    <span class="relative z-10 text-[10px] uppercase font-bold animate-pulse">Đang diễn ra</span>
-                </button>
-
-                <button class="flex-shrink-0 w-32 py-3 rounded-2xl bg-white border-2 border-dashed border-gray-200 text-gray-800 hover:border-red-300 transition-all">
-                    <span class="block text-xl font-black">15:00</span>
-                    <span class="text-[10px] uppercase font-bold text-gray-400">Sắp bắt đầu</span>
-                </button>
-
-                <button class="flex-shrink-0 w-32 py-3 rounded-2xl bg-white border-2 border-dashed border-gray-200 text-gray-800 hover:border-red-300 transition-all">
-                    <span class="block text-xl font-black">18:00</span>
-                    <span class="text-[10px] uppercase font-bold text-gray-400">Sắp bắt đầu</span>
-                </button>
-
-                <button class="flex-shrink-0 w-32 py-3 rounded-2xl bg-white border-2 border-dashed border-gray-200 text-gray-800 hover:border-red-300 transition-all">
-                    <span class="block text-xl font-black">21:00</span>
-                    <span class="text-[10px] uppercase font-bold text-gray-400">Sắp bắt đầu</span>
-                </button>
-
-            </div>
+    <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800">Thông Tin Nhận Hàng</h2>
+            <p class="text-gray-500 text-sm">Vui lòng kiểm tra kỹ thông tin trước khi xác nhận</p>
         </div>
+
+        <form id="orderForm" class="space-y-5">
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Tên người nhận</label>
+                <input type="text" id="fullname" placeholder="Nguyễn Văn A" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Số điện thoại</label>
+                <input type="tel" id="phone" placeholder="090x xxx xxx" 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-1">Địa chỉ nhận hàng</label>
+                <textarea id="address" rows="3" placeholder="Số nhà, tên đường, Phường/Xã..." 
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"></textarea>
+            </div>
+
+            <div class="flex flex-col gap-3 pt-2">
+                <button type="button" id="btnDefault"
+                    class="flex items-center justify-center gap-2 w-full bg-blue-50 text-blue-600 font-semibold py-2.5 rounded-lg hover:bg-blue-100 active:scale-[0.98] transition">
+                    <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+                    Lấy dữ liệu mặc định
+                </button>
+
+                <button type="button" id="btnConfirm"
+                    class="flex items-center justify-center gap-2 w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-200 active:scale-[0.98] transition">
+                    Xác nhận mua hàng
+                </button>
+            </div>
+        </form>
     </div>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        
-        <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
-            <h2 class="text-2xl font-extrabold flex items-center gap-2">
-                Danh sách Deal <span class="text-red-600">Khung giờ 12:00</span>
-            </h2>
-            <div class="flex items-center gap-3 bg-red-50 px-4 py-2 rounded-full border border-red-100">
-                <span class="text-xs font-bold text-red-600 uppercase">Kết thúc sau:</span>
-                <div class="flex gap-1 font-mono font-bold text-red-700">
-                    <span class="bg-red-200 px-1 rounded">01</span>:
-                    <span class="bg-red-200 px-1 rounded">24</span>:
-                    <span class="bg-red-200 px-1 rounded">15</span>
-                </div>
-            </div>
-        </div>
+    <script>
+        // Khởi tạo icon
+        lucide.createIcons();
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            
-            <div class="bg-white rounded-[2rem] p-5 shadow-sm border border-gray-100 hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col group relative">
-                <div class="absolute top-5 right-5 z-10 bg-orange-500 text-white text-xs font-black px-3 py-1 rounded-full shadow-lg">
-                    -25%
-                </div>
-                
-                <div class="aspect-square bg-gray-50 rounded-3xl p-6 mb-4 flex items-center justify-center overflow-hidden">
-                    <img src="https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_3__1.png" 
-                         class="object-contain group-hover:scale-110 transition-transform duration-500" 
-                         alt="iPhone">
-                </div>
+        // Giả lập hàm lấy thông tin người dùng từ câu trước của bạn
+        async function LayThongTinNguoiDung() {
+            // Giả lập delay API
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        HoTen: "Trần Văn B",
+                        SoDienThoai: "0339876543",
+                        DiaChi: "456 Đường Lê Lợi, Quận 1, TP.HCM"
+                    });
+                }, 500);
+            });
+        }
 
-                <div class="flex-1">
-                    <h3 class="font-bold text-gray-800 group-hover:text-red-600 transition-colors line-clamp-2 h-10 leading-tight">iPhone 15 Pro Max 256GB - VN/A</h3>
-                    
-                    <div class="mt-3 flex items-baseline gap-2">
-                        <span class="text-2xl font-black text-red-600 leading-none">28.490k</span>
-                        <span class="text-xs text-gray-400 line-through italic leading-none">34.990k</span>
-                    </div>
+        // Xử lý nút Lấy dữ liệu mặc định
+        document.getElementById('btnDefault').addEventListener('click', async () => {
+            try {
+                const data = await LayThongTinNguoiDung();
+                document.getElementById('fullname').value = data.HoTen;
+                document.getElementById('phone').value = data.SoDienThoai;
+                document.getElementById('address').value = data.DiaChi;
+            } catch (error) {
+                alert("Lỗi khi tải dữ liệu!");
+            }
+        });
 
-                    <div class="mt-4 relative h-5 bg-red-100 rounded-full overflow-hidden border border-red-200">
-                        <div class="absolute top-0 left-0 h-full bg-gradient-to-r from-red-500 to-orange-500 w-[78%] animate-pulse"></div>
-                        <span class="absolute inset-0 flex items-center justify-center text-[9px] font-black text-white uppercase tracking-tighter drop-shadow-sm">🔥 Sắp cháy hàng (78%)</span>
-                    </div>
-                </div>
+        // Xử lý nút Xác nhận
+        document.getElementById('btnConfirm').addEventListener('click', () => {
+            const ten = document.getElementById('fullname').value;
+            const sdt = document.getElementById('phone').value;
+            const dc = document.getElementById('address').value;
 
-                <button class="mt-5 w-full bg-gray-900 text-white py-4 rounded-2xl font-bold text-sm uppercase tracking-widest hover:bg-red-600 hover:shadow-lg hover:shadow-red-200 transition-all active:scale-95">
-                    Hốt ngay
-                </button>
-            </div>
+            if(!ten || !sdt || !dc) {
+                alert("Bạn ơi, nhập thiếu thông tin rồi!");
+                return;
+            }
 
-            </div>
-
-        </main>
-
+            console.log("Dữ liệu gửi đi:", { ten, sdt, dc });
+            alert("Đã nhận đơn hàng của " + ten + "!");
+        });
+    </script>
 </body>
 </html>
