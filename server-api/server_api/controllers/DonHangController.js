@@ -256,5 +256,40 @@ export default class DonHangController{
             })
         }
     }
+    static async ChiTiet_DonHang(req,res){
+        const iddh = req.query.id;
+        const kiemtra_iddh = await DonHangModel.kiemtra_id_dh(iddh);
+        if(!kiemtra_iddh){
+            return res.json({
+                ThanhCong:false,
+                message:'Đơn hàng không tồn tại!'
+            })
+        }
+        try {
+            const ketqua = await DonHangModel.ChiTiet_DonHang(iddh);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    ThongTin_KhachHang:ketqua.ThongTin_KhachHang,
+                    ThongTin_SanPham:ketqua.ThongTin_SanPham,
+                    TrangThai:ketqua.TrangThai
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+
+
+
+    }
 }
     

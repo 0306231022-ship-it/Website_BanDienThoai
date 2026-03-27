@@ -374,4 +374,50 @@ export default class DonHangModel{
             };
         }
     }
+    static async ChiTiet_DonHang(iddh){
+        try {
+            const [ketqua] = await execute(`
+                SELECT dh.TEN_NGUOINHAN,
+                       dh.SDT_NGUOINHAN,
+                       dh.DIACHI_GIAOHANG,
+                       dh.NGAYDAT
+                FROM donhang dh
+                WHERE dh.IDDH = ?;
+            `,[iddh]);
+            if(ketqua.length === 0){
+                return { 
+                    ThanhCong:false, 
+                    message:'Không tìm thấy đơn hàng!' 
+                };
+            }
+            // LẤY THÔNG TIN SẢN PHÂM
+            const [sanpham] = await execute(`
+                SELECT sp.TENSANPHAM,
+                       ct.SOLUONG,
+                       ct.DONGIA,
+                       ct.THANHTIEN
+                FROM chitiet_donhang ct
+                JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
+                WHERE ct.IDDH = ?;
+            `,[iddh]);
+            // lấy TRANGTHAI DONHANG 
+            const [trangthai] = await execute(`
+                SELECT TRANGTHAI
+                FROM hoadon_banhang
+                WHERE IDDH = ?;
+            `,[iddh]);
+            return { 
+                ThanhCong:true, 
+                ThongTin_KhachHang: ketqua[0],
+                ThongTin_SanPham: sanpham,
+                TrangThai: trangthai.length > 0 ? trangthai[0].TRANGTHAI : null
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+        }
+    }
 }

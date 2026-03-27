@@ -137,6 +137,7 @@ adminRouter.get('/danhsach_flashsale', authMiddleware, FlashSaleController.DanhS
 //XỬ LÍ ĐƠN HÀNG
 adminRouter.get('/danhsachdonhang', authMiddleware, DonHangController.DanhSachDonHang);
 adminRouter.get('/timkiem_donhang', authMiddleware, DonHangController.TimKiem_DonHang);
+adminRouter.get('/chitiet_donhang', authMiddleware, DonHangController.ChiTiet_DonHang);
 //Bên dưới chưa được chỉnh sửa
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 
