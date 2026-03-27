@@ -1,6 +1,6 @@
 import { Router } from "express";
 import CanhanADController from "../controllers/CaNhanADController.js";
-import SanPhamController from "../controllers/SanPhamController.js";
+import DonHangController from "../controllers/DonHangController.js";
 const NguoiDungRoute = Router();
 import multer from "multer";
 const upload = multer();
@@ -13,18 +13,18 @@ NguoiDungRoute.post('/dangnhap', upload.none(), CanhanADController.DangNhap_Nguo
 NguoiDungRoute.post('/kiemtra',upload.none(), CanhanADController.KiemTraDangNhap_NguoiDung);
 NguoiDungRoute.post('/dangxuat_nguoidung',upload.none(), CanhanADController.DangXuat_NguoiDung);
 // xử lí sản phẩm thuộc người dùng
-NguoiDungRoute.post('/ThemGioHang',upload.none(), SanPhamController.ThemGioHang_NguoiDung);
-NguoiDungRoute.post('/MuaHang',upload.none(), SanPhamController.MuaHang_NguoiDung);
+NguoiDungRoute.post('/ThemGioHang',upload.none(), DonHangController.ThemGioHang_NguoiDung);
+NguoiDungRoute.post('/MuaHang',upload.none(), DonHangController.MuaHang_NguoiDung);
 //=========================================
 // PHẦN III : ĐỊNH NGHĨA ROUTE GET admin
 //=========================================
 // PHẦN IV : ĐỊNH NGHĨA ROUTE GET NguoiDung
 NguoiDungRoute.get('/ThongTin',upload.none(), CanhanADController.ThongTin_NguoiDung);
 NguoiDungRoute.get('/LayDiaChi',upload.none(), CanhanADController.DiaChi_NguoiDung);
-NguoiDungRoute.get('/giohang',upload.none(), SanPhamController.GioHang_NguoiDung);
-NguoiDungRoute.get('/CapNhat_SoLuong_GioHang',upload.none(), SanPhamController.CapNhat_SoLuong_GioHang_NguoiDung);
-NguoiDungRoute.get('/Xoa_GioHang',upload.none(), SanPhamController.Xoa_GioHang_NguoiDung);
-NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), SanPhamController.SoLuong_GioHang_NguoiDung);
+NguoiDungRoute.get('/giohang',upload.none(), DonHangController.GioHang_NguoiDung);
+NguoiDungRoute.get('/CapNhat_SoLuong_GioHang',upload.none(), DonHangController.CapNhat_SoLuong_GioHang_NguoiDung);
+NguoiDungRoute.get('/Xoa_GioHang',upload.none(), DonHangController.Xoa_GioHang_NguoiDung);
+NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), DonHangController.SoLuong_GioHang_NguoiDung);
 
 //=========================================
 

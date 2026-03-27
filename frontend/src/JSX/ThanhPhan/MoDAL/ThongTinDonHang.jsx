@@ -37,7 +37,7 @@ const ThongTinDonHang = () => {
         };
         fetchUserInfo();
     },[thongtinND?.IDND]);
-    const handleConfirmOrder = () => {
+    const handleConfirmOrder = async() => {
         setloading(true);
         const kiemtra = fun.KiemTraRong(userInputs);
         if(!kiemtra.Status){
@@ -57,8 +57,13 @@ const ThongTinDonHang = () => {
         };
         const formData = fun.objectToFormData(thongTinDonHang);
         try {
-            const response = API.CallAPI(formData, { url: '/NguoiDung/MuaHang', PhuongThuc: 1 });
+            const response = await API.CallAPI(formData, { url: '/NguoiDung/MuaHang', PhuongThuc: 1 });
             alert(JSON.stringify(response));
+            if(response.ThanhCong){
+                ThongBao.ThongBao_ThanhCong("Đơn hàng của bạn đã được xác nhận! Vui lòng chờ nhân viên liên hệ để xác nhận đơn hàng.");
+            }else{
+                ThongBao.ThongBao_Loi(response.message);
+            }
         } catch (error) {
             console.error("Lỗi khi xác nhận đơn hàng:", error);
              ThongBao.ThongBao_Loi("Có lỗi xảy ra khi xác nhận đơn hàng. Vui lòng thử lại!");

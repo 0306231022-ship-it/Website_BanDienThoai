@@ -1,122 +1,143 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 function LichSuDonHang() {
+    // Giả lập dữ liệu mẫu nhiều hơn để thấy được phân trang
+    const allOrders = [
+        { id: "TECH2025-001", date: "01/01/2026", status: "dagiao", statusText: "Đã giao hàng", total: "2.500.000đ" },
+        { id: "TECH2025-002", date: "02/01/2026", status: "dangxuly", statusText: "Đang xử lý", total: "1.200.000đ" },
+        { id: "TECH2025-003", date: "03/01/2026", status: "dahuy", statusText: "Đã hủy", total: "500.000đ" },
+        { id: "TECH2025-004", date: "04/01/2026", status: "dagiao", statusText: "Đã giao hàng", total: "3.100.000đ" },
+        { id: "TECH2025-005", date: "05/01/2026", status: "dagiao", statusText: "Đã giao hàng", total: "950.000đ" },
+        { id: "TECH2025-006", date: "06/01/2026", status: "dangxuly", statusText: "Đang xử lý", total: "4.200.000đ" },
+    ];
+
+    const [tab, setTab] = useState('tatca');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 3; // Số đơn hàng mỗi trang
+
+    // 1. Lọc dữ liệu theo Tab
+    const filteredOrders = tab === 'tatca' 
+        ? allOrders 
+        : allOrders.filter(order => order.status === tab);
+
+    // 2. Tính toán phân trang
+    const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredOrders.slice(indexOfFirstItem, indexOfLastItem);
+
+    // 3. Reset trang về 1 khi đổi Tab
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [tab]);
+
+    const getStatusStyle = (status) => {
+        switch (status) {
+            case 'dagiao': return 'bg-green-100 text-green-700';
+            case 'dangxuly': return 'bg-blue-100 text-blue-700';
+            case 'dahuy': return 'bg-red-100 text-red-700';
+            default: return 'bg-gray-100 text-gray-700';
+        }
+    };
+
     return (
-        <>
-      <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 py-8">
+            <section className="max-w-4xl mx-auto">
+                <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Lịch Sử Đơn Hàng</h2>
 
-                <section className="lg:col-span-3">
-                    
-                    <div className="bg-white rounded-2xl shadow-sm p-8 animate-fade-in-up-2">
-                        <h2 className="text-2xl font-bold text-dark-900 mb-6">Lịch Sử Đơn Hàng</h2>
-
-                        <div className="flex flex-wrap space-x-2 border-b border-dark-100 mb-6">
-                            <button className="px-4 py-2 font-medium text-primary-500 border-b-2 border-primary-500 transition-colors">
-                                Tất cả (3)
+                    {/* Tabs Navigation */}
+                    <div className="flex space-x-4 border-b border-gray-100 mb-8 overflow-x-auto">
+                        {['tatca', 'dangxuly', 'dagiao', 'dahuy'].map((t) => (
+                            <button
+                                key={t}
+                                onClick={() => setTab(t)}
+                                className={`pb-3 px-2 font-medium capitalize transition-all ${
+                                    tab === t ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500"
+                                }`}
+                            >
+                                {t === 'tatca' ? 'Tất cả' : t === 'dangxuly' ? 'Đang xử lý' : t === 'dagiao' ? 'Đã giao' : 'Đã hủy'}
                             </button>
-                            <button className="px-4 py-2 font-medium text-dark-600 hover:text-dark-900 hover:border-b-2 hover:border-dark-300 transition-colors">
-                                Đang xử lý (1)
-                            </button>
-                            <button className="px-4 py-2 font-medium text-dark-600 hover:text-dark-900 hover:border-b-2 hover:border-dark-300 transition-colors">
-                                Đã giao (1)
-                            </button>
-                            <button className="px-4 py-2 font-medium text-dark-600 hover:text-dark-900 hover:border-b-2 hover:border-dark-300 transition-colors">
-                                Đã hủy (1)
-                            </button>
-                        </div>
-
-                        <div className="space-y-6">
-
-                            <div className="border border-dark-100 rounded-2xl p-6">
-                                <div className="flex flex-col md:flex-row justify-between md:items-center gap-2 pb-4 border-b border-dark-100">
-                                    <div>
-                                        <h3 className="text-lg font-bold">Mã đơn hàng: <span className="text-primary-500">#TECH2025-456</span></h3>
-                                        <p className="text-sm text-dark-600">Ngày đặt: 05/11/2025</p>
-                                    </div>
-                                    <span className="inline-block self-start bg-accent-100 text-accent-700 px-3 py-1 rounded-full text-sm font-medium">
-                                        Đã Giao Hàng
-                                    </span>
-                                </div>
-                                <div className="space-y-4 py-4">
-                                    <div className="flex items-center gap-4">
-                                        <img src="https://picsum.photos/300/300?random=2" alt="Sản phẩm" className="w-16 h-16 rounded-lg object-cover"/>
-                                        <div className="flex-1">
-                                            <p className="font-medium text-dark-900">AI Phone Pro 2025</p>
-                                            <p className="text-sm text-dark-600">Số lượng: 1</p>
-                                        </div>
-                                        <p className="font-medium text-dark-900">12.990.000₫</p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 pt-4 border-t border-dark-100">
-                                    <span className="text-lg">Tổng cộng: <span className="text-xl font-bold text-dark-900">12.990.000₫</span></span>
-                                    <div className="flex gap-2">
-                                        <Link to="/nguoi-dung/lich-su-mua/theo-gioi" className="bg-dark-100 hover:bg-dark-200 text-dark-800 px-4 py-2 rounded-lg font-medium transition-colors">Mua Lại</Link>
-                                        <Link to="/nguoi-dung/lich-su-mua/xem-chi-tiet" className="bg-dark-800 hover:bg-dark-900 text-white px-4 py-2 rounded-lg font-medium transition-colors">Xem Chi Tiết</Link>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="border border-dark-100 rounded-2xl p-6">
-                                <div className="flex flex-col md:flex-row justify-between md:items-center gap-2 pb-4 border-b border-dark-100">
-                                    <div>
-                                        <h3 className="text-lg font-bold">Mã đơn hàng: <span className="text-primary-500">#TECH2025-123</span></h3>
-                                        <p className="text-sm text-dark-600">Ngày đặt: 28/10/2025</p>
-                                    </div>
-                                    <span className="inline-block self-start bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm font-medium">
-                                        Đang Vận Chuyển
-                                    </span>
-                                </div>
-                                <div className="space-y-4 py-4">
-                                    <div className="flex items-center gap-4">
-                                        <img src="https://picsum.photos/300/300?random=3" alt="Sản phẩm" className="w-16 h-16 rounded-lg object-cover"/>
-                                        <div className="flex-1">
-                                            <p className="font-medium text-dark-900">FoldMax Z</p>
-                                            <p className="text-sm text-dark-600">Số lượng: 1</p>
-                                        </div>
-                                        <p className="font-medium text-dark-900">24.990.000₫</p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 pt-4 border-t border-dark-100">
-                                    <span className="text-lg">Tổng cộng: <span className="text-xl font-bold text-dark-900">24.990.000₫</span></span>
-                                    <div className="flex gap-2">
-                                        <button className="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">Theo Dõi Đơn</button>
-                                        <button className="bg-dark-800 hover:bg-dark-900 text-white px-4 py-2 rounded-lg font-medium transition-colors">Xem Chi Tiết</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="border border-dark-100 rounded-2xl p-6 opacity-70">
-                                <div className="flex flex-col md:flex-row justify-between md:items-center gap-2 pb-4 border-b border-dark-100">
-                                    <div>
-                                        <h3 className="text-lg font-bold">Mã đơn hàng: <span className="text-primary-500">#TECH2025-007</span></h3>
-                                        <p className="text-sm text-dark-600">Ngày đặt: 15/10/2025</p>
-                                    </div>
-                                    <span className="inline-block self-start bg-red-50 text-red-700 px-3 py-1 rounded-full text-sm font-medium">
-                                        Đã Hủy
-                                    </span>
-                                </div>
-                                <div className="space-y-4 py-4">
-                                    <div className="flex items-center gap-4">
-                                        <img src="https://picsum.photos/300/300?random=4" alt="Sản phẩm" className="w-16 h-16 rounded-lg object-cover"/>
-                                        <div className="flex-1">
-                                            <p className="font-medium text-dark-900">Eco Phone</p>
-                                            <p className="text-sm text-dark-600">Số lượng: 1</p>
-                                        </div>
-                                        <p className="font-medium text-dark-900">8.490.000₫</p>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 pt-4 border-t border-dark-100">
-                                    <span className="text-lg">Tổng cộng: <span className="text-xl font-bold text-dark-900">8.490.000₫</span></span>
-                                    <div className="flex gap-2">
-                                        <button className="bg-dark-800 hover:bg-dark-900 text-white px-4 py-2 rounded-lg font-medium transition-colors">Xem Chi Tiết</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
+                        ))}
                     </div>
-                </section>
-            </div>
-        </>
+
+                    {/* Danh sách đơn hàng */}
+                    <div className="space-y-4 min-h-[300px]">
+                        {currentItems.length > 0 ? (
+                            currentItems.map((order) => (
+                                <div key={order.id} className="border border-gray-100 rounded-xl p-5 hover:border-blue-200 transition-all">
+                                    <div className="flex flex-col md:flex-row justify-between gap-4">
+                                        <div>
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <span className="text-lg font-bold">#{order.id}</span>
+                                                <span className={`px-3 py-0.5 rounded-full text-xs font-medium ${getStatusStyle(order.status)}`}>
+                                                    {order.statusText}
+                                                </span>
+                                            </div>
+                                            <p className="text-sm text-gray-500">Ngày đặt: {order.date} | <span className="font-semibold text-gray-700">{order.total}</span></p>
+                                        </div>
+
+                                        <div className="flex items-center gap-2">
+                                            <Link to={`/order/${order.id}`} className="px-4 py-2 text-sm bg-gray-50 hover:bg-gray-100 border rounded-lg">
+                                                Xem chi tiết
+                                            </Link>
+                                            {order.status === 'dangxuly' ? (
+                                                <button className="px-4 py-2 text-sm bg-red-50 text-red-600 hover:bg-red-100 rounded-lg font-medium">
+                                                    Hủy đơn
+                                                </button>
+                                            ) : (
+                                                <button className="px-4 py-2 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-lg font-medium">
+                                                    Mua lại
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <div className="text-center py-20 text-gray-400">Trống</div>
+                        )}
+                    </div>
+
+                    {/* Nút Phân Trang */}
+                    {totalPages > 1 && (
+                        <div className="flex justify-center items-center gap-2 mt-10">
+                            <button 
+                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                disabled={currentPage === 1}
+                                className="p-2 border rounded-lg disabled:opacity-30 hover:bg-gray-50"
+                            >
+                                ⬅️
+                            </button>
+                            
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button
+                                    key={index + 1}
+                                    onClick={() => setCurrentPage(index + 1)}
+                                    className={`w-10 h-10 rounded-lg border font-medium transition-colors ${
+                                        currentPage === index + 1 
+                                        ? "bg-blue-600 text-white border-blue-600" 
+                                        : "hover:bg-gray-50 text-gray-600"
+                                    }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+
+                            <button 
+                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                disabled={currentPage === totalPages}
+                                className="p-2 border rounded-lg disabled:opacity-30 hover:bg-gray-50"
+                            >
+                                ➡️
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </section>
+        </div>
     );
-};
+}
+
 export default LichSuDonHang;
