@@ -14,6 +14,7 @@ import NhaCungCapController from "../controllers/NhaCungCapController.js";
 import PhieuNhapController from "../controllers/PhieuNhapController.js";
 import SanPhamController from "../controllers/SanPhamController.js";
 import FlashSaleController from "../controllers/flashSaleController.js";
+import DonHangController from "../controllers/DonHangController.js";
 const adminRouter = Router();
 const upload = multer();
 //==========================================
@@ -132,6 +133,10 @@ adminRouter.get('/DuyetPhieuNhap', authMiddleware, PhieuNhapController.DuyetPhie
 //=========================================
 // xử lí flashsale
 adminRouter.get('/danhsach_flashsale', authMiddleware, FlashSaleController.DanhSachFlashSale);
+//=========================================
+//XỬ LÍ ĐƠN HÀNG
+adminRouter.get('/danhsachdonhang', authMiddleware, DonHangController.DanhSachDonHang);
+adminRouter.get('/timkiem_donhang', authMiddleware, DonHangController.TimKiem_DonHang);
 //Bên dưới chưa được chỉnh sửa
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 

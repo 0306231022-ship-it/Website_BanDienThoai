@@ -1,6 +1,6 @@
 import BangChinh from '../BangChinh';
-import ChiTietDon from '../ChiTietDon';
-import DonHang from '../DonHang';
+import ChiTietDon from '../DonHang/ChiTietDon';
+import DonHang from '../DonHang/DonHang';
 import DanhSachSanPham from '../SanPham/DanhSachSanPham';
 import ThemSanPham from '../ThemSanPham';
 import ChiTietSanPham from '../SanPham/ChiTietSP';
@@ -269,12 +269,12 @@ function QuanLiTT() {
                     <Route path="banner" element={<DanhSachBanner />} />
                     <Route path="banner/them" element={<ThemBanner />} />
                     <Route path="banner/chitiet/:id" element={<ChiTietFlashSale />} />
-
+                    <Route path="DonHang" element={<DonHang />} />
+                    <Route path="DonHang/ChiTiet/:id" element={<ChiTietDon />} />
 
                     
                     <Route index element={<BangChinh />} />
-                    <Route path="DonHang" element={<DonHang />} />
-                    <Route path="DonHang/ChiTietDon" element={<ChiTietDon />} />
+                    
                     <Route path="sanpham" element={<DanhSachSanPham />} />
                     <Route path="sanpham/ThemSanPham" element={<ThemSanPham />} />
                     <Route path="sanpham/chitiet/:id" element={<ChiTietSanPham />} />

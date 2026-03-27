@@ -208,5 +208,53 @@ export default class DonHangController{
         }
                         
     }
+    static async DanhSachDonHang(req,res){
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        try {
+            const ketqua = await DonHangModel.DanhSachDonHang(page, limit);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqua.dulieu,
+                    tongso: ketqua.tongso,
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
+    static async TimKiem_DonHang(req,res){
+        const { iddh, tennguoidat, sdtnguoidat } = req.query;
+        try {
+            const ketqua = await DonHangModel.TimKiem_DonHang(iddh, tennguoidat, sdtnguoidat);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqua.dulieu
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
 }
     

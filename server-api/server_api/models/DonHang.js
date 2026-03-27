@@ -304,4 +304,74 @@ export default class DonHangModel{
             };
         }
     }
+    static async DanhSachDonHang(page, limit){
+        try {
+            const offset = (page - 1) * limit;
+            const [ketqua] = await execute(`
+                SELECT hd.IDDH,
+                       dh.TEN_NGUOINHAN,
+                       dh.NGAYDAT,
+                       hd.TRANGTHAI
+                FROM hoadon_banhang hd
+                JOIN donhang dh ON dh.IDDH = hd.IDDH
+                LEFT JOIN chitiet_donhang ct ON ct.IDDH = hd.IDDH
+                GROUP BY hd.IDDH, dh.TEN_NGUOINHAN, dh.NGAYDAT, hd.TRANGTHAI
+                ORDER BY dh.NGAYDAT DESC
+                LIMIT ? OFFSET ?;
+                `,[limit, offset]);
+            const [total] = await execute(`
+                SELECT COUNT(*) AS total
+                FROM hoadon_banhang hd
+            `);
+            return { 
+                ThanhCong:true, 
+                dulieu:ketqua,
+                tongso: total[0].total
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+        }
+    }
+    static async TimKiem_DonHang(iddh, tennguoidat, sdtnguoidat){
+         try {
+            let query = `
+                SELECT hd.IDDH,
+                          dh.TEN_NGUOINHAN,
+                            dh.NGAYDAT,
+                            hd.TRANGTHAI
+                FROM hoadon_banhang hd
+                JOIN donhang dh ON dh.IDDH = hd.IDDH
+                LEFT JOIN chitiet_donhang ct ON ct.IDDH = hd.IDDH
+                WHERE 1=1
+            `;
+            const params = [];
+            if(iddh) {
+                query += ' AND hd.IDDH = ?';
+                params.push(iddh);
+            }
+            if(tennguoidat) {
+                query += ' AND dh.TEN_NGUOINHAN LIKE ?';
+                params.push(`%${tennguoidat}%`);
+            }
+            if(sdtnguoidat) {
+                query += ' AND dh.SDT_NGUOINHAN LIKE ?';
+                params.push(`%${sdtnguoidat}%`);
+            }
+            const [ketqua] = await execute(query, params);
+            return { 
+                ThanhCong:true, 
+                dulieu:ketqua
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+        }
+    }
 }
