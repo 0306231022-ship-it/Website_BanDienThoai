@@ -21,11 +21,13 @@ NguoiDungRoute.post('/MuaHang',upload.none(), DonHangController.MuaHang_NguoiDun
 // PHẦN IV : ĐỊNH NGHĨA ROUTE GET NguoiDung
 NguoiDungRoute.get('/ThongTin',upload.none(), CanhanADController.ThongTin_NguoiDung);
 NguoiDungRoute.get('/LayDiaChi',upload.none(), CanhanADController.DiaChi_NguoiDung);
+//==========================
+//xử lí đơn hàng thuộc người dùng
 NguoiDungRoute.get('/giohang',upload.none(), DonHangController.GioHang_NguoiDung);
 NguoiDungRoute.get('/CapNhat_SoLuong_GioHang',upload.none(), DonHangController.CapNhat_SoLuong_GioHang_NguoiDung);
 NguoiDungRoute.get('/Xoa_GioHang',upload.none(), DonHangController.Xoa_GioHang_NguoiDung);
 NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), DonHangController.SoLuong_GioHang_NguoiDung);
-
+NguoiDungRoute.get('/DanhSach_DonHang',upload.none(), DonHangController.DanhSach_DonHang_NguoiDung);
 //=========================================
 
 console.log("✅ NguoiDungRoute loaded");

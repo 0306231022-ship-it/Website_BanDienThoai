@@ -472,8 +472,6 @@ export default class DonHangModel{
         }
     }
     static async Huy_DonHang(iddh, LyDoHuy){
-        console.log('ID đơn hàng cần hủy:', iddh);
-        console.log('Lý do hủy đơn hàng:', LyDoHuy);
         let conn;
         try {
             conn = await beginTransaction();
@@ -495,24 +493,7 @@ export default class DonHangModel{
                 FROM chitiet_donhang
                 WHERE IDDH = ?
             `,[iddh]);
-            for (const item of chitiet) {
-                // LẤY MA_IMEI THEO SOLUONG SẢN PHẨM, cẬP NHẬT TRẠNG THÁI CỦA MẢ IMEI ĐÓ SANG 0 (CÒN HÀNG)
-                const soluong = item.SOLUONG;
-                const [capnhat_imei] = await conn.query(`
-                    UPDATE kho_imei
-                    SET TRANGTHAI = 0 , ID_DONHANG = NULL
-                    WHERE IDSANPHAM = ? AND ID_DONHANG = ?
-                    ORDER BY ID_IMEI ASC
-                    LIMIT ${soluong}
-                `,[item.IDSANPHAM, iddh]);
-                if(capnhat_imei.affectedRows === 0){
-                    await rollbackTransaction(conn);
-                    return { 
-                        ThanhCong:false, 
-                        message:'Hủy đơn hàng thất bại do lỗi cập nhật kho IMEI!' 
-                    };
-                }
-            }
+            console.log('Chi tiết đơn hàng:', chitiet);
             // cập nhật lại số lượng trong bảng chitiet_phieunhap
             for (const item of chitiet) {
                 const [capnhat_kho] = await conn.query(`
@@ -541,5 +522,48 @@ export default class DonHangModel{
                 message:'Lỗi khi truy vấn dữ liệu!' 
             };
          }
+    }
+    static async DanhSach_DonHang_NguoiDung(idnd, page, limit){
+        try {
+            const offset = (page - 1) * limit;
+            const [ketqua] = await execute(`
+                SELECT dh.IDDH,
+                    dh.NGAYDAT,
+                    (
+                        SELECT ct.TRANGTHAI
+                        FROM hoadon_banhang ct
+                        WHERE ct.IDDH = dh.IDDH
+                        LIMIT 1
+                    ) AS TRANGTHAI_DONHANG,
+                    (
+                        SELECT ct.THANHTIEN
+                        FROM hoadon_banhang ct
+                        WHERE ct.IDDH = dh.IDDH
+                        LIMIT 1
+                    ) AS THANHTIEN_DONHANG
+                    FROM donhang dh
+                    JOIN hoadon_banhang hd ON dh.IDDH = hd.IDDH
+                    WHERE dh.IDKH = ? AND dh.TRANGTHAI != 0
+                    ORDER BY dh.NGAYDAT DESC
+                    LIMIT ? OFFSET ?;
+            `,[idnd, limit, offset]);
+            const [total] = await execute(`
+                SELECT COUNT(*) AS total
+                FROM donhang dh
+                JOIN hoadon_banhang hd ON dh.IDDH = hd.IDDH
+                WHERE dh.IDKH = ? AND dh.TRANGTHAI != 0;
+            `,[idnd]);
+            return {
+                ThanhCong:true,
+                dulieu:ketqua,
+                tongso: total[0].total
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+        }
     }
 }

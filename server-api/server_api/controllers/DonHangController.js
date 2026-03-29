@@ -354,5 +354,38 @@ export default class DonHangController{
             })
         }
     }
+    static async DanhSach_DonHang_NguoiDung(req,res){
+        const idnd = req.query.IDND;
+        const page = parseInt(req.query.page) || 1;
+        const limit = 10;
+        const kiemtra_IDND = await adminModel.kiemtraid(idnd);
+        if(!kiemtra_IDND){
+            return res.json({
+                ThanhCong:false,
+                message:'Người dùng không tồn tại!'
+            })
+        }
+        try {
+            const ketqua = await DonHangModel.DanhSach_DonHang_NguoiDung(idnd, page, limit);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ketqua.dulieu,
+                    tongso: ketqua.tongso,
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
 }
     

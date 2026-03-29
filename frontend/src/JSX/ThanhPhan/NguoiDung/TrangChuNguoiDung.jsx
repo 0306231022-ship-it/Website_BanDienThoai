@@ -8,6 +8,7 @@ import DiaChiCuaToi from "./DiaChiCuaToi";
 import ThemDiaChi from './ThemDiaChi';
 import SanPhamYeuThich from "./SanPhamYeuThich";
 import ChinhSuaThongTin from './ChinhSuaThongTin';
+import ChiTietDonHang from "./ChiTietDonHang";
 import {KiemTra  , LayThongTinNguoiDung , DangXuat } from '../../../hook/KiemTraDangNhap';
 import { useEffect, useState } from "react";
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
@@ -214,6 +215,7 @@ function TrangChuNguoiDung() {
                                   <Route path="dia-chi-cua-toi"  element={<DiaChiCuaToi />} />
                                   <Route path="dia-chi-cua-toi/them-dia-chi"  element={<ThemDiaChi />} />
                                   <Route path="san-pham-yeu-thich"  element={<SanPhamYeuThich />} />
+                                  <Route path="lich-su-mua/chi-tiet/:id"  element={<ChiTietDonHang />} />
                             </Routes>
                         </section>
                     </div>

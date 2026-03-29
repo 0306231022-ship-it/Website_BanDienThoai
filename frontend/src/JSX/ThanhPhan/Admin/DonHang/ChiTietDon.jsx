@@ -63,7 +63,6 @@ function ChiTietDon() {
     try {
       const formdata = fun.objectToFormData({ LyDoHuy: ThongTin_HuyDon ,id:id });
       const response = await API.CallAPI(formdata, {url: `/admin/huy_donhang` , PhuongThuc:1});
-      alert(JSON.stringify(response));
       if(response.ThanhCong){
         ThongBao.ThongBao_ThanhCong(response.message);
         setTrangThai(2);
@@ -195,8 +194,6 @@ function ChiTietDon() {
                       </tr>
                     ))
                   }
-                 
-                
                 </tbody>
               </table>
 
@@ -228,12 +225,17 @@ function ChiTietDon() {
                 <button className="w-full py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold transition shadow-md">
                   <i className="fas fa-truck mr-2"></i> Chuyển sang: Đang Giao
                 </button>
-                <button
+                {
+                  TrangThai !== 2 && (
+                     <button
                   onClick={() => setShowCancelForm(!showCancelForm)}
                   className="w-full py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-semibold transition shadow-md"
                 >
                   <i className="fas fa-times-circle mr-2"></i> Hủy Đơn Hàng
                 </button>
+                  )
+                }
+               
                 {
                   TrangThai === 0 && (
                     <>
