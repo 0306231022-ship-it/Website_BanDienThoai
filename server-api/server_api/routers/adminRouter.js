@@ -100,7 +100,9 @@ adminRouter.post('/xoa_tatca_sanpham' , authMiddleware , SanPhamController.xoa_t
 //=========================================
 //xử lí flashsale
 adminRouter.post('/them_flashsale',upload.none(), authMiddleware, FlashSaleController.ThemFlashSale);
-
+//=========================================
+//xử lí đơn hàng
+adminRouter.post('/huy_donhang', upload.none(), authMiddleware, DonHangController.Huy_DonHang);
 //PHẦN II : ĐỊNH NGHĨA ROUTE GET
 //===========================================
 // xử lí sản phẩm
@@ -138,6 +140,7 @@ adminRouter.get('/danhsach_flashsale', authMiddleware, FlashSaleController.DanhS
 adminRouter.get('/danhsachdonhang', authMiddleware, DonHangController.DanhSachDonHang);
 adminRouter.get('/timkiem_donhang', authMiddleware, DonHangController.TimKiem_DonHang);
 adminRouter.get('/chitiet_donhang', authMiddleware, DonHangController.ChiTiet_DonHang);
+adminRouter.get('/duyet_donhang', authMiddleware, DonHangController.Duyet_DonHang);
 //Bên dưới chưa được chỉnh sửa
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 

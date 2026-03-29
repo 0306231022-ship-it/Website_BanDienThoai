@@ -420,4 +420,126 @@ export default class DonHangModel{
             };
         }
     }
+    static async Duyet_DonHang(iddh){
+        let conn;
+        try {
+            conn = await beginTransaction();
+            const [capnhat] = await conn.query(`
+                UPDATE hoadon_banhang
+                SET TRANGTHAI = 1, NGAY_XACNHAN = NOW()
+                WHERE IDDH = ?
+            `,[iddh]);
+            if(capnhat.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return { 
+                    ThanhCong:false, 
+                    message:'Duyệt đơn hàng thất bại!' 
+                };
+            }
+            // trong chitiet_donhang  lấy mảng IDSANPHAM
+            const [chitiet] = await conn.query(`
+                SELECT IDSANPHAM, SOLUONG
+                FROM chitiet_donhang
+                WHERE IDDH = ?
+            `,[iddh]);
+            for (const item of chitiet) {
+                // LẤY MA_IMEI THEO SOLUONG SẢN PHẨM, cẬP NHẬT TRẠNG THÁI CỦA MẢ IMEI ĐÓ SANG 1 (ĐÃ BÁN)
+                const [capnhat_imei] = await conn.query(`
+                    UPDATE kho_imei
+                    SET TRANGTHAI = 1 , ID_DONHANG = ?
+                    WHERE IDSANPHAM = ?
+                    LIMIT ?
+                `,[iddh, item.IDSANPHAM, item.SOLUONG]);
+                if(capnhat_imei.affectedRows === 0){
+                    await rollbackTransaction(conn);
+                    return { 
+                        ThanhCong:false, 
+                        message:'Duyệt đơn hàng thất bại do lỗi cập nhật kho IMEI!' 
+                    };
+                }
+            }
+            await commitTransaction(conn);
+            return { 
+                ThanhCong:true, 
+                message:'Duyệt đơn hàng thành công!' 
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+        }
+    }
+    static async Huy_DonHang(iddh, LyDoHuy){
+        console.log('ID đơn hàng cần hủy:', iddh);
+        console.log('Lý do hủy đơn hàng:', LyDoHuy);
+        let conn;
+        try {
+            conn = await beginTransaction();
+            const [capnhat] = await conn.query(`
+                UPDATE hoadon_banhang
+                SET TRANGTHAI = 2, GHICHU = ?, NGAY_XACNHAN = NOW()
+                WHERE IDDH = ?
+            `,[LyDoHuy, iddh]);
+            if(capnhat.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return { 
+                    ThanhCong:false, 
+                    message:'Hủy đơn hàng thất bại!' 
+                };
+            }
+            // trong chitiet_donhang  lấy mảng IDSANPHAM
+            const [chitiet] = await conn.query(`
+                SELECT IDSANPHAM, SOLUONG
+                FROM chitiet_donhang
+                WHERE IDDH = ?
+            `,[iddh]);
+            for (const item of chitiet) {
+                // LẤY MA_IMEI THEO SOLUONG SẢN PHẨM, cẬP NHẬT TRẠNG THÁI CỦA MẢ IMEI ĐÓ SANG 0 (CÒN HÀNG)
+                const soluong = item.SOLUONG;
+                const [capnhat_imei] = await conn.query(`
+                    UPDATE kho_imei
+                    SET TRANGTHAI = 0 , ID_DONHANG = NULL
+                    WHERE IDSANPHAM = ? AND ID_DONHANG = ?
+                    ORDER BY ID_IMEI ASC
+                    LIMIT ${soluong}
+                `,[item.IDSANPHAM, iddh]);
+                if(capnhat_imei.affectedRows === 0){
+                    await rollbackTransaction(conn);
+                    return { 
+                        ThanhCong:false, 
+                        message:'Hủy đơn hàng thất bại do lỗi cập nhật kho IMEI!' 
+                    };
+                }
+            }
+            // cập nhật lại số lượng trong bảng chitiet_phieunhap
+            for (const item of chitiet) {
+                const [capnhat_kho] = await conn.query(`
+                    UPDATE chitiet_phieunhap
+                    SET SOLUONG = SOLUONG + ?
+                    WHERE IDSANPHAM = ?
+                    LIMIT 1
+                `,[item.SOLUONG, item.IDSANPHAM]);
+                if(capnhat_kho.affectedRows === 0){
+                    await rollbackTransaction(conn);
+                    return { 
+                        ThanhCong:false, 
+                        message:'Hủy đơn hàng thất bại do lỗi cập nhật kho!' 
+                    };
+                }
+            }
+            await commitTransaction(conn);
+            return { 
+                ThanhCong:true, 
+                message:'Hủy đơn hàng thành công!' 
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+         }
+    }
 }

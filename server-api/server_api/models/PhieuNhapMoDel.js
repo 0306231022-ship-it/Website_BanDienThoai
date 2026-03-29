@@ -252,7 +252,7 @@ export default class PhieuNhapModal {
                 for (const imeiCode of IMEI) {
                     const ThemIMEI= await connection.execute(
                         'INSERT INTO kho_imei (ID_IMEI, IDSANPHAM, MA_IMEI, ID_PHIEUNHAP, TRANGTHAI) VALUES (?, ?, ?, ?, ?)',
-                        [TaoID('IMEI'), IdSanPham, imeiCode, IDPN, 1]
+                        [TaoID('IMEI'), IdSanPham, imeiCode, IDPN, 0]
                     );
                     if (ThemIMEI[0].affectedRows === 0) {
                         throw new Error('Không thể thêm IMEI sản phẩm.');

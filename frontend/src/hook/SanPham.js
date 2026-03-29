@@ -49,8 +49,10 @@ import { useModalContext } from "../CONTEXT/QuanLiModal";
         }
     };
     const handlebuyproduct = async (sanPhamRef) => {
+        //alert(JSON.stringify(sanPhamRef));
         await updateCartToServer(sanPhamRef)
         OpenMoDal(null, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
     }
+    
     return {handleAddToCart , handlebuyproduct , updateCartToServer};        
 }

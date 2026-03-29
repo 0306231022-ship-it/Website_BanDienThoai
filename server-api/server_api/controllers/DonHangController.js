@@ -287,9 +287,72 @@ export default class DonHangController{
                 message:'Lỗi khi truy vấn dữ liệu!'
             })
         }
-
-
-
+    }
+    static async Duyet_DonHang(req,res){
+        const iddh = req.query.id;
+        const kiemtra_iddh = await DonHangModel.kiemtra_id_dh(iddh);
+        if(!kiemtra_iddh){
+            return res.json({
+                ThanhCong:false,
+                message:'Đơn hàng không tồn tại!'
+            })
+        }
+        try {
+            const ketqua = await DonHangModel.Duyet_DonHang(iddh);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    message:ketqua.message
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
+    }
+    static async Huy_DonHang(req,res){
+        const { LyDoHuy, id } = req.body;
+        const kiemtra_iddh = await DonHangModel.kiemtra_id_dh(id);
+        if(!kiemtra_iddh){
+            return res.json({
+                ThanhCong:false,
+                message:'Đơn hàng không tồn tại!'
+            })
+        }
+        if(!LyDoHuy || LyDoHuy.trim() === ''){
+            return res.json({
+                ThanhCong:false,
+                message:'Vui lòng cung cấp lý do hủy đơn hàng!'
+            })
+        }
+        try {
+            const ketqua = await DonHangModel.Huy_DonHang(id, LyDoHuy);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    message:ketqua.message
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            })
+        }
     }
 }
     

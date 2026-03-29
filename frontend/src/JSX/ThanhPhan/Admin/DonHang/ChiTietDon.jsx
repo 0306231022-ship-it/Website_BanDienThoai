@@ -2,6 +2,7 @@ import { useState , useEffect } from 'react';
 import { Link , useParams} from 'react-router-dom';
 import * as API from '../../../../JS/API/API';
 import * as fun  from '../../../../JS/FUNCTONS/function';
+import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 function ChiTietDon() {
   const { id } = useParams();
   const [showCancelForm, setShowCancelForm] = useState(false);
@@ -11,6 +12,7 @@ function ChiTietDon() {
   const [ThongTin_SanPham,setThongTin_SanPham] = useState([]);
   const [TrangThai,setTrangThai] = useState('');
   const TongTien = ThongTin_SanPham.reduce((tong, sp) => tong + sp.THANHTIEN, 0);
+  const [ThongTin_HuyDon,setThongTin_HuyDon] = useState('');
   useEffect(() => {
     if (!id) {
       seterr('Không tìm thấy đơn hàng');
@@ -35,6 +37,44 @@ function ChiTietDon() {
     };
     fetchOrderDetails();
   }, [id]);
+  const XuLi_XacNhan_Duyet = async (id) => {
+    const XacNhan = await ThongBao.ThongBao_XacNhanTT("Bạn có chắc chắn muốn duyệt đơn hàng này không?");
+    if(!XacNhan) return;
+    try {
+      const response = await API.CallAPI(undefined, {url: `/admin/duyet_donhang?id=${id}` , PhuongThuc:2});
+      if(response.ThanhCong){
+        ThongBao.ThongBao_ThanhCong(response.message);
+        setTrangThai(1);
+      } else {
+        ThongBao.ThongBao_Loi(response.message);
+      }
+    } catch (error) {
+      ThongBao.ThongBao_Loi("Lỗi khi duyệt đơn hàng");
+      console.error("Error approving order:", error);
+    } 
+  }
+  const XuLi_XacNhan_Huy = async (id) => {
+    const XacNhan = await ThongBao.ThongBao_XacNhanTT("Bạn có chắc chắn muốn hủy đơn hàng này không?");
+    if(!XacNhan) return;
+    if(!ThongTin_HuyDon){
+      ThongBao.ThongBao_CanhBao("Vui lòng nhập lý do hủy đơn hàng!");
+      return;
+    }
+    try {
+      const formdata = fun.objectToFormData({ LyDoHuy: ThongTin_HuyDon ,id:id });
+      const response = await API.CallAPI(formdata, {url: `/admin/huy_donhang` , PhuongThuc:1});
+      alert(JSON.stringify(response));
+      if(response.ThanhCong){
+        ThongBao.ThongBao_ThanhCong(response.message);
+        setTrangThai(2);
+      } else {
+        ThongBao.ThongBao_Loi(response.message);
+      }
+    }catch (error) {
+      ThongBao.ThongBao_Loi("Lỗi khi hủy đơn hàng");
+      console.error("Error canceling order:", error);
+    }
+  }
   if (err) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
@@ -194,6 +234,19 @@ function ChiTietDon() {
                 >
                   <i className="fas fa-times-circle mr-2"></i> Hủy Đơn Hàng
                 </button>
+                {
+                  TrangThai === 0 && (
+                    <>
+                    <button onClick={()=>{XuLi_XacNhan_Duyet(id)}} className="w-full py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold transition shadow-md">
+                      <i className="fas fa-check mr-2"></i> Chuyển sang: Đã Xử Lý
+                    </button>
+                    <p className="text-sm font-medium text-gray-700">
+                      *Đơn hàng đang ở trạng thái "Đang Chờ Xử Lý". Bạn có thể cập nhật trạng thái hoặc hủy đơn nếu cần thiết.
+                    </p>
+                    </>
+                  )
+
+                }
               </div>
             </div>
 
@@ -215,6 +268,7 @@ function ChiTietDon() {
                   Lý do hủy đơn hàng (Bắt buộc)*
                 </label>
                 <textarea
+                  onChange={(e)=>{setThongTin_HuyDon(e.target.value)}}
                   id="cancel-reason"
                   rows="3"
                   placeholder="Ví dụ: Sản phẩm hết hàng, Khách hàng yêu cầu hủy, Lỗi hệ thống..."
@@ -229,7 +283,7 @@ function ChiTietDon() {
                 </p>
               </div>
 
-              <button className="mt-4 w-full py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-bold transition shadow-md">
+              <button onClick={()=>{XuLi_XacNhan_Huy(id)}} className="mt-4 w-full py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 font-bold transition shadow-md">
                 <i className="fas fa-ban mr-2"></i> Xác Nhận HỦY Đơn
               </button>
             </div>
