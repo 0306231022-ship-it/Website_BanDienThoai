@@ -28,6 +28,8 @@ NguoiDungRoute.get('/CapNhat_SoLuong_GioHang',upload.none(), DonHangController.C
 NguoiDungRoute.get('/Xoa_GioHang',upload.none(), DonHangController.Xoa_GioHang_NguoiDung);
 NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), DonHangController.SoLuong_GioHang_NguoiDung);
 NguoiDungRoute.get('/DanhSach_DonHang',upload.none(), DonHangController.DanhSach_DonHang_NguoiDung);
+NguoiDungRoute.get('/chitiet_donhang', upload.none(), DonHangController.ChiTiet_DonHang);
+//NguoiDungRoute.get('/ThongTin_DonHang', upload.none(), DonHangController.ThongTin_DonHang);
 //=========================================
 
 console.log("✅ NguoiDungRoute loaded");

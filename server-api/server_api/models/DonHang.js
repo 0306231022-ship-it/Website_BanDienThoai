@@ -393,11 +393,18 @@ export default class DonHangModel{
             // LẤY THÔNG TIN SẢN PHÂM
             const [sanpham] = await execute(`
                 SELECT sp.TENSANPHAM,
+                        sp.IDSANPHAM,
                        ct.SOLUONG,
                        ct.DONGIA,
-                       ct.THANHTIEN
+                       ct.THANHTIEN,
+                          ha.HINHANH
                 FROM chitiet_donhang ct
                 JOIN sanpham sp ON ct.IDSANPHAM = sp.IDSANPHAM
+                LEFT JOIN hinhanh_sanpham ha ON sp.IDSANPHAM = ha.IDSANPHAM AND ha.IDHA = (
+                    SELECT MIN(IDHA) 
+                    FROM hinhanh_sanpham 
+                    WHERE IDSANPHAM = sp.IDSANPHAM
+                )
                 WHERE ct.IDDH = ?;
             `,[iddh]);
             // lấy TRANGTHAI DONHANG 

@@ -20,6 +20,7 @@ import DangNhap from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/DangNhap";
 import DangKy from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/DangKy";
 import ThongBao from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/ThongBao";
 import ThongTinDonHang from "../JSX/ThanhPhan/MoDAL/ThongTinDonHang";
+import ThongTinCinhSua from "../JSX/ThanhPhan/Admin/SanPham/ChinhSua/Modal_ChinhSua";
 
 const MoDalContext = createContext();
 
@@ -44,7 +45,8 @@ const MODAL_REGISTRY = {
     'DangNhap' : DangNhap,
     'DangKy' : DangKy,
     'ThongBao' : ThongBao,
-    'ThongTinDonHang' : ThongTinDonHang
+    'ThongTinDonHang' : ThongTinDonHang,
+    'ThongTinCinhSua' : ThongTinCinhSua
 
 };
 

@@ -82,7 +82,7 @@ export default class PhieuNhapController{
              DuLieuPhieuNhap = JSON.parse(DuLieuPhieuNhap);
         }
         req.body = DuLieuPhieuNhap;
-        //sửa lỗi
+      
 
         const validate_values = [];
         // Validate Thông Tin Chung
@@ -186,12 +186,6 @@ export default class PhieuNhapController{
                 validate_values.push(
                     body(`SANPHAM[${index}].IMEI`).custom(() => {
                         throw new Error(`Vui lòng nhập IMEI cho sản phẩm thứ ${index + 1}!`);
-                    })
-                );
-            } else if (sp.IMEI.length != sp.SO_LUONG_ANH) {
-                validate_values.push(
-                    body(`SANPHAM[${index}].IMEI`).custom(() => {
-                        throw new Error(`Số lượng IMEI không khớp với số lượng hình ảnh cho sản phẩm thứ ${index + 1}!`);
                     })
                 );
             } else {

@@ -11,7 +11,6 @@ function SanPhamMoi() {
                 if (LayDL.ThanhCong) {
                     setProducts(LayDL.dulieu);
                 }
-               
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
@@ -44,10 +43,7 @@ function SanPhamMoi() {
                         products.map((product) => (
                             <ChildSanPham product={product} />
                         )))}
-            
             </div>
-
-            {/* Mobile View More */}
             <div className="mt-10 text-center md:hidden">
                 <Link to="/san-pham-moi" className="w-full py-3 border-2 border-blue-600 text-blue-600 font-bold rounded-xl hover:bg-blue-600 hover:text-white transition">
                     Xem tất cả sản phẩm

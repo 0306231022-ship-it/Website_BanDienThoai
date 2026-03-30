@@ -1,11 +1,6 @@
 // Các yêu cầu cần có của phần nhà cung cấp 
 =====================================================
-1: xem danh sách các nhà cung cấp [Hoàn thành]
 1: xem tất cả lịch xử giao dịch của các nhà cung cấp , từng nhà cung cấp 1
-1: có thể lọc, tìm kiếm danh sách nhà cung cấp [Hoàn thành]
-1: xem chi tiết các thông tin cần có của 1 nhà cung cấp [Hoàn thành]
-1: khi xem người dùng có thể chỉnh sửa các thông tin từ 1 nhà cung cấp
-1: thêm 1 nhà cung cấp mới : [Hoàn thành]
 1: xem tất cả lịch sử giao dịch 
 ==== [ Còn gì sẽ có thông báo sau ...] ================
 ==============================================

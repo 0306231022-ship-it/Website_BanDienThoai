@@ -197,7 +197,7 @@ function LichSuDonHang() {
                                     {[...Array(totalPages)].map((_, index) => (
                                         <button
                                             key={index + 1}
-                                            onClick={() => setCurrentPage(index + 1)}
+                                            onClick={() => setPage(index + 1)}
                                             className={`w-10 h-10 rounded-xl text-sm font-bold transition-all ${
                                                 currentPage === index + 1 
                                                 ? "bg-blue-600 text-white shadow-lg shadow-blue-100" 

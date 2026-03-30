@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
 import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
+import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 
 function ChiTietSanPham() {
     const { id } = useParams();
@@ -13,6 +14,7 @@ function ChiTietSanPham() {
     const [imeis, setImeis] = useState([]); 
     const [nhacungcap,setnhacungcap] = useState(null)
     const [selectedImage, setSelectedImage] = useState("");
+    const { OpenMoDal } = useModalContext();
 
     useEffect(() => {
         const fetchDetail = async () => {
@@ -75,7 +77,7 @@ function ChiTietSanPham() {
                     <button onClick={handleXoa} className="px-5 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-2xl font-bold hover:bg-red-600 hover:text-white transition-all">
                         Xóa sản phẩm
                     </button>
-                    <button className="px-5 py-2.5 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100">
+                    <button onClick={()=>{OpenMoDal(undefined,{TenTrang:'ThongTinCinhSua'})}} className="px-5 py-2.5 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-100">
                         Chỉnh sửa
                     </button>
                 </div>
