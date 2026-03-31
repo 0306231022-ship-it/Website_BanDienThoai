@@ -1,8 +1,6 @@
 import 'dotenv/config.js';
 import express from 'express';
-import bodyParser from 'body-parser';
 import cors from 'cors';
-import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import adminRouter from './routers/adminRouter.js';
 import websiteRoute from './routers/webstiteRoute.js';

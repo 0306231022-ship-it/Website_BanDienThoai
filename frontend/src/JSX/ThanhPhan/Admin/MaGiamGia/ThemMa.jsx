@@ -5,10 +5,11 @@ import * as fun  from '../../../../JS/FUNCTONS/function';
 function ThemMa() {
     const [danhSachNhaCungCap, setDanhSachNhaCungCap] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [loading1, setLoading1] = useState(false);
     const [formData, setFormData] = useState({
         tenChuongTrinh: '',
         magiamgia: '',
-        loaiGiamGia: 'fixed',
+        loaiGiamGia: '0',
         giaTriGiam: '',
         giaTriDonHangToiThieu: '',
         apDungChoHang: 'tatca',
@@ -55,15 +56,54 @@ function ThemMa() {
         }
         seterr({});
         try {
-            
+            setLoading1(true);
+            const data = fun.objectToFormData(formData);
+            const response = await API.CallAPI(data, { url: '/admin/themmagg', PhuongThuc: 1 });
+            if(response.Validate) {
+                // Handle validation errors
+                const newErr = {};
+                response.errors.forEach(error => {
+                    newErr[error.Err.path] = error.msg;
+                });
+                seterr(newErr);
+                ThongBao.ThongBao_Loi('Vui lòng sửa các lỗi trong form!');
+                return;
+            }
+            if(response.ThanhCong){
+                ThongBao.ThongBao_ThanhCong(response.message);
+                setFormData({
+                    tenChuongTrinh: '',
+                    magiamgia: '',
+                    loaiGiamGia: 'fixed',
+                    giaTriGiam: '',
+                    giaTriDonHangToiThieu: '',
+                    apDungChoHang: 'tatca',
+                    tongLuotSuDung: '',
+                    luotDungMoiKhach: '',
+                    ngayBatDau: '',
+                    ngayKetThuc: '',
+                });
+            }else{
+                ThongBao.ThongBao_Loi(response.message || 'Có lỗi xảy ra khi thêm mã giảm giá!');
+            }
         } catch (error) {
-            
+            ThongBao.ThongBao_Loi('Lỗi khi thêm mã giảm giá!');
+            console.error('Lỗi khi thêm mã giảm giá:', error);
+        }finally {
+            setLoading1(false);
         }
     }
-   
-
-   
-
+    if(loading1){
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-4">
+                <div className="relative">
+                    <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+                    <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+                </div>
+                <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang xử lý...</p>
+            </div>
+        );
+    }
     return (
         <>
     <section className="p-8">
@@ -112,8 +152,8 @@ function ThemMa() {
                                 loaiGiamGia:e.target.value
                             }))
                         }} value={formData.loaiGiamGia} className="w-full px-4 py-2.5 rounded-lg border border-gray-300 bg-white outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="fixed">Số tiền cố định (đ)</option>
-                            <option value="percent">Phần trăm (%)</option>
+                            <option value="0">Số tiền cố định (đ)</option>
+                            <option value="1">Phần trăm (%)</option>
                         </select>
                         {
                             err.loaiGiamGia && <p className="text-sm text-red-500 mt-1">{err.loaiGiamGia}</p>
@@ -198,12 +238,12 @@ function ThemMa() {
                         <input onChange={(e)=>{
                             setFormData(prev=>({
                                 ...prev,
-                                luotDungTheoKhach:e.target.value
+                                luotDungMoiKhach:e.target.value
                             }))
-                        }} value={formData.luotDungTheoKhach} type="number" 
+                        }} value={formData.luotDungMoiKhach} type="number" 
                             className="w-full px-4 py-2.5 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-500"/>
                             {
-                                err.luotDungTheoKhach && <p className="text-sm text-red-500 mt-1">{err.luotDungTheoKhach}</p>
+                                err.luotDungMoiKhach && <p className="text-sm text-red-500 mt-1">{err.luotDungMoiKhach}</p>
                             }
                     </div>
                 </div>

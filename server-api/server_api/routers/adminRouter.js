@@ -15,6 +15,7 @@ import PhieuNhapController from "../controllers/PhieuNhapController.js";
 import SanPhamController from "../controllers/SanPhamController.js";
 import FlashSaleController from "../controllers/flashSaleController.js";
 import DonHangController from "../controllers/DonHangController.js";
+import MaGiamGiaController from "../controllers/MaGiamGiaController.js";
 const adminRouter = Router();
 const upload = multer();
 //==========================================
@@ -103,6 +104,8 @@ adminRouter.post('/them_flashsale',upload.none(), authMiddleware, FlashSaleContr
 //=========================================
 //xử lí đơn hàng
 adminRouter.post('/huy_donhang', upload.none(), authMiddleware, DonHangController.Huy_DonHang);
+//xử lí mã giảm giá
+adminRouter.post('/themmagg', upload.none(), authMiddleware, MaGiamGiaController.ThemMaGiamGia);
 //PHẦN II : ĐỊNH NGHĨA ROUTE GET
 //===========================================
 // xử lí sản phẩm
