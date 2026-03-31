@@ -2,7 +2,6 @@ import BangChinh from '../BangChinh';
 import ChiTietDon from '../DonHang/ChiTietDon';
 import DonHang from '../DonHang/DonHang';
 import DanhSachSanPham from '../SanPham/DanhSachSanPham';
-import ThemSanPham from '../ThemSanPham';
 import ChiTietSanPham from '../SanPham/ChiTietSP';
 import DanhSachThuongHieu from '../ThuongHieu/DanhSachThuongHieu';
 import ThemThuongHieu from '../ThuongHieu/ThemThuongHieu';
@@ -11,7 +10,7 @@ import DanhSachKhachHang from '../DanhSachKhachHang';
 import BaoCao from '../BaoCao';
 import PhiVanChuyen from '../PhiVanChuyen';
 import MaGiamGia from '../MaGiamGia';
-import DanhSachMa from '../DanhSachMa';
+import DanhSachMa from '../MaGiamGia/DanhSachMa';
 import HoTroKhachHang from '../HoTroKhachHang';
 import ChietMaGG from '../ChiTietMaGiam';
 import BinhLuan from '../DanhSachBinhLuan';
@@ -276,7 +275,6 @@ function QuanLiTT() {
                     <Route index element={<BangChinh />} />
                     
                     <Route path="sanpham" element={<DanhSachSanPham />} />
-                    <Route path="sanpham/ThemSanPham" element={<ThemSanPham />} />
                     <Route path="sanpham/chitiet/:id" element={<ChiTietSanPham />} />
                     <Route path="sanpham/thungrac" element={<ThungRacSanPham/>} />
                     

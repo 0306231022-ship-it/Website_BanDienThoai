@@ -3,159 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết Mã Giảm Giá - PhoneStore</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Chi Tiết Đơn Hàng</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
-<body class="bg-slate-50 font-sans antialiased text-slate-900">
+<body class="bg-gray-50 p-4 md:p-8">
 
-    <div class="max-w-4xl mx-auto py-10 px-4">
-        
-        <button class="flex items-center text-sm font-bold text-slate-500 hover:text-blue-600 transition-colors mb-6 group">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor font-bold">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            Quay lại danh sách đơn hàng
-        </button>
+    <div class="max-w-6xl mx-auto">
+        <nav class="mb-6 flex items-center text-sm text-gray-500">
+            <a href="#" class="hover:text-blue-600">Quản lý mã</a>
+            <i class="fas fa-chevron-right mx-2 text-xs"></i>
+            <span class="text-gray-800 font-medium">Chi tiết mã: IPHONE15PRO</span>
+        </nav>
 
-        <div class="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">IPHONE15PRO</h1>
+                    <p class="text-gray-500">Chương trình: <span class="font-medium text-gray-700">Ưu đãi mở bán iPhone 15 Series</span></p>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition">
+                    <i class="fas fa-pause mr-2"></i> Tạm dừng mã
+                </button>
+                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-lg transition">
+                    <i class="fas fa-edit mr-2"></i> Chỉnh sửa
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <div class="p-8 border-b border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                    <h1 class="text-2xl font-black tracking-tight">Đơn hàng #TECH2025-001</h1>
-                    <p class="text-slate-500 text-sm mt-1 font-medium">Đặt ngày 01 tháng 01, 2026</p>
+            <div class="lg:col-span-2 space-y-8">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Doanh thu mang lại</p>
+                        <p class="text-xl font-bold text-gray-900 mt-1">1.450.000.000 đ</p>
+                        <p class="text-xs text-green-600 mt-2"><i class="fas fa-arrow-up"></i> 12% so với hôm qua</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Số lần sử dụng</p>
+                        <p class="text-xl font-bold text-gray-900 mt-1">74 <span class="text-gray-400 text-sm font-normal">/ 100</span></p>
+                        <div class="w-full bg-gray-100 h-1.5 mt-3 rounded-full overflow-hidden">
+                            <div class="bg-blue-500 h-full" style="width: 74%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+                        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Tổng tiền đã giảm</p>
+                        <p class="text-xl font-bold text-orange-600 mt-1">74.000.000 đ</p>
+                        <p class="text-xs text-gray-400 mt-2 italic">TB 1tr / đơn hàng</p>
+                    </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <span class="px-4 py-2 bg-blue-50 text-blue-700 rounded-xl text-xs font-black uppercase tracking-widest border border-blue-100">
-                        Đang vận chuyển
-                    </span>
-                    <button class="p-2 text-slate-400 hover:text-slate-600 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    </button>
-                </div>
-            </div>
 
-            <div class="p-8 bg-slate-50/50">
-                <div class="relative flex flex-col md:flex-row justify-between items-start md:items-center gap-8 md:gap-0">
-                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-slate-200 -translate-y-1/2 z-0"></div>
-                    <div class="hidden md:block absolute top-1/2 left-0 w-2/3 h-0.5 bg-blue-600 -translate-y-1/2 z-0"></div>
-
-                    <div class="relative z-10 flex md:flex-col items-center gap-4 md:gap-3 bg-slate-50 md:bg-transparent pr-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        </div>
-                        <div class="md:text-center">
-                            <p class="text-sm font-bold text-slate-900">Đã xác nhận</p>
-                            <p class="text-[11px] text-slate-500 font-medium">10:30, 01/01</p>
-                        </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-5 border-b border-gray-100">
+                        <h3 class="font-bold text-gray-800">Lịch sử sử dụng gần đây</h3>
                     </div>
-
-                    <div class="relative z-10 flex md:flex-col items-center gap-4 md:gap-3 bg-slate-50 md:bg-transparent pr-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg shadow-blue-200">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                        </div>
-                        <div class="md:text-center">
-                            <p class="text-sm font-bold text-slate-900">Đang đóng gói</p>
-                            <p class="text-[11px] text-slate-500 font-medium">14:20, 01/01</p>
-                        </div>
-                    </div>
-
-                    <div class="relative z-10 flex md:flex-col items-center gap-4 md:gap-3 bg-slate-50 md:bg-transparent pr-4">
-                        <div class="w-12 h-12 rounded-full bg-white border-4 border-blue-600 flex items-center justify-center shadow-xl shadow-blue-100 animate-pulse">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" stroke="none" /><path d="M10 17h4V5H2v12h3m4 0h2"/><circle cx="7" cy="17" r="2"/><path d="M15 17h2l3-3v-5h-5v8z"/><circle cx="18" cy="17" r="2"/></svg>
-                        </div>
-                        <div class="md:text-center">
-                            <p class="text-sm font-extrabold text-blue-600 underline decoration-2 underline-offset-4">Đang vận chuyển</p>
-                            <p class="text-[11px] text-blue-500 font-bold">Dự kiến tới: 03/01</p>
-                        </div>
-                    </div>
-
-                    <div class="relative z-10 flex md:flex-col items-center gap-4 md:gap-3 bg-slate-50 md:bg-transparent pr-4">
-                        <div class="w-10 h-10 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 7-8.5 8.5L8 10l-6 6"/><path d="M16 7h6v6"/></svg>
-                        </div>
-                        <div class="md:text-center">
-                            <p class="text-sm font-bold text-slate-400">Giao thành công</p>
-                        </div>
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 text-xs text-gray-500 uppercase">
+                            <tr>
+                                <th class="px-6 py-3">Khách hàng</th>
+                                <th class="px-6 py-3">Sản phẩm mua</th>
+                                <th class="px-6 py-3">Đơn hàng</th>
+                                <th class="px-6 py-3">Ngày dùng</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm">
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Nguyễn Văn A</td>
+                                <td class="px-6 py-4 text-gray-600">iPhone 15 Pro Max 256GB</td>
+                                <td class="px-6 py-4"><span class="text-blue-600 hover:underline cursor-pointer">#DH10024</span></td>
+                                <td class="px-6 py-4 text-gray-500">10:30 - 24/03/2024</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 font-medium text-gray-900">Trần Thị B</td>
+                                <td class="px-6 py-4 text-gray-600">iPhone 15 Pro 128GB</td>
+                                <td class="px-6 py-4"><span class="text-blue-600 hover:underline cursor-pointer">#DH10025</span></td>
+                                <td class="px-6 py-4 text-gray-500">14:15 - 24/03/2024</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="p-4 text-center border-t border-gray-100">
+                        <button class="text-sm text-blue-600 font-semibold hover:text-blue-800">Xem tất cả 74 giao dịch</button>
                     </div>
                 </div>
             </div>
 
-            <div class="p-8 grid md:grid-cols-2 gap-8 border-b border-slate-100">
-                <div>
-                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">📍 Địa chỉ nhận hàng</h3>
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                        <p class="font-bold text-slate-900 mb-1 text-lg">Nguyễn Văn A</p>
-                        <p class="text-slate-600 text-sm leading-relaxed">
-                            (+84) 901 234 567<br>
-                            Số 123, Đường ABC, Phường 4<br>
-                            Quận 1, TP. Hồ Chí Minh
-                        </p>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">🚚 Đơn vị vận chuyển</h3>
-                    <div class="bg-slate-50 p-5 rounded-2xl border border-slate-100">
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                                🚀
+            <div class="space-y-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-gray-800 mb-4 pb-2 border-b">Thông số thiết lập</h3>
+                    <ul class="space-y-4">
+                        <li class="flex justify-between">
+                            <span class="text-sm text-gray-500">Trạng thái:</span>
+                            <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full uppercase">Đang chạy</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-sm text-gray-500">Loại giảm:</span>
+                            <span class="text-sm font-medium">Cố định: 1.000.000 đ</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-sm text-gray-500">Hãng áp dụng:</span>
+                            <span class="text-sm font-medium text-blue-600 bg-blue-50 px-2 rounded">Apple (iPhone)</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-sm text-gray-500">Đơn tối thiểu:</span>
+                            <span class="text-sm font-medium">20.000.000 đ</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="text-sm text-gray-500">Thời hạn:</span>
+                            <div class="text-right">
+                                <p class="text-xs font-medium text-gray-700">01/03/2024</p>
+                                <p class="text-xs text-gray-400">đến 31/03/2024</p>
                             </div>
-                            <div>
-                                <p class="font-bold text-slate-900">Giao Hàng Nhanh (GHN)</p>
-                                <p class="text-xs text-blue-600 font-bold">Mã vận đơn: GHN-99228833</p>
-                            </div>
-                        </div>
-                        <div class="space-y-2">
-                            <p class="text-xs text-slate-500 flex items-center gap-2 italic">
-                                <span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span> 
-                                Đã rời kho phân loại TP. HCM - 02/01
-                            </p>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-amber-50 p-6 rounded-xl border border-amber-100">
+                    <h3 class="text-amber-800 font-bold text-sm mb-2"><i class="fas fa-lightbulb mr-2"></i> Gợi ý tối ưu</h3>
+                    <p class="text-xs text-amber-700 leading-relaxed">
+                        Mã này đang có hiệu suất rất tốt (74% đã dùng). Bạn nên cân nhắc gia hạn thêm hoặc tăng số lượng lên 200 để đẩy mạnh doanh số cuối tháng.
+                    </p>
                 </div>
             </div>
 
-            <div class="p-8">
-                <h3 class="text-sm font-black uppercase tracking-widest text-slate-400 mb-4">🛒 Sản phẩm</h3>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
-                        <div class="w-20 h-20 bg-slate-100 rounded-xl overflow-hidden shrink-0">
-                            <img src="https://via.placeholder.com/80" alt="Sản phẩm" class="w-full h-full object-cover">
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-slate-900">iPhone 15 Pro Max - 256GB - Titan Tự Nhiên</h4>
-                            <p class="text-sm text-slate-500">Số lượng: 1</p>
-                        </div>
-                        <div class="text-right font-bold text-slate-900">
-                            32.000.000đ
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 pt-6 border-t border-dashed border-slate-200 space-y-3">
-                    <div class="flex justify-between text-slate-500 font-medium">
-                        <span>Tạm tính</span>
-                        <span>32.000.000đ</span>
-                    </div>
-                    <div class="flex justify-between text-slate-500 font-medium">
-                        <span>Phí vận chuyển</span>
-                        <span>30.000đ</span>
-                    </div>
-                    <div class="flex justify-between text-xl font-black text-slate-900 pt-2">
-                        <span>Tổng thanh toán</span>
-                        <span class="text-blue-600">32.030.000đ</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="p-8 bg-slate-50/80 flex flex-wrap gap-4 justify-end">
-                <button class="px-6 py-3 bg-white border border-slate-200 rounded-xl font-bold text-slate-600 hover:bg-slate-100 transition-all">
-                    Yêu cầu hỗ trợ
-                </button>
-                <button class="px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 active:scale-95 transition-all">
-                    Liên hệ người giao hàng
-                </button>
-            </div>
         </div>
     </div>
 
