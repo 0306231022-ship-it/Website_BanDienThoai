@@ -13,5 +13,39 @@ export default class MaGiamGiaModel{
                 console.error('Có lỗi xảy ra khi thêm mã giảm giá:' + error);
                 return false;
             }
+    }
+    static async DanhSachMaGiamGia(page, limit){
+        const offset = (page - 1) * limit;
+        try {
+            const [ketqua] = await execute(`
+                SELECT mgg.MaGG, mgg.TENCHUONGTRINH, mgg.MAGIAMGIA, mgg.LOAIGIAM, mgg.GIATRIGIAM, mgg.GIATRIDON, 
+                 thuonghieu.TENTHUONGHIEU,
+                 mgg.SOLUONG,
+                ( 
+                    SELECT COUNT(*) 
+                    FROM chitiet_magiamgia
+                    WHERE IDMAGG = mgg.MaGG
+                ) AS SOLUONG_DADUNG ,mgg.TRANGTHAI
+                FROM magiamgia mgg
+                LEFT JOIN thuonghieu ON thuonghieu.IDTHUONGHIEU = mgg.IDTHUONGHIEU
+                ORDER BY mgg.NGAYBATDAU DESC
+                LIMIT ? OFFSET ?`, [limit, offset]);
+            const [totalResult] = await execute(`
+                SELECT COUNT(*) AS total 
+                FROM magiamgia`,[]);
+            const total = totalResult[0].total;
+            return {
+                ThanhCong: true,
+                dulieu: ketqua,
+                total: total
+            }
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi lấy danh sách mã giảm giá:' + error);
+            return { 
+                ThanhCong: false, 
+                dulieu: [], 
+                total: 0 
+            };
+        }
     }           
 }

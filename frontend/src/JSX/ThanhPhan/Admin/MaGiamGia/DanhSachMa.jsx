@@ -1,14 +1,42 @@
 import { Link } from "react-router-dom";
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
+import { useState , useEffect } from "react";
+import * as API from '../../../../JS/API/API';
+import * as fun from '../../../../JS/FUNCTONS/function';
 
 function DanhSachMa() {
     const { OpenMoDal } = useModalContext();
+    const [maGiamGia, setMaGiamGia] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [page , setPage] = useState(1);
+    const [total, setTotal] = useState(0);
+    useEffect(() => {
+        const fetchMaGiamGia = async () => {
+            setLoading(true);
+            try {
+                const response = await API.CallAPI(undefined, { url: `/admin/lay_ds_ma_giam_gia?page=${page}&limit=10`, PhuongThuc: 2 });
+                //alert(JSON.stringify(response))
+                if (response.ThanhCong) {
+                    setMaGiamGia(response.dulieu);
+                    setTotal(response.total);
+                }else{
+                    setMaGiamGia([]);
+                    setTotal(0);
+                }
+            }catch (error) {
+                console.error("Error fetching discount codes:", error);
+            }finally {
+                setLoading(false);
+            }
+        }
+        fetchMaGiamGia();
+    },[page]);
+
 
     return (
         <>
             <div className="min-h-screen flex">
                 <main className="flex-1 p-8">
-                    {/* Header */}
                     <div className="flex justify-between items-center mb-8">
                         <div>
                             <h1 className="text-2xl font-bold text-gray-800">Quản lý Mã Giảm Giá</h1>
@@ -21,8 +49,6 @@ function DanhSachMa() {
                             <i className="fas fa-plus mr-2"></i> Tạo mã mới
                         </button>
                     </div>
-
-                    {/* Stats Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                             <p className="text-sm text-gray-500 font-medium">Đang hoạt động</p>
@@ -70,49 +96,95 @@ function DanhSachMa() {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-100">
-                                {/* Dữ liệu mẫu (Giữ nguyên từ code cũ của bạn) */}
-                                <tr className="hover:bg-gray-50 transition">
+                               {
+                                loading ? (
+                                    <tr>
+                                        <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
+                                                  <div className="flex flex-col items-center justify-center min-h-[300px] w-full gap-4">
+                                                    <div className="relative">
+                                                        <i className="fa-solid fa-circle-notch text-6xl text-teal-600 animate-spin"></i>
+                                                        <div className="absolute inset-0 rounded-full blur-2xl bg-teal-200/50 -z-10 animate-pulse"></div>
+                                                    </div>
+                                                    <p className="text-gray-500 font-bold tracking-widest animate-pulse text-sm uppercase">Đang tải dữ liệu...</p>
+                                                </div>
+                                        </td>
+                                    </tr>
+                                ) : maGiamGia.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="7" className="px-6 py-4 text-center text-gray-500">
+                                            <div className="flex flex-col items-center justify-center text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-blue-50">
+            <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+            </svg>
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900">Chưa có mã giảm giá nào</h3>
+        <p className="max-w-xs mx-auto mt-1 text-sm text-gray-500">
+            Hệ thống hiện chưa có dữ liệu mã giảm giá. Hãy bắt đầu tạo chiến dịch đầu tiên của bạn.
+        </p>
+        <button onClick={() => OpenMoDal(null, { TenTrang: 'ThemMa', TieuDe: 'Tạo Mã Giảm Giá Mới' })} className="mt-6 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition-all">
+            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Thêm mã mới
+        </button>
+    </div>
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    maGiamGia.map((ma, index) => (
+                                         <tr className="hover:bg-gray-50 transition">
                                     <td className="px-6 py-4">
-                                        <div className="font-bold text-blue-600">IPHONE15PRO</div>
-                                        <div className="text-xs text-gray-400">Giảm giá mở bán IP 15 Pro</div>
+                                        <div className="font-bold text-blue-600">{ma.MAGIAMGIA}</div>
+                                        <div className="text-xs text-gray-400">{ma.TENCHUONGTRINH}</div>
                                     </td>
-                                    <td className="px-6 py-4"><span className="text-sm text-gray-700">1,000,000 đ</span></td>
-                                    <td className="px-6 py-4"><span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">Apple</span></td>
+                                    <td className="px-6 py-4">
+                                        <span className="text-sm text-gray-700">
+                                        {
+                                            ma.LOAI_GIAMGIA === 1 ? `${ma.GIATRIGIAM}%` : `${fun.formatCurrency(ma.GIATRIGIAM)}`
+                                        }
+                                    </span></td>
+                                    <td className="px-6 py-4"><span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">{ma.TENTHUONGHIEU}</span></td>
                                     <td className="px-6 py-4">
                                         <div className="w-24 bg-gray-200 rounded-full h-1.5 mb-1">
-                                            <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: '70%' }}></div>
+                                            <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: `${(ma.SOLUONG_DADUNG / ma.SOLUONG) * 100}%` }}></div>
                                         </div>
-                                        <span className="text-xs text-gray-500">70/100</span>
+                                        <span className="text-xs text-gray-500">{ma.SOLUONG_DADUNG}/{ma.SOLUONG}</span>
                                     </td>
-                                    <td className="px-6 py-4"><span className="px-2 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">Active</span></td>
+                                    <td className="px-6 py-4">
+                                        {
+                                            ma.TRANGTHAI === 1 ? (
+                                                <span className="px-2 py-1 text-xs font-semibold bg-green-100 text-green-700 rounded-full">Đang hoạt động</span>
+                                            ) : (
+                                                <span className="px-2 py-1 text-xs font-semibold bg-red-100 text-red-700 rounded-full">Ngừng hoạt động</span>
+                                            )
+                                        }
+                                    </td>
                                     <td className="px-6 py-4 text-right whitespace-nowrap">
-                                        <button className="text-gray-400 hover:text-blue-600 mr-3"><i className="fas fa-edit"></i></button>
-                                        <button className="text-gray-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
+                                        <Link to={`chitiet/${ma.MaGG}`}  className="p-2 text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all" title="Xem chi tiết">
+                                            xem chi tiết <i className="fas fa-arrow-right ml-1"></i>
+                                        </Link>
                                     </td>
                                 </tr>
-                                {/* ... Thêm các dòng khác ở đây ... */}
+                                    ))
+                                 )}
+
                             </tbody>
                         </table>
 
                         {/* Pagination Section - PHẦN MỚI THÊM */}
                         <div className="px-6 py-4 bg-white border-t border-gray-100 flex items-center justify-between">
                             <div className="text-sm text-gray-500">
-                                Hiển thị <span className="font-medium text-gray-700">1</span> đến <span className="font-medium text-gray-700">10</span> trong số <span className="font-medium text-gray-700">45</span> kết quả
+                                Hiển thị <span className="font-medium text-gray-700">{(page - 1) * 10 + 1}</span> đến <span className="font-medium text-gray-700">{Math.min(page * 10, total)}</span> trong số <span className="font-medium text-gray-700">{total}</span> kết quả
                             </div>
                             <div className="flex gap-2">
-                                <button className="px-3 py-1 border border-gray-200 rounded-md text-sm text-gray-400 cursor-not-allowed transition hover:bg-gray-50 disabled:opacity-50" disabled>
+                                <button onClick={() => setPage(Math.max(1, page - 1))} className="px-3 py-1 border border-gray-200 rounded-md text-sm text-gray-400 cursor-not-allowed transition hover:bg-gray-50 disabled:opacity-50" disabled>
                                     <i className="fas fa-chevron-left"></i>
                                 </button>
-                                <button className="px-3 py-1 bg-blue-600 border border-blue-600 rounded-md text-sm text-white font-medium">
-                                    1
-                                </button>
-                                <button className="px-3 py-1 border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 transition">
-                                    2
-                                </button>
-                                <button className="px-3 py-1 border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 transition">
-                                    3
-                                </button>
-                                <button className="px-3 py-1 border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 transition">
+                                <span className="px-3 py-1 bg-blue-600 border border-blue-600 rounded-md text-sm text-white font-medium">
+                                    {page}
+                                </span>
+                                <button onClick={() => setPage(Math.min(Math.ceil(total / 10), page + 1))} className="px-3 py-1 border border-gray-200 rounded-md text-sm text-gray-600 hover:bg-gray-50 transition">
                                     <i className="fas fa-chevron-right"></i>
                                 </button>
                             </div>

@@ -114,4 +114,31 @@ export default class MaGiamGiaController{
                 });
             }
     }
+    static async DanhSachMaGiamGia(req,res){
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        try {
+            const ketqua = await MaGiamGiaModel.DanhSachMaGiamGia(page, limit);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong: true,
+                    dulieu: ketqua.dulieu,
+                    total: ketqua.total
+                });
+            }else{
+                return res.json({
+                    ThanhCong: false,
+                    dulieu: [],
+                    total: 0,
+                    message: 'Không thể lấy danh sách mã giảm giá!'
+                });
+            }
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi lấy danh sách mã giảm giá:' + error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra khi lấy danh sách mã giảm giá!'
+            });
+        }
+    }
 }

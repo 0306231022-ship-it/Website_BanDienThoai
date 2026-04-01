@@ -43,6 +43,20 @@ function ThemMa() {
             magiamgia:randomString
         }))
     };
+    const Reset=()=>{
+         setFormData({
+                    tenChuongTrinh: '',
+                    magiamgia: '',
+                    loaiGiamGia: 'fixed',
+                    giaTriGiam: '',
+                    giaTriDonHangToiThieu: '',
+                    apDungChoHang: 'tatca',
+                    tongLuotSuDung: '',
+                    luotDungMoiKhach: '',
+                    ngayBatDau: '',
+                    ngayKetThuc: '',
+                });
+    }
     const Them_DL = async ()=>{
         const kiemtra = fun.KiemTraRong(formData);
         if(!kiemtra.Status){
@@ -71,18 +85,7 @@ function ThemMa() {
             }
             if(response.ThanhCong){
                 ThongBao.ThongBao_ThanhCong(response.message);
-                setFormData({
-                    tenChuongTrinh: '',
-                    magiamgia: '',
-                    loaiGiamGia: 'fixed',
-                    giaTriGiam: '',
-                    giaTriDonHangToiThieu: '',
-                    apDungChoHang: 'tatca',
-                    tongLuotSuDung: '',
-                    luotDungMoiKhach: '',
-                    ngayBatDau: '',
-                    ngayKetThuc: '',
-                });
+                Reset();
             }else{
                 ThongBao.ThongBao_Loi(response.message || 'Có lỗi xảy ra khi thêm mã giảm giá!');
             }
@@ -278,7 +281,7 @@ function ThemMa() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-gray-100 flex justify-end gap-3">
-            <button type="button" className="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition">
+            <button type="button" onClick={Reset} className="px-6 py-2.5 rounded-lg border border-gray-300 text-gray-600 font-semibold hover:bg-gray-50 transition">
                 Hủy bỏ
             </button>
             <button onClick={Them_DL} className="px-8 py-2.5 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition">

@@ -3,35 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chi tiết Mã Giảm Giá - PhoneStore</title>
+    <title>Chi tiết Mã Giảm Giá - PhoneStore Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
 <body class="bg-gray-50 p-4 md:p-8">
 
     <div class="max-w-6xl mx-auto">
-        <nav class="mb-6 flex items-center text-sm text-gray-500">
-            <a href="#" class="hover:text-blue-600">Quản lý mã</a>
-            <i class="fas fa-chevron-right mx-2 text-xs"></i>
-            <span class="text-gray-800 font-medium">Chi tiết mã: IPHONE15PRO</span>
+        <nav class="mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center text-sm text-gray-500">
+                <a href="#" class="hover:text-blue-600 transition-colors">Quản lý mã</a>
+                <i class="fas fa-chevron-right mx-3 text-[10px] text-gray-300"></i>
+                <span class="text-gray-900 font-semibold">Chi tiết mã: IPHONE15PRO</span>
+            </div>
+            <a href="#" class="group text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition-all">
+                <i class="fas fa-arrow-left mr-2 transition-transform group-hover:-translate-x-1"></i>
+                Quay lại danh sách
+            </a>
         </nav>
 
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div class="flex items-center gap-4">
-                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+            <div class="flex items-center gap-5">
+                <a href="#" class="hidden md:flex items-center justify-center w-11 h-11 bg-white border border-gray-200 rounded-xl text-gray-400 hover:text-blue-600 hover:border-blue-200 hover:shadow-sm transition-all">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                
+                <div class="w-16 h-16 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-2xl shadow-lg shadow-blue-100">
                     <i class="fas fa-ticket-alt"></i>
                 </div>
                 <div>
-                    <h1 class="text-2xl font-bold text-gray-900">IPHONE15PRO</h1>
-                    <p class="text-gray-500">Chương trình: <span class="font-medium text-gray-700">Ưu đãi mở bán iPhone 15 Series</span></p>
+                    <div class="flex items-center gap-3">
+                        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">IPHONE15PRO</h1>
+                        <span class="px-2.5 py-0.5 bg-green-100 text-green-700 text-[11px] font-bold rounded-md uppercase border border-green-200">Đang chạy</span>
+                    </div>
+                    <p class="text-gray-500 mt-1">Chương trình: <span class="font-medium text-gray-800">Ưu đãi mở bán iPhone 15 Series</span></p>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition">
-                    <i class="fas fa-pause mr-2"></i> Tạm dừng mã
+            
+            <div class="flex items-center gap-3">
+                <button class="flex-1 md:flex-none px-5 py-2.5 border border-gray-300 rounded-xl text-gray-700 hover:bg-white hover:border-gray-400 font-semibold transition flex items-center justify-center">
+                    <i class="fas fa-pause mr-2 text-xs text-gray-400"></i> Tạm dừng
                 </button>
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium shadow-lg transition">
-                    <i class="fas fa-edit mr-2"></i> Chỉnh sửa
+                <button class="flex-1 md:flex-none px-5 py-2.5 bg-gray-900 text-white rounded-xl hover:bg-blue-600 font-semibold shadow-sm transition flex items-center justify-center">
+                    <i class="fas fa-edit mr-2 text-xs"></i> Chỉnh sửa mã
                 </button>
             </div>
         </div>
@@ -41,93 +59,114 @@
             <div class="lg:col-span-2 space-y-8">
                 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Doanh thu mang lại</p>
-                        <p class="text-xl font-bold text-gray-900 mt-1">1.450.000.000 đ</p>
-                        <p class="text-xs text-green-600 mt-2"><i class="fas fa-arrow-up"></i> 12% so với hôm qua</p>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <p class="text-[11px] text-gray-400 uppercase font-bold tracking-widest">Doanh thu</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">1.450.000.000đ</p>
+                        <p class="text-xs text-green-600 mt-2 flex items-center font-medium">
+                            <span class="flex items-center justify-center w-4 h-4 bg-green-50 rounded-full mr-1">
+                                <i class="fas fa-arrow-up text-[10px]"></i>
+                            </span> 
+                            12% so với hôm qua
+                        </p>
                     </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Số lần sử dụng</p>
-                        <p class="text-xl font-bold text-gray-900 mt-1">74 <span class="text-gray-400 text-sm font-normal">/ 100</span></p>
-                        <div class="w-full bg-gray-100 h-1.5 mt-3 rounded-full overflow-hidden">
-                            <div class="bg-blue-500 h-full" style="width: 74%"></div>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <p class="text-[11px] text-gray-400 uppercase font-bold tracking-widest">Lượt sử dụng</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">74 <span class="text-gray-300 text-lg font-normal">/ 100</span></p>
+                        <div class="w-full bg-gray-100 h-2 mt-4 rounded-full overflow-hidden">
+                            <div class="bg-blue-600 h-full rounded-full transition-all duration-1000" style="width: 74%"></div>
                         </div>
                     </div>
-                    <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-                        <p class="text-xs text-gray-400 uppercase font-bold tracking-wider">Tổng tiền đã giảm</p>
-                        <p class="text-xl font-bold text-orange-600 mt-1">74.000.000 đ</p>
-                        <p class="text-xs text-gray-400 mt-2 italic">TB 1tr / đơn hàng</p>
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                        <p class="text-[11px] text-gray-400 uppercase font-bold tracking-widest">Tiền đã giảm</p>
+                        <p class="text-2xl font-bold text-orange-600 mt-2">74.000.000đ</p>
+                        <p class="text-xs text-gray-400 mt-2 italic font-medium">~ 1.000.000đ / đơn hàng</p>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                    <div class="p-5 border-b border-gray-100">
-                        <h3 class="font-bold text-gray-800">Lịch sử sử dụng gần đây</h3>
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-6 border-b border-gray-50 flex items-center justify-between">
+                        <h3 class="font-bold text-gray-900">Lịch sử giao dịch</h3>
+                        <span class="text-xs text-gray-400 font-medium">Cập nhật: 2 phút trước</span>
                     </div>
-                    <table class="w-full text-left">
-                        <thead class="bg-gray-50 text-xs text-gray-500 uppercase">
-                            <tr>
-                                <th class="px-6 py-3">Khách hàng</th>
-                                <th class="px-6 py-3">Sản phẩm mua</th>
-                                <th class="px-6 py-3">Đơn hàng</th>
-                                <th class="px-6 py-3">Ngày dùng</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-100 text-sm">
-                            <tr>
-                                <td class="px-6 py-4 font-medium text-gray-900">Nguyễn Văn A</td>
-                                <td class="px-6 py-4 text-gray-600">iPhone 15 Pro Max 256GB</td>
-                                <td class="px-6 py-4"><span class="text-blue-600 hover:underline cursor-pointer">#DH10024</span></td>
-                                <td class="px-6 py-4 text-gray-500">10:30 - 24/03/2024</td>
-                            </tr>
-                            <tr>
-                                <td class="px-6 py-4 font-medium text-gray-900">Trần Thị B</td>
-                                <td class="px-6 py-4 text-gray-600">iPhone 15 Pro 128GB</td>
-                                <td class="px-6 py-4"><span class="text-blue-600 hover:underline cursor-pointer">#DH10025</span></td>
-                                <td class="px-6 py-4 text-gray-500">14:15 - 24/03/2024</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="p-4 text-center border-t border-gray-100">
-                        <button class="text-sm text-blue-600 font-semibold hover:text-blue-800">Xem tất cả 74 giao dịch</button>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50/50 text-[11px] text-gray-400 uppercase tracking-wider">
+                                <tr>
+                                    <th class="px-6 py-4">Khách hàng</th>
+                                    <th class="px-6 py-4">Sản phẩm</th>
+                                    <th class="px-6 py-4">Mã đơn hàng</th>
+                                    <th class="px-6 py-4">Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50 text-sm">
+                                <tr class="hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="font-semibold text-gray-900">Nguyễn Văn A</div>
+                                        <div class="text-[11px] text-gray-400">ID: #USER001</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600 font-medium">iPhone 15 Pro Max 256GB</td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-blue-600 font-medium hover:underline cursor-pointer">#DH10024</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-500 font-medium">10:30 - 24/03/2024</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50/50 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="font-semibold text-gray-900">Trần Thị B</div>
+                                        <div class="text-[11px] text-gray-400">ID: #USER042</div>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-600 font-medium">iPhone 15 Pro 128GB</td>
+                                    <td class="px-6 py-4">
+                                        <span class="text-blue-600 font-medium hover:underline cursor-pointer">#DH10025</span>
+                                    </td>
+                                    <td class="px-6 py-4 text-gray-500 font-medium">14:15 - 24/03/2024</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-4 bg-gray-50/30 text-center">
+                        <button class="text-sm text-blue-600 font-bold hover:text-blue-800 transition-colors">Xem toàn bộ 74 giao dịch</button>
                     </div>
                 </div>
             </div>
 
             <div class="space-y-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                    <h3 class="font-bold text-gray-800 mb-4 pb-2 border-b">Thông số thiết lập</h3>
-                    <ul class="space-y-4">
-                        <li class="flex justify-between">
-                            <span class="text-sm text-gray-500">Trạng thái:</span>
-                            <span class="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-bold rounded-full uppercase">Đang chạy</span>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="font-bold text-gray-900 mb-6 pb-2 border-b border-gray-50 flex items-center">
+                        <i class="fas fa-cog mr-2 text-gray-400"></i> Cấu hình mã
+                    </h3>
+                    <ul class="space-y-5">
+                        <li class="flex justify-between items-center">
+                            <span class="text-sm text-gray-400 font-medium">Loại giảm giá</span>
+                            <span class="text-sm font-bold text-gray-800 bg-gray-100 px-2.5 py-1 rounded-lg">Cố định: 1M</span>
                         </li>
-                        <li class="flex justify-between">
-                            <span class="text-sm text-gray-500">Loại giảm:</span>
-                            <span class="text-sm font-medium">Cố định: 1.000.000 đ</span>
+                        <li class="flex justify-between items-center">
+                            <span class="text-sm text-gray-400 font-medium">Áp dụng cho</span>
+                            <span class="text-sm font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg italic">Apple Store</span>
                         </li>
-                        <li class="flex justify-between">
-                            <span class="text-sm text-gray-500">Hãng áp dụng:</span>
-                            <span class="text-sm font-medium text-blue-600 bg-blue-50 px-2 rounded">Apple (iPhone)</span>
+                        <li class="flex justify-between items-center">
+                            <span class="text-sm text-gray-400 font-medium">Đơn tối thiểu</span>
+                            <span class="text-sm font-bold text-gray-800">20.000.000 đ</span>
                         </li>
-                        <li class="flex justify-between">
-                            <span class="text-sm text-gray-500">Đơn tối thiểu:</span>
-                            <span class="text-sm font-medium">20.000.000 đ</span>
-                        </li>
-                        <li class="flex justify-between">
-                            <span class="text-sm text-gray-500">Thời hạn:</span>
+                        <li class="flex justify-between items-start pt-2">
+                            <span class="text-sm text-gray-400 font-medium">Thời gian hiệu lực</span>
                             <div class="text-right">
-                                <p class="text-xs font-medium text-gray-700">01/03/2024</p>
-                                <p class="text-xs text-gray-400">đến 31/03/2024</p>
+                                <p class="text-sm font-bold text-gray-800">01/03/24</p>
+                                <p class="text-[11px] text-gray-400 font-bold uppercase tracking-tighter">Đến 31/03/24</p>
                             </div>
                         </li>
                     </ul>
                 </div>
 
-                <div class="bg-amber-50 p-6 rounded-xl border border-amber-100">
-                    <h3 class="text-amber-800 font-bold text-sm mb-2"><i class="fas fa-lightbulb mr-2"></i> Gợi ý tối ưu</h3>
-                    <p class="text-xs text-amber-700 leading-relaxed">
-                        Mã này đang có hiệu suất rất tốt (74% đã dùng). Bạn nên cân nhắc gia hạn thêm hoặc tăng số lượng lên 200 để đẩy mạnh doanh số cuối tháng.
+                <div class="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-2xl border border-amber-100 shadow-sm relative overflow-hidden group">
+                    <div class="absolute -right-4 -top-4 text-amber-200/40 text-6xl rotate-12 transition-transform group-hover:scale-110">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-amber-800 font-bold text-sm mb-3 flex items-center">
+                        <i class="fas fa-chart-line mr-2"></i> Gợi ý từ hệ thống
+                    </h3>
+                    <p class="text-xs text-amber-700/80 leading-relaxed font-medium">
+                        Mã này đang đạt <span class="font-bold text-amber-900">hiệu suất cao (74%)</span>. Để tối ưu doanh thu cuối tháng, bạn nên tăng giới hạn lên 200 lượt hoặc đẩy thông báo qua App.
                     </p>
                 </div>
             </div>

@@ -11,8 +11,8 @@ import BaoCao from '../BaoCao';
 import PhiVanChuyen from '../PhiVanChuyen';
 import MaGiamGia from '../MaGiamGia';
 import DanhSachMa from '../MaGiamGia/DanhSachMa';
+import ChietMaGG from '../MaGiamGia/ChiTietMa';
 import HoTroKhachHang from '../HoTroKhachHang';
-import ChietMaGG from '../ChiTietMaGiam';
 import BinhLuan from '../DanhSachBinhLuan';
 import XemThongTinWebsite from '../CaiDatWebsite/XemCaiDat';
 import HoSo from '../ThongTinCaNhan/HoSoAdmin';
@@ -270,24 +270,24 @@ function QuanLiTT() {
                     <Route path="banner/chitiet/:id" element={<ChiTietFlashSale />} />
                     <Route path="DonHang" element={<DonHang />} />
                     <Route path="DonHang/ChiTiet/:id" element={<ChiTietDon />} />
-
-                    
-                    <Route index element={<BangChinh />} />
-                    
+                    <Route path="danhsachma/magiamgia" element={<MaGiamGia />} />
+                    <Route path="danhsachma/chitiet/:id" element={<ChietMaGG />} />
+                    <Route path="danhsachma" element={<DanhSachMa />} />
                     <Route path="sanpham" element={<DanhSachSanPham />} />
                     <Route path="sanpham/chitiet/:id" element={<ChiTietSanPham />} />
                     <Route path="sanpham/thungrac" element={<ThungRacSanPham/>} />
-                    
+
+
+
+                    <Route index element={<BangChinh />} />
                     <Route path="khachhang" element={<DanhSachKhachHang />} />
                     <Route path="baocao" element={<BaoCao />} />
                     <Route path="phivanchuyen" element={<PhiVanChuyen />} />
-                    <Route path="danhsachma" element={<DanhSachMa />} />
-                    <Route path="danhsachma/magiamgia" element={<MaGiamGia />} />
                     <Route path="hotro" element={<HoTroKhachHang />} />
                     <Route path="BinhLuan" element={<BinhLuan />} />
                     <Route path="BinhLuan/xem" element={< Xem />} />
                     
-                    <Route path="danhsachma/chitietma" element={<ChietMaGG />} />
+      
                    
                 </Routes>
         </main>

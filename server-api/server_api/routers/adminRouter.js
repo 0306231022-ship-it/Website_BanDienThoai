@@ -144,6 +144,9 @@ adminRouter.get('/danhsachdonhang', authMiddleware, DonHangController.DanhSachDo
 adminRouter.get('/timkiem_donhang', authMiddleware, DonHangController.TimKiem_DonHang);
 adminRouter.get('/chitiet_donhang', authMiddleware, DonHangController.ChiTiet_DonHang);
 adminRouter.get('/duyet_donhang', authMiddleware, DonHangController.Duyet_DonHang);
+//=========================================
+//xử lí mã giảm giá
+adminRouter.get('/lay_ds_ma_giam_gia', authMiddleware, MaGiamGiaController.DanhSachMaGiamGia);
 //Bên dưới chưa được chỉnh sửa
 adminRouter.get('/getTT', authMiddleware, CanhanADController.GetTTusers );
 
