@@ -141,4 +141,36 @@ export default class MaGiamGiaController{
             });
         }
     }
+    static async LayMaGiamGia_NguoiDung(req,res){
+        const IDND = req.query.idnd;
+        const kiemtra = await DonHangModel.KiemTraGioHang(IDND);
+        if(!kiemtra){
+            return res.json({
+                ThanhCong: false,
+                dulieu: [],
+                message: 'Không có sản phẩm nào trong giỏ hàng!'
+            });
+        }
+        try {
+            const ketqua = await MaGiamGiaModel.LayMaGiamGia_NguoiDung(IDND);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong: true,
+                    dulieu: ketqua.dulieu
+                });
+            }else{
+                return res.json({
+                    ThanhCong: false,
+                    dulieu: [],
+                    message: 'Không thể lấy mã giảm giá cho người dùng!'
+                });
+            }
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi lấy mã giảm giá cho người dùng:' + error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra khi lấy mã giảm giá cho người dùng!'
+            });
+        }
+    }
 }

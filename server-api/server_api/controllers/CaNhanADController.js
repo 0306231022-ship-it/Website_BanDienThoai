@@ -451,4 +451,68 @@ export default class CanhanADController{
                     });
                 }
             }
+            static async ChinhSuaDiaChi_NguoiDung(req,res){
+                const { DiaChi, IDND } = req.body;
+                Promise.all([
+                    body('DiaChi')
+                        .notEmpty()
+                        .withMessage('Địa chỉ không được bỏ trống!')
+                        .isLength({ max: 255 })
+                        .withMessage('Địa chỉ vượt quá ký tự cho phép!')
+                        .run(req),
+                    body('IDND')
+                        .notEmpty()
+                        .withMessage('ID người dùng không được bỏ trống!')
+                        .isLength({ max: 255 })
+                        .withMessage('ID người dùng vượt quá ký tự cho phép!')
+                        .run(req)
+                ]).then(() => {
+                    const errors = validationResult(req);
+                    if (!errors.isEmpty()) {
+                        return res.json({
+                            validation: true,
+                            errors: errors.array() 
+                        });
+                    }
+                }).catch(err => {
+                    console.error('Lỗi trong quá trình xác thực:', err);
+                    return res.json({
+                        ThanhCong: false,
+                        message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
+                    });
+                }
+                );
+                if (!DiaChi || !IDND) {
+                    return res.json({ 
+                        ThanhCong: false, 
+                        message: 'Vui lòng kiểm tra lại dữ liệu!' 
+                    });
+                }
+                const kiemtra = await adminModel.LayTT_ID(IDND);
+                if(!kiemtra){
+                    return res.json({
+                        ThanhCong: false,
+                        message: 'Không tìm thấy thông tin người dùng!'
+                    });
+                }
+                try {
+                    const ketqua = await adminModel.ChinhSuaDiaChi_NguoiDung(DiaChi, IDND);
+                    if(ketqua){
+                        return res.json({
+                            ThanhCong: true,
+                            message: 'Cập nhật địa chỉ thành công!'
+                        });
+                    }else{
+                        return res.json({
+                            ThanhCong: false,
+                            message: 'Cập nhật địa chỉ thất bại, vui lòng thử lại sau!'
+                        });
+                    }
+                } catch (error) {
+                    return res.json({
+                        ThanhCong: false,
+                        message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
+                    });
+                }
+            }
 }

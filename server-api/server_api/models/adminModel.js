@@ -75,4 +75,16 @@ export default class adminModel{
             return false;
         }
     }
+    static async ChinhSuaDiaChi_NguoiDung(DiaChi, IDND){
+        try {
+            const [ThemDL] = await execute(`
+                INSERT INTO diachi_nguoidung (IDDC, IDND, DIACHI, TRANGTHAI)
+                VALUES (?, ?, ?, 1)
+            `, [TaoID('DC'), IDND, DiaChi]);
+            return ThemDL.affectedRows > 0 ? true : false;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật địa chỉ:', error);
+            return false;
+        }
+    }
 }

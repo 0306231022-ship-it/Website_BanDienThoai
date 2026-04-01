@@ -156,7 +156,7 @@ function GioHang() {
                                     </div>
                                     <div className="flex justify-between text-gray-500 font-medium">
                                         <span>Phí giao hàng</span>
-                                        <span className="text-green-500 font-bold italic">Miễn phí</span>
+                                        <span className="text-green-500 font-bold italic">Chưa tính</span>
                                     </div>
                                     <div className="pt-6 border-t-2 border-dashed border-gray-50">
                                         <div className="flex justify-between items-end mb-8">

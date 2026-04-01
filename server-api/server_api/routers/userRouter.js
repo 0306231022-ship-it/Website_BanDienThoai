@@ -1,6 +1,7 @@
 import { Router } from "express";
 import CanhanADController from "../controllers/CaNhanADController.js";
 import DonHangController from "../controllers/DonHangController.js";
+import  MaGiamGiaController from "../controllers/MaGiamGiaController.js";
 const NguoiDungRoute = Router();
 import multer from "multer";
 const upload = multer();
@@ -12,6 +13,7 @@ NguoiDungRoute.post('/DangKy', upload.none(), CanhanADController.DangKy_NguoiDun
 NguoiDungRoute.post('/dangnhap', upload.none(), CanhanADController.DangNhap_NguoiDung);
 NguoiDungRoute.post('/kiemtra',upload.none(), CanhanADController.KiemTraDangNhap_NguoiDung);
 NguoiDungRoute.post('/dangxuat_nguoidung',upload.none(), CanhanADController.DangXuat_NguoiDung);
+NguoiDungRoute.post('/ChinhSuaDiaChi',upload.none(), CanhanADController.ChinhSuaDiaChi_NguoiDung);
 // xử lí sản phẩm thuộc người dùng
 NguoiDungRoute.post('/ThemGioHang',upload.none(), DonHangController.ThemGioHang_NguoiDung);
 NguoiDungRoute.post('/MuaHang',upload.none(), DonHangController.MuaHang_NguoiDung);
@@ -29,6 +31,7 @@ NguoiDungRoute.get('/Xoa_GioHang',upload.none(), DonHangController.Xoa_GioHang_N
 NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), DonHangController.SoLuong_GioHang_NguoiDung);
 NguoiDungRoute.get('/DanhSach_DonHang',upload.none(), DonHangController.DanhSach_DonHang_NguoiDung);
 NguoiDungRoute.get('/chitiet_donhang', upload.none(), DonHangController.ChiTiet_DonHang);
+NguoiDungRoute.get('/LayMaGiamGia', upload.none(), MaGiamGiaController.LayMaGiamGia_NguoiDung);
 //NguoiDungRoute.get('/ThongTin_DonHang', upload.none(), DonHangController.ThongTin_DonHang);
 //=========================================
 

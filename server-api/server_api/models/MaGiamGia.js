@@ -1,5 +1,6 @@
 import {execute , beginTransaction , rollbackTransaction , commitTransaction} from '../config/db.js';
 import { TaoID } from '../function.js';
+import DonHangModel from './DonHang.js';
 export default class MaGiamGiaModel{
     static async ThemMaGiamGia(dulieu){
         try {
@@ -46,6 +47,37 @@ export default class MaGiamGiaModel{
                 dulieu: [], 
                 total: 0 
             };
+        }
+    }
+    static async LayMaGiamGia_NguoiDung(IDND){
+        //GioHang_NguoiDung
+        try {
+            const SanPham_TrongGioHang = await DonHangModel.GioHang_NguoiDung(IDND);
+            const IDSANPHAM = SanPham_TrongGioHang.dulieu.map(item => item.IDSANPHAM);
+            const placeholders = IDSANPHAM.map(() => '?').join(',');
+            // DỰA VÀO MẢNG IDSANPHAM ĐỂ LẤY IDTHUONGHIEU TƯƠNG ỨNG
+            const [ketqua] = await execute(`
+                SELECT IDTHUONGHIEU 
+                FROM sanpham
+                WHERE IDSANPHAM IN (${placeholders})
+            `, [IDSANPHAM]);
+            const IDTHUONGHIEU = ketqua.map(item => item.IDTHUONGHIEU);
+            const placeholders2 = IDTHUONGHIEU.map(() => '?').join(',');
+            const [ketqua2] = await execute(`
+                SELECT MaGG, TENCHUONGTRINH, MAGIAMGIA, LOAIGIAM, GIATRIGIAM, GIATRIDON, IDTHUONGHIEU, SOLUONG, DADUNG, NGAYBATDAU, NGAYKETTHUC ,TRANGTHAI
+                FROM magiamgia
+                WHERE IDTHUONGHIEU IN (${placeholders2}) AND TRANGTHAI = 1 AND NGAYBATDAU <= NOW() AND NGAYKETTHUC >= NOW()
+            `, [IDTHUONGHIEU]);
+            return {
+                ThanhCong: true,
+                dulieu: ketqua2
+             };
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi lấy mã giảm giá cho người dùng:' + error);
+            return {
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra khi lấy mã giảm giá cho người dùng!'
+             };
         }
     }           
 }
