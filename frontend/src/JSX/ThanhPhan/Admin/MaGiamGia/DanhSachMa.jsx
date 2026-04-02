@@ -15,7 +15,6 @@ function DanhSachMa() {
             setLoading(true);
             try {
                 const response = await API.CallAPI(undefined, { url: `/admin/lay_ds_ma_giam_gia?page=${page}&limit=10`, PhuongThuc: 2 });
-                //alert(JSON.stringify(response))
                 if (response.ThanhCong) {
                     setMaGiamGia(response.dulieu);
                     setTotal(response.total);
@@ -57,10 +56,6 @@ function DanhSachMa() {
                         <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                             <p className="text-sm text-gray-500 font-medium">Lượt sử dụng (Tháng này)</p>
                             <p className="text-2xl font-bold text-blue-600">856</p>
-                        </div>
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                            <p className="text-sm text-gray-500 font-medium">Tổng tiết kiệm cho khách</p>
-                            <p className="text-2xl font-bold text-orange-500">125.4M đ</p>
                         </div>
                     </div>
 

@@ -4,6 +4,7 @@ import DonHangController from "../controllers/DonHangController.js";
 import  MaGiamGiaController from "../controllers/MaGiamGiaController.js";
 const NguoiDungRoute = Router();
 import multer from "multer";
+import DonHangModel from "../models/DonHang.js";
 const upload = multer();
 // PHẦN I : ĐỊNH NGHĨA ROUTE POST admin
 //=========================================
@@ -34,6 +35,7 @@ NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), DonHangController.SoLuong_G
 NguoiDungRoute.get('/DanhSach_DonHang',upload.none(), DonHangController.DanhSach_DonHang_NguoiDung);
 NguoiDungRoute.get('/chitiet_donhang', upload.none(), DonHangController.ChiTiet_DonHang);
 NguoiDungRoute.get('/LayMaGiamGia', upload.none(), MaGiamGiaController.LayMaGiamGia_NguoiDung);
+NguoiDungRoute.get('/ThongTinDonHang', upload.none(), DonHangController.ThongTinDonHang);
 //NguoiDungRoute.get('/ThongTin_DonHang', upload.none(), DonHangController.ThongTin_DonHang);
 //=========================================
 

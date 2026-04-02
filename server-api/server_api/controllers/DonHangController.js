@@ -2,6 +2,7 @@ import { body , validationResult} from 'express-validator';
 import adminModel from '../models/adminModel.js';
 import DonHangModel from '../models/DonHang.js';
 import SanPhamModel from '../models/SanPham.js';
+import MaGiamGiaModel from '../models/MaGiamGia.js';
 export default class DonHangController{
     static async ThemGioHang_NguoiDung(req,res){
             const { IDSANPHAM, SOLUONG, IDNGUOIDUNG , GIABAN } = req.body;
@@ -386,6 +387,37 @@ export default class DonHangController{
                 message:'Lỗi khi truy vấn dữ liệu!'
             })
         }
+    }
+    static async ThongTinDonHang(req,res){
+        const idnd = req.query.idnd;
+        const IDDH = await DonHangModel.LayIDDH(idnd);
+        if(IDDH===null){
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi sãy ra khi truy vấn dữ liệu!'
+            })
+        };
+        try {
+            const ThongTin = await MaGiamGiaModel.LayGT_GIAM(idnd,IDDH.IDDH);
+            if(ThongTin.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:ThongTin.dulieu
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ThongTin.message
+                })
+            }
+        } catch (error) {
+            console.error('Lỗi :' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Đã có lỗi sãy ra, vui lòng kiểm tra lại!'
+            })
+        }
+
     }
 }
     

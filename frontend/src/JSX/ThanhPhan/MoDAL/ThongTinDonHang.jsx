@@ -11,8 +11,9 @@ const ThongTinDonHang = () => {
   const [DiaChi, setDiaChi] = useState('');
   const [reload, setreload] = useState(false);
   const [SanPham, setSanPham] = useState([]);
+  const [ThongTin,setThongTin] = useState([])
   const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
-  const MaGiamGia= 0;
+  const MaGiamGia=  ThongTin.LOAIGIAM ===0 ? ThongTin.GIATRIGIAM: TongTien*(ThongTin.GIATRIGIAM/100) ;
   const PhiVanChuyen = 0;
   const [maGiamGia , setMGG] = useState([])
   const toggleModal = () => {
@@ -27,14 +28,16 @@ const ThongTinDonHang = () => {
             setThongTinNguoiDung(thongTinNguoiDung);
             setloading(true);
             try {
-                const [response1, response2 , response3 ] = await Promise.all([
+                const [response1, response2 , response3 , response4] = await Promise.all([
                     API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
                     API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-                    API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 })
+                    API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
+                    API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} )
                 ]);
                 response1.ThanhCong ?  setThongTinDiaChi(response1.DuLieu[0]) :  setThongTinDiaChi(null);
                 response2.ThanhCong ? setSanPham(response2.dulieu) : setSanPham([]);
                 response3.ThanhCong ? setMGG(response3.dulieu) : setMGG([]);
+                response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message)
             } catch (error) {
                 ThongBao.ThongBao_Loi("Có lỗi xảy ra khi tải thông tin địa chỉ");
                 console.error("Lỗi khi tải thông tin địa chỉ:", error);
@@ -75,7 +78,6 @@ const ThongTinDonHang = () => {
     }
   }
   const Chon_MaGiamGia = async(id)=>{
-    //alert()
     try {
       const formdata= fun.objectToFormData({MaGG:id,IDND:ThongTinNguoiDung.IDND})
       const response = await API.CallAPI(formdata, {url :'/NguoiDung/ApMa_GiamGia' , PhuongThuc:1});
@@ -90,7 +92,6 @@ const ThongTinDonHang = () => {
       console.error('Lỗi chọn max giảm giá :' + error);
       ThongBao.ThongBao_CanhBao('Có lỗi sãy ra, Vui lòng kiểm tra lại! ')
     }
-
   }
 
   return (
@@ -303,9 +304,14 @@ const ThongTinDonHang = () => {
                   <p className="text-[10px] text-red-500 font-bold mt-2 italic">HSD: {fun.formatDate(maGiamGia.NGAYKETTHUC)}</p>
                 </div>
                <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                  <button onClick={()=>{Chon_MaGiamGia(maGiamGia.MaGG)}} className="bg-red-500 hover:bg-red-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full shadow-md active:scale-90 transition-transform uppercase">
+               {
+                maGiamGia.SOLUONG_DADUNG !== maGiamGia.SOLUONG && (
+                   <button onClick={()=>{Chon_MaGiamGia(maGiamGia.MaGG)}} className="bg-red-500 hover:bg-red-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full shadow-md active:scale-90 transition-transform uppercase">
                      Chọn
                   </button>
+                )
+               }
+                 
                  </div>
               </label>
                 ))

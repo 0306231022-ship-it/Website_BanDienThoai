@@ -64,8 +64,13 @@ export default class MaGiamGiaModel{
             const IDTHUONGHIEU = ketqua.map(item => item.IDTHUONGHIEU);
             const placeholders2 = IDTHUONGHIEU.map(() => '?').join(',');
             const [ketqua2] = await execute(`
-                SELECT MaGG, TENCHUONGTRINH, MAGIAMGIA, LOAIGIAM, GIATRIGIAM, GIATRIDON, IDTHUONGHIEU, SOLUONG, DADUNG, NGAYBATDAU, NGAYKETTHUC ,TRANGTHAI
-                FROM magiamgia
+                SELECT mgg.MaGG, mgg.TENCHUONGTRINH, mgg.MAGIAMGIA, mgg.LOAIGIAM, mgg.GIATRIGIAM, mgg.GIATRIDON, mgg.SOLUONG, mgg.DADUNG, mgg.NGAYKETTHUC ,mgg.TRANGTHAI,
+                (
+                 SELECT COUNT(ct.IDCT_MGG)
+                 FROM chitiet_magiamgia ct
+                 WHERE mgg.MaGG=ct.IDMAGG 
+                ) AS SOLUONG_DADUNG
+                FROM magiamgia mgg
                 WHERE IDTHUONGHIEU IN (${placeholders2}) AND TRANGTHAI = 1 AND NGAYBATDAU <= NOW() AND NGAYKETTHUC >= NOW()
             `,IDTHUONGHIEU);
             return {
@@ -107,5 +112,43 @@ export default class MaGiamGiaModel{
             console.error('Có lỗi sãy ra :' + error);
             return false;
         }
-    }           
+    }
+    static async LayGT_GIAM(idnd,IDDH){
+        try {
+            const [MaGG] = await execute(`
+                SELECT mgg.LOAIGIAM, mgg.GIATRIGIAM
+                FROM magiamgia mgg
+                LEFT JOIN chitiet_magiamgia ct ON ct.IDMAGG = mgg.MaGG AND ct.IDND = ? AND ct.IDDH = ?
+                ` , [idnd,IDDH]);
+            if(MaGG.length>0){
+                return {
+                    ThanhCong:true,
+                    dulieu:MaGG
+                }
+            }else{
+                return {
+                    ThanhCong:false,
+                    message:'Không tìm thấy mã giảm giá cho đơn hàng của bạn!'
+                }
+            }
+        } catch (error) {
+            console.error('Dax có lỗi sãy ra:' + error);
+            return {
+                ThanhCong:false,
+                message:'Lỗi truy vấn dữ liệu! Vui lòng kiểm tra lại!'
+            }
+        }
+    }
+    static async XoaMa_Cu(IDDH,IDND){
+        try {
+            const [Xoa_MaCu] = await execute(`
+                DELETE FROM chitiet_magiamgia
+                WHERE IDND=? AND IDDH =?
+                `,[IDND,IDDH]);
+            return Xoa_MaCu.affectedRows>0 ? true :false;
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return false
+        }
+    }      
 }
