@@ -573,4 +573,18 @@ export default class DonHangModel{
             };
         }
     }
+    static async LayIDDH(id){
+        try {
+             const [ketqua] = await execute(`
+                SELECT IDDH 
+                FROM donhang
+                WHERE IDKH=? AND TRANGTHAI=0
+            `,[id]);
+            return ketqua.length>0 ? ketqua[0] : null;
+        } catch (error) {
+            console.error('Có lỗi sãy ra khi lấy IDDH:' + error);
+            return null;
+        }
+       
+    }
 }

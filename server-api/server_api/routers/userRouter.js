@@ -17,6 +17,8 @@ NguoiDungRoute.post('/ChinhSuaDiaChi',upload.none(), CanhanADController.ChinhSua
 // xử lí sản phẩm thuộc người dùng
 NguoiDungRoute.post('/ThemGioHang',upload.none(), DonHangController.ThemGioHang_NguoiDung);
 NguoiDungRoute.post('/MuaHang',upload.none(), DonHangController.MuaHang_NguoiDung);
+//xử lí mã giảm giá
+NguoiDungRoute.post('/ApMa_GiamGia', upload.none(), MaGiamGiaController.ThemMaGiamGia_NguoiDung);
 //=========================================
 // PHẦN III : ĐỊNH NGHĨA ROUTE GET admin
 //=========================================

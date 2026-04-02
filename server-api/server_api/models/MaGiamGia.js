@@ -60,14 +60,14 @@ export default class MaGiamGiaModel{
                 SELECT IDTHUONGHIEU 
                 FROM sanpham
                 WHERE IDSANPHAM IN (${placeholders})
-            `, [IDSANPHAM]);
+            `, IDSANPHAM);
             const IDTHUONGHIEU = ketqua.map(item => item.IDTHUONGHIEU);
             const placeholders2 = IDTHUONGHIEU.map(() => '?').join(',');
             const [ketqua2] = await execute(`
                 SELECT MaGG, TENCHUONGTRINH, MAGIAMGIA, LOAIGIAM, GIATRIGIAM, GIATRIDON, IDTHUONGHIEU, SOLUONG, DADUNG, NGAYBATDAU, NGAYKETTHUC ,TRANGTHAI
                 FROM magiamgia
                 WHERE IDTHUONGHIEU IN (${placeholders2}) AND TRANGTHAI = 1 AND NGAYBATDAU <= NOW() AND NGAYKETTHUC >= NOW()
-            `, [IDTHUONGHIEU]);
+            `,IDTHUONGHIEU);
             return {
                 ThanhCong: true,
                 dulieu: ketqua2
@@ -78,6 +78,34 @@ export default class MaGiamGiaModel{
                 ThanhCong: false,
                 message: 'Có lỗi xảy ra khi lấy mã giảm giá cho người dùng!'
              };
+        }
+    }
+    static async kiemtra_magg_nguoidung(iddh,idnd){
+        // TRUE : chưa có=> FALSE ngược lại
+        try {
+            const [kiemtra] = await execute(`
+                SELECT IDCT_MGG
+                FROM chitiet_magiamgia 
+                WHERE IDND = ? AND IDDH = ?
+                LIMIT 1
+                `,[idnd,iddh]);
+            return kiemtra.length <= 0 ? true : false;
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return true;
+        }
+    }
+    static async Ap_mgg_nguoidung(MaGG,IDND ,IDDH){
+        const now = new Date();
+        try {
+            const [ThemDL] = await execute(`
+                INSERT INTO chitiet_magiamgia (IDCT_MGG ,IDMAGG , IDND ,IDDH,NGAYSUDUNG,TRANGTHAI)
+                VALUES (?,?,?,?,?,?)
+                ` , [TaoID('CTMGG'), MaGG , IDND , IDDH , now ,1]);
+            return ThemDL.affectedRows>0 ? true : false;
+        } catch (error) {
+            console.error('Có lỗi sãy ra :' + error);
+            return false;
         }
     }           
 }

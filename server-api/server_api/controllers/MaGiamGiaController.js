@@ -1,5 +1,6 @@
 import { body, validationResult } from "express-validator";
 import MaGiamGiaModel from "../models/MaGiamGia.js";
+import DonHangModel from "../models/DonHang.js";
 export default class MaGiamGiaController{
     static async ThemMaGiamGia(req,res){
         const dulieu = req.body;
@@ -143,14 +144,6 @@ export default class MaGiamGiaController{
     }
     static async LayMaGiamGia_NguoiDung(req,res){
         const IDND = req.query.idnd;
-        const kiemtra = await DonHangModel.KiemTraGioHang(IDND);
-        if(!kiemtra){
-            return res.json({
-                ThanhCong: false,
-                dulieu: [],
-                message: 'Không có sản phẩm nào trong giỏ hàng!'
-            });
-        }
         try {
             const ketqua = await MaGiamGiaModel.LayMaGiamGia_NguoiDung(IDND);
             if(ketqua.ThanhCong){
@@ -171,6 +164,43 @@ export default class MaGiamGiaController{
                 ThanhCong: false,
                 message: 'Có lỗi xảy ra khi lấy mã giảm giá cho người dùng!'
             });
+        }
+    }
+    static async ThemMaGiamGia_NguoiDung(req,res){
+        const dulieu = req.body;
+        const IDDH = await DonHangModel.LayIDDH(dulieu.IDND);
+        if(IDDH===null){
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi sãy ra khi truy vấn dữ liệu!'
+            })
+        }
+        try {
+            const kiemtra = await MaGiamGiaModel.kiemtra_magg_nguoidung(IDDH.IDDH,dulieu.IDND);
+            if(!kiemtra){
+                return res.json({
+                    ThanhCong:false,
+                    message:'Bạn đã áp dụng mã giảm giá cho đơn hàng này!'
+                })
+            }
+            const ThemGT = await MaGiamGiaModel.Ap_mgg_nguoidung(dulieu.MaGG,dulieu.IDND ,IDDH.IDDH);
+            if(ThemGT){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Thêm mã giảm giá vào đơn hàng thành công!'
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Thêm mã giảm giá cho đơn hàng thất bại!'
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                    ThanhCong:false,
+                    message:'Thêm mã giảm giá cho đơn hàng thất bại!'
+                })
         }
     }
 }
