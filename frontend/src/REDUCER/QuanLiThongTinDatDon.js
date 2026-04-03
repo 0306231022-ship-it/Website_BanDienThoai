@@ -8,11 +8,16 @@ export const useThongTinDonHang = create((set) => ({
       DiaChi_GiaoHang: "",
     },
   },
-  setThongTinDatDon: (newThongTin) =>
-    set((state) => ({
-      ThongTinDatDon: {
-        ...state.ThongTinDatDon,
-        ...newThongTin,
+  setThongTinDatDon: (updates) =>
+  set((state) => ({
+    ThongTinDatDon: {
+      ...state.ThongTinDatDon,
+      ThongTin_KhachHang: {
+        ...state.ThongTinDatDon.ThongTin_KhachHang,
+        ...updates.ThongTin_KhachHang,
       },
-    })),
+    },
+  })),
+
+
 }));

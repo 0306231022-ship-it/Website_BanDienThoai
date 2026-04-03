@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
-
 const AddressEditForm = ({ onCancel, onSave }) => {
     const [formData, setFormData] = useState({
         hoTen: '',
         sdt: '',
         diaChiChiTiet: ''
     });
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -15,6 +15,7 @@ const AddressEditForm = ({ onCancel, onSave }) => {
             [name]: value
         }));
     };
+
     const handleSubmit = () => {
         if (!formData.hoTen || !formData.sdt || !formData.diaChiChiTiet) {
             ThongBao.ThongBao_CanhBao("Vui lòng nhập đầy đủ thông tin!");
@@ -24,6 +25,7 @@ const AddressEditForm = ({ onCancel, onSave }) => {
             ThongBao.ThongBao_CanhBao("Số điện thoại chỉ được chứa ký số!");
             return;
         }
+        // Gửi dữ liệu ngược lên component cha
         onSave(formData);
     };
 
@@ -31,11 +33,10 @@ const AddressEditForm = ({ onCancel, onSave }) => {
         <div className="bg-white p-5 rounded-3xl border border-blue-400 shadow-xl mb-6 animate-in fade-in zoom-in duration-300">
             <p className="text-[10px] font-black text-blue-600 uppercase mb-4 tracking-widest flex items-center gap-2">
                 <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
-                Thêm địa chỉ mới
+                Thay đổi thông tin nhận hàng
             </p>
             
             <div className="space-y-4">
-                {/* Input Họ Tên */}
                 <div className="relative">
                     <i className="fas fa-user absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
                     <input 
@@ -48,7 +49,6 @@ const AddressEditForm = ({ onCancel, onSave }) => {
                     />
                 </div>
 
-                {/* Input Số điện thoại */}
                 <div className="relative">
                     <i className="fas fa-phone absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
                     <input 
@@ -61,7 +61,6 @@ const AddressEditForm = ({ onCancel, onSave }) => {
                     />
                 </div>
 
-                {/* Input Địa chỉ chi tiết */}
                 <div className="relative">
                     <i className="fas fa-map-marked-alt absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
                     <textarea 
@@ -92,47 +91,53 @@ const AddressEditForm = ({ onCancel, onSave }) => {
         </div>
     );
 };
-
-// --- MAIN COMPONENT ---
 function DiaChi({ DuLieu }) {
+    // Lấy state và hàm cập nhật từ Zustand
     const { ThongTinDatDon, setThongTinDatDon } = useThongTinDonHang();
     const [isOpen, setOpen] = useState(false);
+
+    // Rút gọn đường dẫn dữ liệu để code sạch hơn
+    const khachHang = ThongTinDatDon?.ThongTin_KhachHang;
+
     const handleSaveNewAddress = (data) => {
+        // CẬP NHẬT VÀO STORE: Phải đúng cấu trúc ThongTin_KhachHang
         setThongTinDatDon({
-            ...ThongTinDatDon,
-            ThongTin_KhachHang:{
-                 HoTen: data.hoTen,
-                 SDT: data.sdt,
-                 DiaChi_MacDinh: data.diaChiChiTiet 
+            ThongTin_KhachHang: {
+                HoTen: data.hoTen,
+                SDT: data.sdt,
+                DiaChi_MacDinh: data.diaChiChiTiet 
             }
         });
+        
         setOpen(false);
+        ThongBao.ThongBao_ThanhCong("Đã cập nhật địa chỉ thành công!");
     };
 
     return (
         <div className="max-w-md mx-auto space-y-5 p-2 pb-10">
             
-            {/* 1. HIỂN THỊ ĐỊA CHỈ HIỆN TẠI (Lấy từ Reducer hoặc Props) */}
+            {/* 1. HIỂN THỊ ĐỊA CHỈ HIỆN TẠI */}
             <div className="bg-white p-5 rounded-[2.5rem] border-2 border-orange-500 shadow-xl relative ring-8 ring-orange-50/50">
                 <div className="flex justify-between items-start">
                     <div className="space-y-1">
                         <div className="flex items-center gap-2">
                             <span className="font-bold text-gray-900 text-base">
-                                {ThongTinDatDon?.HoTen || DuLieu?.HoTen}
+                                {/* Ưu tiên hiển thị từ Store, nếu trống mới lấy từ Props DuLieu */}
+                                {khachHang?.HoTen || DuLieu?.HoTen || "Chưa có tên"}
                             </span>
                             <span className="bg-orange-500 text-white text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider">
                                 Đang chọn
                             </span>
                         </div>
                         <p className="text-sm text-gray-500 font-medium">
-                            {ThongTinDatDon?.SDT || DuLieu?.SDT}
+                            {khachHang?.SDT || DuLieu?.SDT || "Chưa có SĐT"}
                         </p>
                     </div>
                 </div>
                 <div className="mt-4 flex gap-3 text-sm text-gray-600 italic leading-relaxed">
                     <i className="fas fa-map-marker-alt text-orange-500 mt-1"></i>
                     <p className="line-clamp-3">
-                        {ThongTinDatDon?.DiaChi_MacDinh || DuLieu?.DiaChi_MacDinh}
+                        {khachHang?.DiaChi_MacDinh || DuLieu?.DiaChi_MacDinh || "Chưa có địa chỉ"}
                     </p>
                 </div>
                 <div className="absolute -top-2 -right-2 bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
@@ -140,7 +145,7 @@ function DiaChi({ DuLieu }) {
                 </div>
             </div>
 
-            {/* 2. NÚT ĐIỀU KHIỂN ĐÓNG/MỞ FORM */}
+            {/* 2. NÚT ĐIỀU KHIỂN */}
             <button 
                 onClick={() => setOpen(!isOpen)}
                 className={`w-full py-5 border-2 border-dashed rounded-[2rem] flex items-center justify-center gap-3 transition-all duration-500
@@ -152,7 +157,7 @@ function DiaChi({ DuLieu }) {
                 </span>
             </button>
 
-            {/* 3. FORM NHẬP (HIỂN THỊ KHI MỞ) */}
+            {/* 3. FORM NHẬP */}
             {isOpen && (
                 <AddressEditForm 
                     onCancel={() => setOpen(false)} 
@@ -160,11 +165,11 @@ function DiaChi({ DuLieu }) {
                 />
             )}
 
-            {/* 4. GỢI Ý ĐỊA CHỈ KHÁC (UI TRẠNG THÁI CHỜ) */}
+            {/* 4. GỢI Ý (Chỉ hiện khi đóng form) */}
             {!isOpen && (
                 <div className="opacity-50 grayscale scale-95 pointer-events-none">
                      <div className="bg-gray-100 p-4 rounded-2xl border border-gray-200">
-                        <p className="text-xs font-bold text-gray-400 italic">Chọn địa chỉ khác từ danh sách...</p>
+                        <p className="text-xs font-bold text-gray-400 italic">Hệ thống sẽ tự động cập nhật đơn hàng sau khi bạn nhấn "Xác nhận lưu".</p>
                      </div>
                 </div>
             )}

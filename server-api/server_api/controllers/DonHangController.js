@@ -3,6 +3,8 @@ import adminModel from '../models/adminModel.js';
 import DonHangModel from '../models/DonHang.js';
 import SanPhamModel from '../models/SanPham.js';
 import MaGiamGiaModel from '../models/MaGiamGia.js';
+import CaiDatModel from '../models/CaiDatWebsite.js';
+import { getDistance } from '../function.js';
 export default class DonHangController{
     static async ThemGioHang_NguoiDung(req,res){
             const { IDSANPHAM, SOLUONG, IDNGUOIDUNG , GIABAN } = req.body;
@@ -418,6 +420,37 @@ export default class DonHangController{
             })
         }
 
+    }
+    static async ThongTin_PhiVanChuyen(req,res){
+        const DiaChi_NguoiDung= req.query.DiaChi;
+        const DiaChi_website= await CaiDatModel.LayThongTin_DiaChi();
+        if(DiaChi_website===null){
+            return res.json({
+                ThanhCong:false,
+                message:'Có lỗi sãy ra!'
+            })
+        };
+        const [response1 ,response2] = await Promise.all([
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(DiaChi_NguoiDung)}`,{ headers: { 'User-Agent': 'MyStoreProject/1.0' } }),
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(DiaChi_website)}`,{ headers: { 'User-Agent': 'MyStoreProject/1.0' } })
+        ])
+        const data1 = await response1.json();
+        const data2 = await response2.json();
+        let latKhach1, lonKhach1;
+        let latKhach2, lonKhach2;
+        if (data1 && data1.length > 0) {
+            latKhach1 = parseFloat(data1[0].lat);
+            lonKhach1 = parseFloat(data1[0].lon);
+        }
+         if (data2 && data2.length > 0) {
+            latKhach2 = parseFloat(data2[0].lat);
+            lonKhach2 = parseFloat(data2[0].lon);
+        }
+        const km = getDistance(latKhach1,lonKhach1,latKhach2,lonKhach2);
+        return res.json({
+            ThanhCong:true,
+            km:km
+        })
     }
 }
     

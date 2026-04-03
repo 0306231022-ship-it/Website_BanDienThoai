@@ -72,4 +72,16 @@ export default class CaiDatModel{
             return 1;
         }
     }
+    static async LayThongTin_DiaChi(){
+        try {
+            const [DiaChi] = await execute(`
+                SELECT DiaChi
+                FROM caidatwebsite
+                LIMIT 1
+                `,[]);
+            return DiaChi.length>0 ? DiaChi[0] : null;
+        } catch (error) {
+            return null;
+        }
+    }
 }
