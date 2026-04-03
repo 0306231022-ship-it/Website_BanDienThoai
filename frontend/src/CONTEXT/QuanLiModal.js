@@ -22,6 +22,7 @@ import ThongBao from "../JSX/ThanhPhan/NguoiDung/TaiKhoan/ThongBao";
 import ThongTinDonHang from "../JSX/ThanhPhan/MoDAL/ThongTinDonHang";
 import ThongTinCinhSua from "../JSX/ThanhPhan/Admin/SanPham/ChinhSua/Modal_ChinhSua";
 import ThemMa from "../JSX/ThanhPhan/Admin/MaGiamGia/ThemMa";
+import DiaChi from "../JSX/ThanhPhan/MoDAL/ThongTinNguoiDung_DonHang";
 
 const MoDalContext = createContext();
 
@@ -48,8 +49,8 @@ const MODAL_REGISTRY = {
     'ThongBao' : ThongBao,
     'ThongTinDonHang' : ThongTinDonHang,
     'ThongTinCinhSua' : ThongTinCinhSua,
-    'ThemMa' : ThemMa
-
+    'ThemMa' : ThemMa ,
+    'DiaChi' : DiaChi
 };
 
 export function AppMDProvider({ children }) {

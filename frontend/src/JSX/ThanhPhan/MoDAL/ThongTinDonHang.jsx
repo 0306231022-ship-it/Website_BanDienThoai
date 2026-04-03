@@ -3,7 +3,9 @@ import * as API from '../../../JS/API/API';
 import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 import * as fun from '../../../JS/FUNCTONS/function';
+import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 const ThongTinDonHang = () => {
+  const { OpenMoDal } = useModalContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [ThongTinDiaChi, setThongTinDiaChi] = useState(null);
@@ -95,9 +97,9 @@ const ThongTinDonHang = () => {
   }
 
   return (
-    <div className="bg-gray-100 flex justify-center">
+    <div className="">
       {/* Container Điện Thoại Giả Lập */}
-      <div className="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col">
+      <div className="">
     
         <main className="flex-1 overflow-y-auto p-4 space-y-5 pb-32">
           {
@@ -111,7 +113,7 @@ const ThongTinDonHang = () => {
               </div>
             ) : (
                 ThongTinDiaChi !== null ? (
-                    <section className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100 relative cursor-pointer">
+                    <section onClick={()=>{OpenMoDal(undefined,{TenTrang:'DiaChi'})}} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100 relative cursor-pointer">
                         <div className="flex items-center text-blue-600 mb-2">
               <i className="fas fa-map-marker-alt mr-2"></i>
               <span className="text-xs font-bold uppercase tracking-wider">Địa chỉ nhận hàng</span>
@@ -223,7 +225,7 @@ const ThongTinDonHang = () => {
         </main>
 
         {/* Thanh thanh toán cố định ở dưới */}
-        <footer className="p-4 bg-white border-t sticky bottom-0 z-10 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+        <footer className=" bg-white  sticky bottom-0 z-10 ">
           <div className="flex justify-end items-center mb-3 space-x-2">
             <span className="text-sm text-gray-600">Tổng thanh toán:</span>
             <span className="text-xl font-bold text-orange-600">{fun.formatCurrency(TongTien + PhiVanChuyen - MaGiamGia)}</span>
