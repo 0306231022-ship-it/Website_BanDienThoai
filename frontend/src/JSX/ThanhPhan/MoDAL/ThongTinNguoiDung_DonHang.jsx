@@ -1,75 +1,175 @@
-function DiaChi(){
-    return(
-           <div>
-        <div className="flex-1 space-y-4 bg-gray-50/30">
+import React, { useState } from 'react';
+import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
+import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 
-            <div className="bg-white p-4 rounded-2xl border-2 border-orange-500 shadow-sm relative ring-4 ring-orange-50">
+const AddressEditForm = ({ onCancel, onSave }) => {
+    const [formData, setFormData] = useState({
+        hoTen: '',
+        sdt: '',
+        diaChiChiTiet: ''
+    });
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+    const handleSubmit = () => {
+        if (!formData.hoTen || !formData.sdt || !formData.diaChiChiTiet) {
+            ThongBao.ThongBao_CanhBao("Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+        if (!/^\d+$/.test(formData.sdt)) {
+            ThongBao.ThongBao_CanhBao("Số điện thoại chỉ được chứa ký số!");
+            return;
+        }
+        onSave(formData);
+    };
+
+    return (
+        <div className="bg-white p-5 rounded-3xl border border-blue-400 shadow-xl mb-6 animate-in fade-in zoom-in duration-300">
+            <p className="text-[10px] font-black text-blue-600 uppercase mb-4 tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
+                Thêm địa chỉ mới
+            </p>
+            
+            <div className="space-y-4">
+                {/* Input Họ Tên */}
+                <div className="relative">
+                    <i className="fas fa-user absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
+                    <input 
+                        name="hoTen"
+                        value={formData.hoTen}
+                        onChange={handleChange}
+                        type="text" 
+                        placeholder="Họ và tên người nhận" 
+                        className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-semibold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" 
+                    />
+                </div>
+
+                {/* Input Số điện thoại */}
+                <div className="relative">
+                    <i className="fas fa-phone absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
+                    <input 
+                        name="sdt"
+                        value={formData.sdt}
+                        onChange={handleChange}
+                        type="text" 
+                        placeholder="Số điện thoại" 
+                        className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-semibold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all" 
+                    />
+                </div>
+
+                {/* Input Địa chỉ chi tiết */}
+                <div className="relative">
+                    <i className="fas fa-map-marked-alt absolute left-3.5 top-3.5 text-gray-400 text-xs"></i>
+                    <textarea 
+                        name="diaChiChiTiet"
+                        value={formData.diaChiChiTiet}
+                        onChange={handleChange}
+                        rows="2"
+                        placeholder="Địa chỉ cụ thể (Số nhà, đường...)" 
+                        className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-semibold focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all resize-none"
+                    ></textarea>
+                </div>
+
+                <div className="flex gap-3 pt-2">
+                    <button 
+                        onClick={handleSubmit}
+                        className="flex-[2] py-3.5 bg-blue-600 text-white rounded-2xl text-[11px] font-bold shadow-lg shadow-blue-200 active:scale-95 transition-all uppercase"
+                    >
+                        Xác nhận lưu
+                    </button>
+                    <button 
+                        onClick={onCancel} 
+                        className="flex-1 py-3.5 bg-gray-100 text-gray-500 rounded-2xl text-[11px] font-bold hover:bg-gray-200 active:scale-95 transition-all uppercase"
+                    >
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// --- MAIN COMPONENT ---
+function DiaChi({ DuLieu }) {
+    const { ThongTinDatDon, setThongTinDatDon } = useThongTinDonHang();
+    const [isOpen, setOpen] = useState(false);
+    const handleSaveNewAddress = (data) => {
+        setThongTinDatDon({
+            ...ThongTinDatDon,
+            ThongTin_KhachHang:{
+                 HoTen: data.hoTen,
+                 SDT: data.sdt,
+                 DiaChi_MacDinh: data.diaChiChiTiet 
+            }
+        });
+        setOpen(false);
+    };
+
+    return (
+        <div className="max-w-md mx-auto space-y-5 p-2 pb-10">
+            
+            {/* 1. HIỂN THỊ ĐỊA CHỈ HIỆN TẠI (Lấy từ Reducer hoặc Props) */}
+            <div className="bg-white p-5 rounded-[2.5rem] border-2 border-orange-500 shadow-xl relative ring-8 ring-orange-50/50">
                 <div className="flex justify-between items-start">
                     <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                            <span className="font-bold text-gray-900">Lê Minh Trí</span>
-                            <span className="bg-orange-500 text-white text-[9px] px-2 py-0.5 rounded font-bold uppercase">Mặc định</span>
+                            <span className="font-bold text-gray-900 text-base">
+                                {ThongTinDatDon?.HoTen || DuLieu?.HoTen}
+                            </span>
+                            <span className="bg-orange-500 text-white text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-wider">
+                                Đang chọn
+                            </span>
                         </div>
-                        <p className="text-sm text-gray-500">0901 234 567</p>
+                        <p className="text-sm text-gray-500 font-medium">
+                            {ThongTinDatDon?.SDT || DuLieu?.SDT}
+                        </p>
                     </div>
-                    <button className="text-blue-600 text-xs font-bold px-3 py-1 bg-blue-50 rounded-lg">Sửa</button>
                 </div>
-                <div className="mt-3 flex gap-2 text-sm text-gray-600 italic leading-snug">
+                <div className="mt-4 flex gap-3 text-sm text-gray-600 italic leading-relaxed">
                     <i className="fas fa-map-marker-alt text-orange-500 mt-1"></i>
-                    <p>88 Đường số 7, KDC Cityland Park Hills, P.10, Q. Gò Vấp, TP. Hồ Chí Minh</p>
+                    <p className="line-clamp-3">
+                        {ThongTinDatDon?.DiaChi_MacDinh || DuLieu?.DiaChi_MacDinh}
+                    </p>
                 </div>
-                <div className="absolute -top-2 -right-2 bg-orange-500 text-white w-6 h-6 rounded-full flex items-center justify-center border-2 border-white">
-                    <i className="fas fa-check text-[10px]"></i>
-                </div>
-            </div>
-
-            <div className="bg-white p-4 rounded-2xl border border-blue-400 shadow-md">
-                <p className="text-[10px] font-bold text-blue-500 uppercase mb-3 tracking-widest">Chỉnh sửa nhanh</p>
-                <div className="space-y-3">
-                    <div className="relative">
-                        <i className="fas fa-user absolute left-3 top-3 text-gray-300 text-xs"></i>
-                        <input type="text" value="Trần Thị Lan Anh" placeholder="Tên người nhận" 
-                               className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400"/>
-                    </div>
-                    <div className="relative">
-                        <i className="fas fa-phone absolute left-3 top-3 text-gray-300 text-xs"></i>
-                        <input type="text" value="0912 888 999" placeholder="Số điện thoại" 
-                               className="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-100 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-400"/>
-                    </div>
-                    <div className="flex gap-2 pt-1">
-                        <button className="flex-1 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold shadow-lg shadow-blue-100">Lưu thay đổi</button>
-                        <button className="px-4 py-2 bg-gray-100 text-gray-500 rounded-xl text-xs font-bold">Hủy</button>
-                    </div>
+                <div className="absolute -top-2 -right-2 bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
+                    <i className="fas fa-check text-xs"></i>
                 </div>
             </div>
 
-            <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm group hover:border-orange-200 transition-colors">
-                <div className="flex justify-between items-start">
-                    <div>
-                        <span className="font-bold text-gray-700">Nguyễn Văn Nam</span>
-                        <p className="text-sm text-gray-400 mt-0.5">0944 555 666</p>
-                    </div>
-                    <button className="text-gray-400 text-xs font-bold hover:text-blue-600">Sửa</button>
-                </div>
-                <p className="text-sm text-gray-500 mt-2 line-clamp-2 italic">123/45 Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh</p>
-                <button className="w-full mt-4 py-2.5 border border-orange-500 text-orange-500 rounded-xl text-xs font-bold hover:bg-orange-500 hover:text-white transition-all uppercase tracking-tight">
-                    Giao tới địa chỉ này
-                </button>
-            </div>
-
-            <button className="w-full py-6 border-2 border-dashed border-gray-200 rounded-2xl text-gray-400 flex flex-col items-center justify-center gap-1 hover:bg-gray-50 transition-colors">
-                <i className="fas fa-plus-circle text-xl"></i>
-                <span className="text-xs font-bold">Thêm địa chỉ giao hàng mới</span>
+            {/* 2. NÚT ĐIỀU KHIỂN ĐÓNG/MỞ FORM */}
+            <button 
+                onClick={() => setOpen(!isOpen)}
+                className={`w-full py-5 border-2 border-dashed rounded-[2rem] flex items-center justify-center gap-3 transition-all duration-500
+                    ${isOpen ? 'border-orange-400 bg-orange-50 text-orange-600 scale-[0.98]' : 'border-gray-200 text-gray-400 bg-white hover:border-orange-300 hover:text-orange-400'}`}
+            >
+                <i className={`fas ${isOpen ? 'fa-minus-circle' : 'fa-plus-circle'} text-xl transition-transform ${isOpen ? 'rotate-180' : ''}`}></i>
+                <span className="text-[11px] font-black uppercase tracking-[0.15em]">
+                    {isOpen ? 'Hủy bỏ thay đổi' : 'Thay đổi thông tin nhận hàng'}
+                </span>
             </button>
 
-        </div>
+            {/* 3. FORM NHẬP (HIỂN THỊ KHI MỞ) */}
+            {isOpen && (
+                <AddressEditForm 
+                    onCancel={() => setOpen(false)} 
+                    onSave={handleSaveNewAddress} 
+                />
+            )}
 
-        <div className="p-5 border-t bg-white">
-            <button className="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold text-sm uppercase tracking-widest shadow-xl active:scale-95 transition-transform">
-                Xác nhận địa chỉ
-            </button>
+            {/* 4. GỢI Ý ĐỊA CHỈ KHÁC (UI TRẠNG THÁI CHỜ) */}
+            {!isOpen && (
+                <div className="opacity-50 grayscale scale-95 pointer-events-none">
+                     <div className="bg-gray-100 p-4 rounded-2xl border border-gray-200">
+                        <p className="text-xs font-bold text-gray-400 italic">Chọn địa chỉ khác từ danh sách...</p>
+                     </div>
+                </div>
+            )}
         </div>
-    </div>
-    )
-};
+    );
+}
+
 export default DiaChi;

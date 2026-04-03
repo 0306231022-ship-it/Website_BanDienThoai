@@ -4,20 +4,22 @@ import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
+import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 const ThongTinDonHang = () => {
+  const { ThongTinDatDon, setThongTinDatDon } = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setloading] = useState(false);
-  const [ThongTinDiaChi, setThongTinDiaChi] = useState(null);
   const [ThongTinNguoiDung, setThongTinNguoiDung] = useState(null);
   const [DiaChi, setDiaChi] = useState('');
   const [reload, setreload] = useState(false);
   const [SanPham, setSanPham] = useState([]);
-  const [ThongTin,setThongTin] = useState([])
+  const [ThongTin,setThongTin] = useState([]);
+   const [maGiamGia , setMGG] = useState([]);
   const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
   const MaGiamGia=  ThongTin.LOAIGIAM ===0 ? ThongTin.GIATRIGIAM: TongTien*(ThongTin.GIATRIGIAM/100) ;
   const PhiVanChuyen = 0;
-  const [maGiamGia , setMGG] = useState([])
+ 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -28,6 +30,13 @@ const ThongTinDonHang = () => {
         if(kiemtra){
             const thongTinNguoiDung = await LayThongTinNguoiDung();
             setThongTinNguoiDung(thongTinNguoiDung);
+            setThongTinDatDon({
+              ...ThongTinDatDon,
+              ThongTin_KhachHang: {
+                HoTen: thongTinNguoiDung.HOTEN ,
+                SDT: thongTinNguoiDung.SDT,
+              },
+            })
             setloading(true);
             try {
                 const [response1, response2 , response3 , response4] = await Promise.all([
@@ -36,7 +45,7 @@ const ThongTinDonHang = () => {
                     API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
                     API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} )
                 ]);
-                response1.ThanhCong ?  setThongTinDiaChi(response1.DuLieu[0]) :  setThongTinDiaChi(null);
+                response1.ThanhCong ? setThongTinDatDon({ThongTin_KhachHang:{ ...ThongTinDatDon.ThongTin_KhachHang, DiaChi_MacDinh: response1.DuLieu[0].DIACHI,}}) :  setThongTinDatDon({ThongTin_KhachHang:{ ...ThongTinDatDon.ThongTin_KhachHang, DiaChi_GiaoHang: null,}}) ;
                 response2.ThanhCong ? setSanPham(response2.dulieu) : setSanPham([]);
                 response3.ThanhCong ? setMGG(response3.dulieu) : setMGG([]);
                 response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message)
@@ -112,17 +121,17 @@ const ThongTinDonHang = () => {
                 </div>
               </div>
             ) : (
-                ThongTinDiaChi !== null ? (
-                    <section onClick={()=>{OpenMoDal(undefined,{TenTrang:'DiaChi'})}} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100 relative cursor-pointer">
+                ThongTinDatDon?.ThongTin_KhachHang.DiaChi_GiaoHang !== null ? (
+                    <section onClick={()=>{OpenMoDal({HoTen:ThongTinNguoiDung?.HOTEN, SDT: ThongTinNguoiDung?.SDT , DiaChi_MacDinh:  ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh },{TenTrang:'DiaChi'})}} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100 relative cursor-pointer">
                         <div className="flex items-center text-blue-600 mb-2">
               <i className="fas fa-map-marker-alt mr-2"></i>
               <span className="text-xs font-bold uppercase tracking-wider">Địa chỉ nhận hàng</span>
             </div>
             <p className="font-bold text-gray-800">
-              {ThongTinNguoiDung?.HOTEN || 'Người dùng'} <span className="font-normal text-gray-500">| {ThongTinNguoiDung?.SDT || 'Số điện thoại không có'}</span>
+              {ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh} <span className="font-normal text-gray-500">| {ThongTinNguoiDung?.SDT || 'Số điện thoại không có'}</span>
             </p>
             <p className="text-sm text-gray-600 mt-1">
-                {ThongTinDiaChi.DIACHI}
+                {ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh}
             </p>
             <i className="fas fa-chevron-right absolute right-4 top-1/2 -translate-y-1/2 text-gray-300"></i>
           </section>
