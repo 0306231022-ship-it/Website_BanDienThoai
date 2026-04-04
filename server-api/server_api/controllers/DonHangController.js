@@ -421,36 +421,49 @@ export default class DonHangController{
         }
 
     }
-    static async ThongTin_PhiVanChuyen(req,res){
-        const DiaChi_NguoiDung= req.query.DiaChi;
-        const DiaChi_website= await CaiDatModel.LayThongTin_DiaChi();
-        if(DiaChi_website===null){
-            return res.json({
-                ThanhCong:false,
-                message:'Có lỗi sãy ra!'
-            })
-        };
-        const [response1 ,response2] = await Promise.all([
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(DiaChi_NguoiDung)}`,{ headers: { 'User-Agent': 'MyStoreProject/1.0' } }),
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(DiaChi_website)}`,{ headers: { 'User-Agent': 'MyStoreProject/1.0' } })
-        ])
+   static async ThongTin_PhiVanChuyen(req, res) {
+    try {
+        const DiaChi_NguoiDung = req.query.DiaChi;
+       const a = await CaiDatModel.LayThongTin_DiaChi();
+        const DiaChi_website = a.DiaChi;
+        const [response1, response2] = await Promise.all([
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(DiaChi_NguoiDung)}`, { headers: { 'User-Agent': 'MyStoreProject/1.0' } }),
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(DiaChi_website)}`, { headers: { 'User-Agent': 'MyStoreProject/1.0' } })
+        ]);
+
         const data1 = await response1.json();
         const data2 = await response2.json();
-        let latKhach1, lonKhach1;
-        let latKhach2, lonKhach2;
-        if (data1 && data1.length > 0) {
-            latKhach1 = parseFloat(data1[0].lat);
-            lonKhach1 = parseFloat(data1[0].lon);
+      
+        if (!data1 || data1.length === 0) {
+            return res.json({
+                ThanhCong: false,
+                message: 'Không tìm thấy địa chỉ người nhận trên bản đồ!'
+            });
         }
-         if (data2 && data2.length > 0) {
-            latKhach2 = parseFloat(data2[0].lat);
-            lonKhach2 = parseFloat(data2[0].lon);
+        const lat1 = parseFloat(data1[0]?.lat);
+        const lon1 = parseFloat(data1[0]?.lon);
+        const lat2 = parseFloat(data2[0]?.lat);
+        const lon2 = parseFloat(data2[0]?.lon);
+        console.log(lat1,lon1,lat2,lon2)
+        const khoangCach = getDistance(lat1, lon1, lat2, lon2);
+        let phiShip = 15000;
+        if (khoangCach > 2) {
+            phiShip += (khoangCach - 2) * 5000;
         }
-        const km = getDistance(latKhach1,lonKhach1,latKhach2,lonKhach2);
         return res.json({
-            ThanhCong:true,
-            km:km
-        })
+            ThanhCong: true,
+            km: khoangCach, // Làm tròn 2 chữ số thập phân
+            phiShip: Math.round(phiShip / 1000) * 1000, // Làm tròn đến hàng nghìn
+            diaChiChuanHoa: data1[0].display_name // Trả về để khách xác nhận lại địa chỉ
+        });
+
+    } catch (error) {
+        console.error("Lỗi Server:", error);
+        return res.json({
+            ThanhCong: false,
+            message: 'Máy chủ bận, vui lòng thử lại sau!'
+        });
     }
+}
 }
     

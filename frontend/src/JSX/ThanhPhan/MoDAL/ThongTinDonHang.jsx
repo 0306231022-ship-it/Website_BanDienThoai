@@ -61,8 +61,21 @@ const ThongTinDonHang = () => {
         }
     };
     fetch_ThongTinDonHang();
-    
   },[]);
+  useEffect(()=>{
+    const fetch = async()=>{
+      try {
+        if(ThongTinDatDon?.ThongTin_KhachHang.DiaChi_GiaoHang!==null){
+          const PhiGiaoHang= await API.CallAPI(undefined,{url:`/NguoiDung/PhiGiaoHang?DiaChi=${ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh}`, PhuongThuc:2});
+          alert(JSON.stringify(PhiGiaoHang));
+        }
+    
+      } catch (error) {
+        console.error('Có lỗi sãy ra:'+ error);
+      }
+    };
+    fetch();
+  },[ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh])
   const Luu_DiaChi = async () => {
     if (!DiaChi) {
         ThongBao.ThongBao_Loi("Vui lòng nhập địa chỉ cụ thể!");
