@@ -18,7 +18,7 @@ const ThongTinDonHang = () => {
   const [maGiamGia , setMGG] = useState([]);
   const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
   const MaGiamGia=  ThongTin.LOAIGIAM ===0 ? ThongTin.GIATRIGIAM: TongTien*(ThongTin.GIATRIGIAM/100) ;
-  const PhiVanChuyen = 0;
+  const [PhiVanChuyen , setPhiVanChuyen]= useState(0);
  
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -61,13 +61,18 @@ const ThongTinDonHang = () => {
         }
     };
     fetch_ThongTinDonHang();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
   useEffect(()=>{
     const fetch = async()=>{
       try {
         if(ThongTinDatDon?.ThongTin_KhachHang.DiaChi_GiaoHang!==null){
           const PhiGiaoHang= await API.CallAPI(undefined,{url:`/NguoiDung/PhiGiaoHang?DiaChi=${ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh}`, PhuongThuc:2});
-          alert(JSON.stringify(PhiGiaoHang));
+         if(PhiGiaoHang.ThanhCong){
+          setPhiVanChuyen(PhiGiaoHang.PhiShip);
+         }else{
+          ThongBao.ThongBao_CanhBao(PhiGiaoHang.message);
+         }
         }
     
       } catch (error) {
@@ -75,7 +80,8 @@ const ThongTinDonHang = () => {
       }
     };
     fetch();
-  },[ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[ThongTinDatDon.ThongTin_KhachHang?.DiaChi_MacDinh])
   const Luu_DiaChi = async () => {
     if (!DiaChi) {
         ThongBao.ThongBao_Loi("Vui lòng nhập địa chỉ cụ thể!");

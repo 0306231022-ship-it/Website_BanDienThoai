@@ -4,7 +4,7 @@ import DonHangModel from '../models/DonHang.js';
 import SanPhamModel from '../models/SanPham.js';
 import MaGiamGiaModel from '../models/MaGiamGia.js';
 import CaiDatModel from '../models/CaiDatWebsite.js';
-import { getDistance } from '../function.js';
+import { getDistance , getCoordinates , tinhPhiShip } from '../function.js';
 export default class DonHangController{
     static async ThemGioHang_NguoiDung(req,res){
             const { IDSANPHAM, SOLUONG, IDNGUOIDUNG , GIABAN } = req.body;
@@ -424,38 +424,22 @@ export default class DonHangController{
    static async ThongTin_PhiVanChuyen(req, res) {
     try {
         const DiaChi_NguoiDung = req.query.DiaChi;
-       const a = await CaiDatModel.LayThongTin_DiaChi();
+        const a = await CaiDatModel.LayThongTin_DiaChi();
         const DiaChi_website = a.DiaChi;
-        const [response1, response2] = await Promise.all([
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(DiaChi_NguoiDung)}`, { headers: { 'User-Agent': 'MyStoreProject/1.0' } }),
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(DiaChi_website)}`, { headers: { 'User-Agent': 'MyStoreProject/1.0' } })
-        ]);
-
-        const data1 = await response1.json();
-        const data2 = await response2.json();
-      
-        if (!data1 || data1.length === 0) {
+        const DiaChi1 = await getCoordinates(DiaChi_NguoiDung);
+        const DiaChi2 = await getCoordinates(DiaChi_website);
+        if(!DiaChi1||!DiaChi2){
             return res.json({
-                ThanhCong: false,
-                message: 'Không tìm thấy địa chỉ người nhận trên bản đồ!'
-            });
+                ThanhCong:false,
+                message:'Vui lòng nhập tỉnh/thành phố mà bạn ở thật chính xác!'
+            })
         }
-        const lat1 = parseFloat(data1[0]?.lat);
-        const lon1 = parseFloat(data1[0]?.lon);
-        const lat2 = parseFloat(data2[0]?.lat);
-        const lon2 = parseFloat(data2[0]?.lon);
-        console.log(lat1,lon1,lat2,lon2)
-        const khoangCach = getDistance(lat1, lon1, lat2, lon2);
-        let phiShip = 15000;
-        if (khoangCach > 2) {
-            phiShip += (khoangCach - 2) * 5000;
-        }
+        const km = await getDistance(DiaChi1?.lat,DiaChi1?.lon, DiaChi2?.lat,DiaChi2?.lon);
+        const phi= tinhPhiShip(km);
         return res.json({
-            ThanhCong: true,
-            km: khoangCach, // Làm tròn 2 chữ số thập phân
-            phiShip: Math.round(phiShip / 1000) * 1000, // Làm tròn đến hàng nghìn
-            diaChiChuanHoa: data1[0].display_name // Trả về để khách xác nhận lại địa chỉ
-        });
+            ThanhCong:true,
+            PhiShip:phi
+        })
 
     } catch (error) {
         console.error("Lỗi Server:", error);

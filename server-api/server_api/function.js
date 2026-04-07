@@ -1,7 +1,12 @@
 import crypto from 'crypto';
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import NodeGeocoder from 'node-geocoder';
+const options = {
+  provider: 'openstreetmap',
+};
 
+const geocoder = NodeGeocoder(options);
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
@@ -57,7 +62,7 @@ export function getDistance(lat1, lon1, lat2, lon2) {
     const distance = R * c; 
     return distance * 1.2;
 }
-function tinhPhiShip(soKm) {
+export function tinhPhiShip(soKm) {
     const GIA_MO_CUA = 15000; 
     const GIA_MOI_KM_TIEP_THEO = 5000;
     const KHOANG_CACH_TOI_THIEU = 2;
@@ -71,7 +76,28 @@ function tinhPhiShip(soKm) {
     return Math.round(tongPhi / 1000) * 1000; 
 }
 
-// Sử dụng
-const km = 5.4; 
-const phiGiaoHang = tinhPhiShip(km); 
-// Kết quả: 15.000 + (3.4 * 5.000) = 32.000đ
+export async function getCoordinates(address) {
+  if (!address) return null;
+
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json`;
+
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": "WebsiteBanDienThoai/1.0 (your-email@gmail.com)"
+    }
+  });
+
+  const text = await response.text();
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch (e) {
+    return null;
+  }
+  if (!data || data.length === 0) return null;
+
+  return {
+    lat: parseFloat(data[0].lat),
+    lon: parseFloat(data[0].lon)
+  };
+}
