@@ -146,7 +146,7 @@ function LichSuDonHang() {
                                                     <div className="flex items-center gap-3 mb-1">
                                                         <span className="text-lg font-extrabold tracking-tight">#{order.IDDH}</span>
                                                         <span className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider border ${getStatusTheme(order.status)}`}>
-                                                            {order.TRANGTHAI_DONHANG === 1 ? 'Đã xác nhận' : order.TRANGTHAI_DONHANG === 2 ? 'Đã hủy' : 'Đã giao'}
+                                                            {order.TRANGTHAI_DONHANG === 1 ? 'Đã xác nhận' : order.TRANGTHAI_DONHANG === 2 ? 'Đã hủy' : 'Đang chờ xác nhận'}
                                                         </span>
                                                     </div>
                                                     <div className="text-sm text-slate-500 font-medium">

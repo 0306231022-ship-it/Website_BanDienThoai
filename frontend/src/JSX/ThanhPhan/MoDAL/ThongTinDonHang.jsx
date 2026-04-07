@@ -125,6 +125,34 @@ const ThongTinDonHang = () => {
       ThongBao.ThongBao_CanhBao('Có lỗi sãy ra, Vui lòng kiểm tra lại! ')
     }
   }
+  const DatHang= async()=>{
+    const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn đặt đơn hàng này không?');
+    if(!XacNhan) return;
+    const DuLieu = {
+      TongHang:TongTien + PhiVanChuyen - MaGiamGia,
+      PhiVanChuyen:PhiVanChuyen,
+      Ma: ThongTin.GIATRIGIAM,
+      IDND:ThongTinNguoiDung.IDND,
+      DiaChiNhanHang:ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh,
+      TenNguoiNhan:ThongTinDatDon.ThongTin_KhachHang.HoTen,
+      SDT:ThongTinDatDon.ThongTin_KhachHang.SDT
+    };
+    const formdata = fun.objectToFormData(DuLieu);
+    try {
+      const ketqua = await API.CallAPI(formdata,{PhuongThuc:1, url :'/NguoiDung/MuaHang'});
+      if(ketqua.ThanhCong){
+        ThongBao.ThongBao_ThanhCong(ketqua.message);
+        return;
+      }else{
+        ThongBao.ThongBao_Loi(ketqua.message);
+      }
+    } catch (error) {
+      console.error('Có lỗi sãy ra:' + error);
+      ThongBao.ThongBao_Loi('Đã có lỗi sãy ra, Vui lòng kiểm tra lại!');
+    }
+
+  }
+
 
   return (
     <div className="">
@@ -143,7 +171,7 @@ const ThongTinDonHang = () => {
               </div>
             ) : (
                 ThongTinDatDon?.ThongTin_KhachHang.DiaChi_GiaoHang !== null ? (
-                    <section onClick={()=>{OpenMoDal({HoTen:ThongTinDatDon.ThongTin_KhachHang.HoTen, SDT: ThongTinNguoiDung?.SDT , DiaChi_MacDinh:  ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh },{TenTrang:'DiaChi'})}} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100 relative cursor-pointer">
+                    <section onClick={()=>{OpenMoDal({HoTen:ThongTinDatDon.ThongTin_KhachHang.HoTen, SDT: ThongTinDatDon.ThongTin_KhachHang.SDT , DiaChi_MacDinh:  ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh },{TenTrang:'DiaChi'})}} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100 relative cursor-pointer">
                         <div className="flex items-center text-blue-600 mb-2">
               <i className="fas fa-map-marker-alt mr-2"></i>
               <span className="text-xs font-bold uppercase tracking-wider">Địa chỉ nhận hàng</span>
@@ -260,7 +288,7 @@ const ThongTinDonHang = () => {
             <span className="text-sm text-gray-600">Tổng thanh toán:</span>
             <span className="text-xl font-bold text-orange-600">{fun.formatCurrency(TongTien + PhiVanChuyen - MaGiamGia)}</span>
           </div>
-          <button className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-transform uppercase tracking-wider">
+          <button onClick={DatHang} className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-transform uppercase tracking-wider">
             Đặt hàng
           </button>
         </footer>
@@ -370,6 +398,7 @@ const ThongTinDonHang = () => {
 
   {/* Nút quay lại mua sắm */}
   <button 
+    
     className="mt-8 px-8 py-3 bg-gray-800 text-white rounded-xl font-bold text-sm shadow-lg active:scale-95 transition-transform"
   >
     Tiếp tục mua sắm

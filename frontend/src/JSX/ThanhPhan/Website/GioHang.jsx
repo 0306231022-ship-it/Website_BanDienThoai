@@ -16,8 +16,6 @@ function GioHang() {
     const [sanpham, setSanPham] = useState([]);
     const [TongTien, setTongTien] = useState(0);
     const sanPhamRef = useRef([]);
-
-    // --- Logic giữ nguyên ---
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -77,7 +75,8 @@ function GioHang() {
                     ThongBao.ThongBao_ThanhCong(ketqua.message);
                     const userInfo = await LayThongTinNguoiDung();
                     await Lay_SoLuong_GioHang(userInfo.IDND);
-                 
+                }else{
+                    ThongBao.ThongBao_Loi(ketqua.message)
                 }
             } catch (error) { console.error(error); }
         }
@@ -105,7 +104,6 @@ function GioHang() {
         <div className={`min-h-[85vh] flex flex-col ${sanpham.length === 0 ? 'justify-center' : ''} bg-gray-50/30 py-10`}>
             <div className="container mx-auto px-4">
                 {sanpham.length === 0 ? (
-                    /* --- GIAO DIỆN TRỐNG: CĂN GIỮA MÀN HÌNH --- */
                     <div className="flex flex-col items-center justify-center text-center animate-fade-in">
                         <div className="bg-white p-10 rounded-full shadow-sm mb-8 border border-gray-100">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-24 w-24 text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,5 +1,6 @@
 import {execute , beginTransaction , rollbackTransaction , commitTransaction} from '../config/db.js';
 import { TaoID } from '../function.js';
+import MaGiamGiaModel from './MaGiamGia.js';
 export default class DonHangModel{
      static async ThemGioHang_NguoiDung(IDSANPHAM, SOLUONG, IDNGUOIDUNG , GIABAN){
     let conn;
@@ -173,16 +174,27 @@ export default class DonHangModel{
                 WHERE IDDH = ?
             `,[IDDH]);
             if(kiemtra.length === 0){
-                const [xoa_dh] = await conn.query(`
-                    DELETE FROM donhang 
+                const KiemTra = await MaGiamGiaModel.KiemTra_MaGímGia(IDDH);
+                if(KiemTra){
+                    const XoaMa = await MaGiamGiaModel.XoaMa_IDDH(IDDH);
+                    if(!XoaMa){
+                        await rollbackTransaction(conn);
+                        return {
+                            ThanhCong:false,
+                            message:'Xóa sản phẩm khỏi giỏ hàng thất bại!'
+                        }
+                   }
+                }
+                const [Xoa_DonHang] = await conn.query(`
+                    DELETE FROM donhang
                     WHERE IDDH = ?
-                `,[IDDH]);
-                if(xoa_dh.affectedRows === 0){
+                    `,[IDDH]);
+                if(Xoa_DonHang.affectedRows===0){
                     await rollbackTransaction(conn);
-                    return { 
-                        ThanhCong:false, 
-                        message:'Xóa sản phẩm khỏi giỏ hàng thất bại!' 
-                    };
+                    return {
+                         ThanhCong:false,
+                         message:'Xóa sản phẩm khỏi giỏ hàng thất bại!'
+                    }
                 }
             }
             await commitTransaction(conn);
@@ -209,7 +221,7 @@ export default class DonHangModel{
             return { ThanhCong:false, message:'Lỗi khi truy vấn dữ liệu!' };
         }
     }
-    static async MuaHang_NguoiDung(idnd, hoTen, sdt, diaChi){
+    static async MuaHang_NguoiDung(DuLieu){
         let conn;
         try {
             conn = await beginTransaction();
@@ -217,7 +229,7 @@ export default class DonHangModel{
                 SELECT IDDH
                 FROM donhang
                 WHERE IDKH = ? AND TRANGTHAI = 0
-            `,[idnd]);
+            `,[DuLieu.IDND]);
             if(kiemtra.length === 0){
                 await rollbackTransaction(conn);
                 return { 
@@ -230,7 +242,7 @@ export default class DonHangModel{
                 UPDATE donhang 
                 SET TRANGTHAI = 1, TEN_NGUOINHAN = ?, SDT_NGUOINHAN = ?, DIACHI_GIAOHANG = ?, NGAYDAT = NOW()
                 WHERE IDDH = ?
-            `,[hoTen, sdt, diaChi, IDDH]);
+            `,[DuLieu.TenNguoiNhan, DuLieu.SDT, DuLieu.DiaChiNhanHang, IDDH]);
             if(capnhat_dh.affectedRows === 0){
                 await rollbackTransaction(conn);
                 return { 
@@ -260,17 +272,11 @@ export default class DonHangModel{
                     };
                 }
             }
-            // tính tổng tiền trong chitiet_donhang để cập nhật vào tổng tiền của đơn hàng
-            const [tongtien] = await conn.query(`
-                SELECT SUM(THANHTIEN) AS TONGTIEN
-                FROM chitiet_donhang
-                WHERE IDDH = ?
-            `,[IDDH]);
             const [capnhat_tongtien] = await conn.query(`
                 UPDATE donhang
                 SET TONGTIEN = ?
                 WHERE IDDH = ?
-            `,[tongtien[0].TONGTIEN, IDDH]);
+            `,[DuLieu.TongHang, IDDH]);
             if(capnhat_tongtien.affectedRows === 0){
                 await rollbackTransaction(conn);
                 return {
@@ -280,9 +286,9 @@ export default class DonHangModel{
             }
             // thêm dữ liệu vào bảng hoadon_banhang
             const [them_hoadon] = await conn.query(`
-                INSERT INTO hoadon_banhang (IDHD, IDDH, THANHTIEN, TRANGTHAI)
-                VALUES (?, ?, ?, ?)
-            `,[TaoID('HD'), IDDH, tongtien[0].TONGTIEN, 0]);
+                INSERT INTO hoadon_banhang (IDHD, IDDH, THANHTIEN, TRANGTHAI , PHIVANCHUYEN ,TONGTIEN)
+                VALUES (?, ?, ?, ? ,? ,?)
+            `,[TaoID('HD'), IDDH, DuLieu.TongHang, 0, DuLieu.PhiVanChuyen , DuLieu.TongHang-DuLieu.Ma+DuLieu.PhiVanChuyen]);
             if(them_hoadon.affectedRows === 0){
                 await rollbackTransaction(conn);
                 return {
@@ -542,12 +548,7 @@ export default class DonHangModel{
                         WHERE ct.IDDH = dh.IDDH
                         LIMIT 1
                     ) AS TRANGTHAI_DONHANG,
-                    (
-                        SELECT ct.THANHTIEN
-                        FROM hoadon_banhang ct
-                        WHERE ct.IDDH = dh.IDDH
-                        LIMIT 1
-                    ) AS THANHTIEN_DONHANG
+                    hd.THANHTIEN AS THANHTIEN_DONHANG
                     FROM donhang dh
                     JOIN hoadon_banhang hd ON dh.IDDH = hd.IDDH
                     WHERE dh.IDKH = ? AND dh.TRANGTHAI != 0

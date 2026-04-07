@@ -4,7 +4,6 @@ import DonHangController from "../controllers/DonHangController.js";
 import  MaGiamGiaController from "../controllers/MaGiamGiaController.js";
 const NguoiDungRoute = Router();
 import multer from "multer";
-import DonHangModel from "../models/DonHang.js";
 const upload = multer();
 // PHẦN I : ĐỊNH NGHĨA ROUTE POST admin
 //=========================================

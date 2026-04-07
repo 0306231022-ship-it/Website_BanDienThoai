@@ -160,37 +160,22 @@ export default class DonHangController{
     }
    
     static async MuaHang_NguoiDung(req,res){
-        const { idnd, hoTen, sdt, diaChi } = req.body;
-        const kiemtra_IDND = await adminModel.kiemtraid(idnd);
+        const DuLieu = req.body;
+        const kiemtra_IDND = await adminModel.kiemtraid(DuLieu.IDND);
         if(!kiemtra_IDND){
             return res.json({
                 ThanhCong:false,
                 message:'Người dùng không tồn tại!'
             })
         }
-        await Promise.all([
-            body('hoTen')
-            .notEmpty()
-            .withMessage('Vui lòng nhập họ tên người nhận!'),
-            body('sdt')
-            .notEmpty()
-            .withMessage('Vui lòng nhập số điện thoại người nhận!')
-            .matches(/^\d{10}$/)
-            .withMessage('Số điện thoại phải có 10 chữ số!')
-            .matches(/^0\d{9}$/)
-            .withMessage('Số điện thoại phải bắt đầu bằng số 0!'),
-            body('diaChi').notEmpty().withMessage('Vui lòng nhập địa chỉ giao hàng!')
-        ]);
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
+        if(DuLieu.PhiVanChuyen===0){
             return res.json({
-                Validate:true,
-                errors: errors.array()
-            });
+                ThanhCong:false,
+                message:'Vui lòng kiểm tra lại địa chỉ nhận hàng!'
+            })
         }
         try {
-            // Xử lý logic mua hàng ở đây, ví dụ: tạo đơn hàng, lưu thông tin người nhận, v.v.
-            const ketqua = await DonHangModel.MuaHang_NguoiDung(idnd, hoTen, sdt, diaChi);
+            const ketqua = await DonHangModel.MuaHang_NguoiDung(DuLieu);
             if(ketqua.ThanhCong){
                 return res.json({
                     ThanhCong:true,

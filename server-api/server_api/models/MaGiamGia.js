@@ -150,5 +150,31 @@ export default class MaGiamGiaModel{
             console.error('Có lỗi sãy ra:' + error);
             return false
         }
-    }      
+    }
+    static async XoaMa_IDDH(iddh) {
+        try {
+            const [Xoa_Ma] = await execute(`
+                DELETE FROM chitiet_magiamgia
+                WHERE IDDH = ?
+                `,[iddh]);
+            return Xoa_Ma.affectedRows>0 ? true : false;
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return false
+        }
+    }
+    // Hàm kiểm tra xem đơn hangf đã được áp mã giảm giá hay chưa
+    static async KiemTra_MaGímGia(iddh){
+        try {
+            const [KiemTra] = await execute(`
+                SELECT IDCT_MGG
+                FROM chitiet_magiamgia
+                WHERE IDDH = ?
+                `,[iddh]);
+            return KiemTra.length> 0 ? true : false
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return false;
+        }
+    }     
 }
