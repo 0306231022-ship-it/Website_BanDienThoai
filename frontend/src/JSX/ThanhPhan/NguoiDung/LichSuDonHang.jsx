@@ -4,12 +4,14 @@ import * as API from '../../../JS/API/API';
 import {KiemTra  , LayThongTinNguoiDung  } from '../../../hook/KiemTraDangNhap';
 import * as fun from '../../../JS/FUNCTONS/function';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
+import { useModalContext } from "../../../CONTEXT/QuanLiModal"; 
 
 function LichSuDonHang() {
     const [page , setPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
+    const { OpenMoDal } = useModalContext();
     useEffect(() => {
         const fetchOrders = async () => {
             setLoading(true);
@@ -153,6 +155,20 @@ function LichSuDonHang() {
                                                         📅 {fun.formatDate(order.NGAYDAT) + ' Lúc ' + fun.formatTime(order.NGAYDAT)} <span className="mx-2 text-slate-200">|</span> 
                                                         Tổng cộng: <span className="text-slate-900 font-bold">{fun.formatCurrency(order.THANHTIEN_DONHANG)}</span>
                                                     </div>
+                                                    {order.GHICHU && (
+  <div className="flex items-start gap-3 p-3 mt-2 rounded-lg bg-blue-50 border border-blue-100">
+    <div className="mt-0.5">
+      {/* Icon Bell (Chuông) */}
+      <svg className="w-5 h-5 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+      </svg>
+    </div>
+    <div className="text-sm text-blue-800">
+      <span className="font-bold">Lưu ý đơn hàng:</span> {order.GHICHU}
+    </div>
+  </div>
+)}
+                                                      
                                                 </div>
                                             </div>
 
@@ -164,7 +180,7 @@ function LichSuDonHang() {
                                                     Chi tiết
                                                 </Link>
                                                 {order.TRANGTHAI_DONHANG === 0 ? (
-                                                    <button className="flex-1 md:flex-none px-5 py-2.5 text-sm font-bold bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors">
+                                                    <button onClick={()=>{OpenMoDal({IDDH:order.IDDH}, {TenTrang:'HuyDon_NguoiDung'})}} className="flex-1 md:flex-none px-5 py-2.5 text-sm font-bold bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors">
                                                         Hủy đơn
                                                     </button>
                                                 ) : (
@@ -173,6 +189,7 @@ function LichSuDonHang() {
                                                     </button>
                                                 )}
                                             </div>
+                                          
                                         </div>
                                     </div>
                                 ))

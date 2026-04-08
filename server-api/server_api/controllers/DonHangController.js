@@ -434,5 +434,41 @@ export default class DonHangController{
         });
     }
 }
+    static async HuyDon_NguoiDung(req,res){
+        const DuLieu = req.body;
+        try {
+            const kiemtra = DonHangModel.kiemtra_id_dh(DuLieu.IDDH);
+        if(!kiemtra){
+            return res.json({
+                ThanhCong:false,
+                message:'Vui lòng kiểm tra thông tin đơn hàng!'
+            })
+        }
+        if(!DuLieu.LyDo){
+             return res.json({
+                ThanhCong:false,
+                message:'Vui lòng kiểm tra thông tin đơn hàng!'
+            })
+        }
+        const huydon = await DonHangModel.Huy_DonHang(DuLieu.IDDH,DuLieu.LyDo);
+        if(huydon){
+            return res.json({
+                ThanhCong:true,
+                message:'Hủy đơn hàng thành công!'
+            })
+        }else{
+            return res.json({
+                ThanhCong:false,
+                message:'Hủy đơn hàng không thành công!'
+            })
+        }
+        } catch (error) {
+             console.error("Lỗi Server:", error);
+        return res.json({
+            ThanhCong: false,
+            message: 'Máy chủ bận, vui lòng thử lại sau!'
+        });
+        }
+    }
 }
     

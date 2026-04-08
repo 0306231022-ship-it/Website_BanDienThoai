@@ -23,6 +23,7 @@ import ThongTinDonHang from "../JSX/ThanhPhan/MoDAL/ThongTinDonHang";
 import ThongTinCinhSua from "../JSX/ThanhPhan/Admin/SanPham/ChinhSua/Modal_ChinhSua";
 import ThemMa from "../JSX/ThanhPhan/Admin/MaGiamGia/ThemMa";
 import DiaChi from "../JSX/ThanhPhan/MoDAL/ThongTinNguoiDung_DonHang";
+import CancelOrderModal from "../JSX/ThanhPhan/MoDAL/XacNhanHuyDon";
 
 const MoDalContext = createContext();
 
@@ -50,7 +51,8 @@ const MODAL_REGISTRY = {
     'ThongTinDonHang' : ThongTinDonHang,
     'ThongTinCinhSua' : ThongTinCinhSua,
     'ThemMa' : ThemMa ,
-    'DiaChi' : DiaChi
+    'DiaChi' : DiaChi ,
+    'HuyDon_NguoiDung' : CancelOrderModal
 };
 
 export function AppMDProvider({ children }) {

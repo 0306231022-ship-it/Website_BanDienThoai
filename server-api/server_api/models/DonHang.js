@@ -506,8 +506,6 @@ export default class DonHangModel{
                 FROM chitiet_donhang
                 WHERE IDDH = ?
             `,[iddh]);
-            console.log('Chi tiết đơn hàng:', chitiet);
-            // cập nhật lại số lượng trong bảng chitiet_phieunhap
             for (const item of chitiet) {
                 const [capnhat_kho] = await conn.query(`
                     UPDATE chitiet_phieunhap
@@ -521,6 +519,17 @@ export default class DonHangModel{
                         ThanhCong:false, 
                         message:'Hủy đơn hàng thất bại do lỗi cập nhật kho!' 
                     };
+                }
+            }
+            const kiemtra_mgg = await MaGiamGiaModel.KiemTra_MaGímGia(iddh);
+            if(kiemtra_mgg){
+                const xoa_mgg = await MaGiamGiaModel.XoaMa_IDDH(iddh);
+                if(!xoa_mgg){
+                    await rollbackTransaction(conn);
+                    return {
+                        ThanhCong:false,
+                        message:'Hủy đơn hàng thất bại!'
+                    }
                 }
             }
             await commitTransaction(conn);
@@ -548,7 +557,8 @@ export default class DonHangModel{
                         WHERE ct.IDDH = dh.IDDH
                         LIMIT 1
                     ) AS TRANGTHAI_DONHANG,
-                    hd.THANHTIEN AS THANHTIEN_DONHANG
+                    hd.THANHTIEN AS THANHTIEN_DONHANG,
+                    hd.GHICHU
                     FROM donhang dh
                     JOIN hoadon_banhang hd ON dh.IDDH = hd.IDDH
                     WHERE dh.IDKH = ? AND dh.TRANGTHAI != 0
