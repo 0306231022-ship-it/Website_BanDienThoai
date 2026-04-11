@@ -77,7 +77,7 @@ function ThemMa() {
                 // Handle validation errors
                 const newErr = {};
                 response.errors.forEach(error => {
-                    newErr[error.Err.path] = error.msg;
+                    newErr[error.path] = error.msg;
                 });
                 seterr(newErr);
                 ThongBao.ThongBao_Loi('Vui lòng sửa các lỗi trong form!');
@@ -90,7 +90,7 @@ function ThemMa() {
                 ThongBao.ThongBao_Loi(response.message || 'Có lỗi xảy ra khi thêm mã giảm giá!');
             }
         } catch (error) {
-            ThongBao.ThongBao_Loi('Lỗi khi thêm mã giảm giá!');
+            ThongBao.ThongBao_Loi('Lỗi khi thêm mã giảm giá!' + error);
             console.error('Lỗi khi thêm mã giảm giá:', error);
         }finally {
             setLoading1(false);

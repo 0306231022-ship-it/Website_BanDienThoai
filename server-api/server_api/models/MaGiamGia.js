@@ -186,32 +186,15 @@ export default class MaGiamGiaModel{
                     message: 'Thiếu dữ liệu thương hiệu.'
                 };
             }
-            const dsThuongHieu = String(dulieu)
-                .split(',')
-                .map(item => item.trim())
-                .filter(item => item !== '')
-                .map(Number)
-                .filter(Number.isFinite);
-
-            if (dsThuongHieu.length === 0) {
-                return {
-                    ThanhCong: false,
-                    dulieu: [],
-                    message: 'Danh sách thương hiệu không hợp lệ.'
-                };
-            }
-
-            const placeholders = dsThuongHieu.map(() => '?').join(',');
             const [ketqua] = await execute(`
                 SELECT MaGG, TENCHUONGTRINH, MAGIAMGIA, LOAIGIAM, GIATRIGIAM, GIATRIDON,
                        IDTHUONGHIEU, SOLUONG, DADUNG, NGAYBATDAU, NGAYKETTHUC, TRANGTHAI
                 FROM magiamgia
-                WHERE IDTHUONGHIEU IN (${placeholders})
+                WHERE IDTHUONGHIEU = ?
                   AND TRANGTHAI = 1
                   AND NGAYBATDAU <= NOW()
                   AND NGAYKETTHUC >= NOW()
-            `, dsThuongHieu);
-
+            `,[dulieu]);
             return {
                 ThanhCong: true,
                 dulieu: ketqua

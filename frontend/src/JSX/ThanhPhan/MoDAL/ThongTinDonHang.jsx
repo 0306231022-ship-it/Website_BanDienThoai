@@ -42,7 +42,6 @@ const ThongTinDonHang = ({DuLieu}) => {
   };
   useEffect(() => {
     const fetch_ThongTinDonHang= async () => {
-       
         const kiemtra = await KiemTra();
         if(kiemtra){
             const thongTinNguoiDung = await LayThongTinNguoiDung();
@@ -54,7 +53,7 @@ const ThongTinDonHang = ({DuLieu}) => {
                  API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
                  API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
               ])  
-              MaGiamGia.ThanhCong ? setMGG([]) : setMGG([]);
+              MaGiamGia.ThanhCong ? setMGG(MaGiamGia.dulieu) : setMGG([]);
                if (!ThongTinDatDon.ThongTin_KhachHang.HoTen) {
                   setThongTinDatDon({
                     ThongTin_KhachHang: {
@@ -78,7 +77,6 @@ const ThongTinDonHang = ({DuLieu}) => {
                   //Thông tin mua ngay
                   const dsThuongHieu = DuLieu?.dulieu.map(sp => sp.IDTHUONGHIEU);
                   try {
-                    // Lấy mã giảm giá thuộc IDTHUONGHIEU
                     const responseMaGiamGia = await API.CallAPI(undefined, {PhuongThuc: 2, url: `/NguoiDung/LayMaGiamGia_idth?data=${dsThuongHieu}`});
                     if (responseMaGiamGia.ThanhCong) {
                       setMGG(Array.isArray(responseMaGiamGia.dulieu) ? responseMaGiamGia.dulieu : []);
@@ -86,7 +84,6 @@ const ThongTinDonHang = ({DuLieu}) => {
                       setMGG([]);
                       ThongBao.ThongBao_CanhBao(responseMaGiamGia.message || 'Không tìm thấy mã giảm giá phù hợp.');
                     }
-                    // lấy mã 
                   } catch (error) {
                     console.error('Có lỗi sảy ra:' + error);
                     setMGG([]);

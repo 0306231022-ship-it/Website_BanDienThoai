@@ -9,7 +9,6 @@ import ChiTietThuongHieu from '../ThuongHieu/ChiTietThuongHieu';
 import DanhSachKhachHang from '../DanhSachKhachHang';
 import BaoCao from '../BaoCao';
 import PhiVanChuyen from '../PhiVanChuyen';
-import MaGiamGia from '../MaGiamGia';
 import DanhSachMa from '../MaGiamGia/DanhSachMa';
 import ChietMaGG from '../MaGiamGia/ChiTietMa';
 import HoTroKhachHang from '../HoTroKhachHang';
@@ -270,7 +269,6 @@ function QuanLiTT() {
                     <Route path="banner/chitiet/:id" element={<ChiTietFlashSale />} />
                     <Route path="DonHang" element={<DonHang />} />
                     <Route path="DonHang/ChiTiet/:id" element={<ChiTietDon />} />
-                    <Route path="danhsachma/magiamgia" element={<MaGiamGia />} />
                     <Route path="danhsachma/chitiet/:id" element={<ChietMaGG />} />
                     <Route path="danhsachma" element={<DanhSachMa />} />
                     <Route path="sanpham" element={<DanhSachSanPham />} />
