@@ -220,4 +220,28 @@ export default class MaGiamGiaController{
                 })
         }
     }
+    static async LayMaGiamGia_idth(req,res){
+        const dulieu = req.query.data;
+        try {
+            const layma = await MaGiamGiaModel.LayMaGiamGia_idth(dulieu);
+            if (layma.ThanhCong) {
+                return res.json({
+                    ThanhCong: true,
+                    dulieu: layma.dulieu
+                });
+            }
+            return res.json({
+                ThanhCong: false,
+                dulieu: [],
+                message: layma.message || 'Không thể lấy mã giảm giá theo thương hiệu!'
+            });
+        } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Đã có lỗi sãy ra! Vui lòng thực hiện sau.'
+            });
+        }
+
+    }
 }

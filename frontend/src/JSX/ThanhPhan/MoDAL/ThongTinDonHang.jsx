@@ -1,3 +1,4 @@
+//Sai logic mã giảm giá của người dùng
 import React, { useState , useEffect } from 'react';
 import * as API from '../../../JS/API/API';
 import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
@@ -5,7 +6,7 @@ import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
-const ThongTinDonHang = () => {
+const ThongTinDonHang = ({DuLieu}) => {
   const { ThongTinDatDon, setThongTinDatDon } = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,37 +20,84 @@ const ThongTinDonHang = () => {
   const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
   const MaGiamGia=  ThongTin.LOAIGIAM ===0 ? ThongTin.GIATRIGIAM: TongTien*(ThongTin.GIATRIGIAM/100) ;
   const [PhiVanChuyen , setPhiVanChuyen]= useState(0);
- 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
   const [input_diachi, setinput_diachi] = useState(false);
+
+  // Hàm tăng số lượng sản phẩm
+  const TangSoLuong = (index) => {
+    const sanPhamCapNhat = [...SanPham];
+    sanPhamCapNhat[index].SOLUONG += 1;
+    setSanPham(sanPhamCapNhat);
+  };
+
+  // Hàm giảm số lượng sản phẩm
+  const GiamSoLuong = (index) => {
+    if (SanPham[index].SOLUONG > 1) {
+      const sanPhamCapNhat = [...SanPham];
+      sanPhamCapNhat[index].SOLUONG -= 1;
+      setSanPham(sanPhamCapNhat);
+    }
+  };
   useEffect(() => {
     const fetch_ThongTinDonHang= async () => {
+       
         const kiemtra = await KiemTra();
         if(kiemtra){
             const thongTinNguoiDung = await LayThongTinNguoiDung();
             setThongTinNguoiDung(thongTinNguoiDung);
             setloading(true);
             try {
-                const [response1, response2 , response3 , response4] = await Promise.all([
-                    API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-                    API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-                    API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-                    API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} )
-                ]);
-                if (!ThongTinDatDon.ThongTin_KhachHang.HoTen) {
+              //dữ liệu chung
+              const [MaGiamGia, DiaChi ] = await Promise.all([
+                 API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
+                 API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
+              ])  
+              MaGiamGia.ThanhCong ? setMGG([]) : setMGG([]);
+               if (!ThongTinDatDon.ThongTin_KhachHang.HoTen) {
                   setThongTinDatDon({
                     ThongTin_KhachHang: {
                       HoTen: thongTinNguoiDung.HOTEN,
                       SDT: thongTinNguoiDung.SDT,
-                      DiaChi_MacDinh: response1.ThanhCong ? response1.DuLieu[0].DIACHI : null,
+                      DiaChi_MacDinh: DiaChi.ThanhCong ? DiaChi.DuLieu[0].DIACHI : null,
                     },
                   });
                 }
+              switch(DuLieu.TrangThai){
+                //Trường hợp 1 : hiện thông tin giỏ hàng
+                case 1 :
+                const [response2, response4] = await Promise.all([
+                    API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
+                    API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} )
+                ]);
                 response2.ThanhCong ? setSanPham(response2.dulieu) : setSanPham([]);
-                response3.ThanhCong ? setMGG(response3.dulieu) : setMGG([]);
-                response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message)
+                response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message);
+                break;
+                case 2 :
+                  //Thông tin mua ngay
+                  const dsThuongHieu = DuLieu?.dulieu.map(sp => sp.IDTHUONGHIEU);
+                  try {
+                    // Lấy mã giảm giá thuộc IDTHUONGHIEU
+                    const responseMaGiamGia = await API.CallAPI(undefined, {PhuongThuc: 2, url: `/NguoiDung/LayMaGiamGia_idth?data=${dsThuongHieu}`});
+                    if (responseMaGiamGia.ThanhCong) {
+                      setMGG(Array.isArray(responseMaGiamGia.dulieu) ? responseMaGiamGia.dulieu : []);
+                    } else {
+                      setMGG([]);
+                      ThongBao.ThongBao_CanhBao(responseMaGiamGia.message || 'Không tìm thấy mã giảm giá phù hợp.');
+                    }
+                    // lấy mã 
+                  } catch (error) {
+                    console.error('Có lỗi sảy ra:' + error);
+                    setMGG([]);
+                  }
+                 setSanPham(DuLieu.dulieu)
+                  break;
+                  default:
+                    ThongBao.ThongBao_CanhBao('Vui lòng kiểm tra lại thông tin đơn hàng!')
+                    break;
+              }
+                
             } catch (error) {
                 ThongBao.ThongBao_Loi("Có lỗi xảy ra khi tải thông tin địa chỉ");
                 console.error("Lỗi khi tải thông tin địa chỉ:", error);
@@ -142,6 +190,7 @@ const ThongTinDonHang = () => {
       const ketqua = await API.CallAPI(formdata,{PhuongThuc:1, url :'/NguoiDung/MuaHang'});
       if(ketqua.ThanhCong){
         ThongBao.ThongBao_ThanhCong(ketqua.message);
+
         return;
       }else{
         ThongBao.ThongBao_Loi(ketqua.message);
@@ -204,8 +253,6 @@ const ThongTinDonHang = () => {
                 </section>
             )
         }
-
-          {/* Khối 2: Danh sách sản phẩm */}
           {
             loading ? (
                 <div className="animate-pulse flex space-x-4">
@@ -234,7 +281,33 @@ const ThongTinDonHang = () => {
                 <p className="text-xs text-gray-400 mt-1">Thương hiệu: {item.TENTHUONGHIEU}</p>
                 <div className="flex justify-between items-end mt-1">
                   <span className="font-bold text-red-500">{fun.formatCurrency(item.DONGIA)}</span>
-                  <span className="text-sm text-gray-500 font-medium">x{item.SOLUONG}</span>
+                {DuLieu?.TrangThai === 2 ? (
+    /* TRƯỜNG HỢP 1: HIỆN NÚT TĂNG GIẢM (Trạng thái = 2) */
+    <div className="flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200 shadow-inner">
+      <button 
+        onClick={() => {GiamSoLuong(index)}}
+        className="w-7 h-7 flex items-center justify-center text-slate-400 hover:text-slate-900 active:scale-75 transition-all"
+      >
+        -
+      </button>
+      <span className="w-8 text-center text-xs font-black text-slate-700">
+        {item.SOLUONG}
+      </span>
+      <button 
+        onClick={() => {TangSoLuong(index)}}
+        className="w-7 h-7 flex items-center justify-center bg-blue-600 text-white rounded-lg shadow-lg shadow-blue-200 active:scale-75 transition-all"
+      >
+        +
+      </button>
+    </div>
+  ) : (
+    /* TRƯỜNG HỢP 2: HIỆN SỐ LƯỢNG CỐ ĐỊNH (Các trạng thái khác) */
+    <div className="flex items-center gap-1 bg-gray-50 px-3 py-1 rounded-full border border-gray-100">
+      <span className="text-[10px] text-gray-400 font-bold uppercase italic">Số lượng:</span>
+      <span className="text-sm text-gray-800 font-black">x{item.SOLUONG}</span>
+    </div>
+  )}
+                  
                 </div>
               </div>
             </div>
@@ -247,9 +320,6 @@ const ThongTinDonHang = () => {
                         </section>
                     )
         )}
-               
-
-          {/* Khối 3: Nút mở Mã giảm giá */}
           <section 
             onClick={toggleModal}
             className="flex items-center justify-between p-4 bg-orange-50 border border-orange-100 rounded-2xl cursor-pointer active:scale-95 transition-transform"
@@ -309,7 +379,7 @@ const ThongTinDonHang = () => {
           
           {/* Nội dung Voucher */}
           <div 
-            className={`relative bg-white w-full rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+            className={`relative bg-white w-full rounded-t-3xl p-6 max-h-[80vh] transform transition-transform duration-300 ease-in-out ${
               isModalOpen ? 'translate-y-0' : 'translate-y-full'
             }`}
           >

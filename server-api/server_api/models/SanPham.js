@@ -62,9 +62,10 @@ export default class SanPhamModel{
    static async layChiTietSP_theoid(id){
         try {
             const [sanpham] = await execute(`
-                SELECT sp.*, ct.GIANHAP, ct.GIABAN
+                SELECT sp.*, ct.GIANHAP, ct.GIABAN , th.TENTHUONGHIEU , th.IDTHUONGHIEU
                 FROM sanpham sp
                 JOIN chitiet_phieunhap ct ON sp.IDSANPHAM = ct.IDSANPHAM
+                JOIN thuonghieu th ON sp.IDTHUONGHIEU = th.IDTHUONGHIEU
                 WHERE sp.IDSANPHAM = ?
                 `,[id]);
             const [hinhanh] = await execute(`

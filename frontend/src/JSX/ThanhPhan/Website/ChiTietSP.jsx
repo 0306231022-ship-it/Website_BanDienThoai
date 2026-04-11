@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams , useNavigate } from 'react-router-dom';
 import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
-import { useAddToCart } from '../../../hook/SanPham';
+import { useAddToCart  } from '../../../hook/SanPham';
 
 function ChiTietSanPhamUser() {
     const { id } = useParams();
@@ -12,8 +12,21 @@ function ChiTietSanPhamUser() {
     const [sanpham, setSanPham] = useState(null);
     const [selectedImage, setSelectedImage] = useState("");
     const [quantity, setQuantity] = useState(1);
-    const { handleAddToCart , handlebuyproduct } = useAddToCart();
-
+    const { handleAddToCart ,MuaSP  } = useAddToCart();
+    const DuLieu = {
+        TrangThai:2,
+        dulieu : [
+            {
+                IDSANPHAM: id,
+                TENSANPHAM : sanpham?.TENSANPHAM,
+                HINHANH : images[0]?.HINHANH,
+                SOLUONG:1,
+                DONGIA:sanpham?.GIABAN,
+                TENTHUONGHIEU : sanpham?.TENTHUONGHIEU,
+                IDTHUONGHIEU: sanpham?.IDTHUONGHIEU
+            }
+        ]
+    }
     useEffect(() => {
         const fetchDetail = async () => {
             setLoading(true);
@@ -142,7 +155,7 @@ function ChiTietSanPhamUser() {
                                 Thêm vào giỏ hàng
                             </button>
                             <button 
-                                onClick={() => handlebuyproduct(sanpham.IDSANPHAM, sanpham.GIABAN, quantity)}
+                                onClick={() => MuaSP(DuLieu)}
                                 className="flex-1 bg-red-600 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] hover:bg-red-700 transition-all active:scale-95 shadow-xl shadow-red-100"
                             >
                                 Mua ngay

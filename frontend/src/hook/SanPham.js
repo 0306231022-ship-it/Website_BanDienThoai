@@ -4,7 +4,6 @@ import * as fun from '../JS/FUNCTONS/function';
 import { KiemTra, LayThongTinNguoiDung } from './KiemTraDangNhap';
 import { useModalContext } from "../CONTEXT/QuanLiModal";
 
-
  export const useAddToCart = () => {
     const { OpenMoDal } = useModalContext();
     const handleAddToCart = async (productId, DonGia , quantity) => {
@@ -48,10 +47,14 @@ import { useModalContext } from "../CONTEXT/QuanLiModal";
             console.error('Lỗi tự động cập nhật:', error); 
         }
     };
+    //mua sản phẩm trong giỏ hàng
     const handlebuyproduct = async (sanPhamRef) => {
         await updateCartToServer(sanPhamRef)
-        OpenMoDal(null, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
+        OpenMoDal({TrangThai:1}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
+    }
+    const MuaSP= async(DuLieu)=>{
+         OpenMoDal(DuLieu, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
     }
     
-    return {handleAddToCart , handlebuyproduct , updateCartToServer};        
+    return {handleAddToCart , handlebuyproduct , updateCartToServer ,MuaSP};        
 }

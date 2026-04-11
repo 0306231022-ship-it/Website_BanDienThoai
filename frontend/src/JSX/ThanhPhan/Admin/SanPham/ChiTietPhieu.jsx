@@ -226,7 +226,7 @@ function ChiTietPhieu() {
                                             <div className="flex items-center gap-4">
                                                 <div className="w-12 h-12 bg-gray-200 rounded flex-shrink-0 overflow-hidden border border-gray-300">
                                                     <img 
-                                                        // KHẮC PHỤC LỖI TẠI ĐÂY: Dùng optional chaining và kiểm tra mảng
+                                        
                                                         src={`http://localhost:3001/${sp.HINHANH}`}
                                                         onError={(e) => {e.target.src = "https://via.placeholder.com/150"}}
                                                         className="w-full h-full object-cover" 

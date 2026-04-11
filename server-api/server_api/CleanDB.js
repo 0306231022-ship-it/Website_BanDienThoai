@@ -20,3 +20,5 @@ cron.schedule('0 0 0 * * *', async () => {
 });
 
 console.log('Cron Job đã được kích hoạt...');
+// Chuyển trạng thái mã giảm giá đã hết hạn
+// Chuyển trạng thái banner đã hết hạn
