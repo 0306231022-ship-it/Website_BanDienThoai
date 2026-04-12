@@ -49,7 +49,7 @@ const ThongTinDonHang = ({DuLieu}) => {
             setloading(true);
             try {
               //dữ liệu chung
-              const [MaGiamGia, DiaChi ] = await Promise.all([
+              const [MaGiamGia, DiaChi] = await Promise.all([
                  API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
                  API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
               ])  
@@ -66,12 +66,14 @@ const ThongTinDonHang = ({DuLieu}) => {
               switch(DuLieu.TrangThai){
                 //Trường hợp 1 : hiện thông tin giỏ hàng
                 case 1 :
-                const [response2, response4] = await Promise.all([
+                const [response2, response4 , MaGiamGia_ApDung] = await Promise.all([
                     API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-                    API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} )
+                    API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} ),
+                    API.CallAPI(undefined,{url:`/NguoiDung/ApMaGiamGia_NguoiDung?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc:2})
                 ]);
                 response2.ThanhCong ? setSanPham(response2.dulieu) : setSanPham([]);
                 response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message);
+                alert(JSON.stringify(MaGiamGia_ApDung))
                 break;
                 case 2 :
                   //Thông tin mua ngay

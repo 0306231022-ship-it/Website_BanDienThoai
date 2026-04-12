@@ -207,5 +207,32 @@ export default class MaGiamGiaModel{
                 message: 'Lỗi truy vấn mã giảm giá.'
             };
         }
-    }    
+    }
+    static async ApMaGiamGia_NguoiDung(dulieu,IDDH){
+        try {
+            const [magiamgia] = await execute(`
+                SELECT mgg.MaGG, mgg.LOAIGIAM, mgg.GIATRIGIAM
+                FROM magiamgia mgg
+                INNER JOIN chitiet_magiamgia ct ON ct.IDMAGIAMGIA = mgg.MaGG AND ct.IDND=? AND IDDH=?
+                `,[dulieu,IDDH]);
+            if(magiamgia.length>0){
+                return {
+                    ThanhCong:true,
+                    dulieu: magiamgia
+                }
+            }else{
+                return {
+                    ThanhCong:false,
+                    dulieu:[]
+                }
+            }
+
+        } catch (error) {
+            console.error('Có lỗi sãy ra khi lấy dữ liệu mã giảm giá từ người dùng:' + error);
+            return {
+                ThanhCong:false,
+                dulieu:[]
+            }
+        }
+    }   
 }

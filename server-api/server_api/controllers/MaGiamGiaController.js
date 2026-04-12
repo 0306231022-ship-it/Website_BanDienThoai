@@ -1,6 +1,7 @@
 import { body, validationResult } from "express-validator";
 import MaGiamGiaModel from "../models/MaGiamGia.js";
 import DonHangModel from "../models/DonHang.js";
+import adminModel from "../models/adminModel.js";
 export default class MaGiamGiaController{
     static async ThemMaGiamGia(req,res){
         const dulieu = req.body;
@@ -236,6 +237,42 @@ export default class MaGiamGiaController{
                 message:'Đã có lỗi sãy ra! Vui lòng thực hiện sau.'
             });
         }
-
+    }
+    static async ApMaGiamGia_NguoiDung(req,res){
+         const dulieu = req.query.idnd;
+         const kiemtra = await adminModel.kiemtraid(dulieu);
+         if(!kiemtra){
+            return res.json({
+                ThanhCong:false,
+                message:'Vui lòng kiểm tra lại dữ liệu!'
+            })
+         }
+         try {
+            const IDDH = await DonHangModel.LayIDDH(dulieu);
+            if(IDDH===null){
+                return res.json({
+                    ThanhCong:false,
+                    message:'Vui lòng kiểm tra thông tin đơn hàng!'
+                })
+            }
+            const layDL = await MaGiamGiaModel.ApMaGiamGia_NguoiDung(dulieu,IDDH);
+            if(layDL){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu: layDL.dulieu
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    dulieu:layDL.dulieu
+                })
+            }
+         } catch (error) {
+            console.error('Có lỗi sãy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Đã có lỗi sãy ra! Vui lòng thực hiện sau.'
+            });
+         }
     }
 }

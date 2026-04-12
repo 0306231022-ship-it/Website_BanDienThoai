@@ -35,6 +35,7 @@ NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), DonHangController.SoLuong_G
 NguoiDungRoute.get('/DanhSach_DonHang',upload.none(), DonHangController.DanhSach_DonHang_NguoiDung);
 NguoiDungRoute.get('/chitiet_donhang', upload.none(), DonHangController.ChiTiet_DonHang);
 NguoiDungRoute.get('/LayMaGiamGia', upload.none(), MaGiamGiaController.LayMaGiamGia_NguoiDung);
+NguoiDungRoute.get('/ApMaGiamGia_NguoiDung' , upload.none(), MaGiamGiaController.ApMaGiamGia_NguoiDung);
 NguoiDungRoute.get('/LayMaGiamGia_idth' , upload.none(), MaGiamGiaController.LayMaGiamGia_idth);
 NguoiDungRoute.get('/ThongTinDonHang', upload.none(), DonHangController.ThongTinDonHang);
 NguoiDungRoute.get('/PhiGiaoHang' , upload.none(),DonHangController.ThongTin_PhiVanChuyen);

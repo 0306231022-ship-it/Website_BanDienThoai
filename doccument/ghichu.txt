@@ -29,7 +29,7 @@ flatMap : gom tất cả thành 1 mảng []
     })
 ===============================================
 Định dạng vnd : {Number(ThongTinPhieu.TONGTIEN).toLocaleString("vi-VN") + " ₫"}
-đã thành công thêm sản phẩm vào kho nhưng chưa quản lí IMEI 
+
 
 =============================================
 tiền tố hình ảnh : http://localhost:3001/
