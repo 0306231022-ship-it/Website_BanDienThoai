@@ -17,8 +17,9 @@ const ThongTinDonHang = ({DuLieu}) => {
   const [SanPham, setSanPham] = useState([]);
   const [ThongTin,setThongTin] = useState([]);
   const [maGiamGia , setMGG] = useState([]);
+  const [maGiamGia_NguoiDung, setMGG_NguoiDung] = useState([])
   const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
-  const MaGiamGia=  ThongTin.LOAIGIAM ===0 ? ThongTin.GIATRIGIAM: TongTien*(ThongTin.GIATRIGIAM/100) ;
+  const MaGiamGia=  fun.tinhTongGiamGia(maGiamGia_NguoiDung,TongTien);
   const [PhiVanChuyen , setPhiVanChuyen]= useState(0);
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -73,7 +74,7 @@ const ThongTinDonHang = ({DuLieu}) => {
                 ]);
                 response2.ThanhCong ? setSanPham(response2.dulieu) : setSanPham([]);
                 response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message);
-                alert(JSON.stringify(MaGiamGia_ApDung))
+                MaGiamGia_ApDung.ThanhCong ? setMGG_NguoiDung(MaGiamGia_ApDung.dulieu) : setMGG_NguoiDung([])
                 break;
                 case 2 :
                   //Thông tin mua ngay
@@ -115,6 +116,7 @@ const ThongTinDonHang = ({DuLieu}) => {
       try {
         if(ThongTinDatDon?.ThongTin_KhachHang.DiaChi_GiaoHang!==null){
           const PhiGiaoHang= await API.CallAPI(undefined,{url:`/NguoiDung/PhiGiaoHang?DiaChi=${ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh}`, PhuongThuc:2});
+
          if(PhiGiaoHang.ThanhCong){
           setPhiVanChuyen(PhiGiaoHang.PhiShip);
          }else{

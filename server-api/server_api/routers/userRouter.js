@@ -2,6 +2,7 @@ import { Router } from "express";
 import CanhanADController from "../controllers/CaNhanADController.js";
 import DonHangController from "../controllers/DonHangController.js";
 import  MaGiamGiaController from "../controllers/MaGiamGiaController.js";
+import ThuongHieuController from "../controllers/ThuongHieuController.js";
 const NguoiDungRoute = Router();
 import multer from "multer";
 const upload = multer();
@@ -39,6 +40,7 @@ NguoiDungRoute.get('/ApMaGiamGia_NguoiDung' , upload.none(), MaGiamGiaController
 NguoiDungRoute.get('/LayMaGiamGia_idth' , upload.none(), MaGiamGiaController.LayMaGiamGia_idth);
 NguoiDungRoute.get('/ThongTinDonHang', upload.none(), DonHangController.ThongTinDonHang);
 NguoiDungRoute.get('/PhiGiaoHang' , upload.none(),DonHangController.ThongTin_PhiVanChuyen);
+NguoiDungRoute.get('/LayThuongHieu_IDSP' , upload.none() , ThuongHieuController.ThuongHieu_IDSP);
 //NguoiDungRoute.get('/ThongTin_DonHang', upload.none(), DonHangController.ThongTin_DonHang);
 //=========================================
 

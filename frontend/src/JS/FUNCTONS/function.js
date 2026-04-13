@@ -44,9 +44,6 @@ export function resetGiaTri(obj) {
         }
     }
 }
-
-
-
 export function objectToFormData(obj, formData = new FormData(), parentKey = '') {
   for (const key in obj) {
     if (Object.hasOwnProperty.call(obj, key)) { 
@@ -162,4 +159,18 @@ export const RandomString = (length) => {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;
+}
+export function tinhTongGiamGia(dulieu, tongTien) {
+  if(!dulieu || dulieu.length===0){
+    return 0;
+  }
+  let tongGiam = 0;
+  for (const item of dulieu) {
+    if (item.LOAIGIAM === 1) {
+      tongGiam += tongTien * (item.GIATRIGIAM / 100);
+    } else if (item.LOAIGIAM === 0) {
+      tongGiam += item.GIATRIGIAM;
+    }
+  }
+  return tongGiam;
 }

@@ -205,8 +205,6 @@ export default class ThuongHieuModel{
     FROM sanpham sp
     WHERE sp.IDTHUONGHIEU = ?
     LIMIT ? OFFSET ?`, [id, limit, offset]);
-
-
             const [countResult] = await transaction.query(`SELECT COUNT(*) AS total FROM sanpham WHERE IDTHUONGHIEU = ?`,[id]);
             const total = countResult[0].total;
             const start = offset + 1;
@@ -227,6 +225,30 @@ export default class ThuongHieuModel{
             throw error;
         }
         
+    }
+    //lấy IDTHUONGHIEU,TENTHUONG dựa trên IDSANPHAM 
+    static async ThuongHieu_IDSP(idsp){
+        try {
+           const [ketqua] = await execute(`
+                SELECT th.IDTHUONGHIEU, th.TENTHUONGHIEU
+                FROM sanpham sp
+                INNER JOIN thuonghieu th ON sp.IDTHUONGHIEU=th.IDTHUONGHIEU AND sp.IDSANPHAM=?
+            `,[idsp]);
+            if(ketqua.length>0){
+                return {
+                    ThanhCong:true,
+                    dulieu: ketqua
+                }
+            }else{
+                return {
+                    ThanhCong:false,
+                    message:'Không tìm thấy thương hiệu cho sản phẩm này!'
+                }
+            }
+        } catch (error) {
+            console.error('Đã có lỗi sãy ra khi truy vấn:' + error);
+            return null;
+        }
     }
 
    

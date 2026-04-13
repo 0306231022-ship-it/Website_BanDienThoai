@@ -3,13 +3,15 @@ import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useState, useEffect } from "react";
 import SanPhamMoi from "./SanPhamMoi";
-
+import { useAddToCart  } from '../../../hook/SanPham';
+import * as ThongBao1 from '../../../JS/FUNCTONS/ThongBao';
 const SanPhamTrangChu = () => {
     const [ThuongHieu, setThuongHieu] = useState([]);
     const [loading, setloading] = useState(false);
     const [flashSale, setFlashSale] = useState({});
     const [flashSaleProducts, setFlashSaleProducts] = useState([]);
     const [timeLeft, setTimeLeft] = useState({ hours: '00', minutes: '00', seconds: '00' });
+    const { MuaSP  } = useAddToCart();
 
     // --- 1. LOGIC ĐẾM NGƯỢC ---
     useEffect(() => {
@@ -61,6 +63,33 @@ const SanPhamTrangChu = () => {
         };
         Flashsale();
     }, []);
+    const Mua = async(SanPham) =>{
+        let ThuongHieu;
+        try {
+            const DuLieu= await API.CallAPI(undefined,{PhuongThuc:2, url :`/NguoiDung/LayThuongHieu_IDSP?idsp=${SanPham.IDSANPHAM}`});
+            if(DuLieu.ThanhCong){
+                ThuongHieu = DuLieu.dulieu[0];
+            }
+        } catch (error) {
+            console.error('Đã có lỗi sãy ra!');
+            ThongBao1.ThongBao_CanhBao('Vui lòng kiểm tra lại thông tin!')
+        }
+        const dl = {
+            TrangThai:2,
+            dulieu : [
+                {
+                    IDSANPHAM: SanPham.IDSANPHAM,
+                    TENSANPHAM : SanPham.TENSANPHAM,
+                    HINHANH : SanPham.HINHANH,
+                    SOLUONG:1,
+                    DONGIA:SanPham.GIAFLASHSALE,
+                    TENTHUONGHIEU : ThuongHieu.TENTHUONGHIEU,
+                    IDTHUONGHIEU: ThuongHieu.IDTHUONGHIEU
+                }
+            ]
+        }
+         MuaSP(dl);
+    }
 
     return (
         <div className="bg-gray-50 min-h-screen font-sans antialiased text-slate-900">
@@ -199,7 +228,7 @@ const SanPhamTrangChu = () => {
                                         </div>
                                     </div>
 
-                                    <button className="w-full bg-slate-900 text-white font-black py-3 rounded-xl text-[12px] hover:bg-red-600 transition-all duration-300 shadow-xl active:scale-95 uppercase tracking-widest">
+                                    <button onClick={()=>{Mua(product)}} className="w-full bg-slate-900 text-white font-black py-3 rounded-xl text-[12px] hover:bg-red-600 transition-all duration-300 shadow-xl active:scale-95 uppercase tracking-widest">
                                         MUA NGAY
                                     </button>
                                 </div>

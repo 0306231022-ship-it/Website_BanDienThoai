@@ -213,8 +213,11 @@ export default class MaGiamGiaModel{
             const [magiamgia] = await execute(`
                 SELECT mgg.MaGG, mgg.LOAIGIAM, mgg.GIATRIGIAM
                 FROM magiamgia mgg
-                INNER JOIN chitiet_magiamgia ct ON ct.IDMAGIAMGIA = mgg.MaGG AND ct.IDND=? AND IDDH=?
-                `,[dulieu,IDDH]);
+                INNER JOIN chitiet_magiamgia ct 
+                    ON ct.IDMAGG = mgg.MaGG 
+                    AND ct.IDND=? 
+                    AND ct.IDDH=?
+                `,[dulieu,IDDH.IDDH]);
             if(magiamgia.length>0){
                 return {
                     ThanhCong:true,

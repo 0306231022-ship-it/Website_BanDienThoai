@@ -1,4 +1,5 @@
 import ThuongHieuModel from '../models/ThuongHieu.js';
+import SanPhamModel from '../models/SanPham.js';
 import { body, validationResult } from "express-validator";
 export default class ThuongHieuController{
     static async ThemThuongHieu(req,res){
@@ -316,5 +317,36 @@ export default class ThuongHieuController{
             console.error('Lỗi khi lấy sản phẩm theo thương hiệu:', error);
             return res.json({ message: 'Đã xảy ra lỗi hệ thống.' });
         }
-    }   
+    }
+    static async ThuongHieu_IDSP(req,res){
+        const id = req.query.idsp;
+        const kiemtra = await SanPhamModel.kiemtra_id_sp(id);
+        if(!kiemtra){
+            return res.json({
+                ThanhCong:false,
+                message:'Vui lòng kiểm tra lại thông tin!'
+            })
+        }
+        try {
+            const laydl= await ThuongHieuModel.ThuongHieu_IDSP(id);
+            if(laydl.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    dulieu:laydl.dulieu
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:laydl.message
+                })
+            }
+        } catch (error) {
+            console.error('Có lỗi sãy ra khi lấy thông tin thương hiệu dựa trên IDSANPHAM:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Cố lỗi sãy ra khi thực hiện truy vấn, Vui lòng kiểm tra lại hệ thống!'
+            })
+        }
+
+    }  
 }
