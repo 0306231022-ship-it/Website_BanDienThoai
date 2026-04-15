@@ -50,11 +50,24 @@ import { useModalContext } from "../CONTEXT/QuanLiModal";
     //mua sản phẩm trong giỏ hàng
     const handlebuyproduct = async (sanPhamRef) => {
         await updateCartToServer(sanPhamRef)
+        const isLoggedIn = await KiemTra();
+         if (!isLoggedIn) {
+            OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
+            return;
+        }
         OpenMoDal({TrangThai:1}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
     }
+    //mua mua ngay sản phẩm 
     const MuaSP= async(DuLieu)=>{
+         const isLoggedIn = await KiemTra();
+         if (!isLoggedIn) {
+            OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
+            return;
+        }
          OpenMoDal(DuLieu, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
     }
     
+
+
     return {handleAddToCart , handlebuyproduct , updateCartToServer ,MuaSP};        
 }

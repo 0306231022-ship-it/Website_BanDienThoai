@@ -49,11 +49,13 @@ export default class MaGiamGiaModel{
             };
         }
     }
+    // lấy mã giảm giá đã áp dụng đối với giỏ hàng 
     static async LayMaGiamGia_NguoiDung(IDND){
         //GioHang_NguoiDung
         try {
             const SanPham_TrongGioHang = await DonHangModel.GioHang_NguoiDung(IDND);
             const IDSANPHAM = SanPham_TrongGioHang.dulieu.map(item => item.IDSANPHAM);
+            const IDDH = await DonHangModel.LayIDDH(IDND);
             const placeholders = IDSANPHAM.map(() => '?').join(',');
             // DỰA VÀO MẢNG IDSANPHAM ĐỂ LẤY IDTHUONGHIEU TƯƠNG ỨNG
             const [ketqua] = await execute(`
@@ -69,10 +71,12 @@ export default class MaGiamGiaModel{
                  SELECT COUNT(ct.IDCT_MGG)
                  FROM chitiet_magiamgia ct
                  WHERE mgg.MaGG=ct.IDMAGG 
-                ) AS SOLUONG_DADUNG
+                ) AS SOLUONG_DADUNG,
                 FROM magiamgia mgg
                 WHERE IDTHUONGHIEU IN (${placeholders2}) AND TRANGTHAI = 1 AND NGAYBATDAU <= NOW() AND NGAYKETTHUC >= NOW()
             `,IDTHUONGHIEU);
+            const MaGG = ketqua2.map(item => item.MaGG);
+        
             return {
                 ThanhCong: true,
                 dulieu: ketqua2

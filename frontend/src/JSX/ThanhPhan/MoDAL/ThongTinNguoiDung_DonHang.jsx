@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 const AddressEditForm = ({ onCancel, onSave }) => {
+    const { setThongTinDatDon } = useThongTinDonHang();
     const [formData, setFormData] = useState({
         hoTen: '',
         sdt: '',
@@ -25,8 +26,14 @@ const AddressEditForm = ({ onCancel, onSave }) => {
             ThongBao.ThongBao_CanhBao("Số điện thoại chỉ được chứa ký số!");
             return;
         }
-        // Gửi dữ liệu ngược lên component cha
-        onSave(formData);
+        setThongTinDatDon({
+            ThongTin_KhachHang:{
+                HoTen:formData.hoTen,
+                SDT : formData.sdt,
+                DiaChi_GiaoHang: formData.diaChiChiTiet
+            }
+        })
+        ThongBao.ThongBao_ThanhCong('Đã lưu thong tin đơn hàng!')
     };
 
     return (

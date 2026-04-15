@@ -84,7 +84,8 @@ const SanPhamTrangChu = () => {
                     SOLUONG:1,
                     DONGIA:SanPham.GIAFLASHSALE,
                     TENTHUONGHIEU : ThuongHieu.TENTHUONGHIEU,
-                    IDTHUONGHIEU: ThuongHieu.IDTHUONGHIEU
+                    IDTHUONGHIEU: ThuongHieu.IDTHUONGHIEU,
+                    IDFS: flashSale.IDFS
                 }
             ]
         }

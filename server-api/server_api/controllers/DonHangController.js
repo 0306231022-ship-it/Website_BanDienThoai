@@ -168,33 +168,48 @@ export default class DonHangController{
                 message:'Người dùng không tồn tại!'
             })
         }
-        if(DuLieu.PhiVanChuyen===0){
+        if(DuLieu.PhiVanChuyen===-1){
             return res.json({
                 ThanhCong:false,
                 message:'Vui lòng kiểm tra lại địa chỉ nhận hàng!'
             })
         }
         try {
-            const ketqua = await DonHangModel.MuaHang_NguoiDung(DuLieu);
-            if(ketqua.ThanhCong){
-                return res.json({
-                    ThanhCong:true,
-                    message:ketqua.message
-                })
+            if(DuLieu.TrangThai===1){
+                const ketqua = await DonHangModel.MuaHang_NguoiDung(DuLieu);
+                if(ketqua.ThanhCong){
+                    return res.json({
+                        ThanhCong:true,
+                        message:ketqua.message
+                    })
+                }else{
+                    return res.json({
+                        ThanhCong:false,
+                        message:ketqua.message
+                    })
+                }
             }else{
-                return res.json({
-                    ThanhCong:false,
-                    message:ketqua.message
-                })
+                const MuaHang = await DonHangModel.MuaHang_TrucTiep(DuLieu);
+                 if(MuaHang.ThanhCong){
+                    return res.json({
+                        ThanhCong:true,
+                        message:MuaHang.message
+                    })
+                }else{
+                    return res.json({
+                        ThanhCong:false,
+                        message:MuaHang.message
+                    })
+                }
             }
+            
         } catch (error) {
             console.error('Có lỗi sãy ra:' + error);
             return res.json({
                 ThanhCong:false,
                 message:'Lỗi khi truy vấn dữ liệu!'
             })
-        }
-                        
+        }               
     }
     static async DanhSachDonHang(req,res){
         const page = parseInt(req.query.page) || 1;

@@ -1,4 +1,3 @@
-//Sai logic mã giảm giá của người dùng
 import React, { useState , useEffect } from 'react';
 import * as API from '../../../JS/API/API';
 import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
@@ -49,37 +48,33 @@ const ThongTinDonHang = ({DuLieu}) => {
             setThongTinNguoiDung(thongTinNguoiDung);
             setloading(true);
             try {
-              //dữ liệu chung
-              const [MaGiamGia, DiaChi] = await Promise.all([
-                 API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-                 API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-              ])  
-              MaGiamGia.ThanhCong ? setMGG(MaGiamGia.dulieu) : setMGG([]);
-               if (!ThongTinDatDon.ThongTin_KhachHang.HoTen) {
-                  setThongTinDatDon({
-                    ThongTin_KhachHang: {
-                      HoTen: thongTinNguoiDung.HOTEN,
-                      SDT: thongTinNguoiDung.SDT,
-                      DiaChi_MacDinh: DiaChi.ThanhCong ? DiaChi.DuLieu[0].DIACHI : null,
-                    },
-                  });
-                }
-              switch(DuLieu.TrangThai){
-                //Trường hợp 1 : hiện thông tin giỏ hàng
-                case 1 :
-                const [response2, response4 , MaGiamGia_ApDung] = await Promise.all([
+            const DiaChiNguoiDung= await API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
+            if (!ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang) {
+                setThongTinDatDon({
+                  ThongTin_KhachHang: {
+                    HoTen: thongTinNguoiDung.HOTEN,
+                    SDT: thongTinNguoiDung.SDT,
+                    DiaChi_GiaoHang: DiaChiNguoiDung.ThanhCong ? DiaChiNguoiDung.DuLieu[0].DIACHI : null,
+                  },
+                });
+            }
+            switch(DuLieu.TrangThai){
+              case 1 :
+                const [response2, response4 , MaGiamGia_ApDung ,MaGiamGia] = await Promise.all([
                     API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
                     API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} ),
-                    API.CallAPI(undefined,{url:`/NguoiDung/ApMaGiamGia_NguoiDung?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc:2})
+                    API.CallAPI(undefined,{url:`/NguoiDung/ApMaGiamGia_NguoiDung?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc:2}),
+                    API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
                 ]);
                 response2.ThanhCong ? setSanPham(response2.dulieu) : setSanPham([]);
                 response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message);
-                MaGiamGia_ApDung.ThanhCong ? setMGG_NguoiDung(MaGiamGia_ApDung.dulieu) : setMGG_NguoiDung([])
+                MaGiamGia_ApDung.ThanhCong ? setMGG_NguoiDung(MaGiamGia_ApDung.dulieu) : setMGG_NguoiDung([]);
+                MaGiamGia.ThanhCong ? setMGG(MaGiamGia.dulieu) : setMGG([]);
                 break;
-                case 2 :
-                  //Thông tin mua ngay
-                  const dsThuongHieu = DuLieu?.dulieu.map(sp => sp.IDTHUONGHIEU);
-                  try {
+              case 2 :
+                 setSanPham(DuLieu.dulieu);
+                   const dsThuongHieu = DuLieu?.dulieu.map(sp => sp.IDTHUONGHIEU);
+                   try {
                     const responseMaGiamGia = await API.CallAPI(undefined, {PhuongThuc: 2, url: `/NguoiDung/LayMaGiamGia_idth?data=${dsThuongHieu}`});
                     if (responseMaGiamGia.ThanhCong) {
                       setMGG(Array.isArray(responseMaGiamGia.dulieu) ? responseMaGiamGia.dulieu : []);
@@ -88,16 +83,13 @@ const ThongTinDonHang = ({DuLieu}) => {
                       ThongBao.ThongBao_CanhBao(responseMaGiamGia.message || 'Không tìm thấy mã giảm giá phù hợp.');
                     }
                   } catch (error) {
-                    console.error('Có lỗi sảy ra:' + error);
-                    setMGG([]);
+                     console.error('Có lỗi sảy ra:' + error);
+                     setMGG([]);
                   }
-                 setSanPham(DuLieu.dulieu)
-                  break;
-                  default:
-                    ThongBao.ThongBao_CanhBao('Vui lòng kiểm tra lại thông tin đơn hàng!')
-                    break;
-              }
-                
+                 break;
+                default :
+                  return null;
+            }
             } catch (error) {
                 ThongBao.ThongBao_Loi("Có lỗi xảy ra khi tải thông tin địa chỉ");
                 console.error("Lỗi khi tải thông tin địa chỉ:", error);
@@ -107,7 +99,7 @@ const ThongTinDonHang = ({DuLieu}) => {
         }else{
             ThongBao.ThongBao_Loi("Vui lòng đăng nhập để xem thông tin đơn hàng");
         }
-    };
+      }
     fetch_ThongTinDonHang();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
@@ -115,15 +107,14 @@ const ThongTinDonHang = ({DuLieu}) => {
     const fetch = async()=>{
       try {
         if(ThongTinDatDon?.ThongTin_KhachHang.DiaChi_GiaoHang!==null){
-          const PhiGiaoHang= await API.CallAPI(undefined,{url:`/NguoiDung/PhiGiaoHang?DiaChi=${ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh}`, PhuongThuc:2});
-
+          const PhiGiaoHang= await API.CallAPI(undefined,{url:`/NguoiDung/PhiGiaoHang?DiaChi=${ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang}`, PhuongThuc:2});
          if(PhiGiaoHang.ThanhCong){
           setPhiVanChuyen(PhiGiaoHang.PhiShip);
          }else{
+          setPhiVanChuyen(-1)
           ThongBao.ThongBao_CanhBao(PhiGiaoHang.message);
          }
         }
-    
       } catch (error) {
         console.error('Có lỗi sãy ra:'+ error);
       }
@@ -159,39 +150,63 @@ const ThongTinDonHang = ({DuLieu}) => {
     }
   }
   const Chon_MaGiamGia = async(id)=>{
-    try {
-      const formdata= fun.objectToFormData({MaGG:id,IDND:ThongTinNguoiDung.IDND})
-      const response = await API.CallAPI(formdata, {url :'/NguoiDung/ApMa_GiamGia' , PhuongThuc:1});
-      if(response.ThanhCong){
-        ThongBao.ThongBao_ThanhCong(response.message);
-        return;
-      }else{
-        ThongBao.ThongBao_Loi(response.message);
-        return;
-      }
-    } catch (error) {
-      console.error('Lỗi chọn max giảm giá :' + error);
-      ThongBao.ThongBao_CanhBao('Có lỗi sãy ra, Vui lòng kiểm tra lại! ')
+    switch(DuLieu.TrangThai){
+      case 1 :
+        try {
+          const formdata= fun.objectToFormData({MaGG:id,IDND:ThongTinNguoiDung.IDND})
+          const response = await API.CallAPI(formdata, {url :'/NguoiDung/ApMa_GiamGia' , PhuongThuc:1});
+          if(response.ThanhCong){
+            ThongBao.ThongBao_ThanhCong(response.message);
+            const magg = await API.CallAPI(undefined,{url:`/NguoiDung/ApMaGiamGia_NguoiDung?idnd=${ThongTinNguoiDung.IDND}`, PhuongThuc:2});
+            magg.ThanhCong ? setMGG_NguoiDung(magg.dulieu) : setMGG_NguoiDung([])
+            return;
+          }else{
+            ThongBao.ThongBao_Loi(response.message);
+            return;
+          }
+        } catch (error) {
+           console.error('Lỗi chọn max giảm giá :' + error);
+           ThongBao.ThongBao_CanhBao('Có lỗi sãy ra, Vui lòng kiểm tra lại! ')
+        }
+        break;
+      case 2 :
+        const magg = maGiamGia.filter(item => item.MaGG === id);
+        setMGG_NguoiDung(magg);
+        ThongBao.ThongBao_ThanhCong('Bạn đã áp dụng vào đơn hàng thành công!')
+        break;
+      default :
+       return null;
     }
+
   }
   const DatHang= async()=>{
     const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn đặt đơn hàng này không?');
     if(!XacNhan) return;
-    const DuLieu = {
+    if(PhiVanChuyen===-1){
+      ThongBao.ThongBao_Loi('Vui lòng kiểm tra lại thông tin giao hàng!');
+      return;
+    }
+    const magg = maGiamGia[0];
+
+    const DuLie = {
+      TrangThai: DuLieu.TrangThai,
+      IDSANPHAM : DuLieu.dulieu[0].IDSANPHAM,
+      SOLUONG:DuLieu.dulieu[0].SOLUONG,
+      IDMAGG: magg.MaGG,
       TongHang:TongTien + PhiVanChuyen - MaGiamGia,
       PhiVanChuyen:PhiVanChuyen,
-      Ma: ThongTin.GIATRIGIAM,
+      Ma: ThongTin.GIATRIGIAM || 0,
       IDND:ThongTinNguoiDung.IDND,
       DiaChiNhanHang:ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh,
       TenNguoiNhan:ThongTinDatDon.ThongTin_KhachHang.HoTen,
-      SDT:ThongTinDatDon.ThongTin_KhachHang.SDT
+      SDT:ThongTinDatDon.ThongTin_KhachHang.SDT,
+      IDFS: DuLieu.dulieu[0].IDFS || null
     };
-    const formdata = fun.objectToFormData(DuLieu);
+    const formdata = fun.objectToFormData(DuLie);
     try {
       const ketqua = await API.CallAPI(formdata,{PhuongThuc:1, url :'/NguoiDung/MuaHang'});
       if(ketqua.ThanhCong){
         ThongBao.ThongBao_ThanhCong(ketqua.message);
-
         return;
       }else{
         ThongBao.ThongBao_Loi(ketqua.message);
@@ -221,7 +236,7 @@ const ThongTinDonHang = ({DuLieu}) => {
               </div>
             ) : (
                 ThongTinDatDon?.ThongTin_KhachHang.DiaChi_GiaoHang !== null ? (
-                    <section onClick={()=>{OpenMoDal({HoTen:ThongTinDatDon.ThongTin_KhachHang.HoTen, SDT: ThongTinDatDon.ThongTin_KhachHang.SDT , DiaChi_MacDinh:  ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh },{TenTrang:'DiaChi'})}} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100 relative cursor-pointer">
+                    <section onClick={()=>{OpenMoDal({HoTen:ThongTinDatDon.ThongTin_KhachHang.HoTen, SDT: ThongTinDatDon.ThongTin_KhachHang.SDT ,  DiaChi_GiaoHang:  ThongTinDatDon.DiaChi_GiaoHang },{TenTrang:'DiaChi'})}} className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-2xl border border-blue-100 relative cursor-pointer">
                         <div className="flex items-center text-blue-600 mb-2">
               <i className="fas fa-map-marker-alt mr-2"></i>
               <span className="text-xs font-bold uppercase tracking-wider">Địa chỉ nhận hàng</span>
@@ -230,7 +245,7 @@ const ThongTinDonHang = ({DuLieu}) => {
               {ThongTinDatDon.ThongTin_KhachHang.HoTen} <span className="font-normal text-gray-500">| {ThongTinNguoiDung?.SDT || 'Số điện thoại không có'}</span>
             </p>
             <p className="text-sm text-gray-600 mt-1">
-                {ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh}
+                {ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang}
             </p>
             <i className="fas fa-chevron-right absolute right-4 top-1/2 -translate-y-1/2 text-gray-300"></i>
           </section>
@@ -343,7 +358,9 @@ const ThongTinDonHang = ({DuLieu}) => {
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Phí vận chuyển</span>
-              <span className="font-medium text-gray-800">{fun.formatCurrency(PhiVanChuyen)}</span>
+              <span className="font-medium text-gray-800">{
+                PhiVanChuyen === -1 ? 'Có lỗi sãy ra!' : fun.formatCurrency(PhiVanChuyen)}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Áp dụng mã giảm giá</span>

@@ -35,9 +35,13 @@ NguoiDungRoute.get('/Xoa_GioHang',upload.none(), DonHangController.Xoa_GioHang_N
 NguoiDungRoute.get('/SoLuong_GioHang',upload.none(), DonHangController.SoLuong_GioHang_NguoiDung);
 NguoiDungRoute.get('/DanhSach_DonHang',upload.none(), DonHangController.DanhSach_DonHang_NguoiDung);
 NguoiDungRoute.get('/chitiet_donhang', upload.none(), DonHangController.ChiTiet_DonHang);
+//==========================
+//xử lí mã giảm giá thuộc người dùng
 NguoiDungRoute.get('/LayMaGiamGia', upload.none(), MaGiamGiaController.LayMaGiamGia_NguoiDung);
 NguoiDungRoute.get('/ApMaGiamGia_NguoiDung' , upload.none(), MaGiamGiaController.ApMaGiamGia_NguoiDung);
 NguoiDungRoute.get('/LayMaGiamGia_idth' , upload.none(), MaGiamGiaController.LayMaGiamGia_idth);
+
+
 NguoiDungRoute.get('/ThongTinDonHang', upload.none(), DonHangController.ThongTinDonHang);
 NguoiDungRoute.get('/PhiGiaoHang' , upload.none(),DonHangController.ThongTin_PhiVanChuyen);
 NguoiDungRoute.get('/LayThuongHieu_IDSP' , upload.none() , ThuongHieuController.ThuongHieu_IDSP);

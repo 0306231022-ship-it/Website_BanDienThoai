@@ -284,6 +284,7 @@ export default class DonHangModel{
                     message:'Mua hàng thất bại do lỗi cập nhật tổng tiền!' 
                 };
             }
+
             // thêm dữ liệu vào bảng hoadon_banhang
             const [them_hoadon] = await conn.query(`
                 INSERT INTO hoadon_banhang (IDHD, IDDH, THANHTIEN, TRANGTHAI , PHIVANCHUYEN ,TONGTIEN)
@@ -596,6 +597,79 @@ export default class DonHangModel{
             console.error('Có lỗi sãy ra khi lấy IDDH:' + error);
             return null;
         }
-       
+    }
+    static async MuaHang_TrucTiep(DuLieu){
+        console.log(DuLieu)
+        let conn;
+        try {
+             conn = await beginTransaction();
+             const IDDH = TaoID('DH');
+             const IDHD =TaoID('HD');
+             const [Them_DonHang] = await conn.query(`
+                INSERT INTO donhang (IDDH, IDKH, NGAYDAT, TONGTIEN , TEN_NGUOINHAN,SDT_NGUOINHAN,DIACHI_GIAOHANG,TRANGTHAI)
+                VALUES (?, ?, NOW(), ?,?,?,?,?)
+                `,[IDDH,DuLieu.IDND,DuLieu.TongHang,DuLieu.TenNguoiNhan,DuLieu.SDT,DuLieu.DiaChiNhanHang,1]);
+            if(Them_DonHang.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return { 
+                    ThanhCong:false, 
+                    message:'Mua sản phẩm thất bại, Vui lòng kiểm tra lại!' 
+                };
+            }
+              const [capnhat_kho] = await conn.query(`
+                    UPDATE chitiet_phieunhap
+                    SET SOLUONG = SOLUONG - ?
+                    WHERE IDSANPHAM = ?
+                    LIMIT 1`,[DuLieu.SOLUONG, DuLieu.IDSANPHAM]);
+                if(capnhat_kho.affectedRows === 0){
+                    await rollbackTransaction(conn);
+                    return { 
+                        ThanhCong:false, 
+                        message:'Mua hàng thất bại do số lượng tồn kho không đủ!' 
+                    };
+                }
+                 // thêm dữ liệu vào bảng hoadon_banhang
+            const giamGia = DuLieu.Ma || 0;
+            const tongTien = DuLieu.TongHang - giamGia + DuLieu.PhiVanChuyen;
+                console.log(IDDH,IDHD)
+            const [them_hoadon] = await conn.query(`
+                INSERT INTO hoadon_banhang (IDHD, IDDH, THANHTIEN, TRANGTHAI , PHIVANCHUYEN ,TONGTIEN)
+                VALUES (?, ?, ?, ? ,? ,?)
+            `,[IDHD, IDDH, DuLieu.TongHang, 0, DuLieu.PhiVanChuyen ,tongTien]);
+            if(them_hoadon.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return {
+                    ThanhCong:false,
+                    message:'Mua hàng thất bại do lỗi tạo hóa đơn!' 
+                };
+            }
+            // Cập nhật MGG
+            if(DuLieu.IDFS){
+                const [update] = await conn.query(`
+                    UPDATE hoadon_banhang
+                    SET MGG = ?
+                    WHERE IDHD=? AND IDDH = ?
+                    `,[DuLieu.IDFS,IDHD,IDDH]);
+                if(update.affectedRows===0){
+                    await rollbackTransaction(conn);
+                return {
+                    ThanhCong:false,
+                    message:'Mua hàng thất bại do lỗi tạo hóa đơn!' 
+                };
+                }
+            }
+             await commitTransaction(conn);
+            return { 
+                ThanhCong:true, 
+                message:'Mua hàng thành công!' 
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            if(conn) await rollbackTransaction(conn);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+        }
     }
 }
