@@ -472,6 +472,7 @@ export default class DonHangModel{
                     };
                 }
             }
+            
             await commitTransaction(conn);
             return { 
                 ThanhCong:true, 
@@ -599,6 +600,8 @@ export default class DonHangModel{
         }
     }
     static async MuaHang_TrucTiep(DuLieu){
+        console.log(DuLieu);
+        return;
         let conn;
         try {
              conn = await beginTransaction();

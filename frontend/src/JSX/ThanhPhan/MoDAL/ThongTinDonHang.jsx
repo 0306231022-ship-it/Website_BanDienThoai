@@ -198,7 +198,7 @@ const ThongTinDonHang = ({DuLieu}) => {
       PhiVanChuyen:PhiVanChuyen,
       Ma: ThongTin.GIATRIGIAM || 0,
       IDND:ThongTinNguoiDung.IDND,
-      DiaChiNhanHang:ThongTinDatDon.ThongTin_KhachHang.DiaChi_MacDinh,
+      DiaChiNhanHang:ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang,
       TenNguoiNhan:ThongTinDatDon.ThongTin_KhachHang.HoTen,
       SDT:ThongTinDatDon.ThongTin_KhachHang.SDT,
       IDFS: DuLieu.dulieu[0].IDFS || null

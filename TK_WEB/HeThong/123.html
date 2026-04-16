@@ -3,13 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh sách địa chỉ - UI Only</title>
+    <title>In Hóa Đơn - A4 Layout</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @media print {
+            @page { size: A4; margin: 10mm; }
+            .no-print { display: none; }
+            body { background: white; }
+            .print-shadow-none { shadow: none !important; box-shadow: none !important; }
+        }
+    </style>
 </head>
-<body class="bg-gray-400/20 min-h-screen flex items-end justify-center">
+<body class="bg-gray-100 py-4">
 
- 
+    <div class="max-w-[210mm] mx-auto mb-4 flex justify-end no-print px-4">
+        <button onclick="window.print()" class="bg-blue-600 text-white px-5 py-2 rounded font-bold hover:bg-blue-700 transition shadow-md">
+            In hóa đơn (A4)
+        </button>
+    </div>
+
+    <div class="max-w-[210mm] min-h-[280mm] mx-auto bg-white p-10 print-shadow-none shadow-xl border border-gray-200">
+        
+        <div class="flex justify-between items-start border-b-2 border-gray-800 pb-6">
+            <div>
+                <h1 class="text-3xl font-black text-gray-900 tracking-tighter">GEMINI STORE</h1>
+                <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Hóa đơn giá trị gia tăng (VAT)</p>
+                <div class="mt-4 text-sm space-y-1">
+                    <p><strong>Địa chỉ:</strong> 99 Tô Hiến Thành, Quận 10, TP.HCM</p>
+                    <p><strong>Hotline:</strong> 1900 1234 - <strong>MST:</strong> 0312345678</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <h2 class="text-xl font-bold text-gray-800">SỐ ĐƠN: #88293</h2>
+                <p class="text-sm text-gray-600">Ngày xuất: 16/04/2026</p>
+                <div class="mt-4 inline-block border-2 border-green-600 px-3 py-1 text-green-600 font-bold text-xs rounded uppercase">
+                    Đã thanh toán
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-8 my-8 pb-6 border-b border-gray-100">
+            <div>
+                <h3 class="text-[10px] font-black text-gray-400 uppercase mb-2">Thông tin người mua</h3>
+                <p class="font-bold text-gray-800">Nguyễn Văn A</p>
+                <p class="text-sm text-gray-600">SĐT: 090 123 4567</p>
+                <p class="text-sm text-gray-600 leading-snug mt-1">Địa chỉ: 123 Đường ABC, Phường 4, Quận Tân Bình, TP. Hồ Chí Minh</p>
+            </div>
+            <div>
+                <h3 class="text-[10px] font-black text-gray-400 uppercase mb-2">Hình thức thanh toán</h3>
+                <p class="text-sm text-gray-800 font-medium">Chuyển khoản Ngân hàng (Vietcombank)</p>
+                <p class="text-sm text-gray-500 mt-1 italic">Ghi chú: Giao hàng giờ hành chính</p>
+            </div>
+        </div>
+
+        <div class="min-h-[400px]">
+            <table class="w-full text-left text-sm">
+                <thead>
+                    <tr class="bg-gray-50 uppercase text-[10px] font-bold tracking-wider text-gray-600">
+                        <th class="px-4 py-3 border">STT</th>
+                        <th class="px-4 py-3 border">Tên hàng hóa, dịch vụ</th>
+                        <th class="px-4 py-3 border text-center">SL</th>
+                        <th class="px-4 py-3 border text-right">Đơn giá</th>
+                        <th class="px-4 py-3 border text-right">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-700">
+                    <tr>
+                        <td class="px-4 py-3 border text-center">1</td>
+                        <td class="px-4 py-3 border">
+                            <p class="font-bold text-gray-800">iPhone 15 Pro Max 256GB</p>
+                            <p class="text-[10px] text-gray-400">Blue Titanium - BH 12 tháng</p>
+                        </td>
+                        <td class="px-4 py-3 border text-center">01</td>
+                        <td class="px-4 py-3 border text-right">30.000.000đ</td>
+                        <td class="px-4 py-3 border text-right font-bold">30.000.000đ</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-3 border text-center">2</td>
+                        <td class="px-4 py-3 border font-bold text-gray-800">Ốp lưng Silicone MagSafe</td>
+                        <td class="px-4 py-3 border text-center">02</td>
+                        <td class="px-4 py-3 border text-right">500.000đ</td>
+                        <td class="px-4 py-3 border text-right font-bold">1.000.000đ</td>
+                    </tr>
+                    <tr><td class="px-4 py-6 border" colspan="5"></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6 flex justify-end">
+            <div class="w-1/2 space-y-2">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Cộng tiền hàng:</span>
+                    <span class="font-medium text-gray-800">31.000.000đ</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Thuế suất GTGT (10%):</span>
+                    <span class="font-medium text-gray-800">3.100.000đ</span>
+                </div>
+                <div class="flex justify-between text-sm border-b pb-2">
+                    <span class="text-gray-500">Phí vận chuyển:</span>
+                    <span class="text-green-600 font-medium">0đ</span>
+                </div>
+                <div class="flex justify-between items-center pt-2">
+                    <span class="text-base font-black text-gray-900 uppercase">Tổng tiền thanh toán:</span>
+                    <span class="text-xl font-black text-blue-700 tracking-tighter">34.100.000đ</span>
+                </div>
+                <p class="text-[10px] text-gray-400 italic text-right mt-1">Bằng chữ: Ba mươi tư triệu một trăm nghìn đồng./.</p>
+            </div>
+        </div>
+
+        <div class="mt-16 grid grid-cols-2 text-center text-sm">
+            <div>
+                <p class="font-bold uppercase">Người mua hàng</p>
+                <p class="text-[10px] text-gray-400 italic">(Ký, ghi rõ họ tên)</p>
+            </div>
+            <div>
+                <p class="font-bold uppercase">Người bán hàng</p>
+                <div class="my-2 flex justify-center">
+                     <div class="border border-red-400 p-1 text-[8px] text-red-500 uppercase font-black rotate-[-5deg]">
+                        Đã xác thực bởi Gemini Store CA
+                     </div>
+                </div>
+                <p class="font-bold">Hệ thống Gemini Store</p>
+            </div>
+        </div>
+
+        <div class="mt-20 border-t border-gray-100 pt-4 text-center">
+            <p class="text-[10px] text-gray-400">Cảm ơn Quý khách đã mua hàng! Vui lòng giữ hóa đơn để bảo hành sản phẩm.</p>
+            <p class="text-[9px] text-gray-300 mt-1 tracking-widest uppercase">www.geministore.vn</p>
+        </div>
+    </div>
 
 </body>
 </html>
