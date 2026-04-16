@@ -193,6 +193,7 @@ const ThongTinDonHang = ({DuLieu}) => {
       IDSANPHAM : DuLieu.dulieu[0].IDSANPHAM,
       SOLUONG:DuLieu.dulieu[0].SOLUONG,
       IDMAGG: magg.MaGG,
+      GIASP: DuLieu.dulieu[0].DONGIA || null,
       TongHang:TongTien + PhiVanChuyen - MaGiamGia,
       PhiVanChuyen:PhiVanChuyen,
       Ma: ThongTin.GIATRIGIAM || 0,
@@ -215,10 +216,7 @@ const ThongTinDonHang = ({DuLieu}) => {
       console.error('Có lỗi sãy ra:' + error);
       ThongBao.ThongBao_Loi('Đã có lỗi sãy ra, Vui lòng kiểm tra lại!');
     }
-
   }
-
-
   return (
     <div className="">
       {/* Container Điện Thoại Giả Lập */}

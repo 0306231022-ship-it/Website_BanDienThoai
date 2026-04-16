@@ -599,7 +599,6 @@ export default class DonHangModel{
         }
     }
     static async MuaHang_TrucTiep(DuLieu){
-        console.log(DuLieu)
         let conn;
         try {
              conn = await beginTransaction();
@@ -616,6 +615,20 @@ export default class DonHangModel{
                     message:'Mua sản phẩm thất bại, Vui lòng kiểm tra lại!' 
                 };
             }
+            const maGiamGia = DuLieu.IDFS || null;
+            const giasp = DuLieu.GIASP || null
+            const [them_dl_ct] = await conn.query(`
+                INSERT INTO chitiet_donhang (IDCT,IDDH,IDSANPHAM,IDFS,SOLUONG,DONGIA,THANHTIEN)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                `,[TaoID('CT'),IDDH,DuLieu.IDSANPHAM,maGiamGia,DuLieu.SOLUONG,giasp,giasp*DuLieu.SOLUONG]);
+            if(them_dl_ct.affectedRows===0){
+                 await rollbackTransaction(conn);
+                 return {
+                    ThanhCong:false,
+                    message:'Mua sản phẩm thất bại!'
+                 }
+            }
+
               const [capnhat_kho] = await conn.query(`
                     UPDATE chitiet_phieunhap
                     SET SOLUONG = SOLUONG - ?
@@ -631,32 +644,16 @@ export default class DonHangModel{
                  // thêm dữ liệu vào bảng hoadon_banhang
             const giamGia = DuLieu.Ma || 0;
             const tongTien = DuLieu.TongHang - giamGia + DuLieu.PhiVanChuyen;
-                console.log(IDDH,IDHD)
             const [them_hoadon] = await conn.query(`
-                INSERT INTO hoadon_banhang (IDHD, IDDH, THANHTIEN, TRANGTHAI , PHIVANCHUYEN ,TONGTIEN)
-                VALUES (?, ?, ?, ? ,? ,?)
-            `,[IDHD, IDDH, DuLieu.TongHang, 0, DuLieu.PhiVanChuyen ,tongTien]);
+            INSERT INTO hoadon_banhang (IDHD, IDDH, THANHTIEN, TRANGTHAI, PHIVANCHUYEN, TONGTIEN, MGG)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `, [IDHD, IDDH, DuLieu.TongHang, 0, DuLieu.PhiVanChuyen, tongTien, maGiamGia]);
             if(them_hoadon.affectedRows === 0){
                 await rollbackTransaction(conn);
                 return {
                     ThanhCong:false,
                     message:'Mua hàng thất bại do lỗi tạo hóa đơn!' 
                 };
-            }
-            // Cập nhật MGG
-            if(DuLieu.IDFS){
-                const [update] = await conn.query(`
-                    UPDATE hoadon_banhang
-                    SET MGG = ?
-                    WHERE IDHD=? AND IDDH = ?
-                    `,[DuLieu.IDFS,IDHD,IDDH]);
-                if(update.affectedRows===0){
-                    await rollbackTransaction(conn);
-                return {
-                    ThanhCong:false,
-                    message:'Mua hàng thất bại do lỗi tạo hóa đơn!' 
-                };
-                }
             }
              await commitTransaction(conn);
             return { 
