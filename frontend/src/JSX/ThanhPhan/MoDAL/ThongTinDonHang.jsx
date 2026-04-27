@@ -5,7 +5,15 @@ import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
+import MuaSanPham from '../../../hook/MuaSanPham';
 const ThongTinDonHang = ({DuLieu}) => {
+  const {layDiaChi , SanPham , setSanPham } = MuaSanPham();
+    useEffect(()=>{
+        layDiaChi();
+    },[layDiaChi]);
+
+  //Đã đước fix phía tên
+  
   const { ThongTinDatDon, setThongTinDatDon } = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,13 +21,36 @@ const ThongTinDonHang = ({DuLieu}) => {
   const [ThongTinNguoiDung, setThongTinNguoiDung] = useState(null);
   const [DiaChi, setDiaChi] = useState('');
   const [reload, setreload] = useState(false);
-  const [SanPham, setSanPham] = useState([]);
   const [ThongTin,setThongTin] = useState([]);
   const [maGiamGia , setMGG] = useState([]);
   const [maGiamGia_NguoiDung, setMGG_NguoiDung] = useState([])
   const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
   const MaGiamGia=  fun.tinhTongGiamGia(maGiamGia_NguoiDung,TongTien);
   const [PhiVanChuyen , setPhiVanChuyen]= useState(0);
+  // 1. Tạo state lưu trữ thời gian (15 phút = 900 giây)
+const [timeLeft, setTimeLeft] = useState(900);
+
+// 2. Logic đếm ngược
+useEffect(() => {
+  // Chỉ chạy đếm ngược nếu TrangThai là 2 và thời gian > 0
+  if (DuLieu.TrangThai === 2 && timeLeft > 0) {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer); // Clear để tránh tràn bộ nhớ
+  } else if (timeLeft === 0) {
+    // Xử lý khi hết thời gian (Ví dụ: thông báo hoặc quay lại giỏ hàng)
+    ThongBao.ThongBao_Loi("Thời gian giữ đơn hàng đã hết!");
+  }
+}, [timeLeft, DuLieu.TrangThai]);
+
+// 3. Hàm format hiển thị mm:ss
+const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+};
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -40,37 +71,12 @@ const ThongTinDonHang = ({DuLieu}) => {
       setSanPham(sanPhamCapNhat);
     }
   };
-  useEffect(() => {
+  
+  /*useEffect(() => {
     const fetch_ThongTinDonHang= async () => {
-        const kiemtra = await KiemTra();
-        if(kiemtra){
-            const thongTinNguoiDung = await LayThongTinNguoiDung();
-            setThongTinNguoiDung(thongTinNguoiDung);
-            setloading(true);
-            try {
-            const DiaChiNguoiDung= await API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
-            if (!ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang) {
-                setThongTinDatDon({
-                  ThongTin_KhachHang: {
-                    HoTen: thongTinNguoiDung.HOTEN,
-                    SDT: thongTinNguoiDung.SDT,
-                    DiaChi_GiaoHang: DiaChiNguoiDung.ThanhCong ? DiaChiNguoiDung.DuLieu[0].DIACHI : null,
-                  },
-                });
-            }
+     
             switch(DuLieu.TrangThai){
-              case 1 :
-                const [response2, response4 , MaGiamGia_ApDung ,MaGiamGia] = await Promise.all([
-                    API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-                    API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} ),
-                    API.CallAPI(undefined,{url:`/NguoiDung/ApMaGiamGia_NguoiDung?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc:2}),
-                    API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
-                ]);
-                response2.ThanhCong ? setSanPham(response2.dulieu) : setSanPham([]);
-                response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message);
-                MaGiamGia_ApDung.ThanhCong ? setMGG_NguoiDung(MaGiamGia_ApDung.dulieu) : setMGG_NguoiDung([]);
-                MaGiamGia.ThanhCong ? setMGG(MaGiamGia.dulieu) : setMGG([]);
-                break;
+             
               case 2 :
                  setSanPham(DuLieu.dulieu);
                    const dsThuongHieu = DuLieu?.dulieu.map(sp => sp.IDTHUONGHIEU);
@@ -102,7 +108,7 @@ const ThongTinDonHang = ({DuLieu}) => {
       }
     fetch_ThongTinDonHang();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
+  },[]);*/
   useEffect(()=>{
     const fetch = async()=>{
       try {
@@ -186,8 +192,7 @@ const ThongTinDonHang = ({DuLieu}) => {
       ThongBao.ThongBao_Loi('Vui lòng kiểm tra lại thông tin giao hàng!');
       return;
     }
-    const magg = maGiamGia[0];
-
+    const magg = maGiamGia_NguoiDung[0] || null;
     const DuLie = {
       TrangThai: DuLieu.TrangThai,
       IDSANPHAM : DuLieu.dulieu[0].IDSANPHAM,
@@ -206,6 +211,7 @@ const ThongTinDonHang = ({DuLieu}) => {
     const formdata = fun.objectToFormData(DuLie);
     try {
       const ketqua = await API.CallAPI(formdata,{PhuongThuc:1, url :'/NguoiDung/MuaHang'});
+      alert(JSON.stringify(ketqua))
       if(ketqua.ThanhCong){
         ThongBao.ThongBao_ThanhCong(ketqua.message);
         return;
@@ -240,7 +246,7 @@ const ThongTinDonHang = ({DuLieu}) => {
               <span className="text-xs font-bold uppercase tracking-wider">Địa chỉ nhận hàng</span>
             </div>
             <p className="font-bold text-gray-800">
-              {ThongTinDatDon.ThongTin_KhachHang.HoTen} <span className="font-normal text-gray-500">| {ThongTinNguoiDung?.SDT || 'Số điện thoại không có'}</span>
+              {ThongTinDatDon.ThongTin_KhachHang.HoTen} <span className="font-normal text-gray-500">| {ThongTinDatDon.ThongTin_KhachHang.SDT || 'Số điện thoại không có'}</span>
             </p>
             <p className="text-sm text-gray-600 mt-1">
                 {ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang}
@@ -370,13 +376,32 @@ const ThongTinDonHang = ({DuLieu}) => {
 
         {/* Thanh thanh toán cố định ở dưới */}
         <footer className=" bg-white  sticky bottom-0 z-10 ">
+        {DuLieu.TrangThai === 2 && (
+  <div className="bg-red-50 border-b border-red-100 p-3 flex items-center justify-between sticky top-0 z-20">
+    <div className="flex items-center text-red-600 animate-pulse">
+      <i className="fas fa-clock mr-2"></i>
+      <span className="text-xs font-bold uppercase">Hoàn tất đơn hàng trong:</span>
+    </div>
+    <div className="bg-red-500 text-white px-3 py-1 rounded-lg font-mono font-bold shadow-sm">
+      {formatTime(timeLeft)}
+    </div>
+  </div>
+)}
           <div className="flex justify-end items-center mb-3 space-x-2">
             <span className="text-sm text-gray-600">Tổng thanh toán:</span>
             <span className="text-xl font-bold text-orange-600">{fun.formatCurrency(TongTien + PhiVanChuyen - MaGiamGia)}</span>
           </div>
-          <button onClick={DatHang} className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-transform uppercase tracking-wider">
-            Đặt hàng
-          </button>
+         <button 
+  onClick={DatHang} 
+  disabled={DuLieu.TrangThai === 2 && timeLeft === 0}
+  className={`w-full font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-transform uppercase tracking-wider ${
+    DuLieu.TrangThai === 2 && timeLeft < 60 
+      ? 'bg-orange-600 animate-bounce' // Cảnh báo khi còn dưới 1 phút
+      : 'bg-red-500 hover:bg-red-600'
+  } text-white ${timeLeft === 0 ? 'grayscale cursor-not-allowed' : ''}`}
+>
+  {timeLeft === 0 ? 'Đã hết hạn thanh toán' : 'Đặt hàng'}
+</button>
         </footer>
 
         {/* MODAL CHỌN MÃ GIẢM GIÁ */}

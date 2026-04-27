@@ -66,8 +66,5 @@ import { useModalContext } from "../CONTEXT/QuanLiModal";
         }
          OpenMoDal(DuLieu, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
     }
-    
-
-
     return {handleAddToCart , handlebuyproduct , updateCartToServer ,MuaSP};        
 }

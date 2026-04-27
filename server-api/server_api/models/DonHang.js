@@ -222,6 +222,8 @@ export default class DonHangModel{
         }
     }
     static async MuaHang_NguoiDung(DuLieu){
+        console.log(DuLieu)
+        return;
         let conn;
         try {
             conn = await beginTransaction();
@@ -382,8 +384,10 @@ export default class DonHangModel{
         }
     }
     static async ChiTiet_DonHang(iddh){
+        let conn
         try {
-            const [ketqua] = await execute(`
+            onn = await beginTransaction();
+            const [ketqua] = await conn.query(`
                 SELECT dh.TEN_NGUOINHAN,
                        dh.SDT_NGUOINHAN,
                        dh.DIACHI_GIAOHANG,
@@ -392,13 +396,14 @@ export default class DonHangModel{
                 WHERE dh.IDDH = ?;
             `,[iddh]);
             if(ketqua.length === 0){
+                await rollbackTransaction(conn);
                 return { 
                     ThanhCong:false, 
                     message:'Không tìm thấy đơn hàng!' 
                 };
             }
             // LẤY THÔNG TIN SẢN PHÂM
-            const [sanpham] = await execute(`
+            const [sanpham] = await conn.query(`
                 SELECT sp.TENSANPHAM,
                         sp.IDSANPHAM,
                        ct.SOLUONG,
@@ -414,17 +419,33 @@ export default class DonHangModel{
                 )
                 WHERE ct.IDDH = ?;
             `,[iddh]);
-            // lấy TRANGTHAI DONHANG 
-            const [trangthai] = await execute(`
+            if(sanpham.length===0){
+                await rollbackTransaction(conn);
+                return {
+                    ThanhCong:false,
+                    message: 'Lỗi sãy ra khi tải danh sách sản phẩm!'
+                }
+            }
+            const [trangthai] = await conn.query(`
                 SELECT TRANGTHAI
                 FROM hoadon_banhang
                 WHERE IDDH = ?;
             `,[iddh]);
+            if(trangthai.length===0){
+                await rollbackTransaction(conn);
+                return {
+                    ThanhCong:false,
+                    message : 'Lỗi sãy ra khi tải thông tin đoen hàng!'
+                }
+            }
+            //lây thông tin thanh toán
+
+            await commitTransaction(conn);
             return { 
                 ThanhCong:true, 
                 ThongTin_KhachHang: ketqua[0],
                 ThongTin_SanPham: sanpham,
-                TrangThai: trangthai.length > 0 ? trangthai[0].TRANGTHAI : null
+                TrangThai:trangthai[0].TRANGTHAI
             };
         } catch (error) {
             console.error('Có lỗi xảy ra:' + error);

@@ -66,17 +66,19 @@ export default class MaGiamGiaModel{
             const IDTHUONGHIEU = ketqua.map(item => item.IDTHUONGHIEU);
             const placeholders2 = IDTHUONGHIEU.map(() => '?').join(',');
             const [ketqua2] = await execute(`
-                SELECT mgg.MaGG, mgg.TENCHUONGTRINH, mgg.MAGIAMGIA, mgg.LOAIGIAM, mgg.GIATRIGIAM, mgg.GIATRIDON, mgg.SOLUONG, mgg.DADUNG, mgg.NGAYKETTHUC ,mgg.TRANGTHAI,
+                SELECT mgg.MaGG, mgg.TENCHUONGTRINH, mgg.MAGIAMGIA, mgg.LOAIGIAM, mgg.GIATRIGIAM, mgg.GIATRIDON, mgg.SOLUONG, mgg.DADUNG, mgg.NGAYKETTHUC, mgg.TRANGTHAI,
                 (
-                 SELECT COUNT(ct.IDCT_MGG)
-                 FROM chitiet_magiamgia ct
-                 WHERE mgg.MaGG=ct.IDMAGG 
-                ) AS SOLUONG_DADUNG,
+                    SELECT COUNT(ct.IDCT_MGG)
+                    FROM chitiet_magiamgia ct
+                    WHERE mgg.MaGG = ct.IDMAGG
+                ) AS SOLUONG_DADUNG
                 FROM magiamgia mgg
-                WHERE IDTHUONGHIEU IN (${placeholders2}) AND TRANGTHAI = 1 AND NGAYBATDAU <= NOW() AND NGAYKETTHUC >= NOW()
+                WHERE IDTHUONGHIEU IN (${placeholders2}) 
+                AND TRANGTHAI = 1 
+                AND NGAYBATDAU <= NOW() 
+                AND NGAYKETTHUC >= NOW()
             `,IDTHUONGHIEU);
             const MaGG = ketqua2.map(item => item.MaGG);
-        
             return {
                 ThanhCong: true,
                 dulieu: ketqua2
