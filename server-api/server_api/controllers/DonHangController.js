@@ -485,5 +485,53 @@ export default class DonHangController{
         });
         }
     }
+    static async ThemDonHang_Tam(req,res){
+        const DuLieu = req.body;
+        try {
+            const ketqua = await DonHangModel.ThemDonHang_Tam(DuLieu);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    IDDH:ketqua.IDDH,
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message,
+                    IDDH: null
+                })
+             }
+        } catch (error) {
+             console.error("Lỗi Server:", error);
+        return res.json({
+            ThanhCong: false,
+            message: 'Máy chủ bận, vui lòng thử lại sau!'
+        });
+    }
+    }
+    static async HuyDonTam_NguoiDung(req,res){
+        const DuLieu = req.body;
+        try {
+            const ketqua = await DonHangModel.HuyDonTam_NguoiDung(DuLieu);
+            if(ketqua.ThanhCong){
+                return res.json({
+                    ThanhCong:true,
+                    message:ketqua.message,
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:ketqua.message,
+                })
+             }
+        } catch (error) {
+             console.error("Lỗi Server:", error);
+        return res.json({
+            ThanhCong: false,
+            message: 'Máy chủ bận, vui lòng thử lại sau!'
+            });
+        }
+    }
+    
 }
     

@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import { randomUUID, randomBytes } from 'crypto';
 import { hash, compare } from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import NodeGeocoder from 'node-geocoder';
@@ -20,10 +20,9 @@ export const generateToken = (user) => {
     );
     }
 export const TaoID = (bien) => {
-    const prefix = bien.toString().slice(0, 2);
-    const timePart = Date.now().toString().slice(-4);
-    const randomPart = crypto.randomBytes(2).toString('hex').toUpperCase();
-    return `${prefix}-${timePart}-${randomPart}`;
+  const prefix = bien.toString().slice(0, 2);
+  const randomPart = randomBytes(6).toString('hex').toUpperCase(); // 12 ký tự hex
+  return `${prefix}-${Date.now()}-${randomPart}`;
 };
 
 export function mapFilesByProduct(files) {

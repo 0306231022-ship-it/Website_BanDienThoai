@@ -1,21 +1,55 @@
 import React, { useState , useEffect } from 'react';
 import * as API from '../../../JS/API/API';
-import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
+import { LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 import MuaSanPham from '../../../hook/MuaSanPham';
 const ThongTinDonHang = ({DuLieu}) => {
-  const {layDiaChi , SanPham , setSanPham } = MuaSanPham();
-    useEffect(()=>{
-        layDiaChi();
-    },[layDiaChi]);
+const {layDiaChi , SanPham , setSanPham ,  
+      layDonHang_GioHang , ThemDonHang_Tam , 
+      HuyDonHang_Tam , DonHang_MuaNgay  } = MuaSanPham();
+  const { ThongTinDatDon } = useThongTinDonHang();
+  const { OpenMoDal } = useModalContext();
+  // Lấy địa chỉ khi component mount
+// Chỉ gọi một lần khi component mount
+useEffect(() => {
+  layDiaChi();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+// Chỉ chạy khi trạng thái thay đổi
+useEffect(() => {
+  if (DuLieu.TrangThai === 1) {
+    layDonHang_GioHang();
+  } else if (DuLieu.TrangThai === 2) {
+    DonHang_MuaNgay(DuLieu);
+    ThemDonHang_Tam();
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [DuLieu.TrangThai ]);
+
+  
+
+/*// Xử lý đơn hàng khi trạng thái thay đổi
+useEffect(() => {
+    if (DuLieu.TrangThai === 2) {
+        DonHang_MuaNgay(DuLieu);
+        ThemDonHang_Tam();
+    }
+}, [DuLieu, DonHang_MuaNgay, ThemDonHang_Tam]);
+
+// Luôn cập nhật giỏ hàng khi địa chỉ thay đổi
+useEffect(() => {
+    
+}, [layDiaChi, layDonHang_GioHang]);*/
+
 
   //Đã đước fix phía tên
   
-  const { ThongTinDatDon, setThongTinDatDon } = useThongTinDonHang();
-  const { OpenMoDal } = useModalContext();
+  
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [ThongTinNguoiDung, setThongTinNguoiDung] = useState(null);
@@ -37,13 +71,12 @@ useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => prev - 1);
     }, 1000);
-
     return () => clearInterval(timer); // Clear để tránh tràn bộ nhớ
   } else if (timeLeft === 0) {
-    // Xử lý khi hết thời gian (Ví dụ: thông báo hoặc quay lại giỏ hàng)
+    HuyDonHang_Tam();
     ThongBao.ThongBao_Loi("Thời gian giữ đơn hàng đã hết!");
   }
-}, [timeLeft, DuLieu.TrangThai]);
+}, [timeLeft, DuLieu.TrangThai, HuyDonHang_Tam]);
 
 // 3. Hàm format hiển thị mm:ss
 const formatTime = (seconds) => {
@@ -78,7 +111,7 @@ const formatTime = (seconds) => {
             switch(DuLieu.TrangThai){
              
               case 2 :
-                 setSanPham(DuLieu.dulieu);
+                
                    const dsThuongHieu = DuLieu?.dulieu.map(sp => sp.IDTHUONGHIEU);
                    try {
                     const responseMaGiamGia = await API.CallAPI(undefined, {PhuongThuc: 2, url: `/NguoiDung/LayMaGiamGia_idth?data=${dsThuongHieu}`});

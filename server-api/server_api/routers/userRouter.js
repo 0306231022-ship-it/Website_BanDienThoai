@@ -19,6 +19,8 @@ NguoiDungRoute.post('/ChinhSuaDiaChi',upload.none(), CanhanADController.ChinhSua
 NguoiDungRoute.post('/ThemGioHang',upload.none(), DonHangController.ThemGioHang_NguoiDung);
 NguoiDungRoute.post('/MuaHang',upload.none(), DonHangController.MuaHang_NguoiDung);
 NguoiDungRoute.post('/HuyDon_NguoiDung' , upload.none(), DonHangController.HuyDon_NguoiDung);
+NguoiDungRoute.post('/ThemDonHang_Tam', upload.none(), DonHangController.ThemDonHang_Tam);
+NguoiDungRoute.post('/HuyDonTam_NguoiDung', upload.none(), DonHangController.HuyDonTam_NguoiDung);
 //xử lí mã giảm giá
 NguoiDungRoute.post('/ApMa_GiamGia', upload.none(), MaGiamGiaController.ThemMaGiamGia_NguoiDung);
 //=========================================

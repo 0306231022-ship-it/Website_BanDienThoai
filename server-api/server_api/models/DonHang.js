@@ -693,4 +693,119 @@ export default class DonHangModel{
             };
         }
     }
+    static async ThemDonHang_Tam(DuLieu){
+        let conn;
+        try {
+             conn = await beginTransaction();
+             const IDDH = TaoID('DH');
+            const [Them_DonHang] = await conn.query(`
+                INSERT INTO donhang (IDDH, IDKH, NGAYDAT, TONGTIEN , TRANGTHAI)
+                VALUES (?, ?, NOW()+INTERVAL 15 MINUTE, ?,?)
+                `,[IDDH,DuLieu.IDND,DuLieu.SoLuong*DuLieu.GiaSanPham,2]);
+            if(Them_DonHang.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return { 
+                    ThanhCong:false, 
+                    message:'Thêm đơn hàng tạm thất bại!' 
+                };
+            }
+            const [them_dl_ct] = await conn.query(`
+                INSERT INTO chitiet_donhang (IDCT,IDDH,IDSANPHAM,SOLUONG,DONGIA,THANHTIEN)
+                VALUES (?, ?, ?, ?, ?, ?)
+                `,[TaoID('CT'),IDDH,DuLieu.IDSANPHAM,DuLieu.SoLuong,DuLieu.GiaSanPham,DuLieu.SoLuong*DuLieu.GiaSanPham]);
+            if(them_dl_ct.affectedRows===0){
+                 await rollbackTransaction(conn);
+                 return {
+                    ThanhCong:false,
+                    message:'Thêm đơn hàng tạm thất bại!'
+                 }
+            }
+             await commitTransaction(conn);
+            return { 
+                ThanhCong:true, 
+                iddh: IDDH, 
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            if(conn) await rollbackTransaction(conn);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+        }
+    }
+    static async XoaDonHang_Tam(IDDH, conn){
+        try {
+             const [xoa_chitiet] = await conn.query(`
+                DELETE FROM chitiet_donhang
+                WHERE IDDH = ?
+            `,[IDDH]);
+            if(xoa_chitiet.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return { 
+                    ThanhCong:false, 
+                    message:'Xóa đơn hàng tạm thất bại!' 
+                };
+            }
+            const kiemtra = await MaGiamGiaModel.KiemTra_MaGímGia(IDDH, conn);
+            if(kiemtra){
+                const xoa_mgg = await MaGiamGiaModel.XoaMa_IDDH(IDDH, conn);
+                if(!xoa_mgg){
+                    await rollbackTransaction(conn);
+                    return {
+                        ThanhCong:false,
+                        message:'Xóa đơn hàng tạm thất bại!'
+                    }
+                }
+            }
+             const [xoa_donhang] = await conn.query(`
+                DELETE FROM donhang
+                WHERE IDDH = ?
+            `,[IDDH]);
+            if(xoa_donhang.affectedRows === 0){
+                await rollbackTransaction(conn);
+                return {
+                    ThanhCong:false,
+                    message:'Xóa đơn hàng tạm thất bại!'
+                }
+            }
+             await commitTransaction(conn);
+            return { 
+                ThanhCong:true, 
+                message:'Đơn hàng đã hết hạn và đã được xóa!'
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            if(conn) await rollbackTransaction(conn);
+            return { 
+                ThanhCong:false, 
+                message:'Lỗi khi truy vấn dữ liệu!' 
+            };
+        }
+    }
+    static async XoaDonHang_Tam_HetHan(){
+        let conn;
+        try {
+             conn = await beginTransaction();
+             const [donhang] = await conn.query(`
+                SELECT IDDH
+                FROM donhang
+                WHERE TRANGTHAI = 2 AND NGAYDAT < NOW()
+            `);
+           const tasks = donhang.map(row => this.XoaDonHang_Tam(row.IDDH, conn));
+            await Promise.all(tasks);
+            await commitTransaction(conn);
+            return {
+                ThanhCong:true,
+                message:'Đơn hàng đã hết hạn và đã được xóa!'
+            };
+        } catch (error) {
+            console.error('Có lỗi xảy ra:' + error);
+            if(conn) await rollbackTransaction(conn);
+            return {
+                ThanhCong:false,
+                message:'Lỗi khi truy vấn dữ liệu!'
+            };
+        }
+    }
 }

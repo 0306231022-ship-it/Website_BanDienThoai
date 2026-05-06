@@ -157,9 +157,9 @@ export default class MaGiamGiaModel{
             return false
         }
     }
-    static async XoaMa_IDDH(iddh) {
+    static async XoaMa_IDDH(iddh, conn) {
         try {
-            const [Xoa_Ma] = await execute(`
+            const [Xoa_Ma] = await conn.query(`
                 DELETE FROM chitiet_magiamgia
                 WHERE IDDH = ?
                 `,[iddh]);
@@ -170,14 +170,14 @@ export default class MaGiamGiaModel{
         }
     }
     // Hàm kiểm tra xem đơn hangf đã được áp mã giảm giá hay chưa
-    static async KiemTra_MaGímGia(iddh){
+    static async KiemTra_MaGímGia(iddh , conn){
         try {
-            const [KiemTra] = await execute(`
+            const [KiemTra] = await conn.query(`
                 SELECT IDCT_MGG
                 FROM chitiet_magiamgia
                 WHERE IDDH = ?
                 `,[iddh]);
-            return KiemTra.length> 0 ? true : false
+            return KiemTra.length > 0 ? true : false;
         } catch (error) {
             console.error('Có lỗi sãy ra:' + error);
             return false;
