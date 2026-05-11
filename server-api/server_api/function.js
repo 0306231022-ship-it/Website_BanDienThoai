@@ -20,10 +20,12 @@ export const generateToken = (user) => {
     );
     }
 export const TaoID = (bien) => {
-  const prefix = bien.toString().slice(0, 2);
-  const randomPart = randomBytes(6).toString('hex').toUpperCase(); // 12 ký tự hex
-  return `${prefix}-${Date.now()}-${randomPart}`;
-};
+  const prefix = bien.toString().slice(0, 2).toUpperCase();
+  const timePart = Date.now().toString(36).toUpperCase();
+  const randomPart = randomBytes(4).toString('hex').toUpperCase(); // 8 ký tự hex
+  return `${prefix}-${timePart}-${randomPart}`;
+}
+;
 
 export function mapFilesByProduct(files) {
     if (!Array.isArray(files)) return [];

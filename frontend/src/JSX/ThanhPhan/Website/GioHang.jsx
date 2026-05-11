@@ -65,9 +65,10 @@ function GioHang() {
         if (!XacNhan) return;
         const loggedIn = await KiemTra();
         if (loggedIn) {
+            const userInfo = await LayThongTinNguoiDung();
             try {
                 const ketqua = await API.CallAPI(undefined, {
-                    url: `/NguoiDung/Xoa_GioHang?data=${encodeURIComponent(JSON.stringify([{ IDSANPHAM: id, IDDH: sanPhamRef.current.find(item => item.IDSANPHAM === id)?.IDDH }]))}`,
+                    url: `/NguoiDung/Xoa_GioHang?data=${encodeURIComponent(JSON.stringify([{ IDSANPHAM: id, IDND: userInfo.IDND, IDDH: sanPhamRef.current.find(item => item.IDSANPHAM === id)?.IDDH }]))}`,
                     PhuongThuc: 2
                 });
                 if (ketqua.ThanhCong) {

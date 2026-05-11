@@ -136,7 +136,7 @@ function DanhSachMa() {
                                     <td className="px-6 py-4">
                                         <span className="text-sm text-gray-700">
                                         {
-                                            ma.LOAI_GIAMGIA === 1 ? `${ma.GIATRIGIAM}%` : `${fun.formatCurrency(ma.GIATRIGIAM)}`
+                                            ma.LOAIGIAM === 1 ? `${ma.GIATRIGIAM}%` : `${fun.formatCurrency(ma.GIATRIGIAM)}`
                                         }
                                     </span></td>
                                     <td className="px-6 py-4"><span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">{ma.TENTHUONGHIEU}</span></td>
@@ -163,7 +163,6 @@ function DanhSachMa() {
                                 </tr>
                                     ))
                                  )}
-
                             </tbody>
                         </table>
 

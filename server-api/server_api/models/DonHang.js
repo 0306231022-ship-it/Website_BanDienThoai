@@ -721,6 +721,7 @@ export default class DonHangModel{
                  }
             }
              await commitTransaction(conn);
+             console.log('Đơn hàng tạm đã được tạo với IDDH:', IDDH);
             return { 
                 ThanhCong:true, 
                 iddh: IDDH, 

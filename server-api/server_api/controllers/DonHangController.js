@@ -4,6 +4,7 @@ import DonHangModel from '../models/DonHang.js';
 import SanPhamModel from '../models/SanPham.js';
 import MaGiamGiaModel from '../models/MaGiamGia.js';
 import CaiDatModel from '../models/CaiDatWebsite.js';
+import { io } from '../server.js';
 import { getDistance , getCoordinates , tinhPhiShip } from '../function.js';
 export default class DonHangController{
     static async ThemGioHang_NguoiDung(req,res){
@@ -25,6 +26,11 @@ export default class DonHangController{
             try {
                 const ketqua = await DonHangModel.ThemGioHang_NguoiDung(IDSANPHAM, SOLUONG, IDNGUOIDUNG , GIABAN);
                 if(ketqua.ThanhCong){
+                    const ketqua2 = await DonHangModel.SoLuong_GioHang_NguoiDung(IDNGUOIDUNG);
+                    if(ketqua2.ThanhCong){
+                        const SoLuong = ketqua2.dulieu;
+                        io.emit('capnhatsoluonggiohang', { idnd: IDNGUOIDUNG, soluong: SoLuong });
+                    }
                     return res.json({
                         ThanhCong:true,
                         message:ketqua.message
@@ -91,7 +97,7 @@ export default class DonHangController{
     static async Xoa_GioHang_NguoiDung(req,res){
            const dataString = req.query.data;
            const cartData = JSON.parse(dataString);
-           const { IDSANPHAM, IDDH } = cartData[0];
+           const { IDSANPHAM, IDDH , IDND } = cartData[0];
            const [kiemtr_iddh, kiemtra_idsp] = await Promise.all([
             DonHangModel.kiemtra_id_dh(IDDH),
             SanPhamModel.kiemtra_id_sp(IDSANPHAM)
@@ -111,6 +117,11 @@ export default class DonHangController{
              try {
                 const ketqua = await DonHangModel.Xoa_GioHang_NguoiDung(IDSANPHAM, IDDH);
                 if(ketqua.ThanhCong){
+                    const ketqua2 = await DonHangModel.SoLuong_GioHang_NguoiDung(IDND);
+                    if(ketqua2.ThanhCong){
+                        const SoLuong = ketqua2.dulieu;
+                        io.emit('capnhatsoluonggiohang', { idnd: cartData[0].IDND, soluong: SoLuong });
+                    }
                     return res.json({
                         ThanhCong:true,
                         message:ketqua.message

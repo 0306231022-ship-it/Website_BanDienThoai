@@ -243,5 +243,18 @@ export default class MaGiamGiaModel{
                 dulieu:[]
             }
         }
+    }
+    static async ChuyenTrangThai_MaGiamGia(){
+        try {
+            const [ketqua] = await execute(`
+                UPDATE magiamgia
+                SET TRANGTHAI = 0
+                WHERE NGAYKETTHUC < NOW() AND TRANGTHAI = 1
+            `);
+            return ketqua.affectedRows > 0 ? true : false;
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi chuyển trạng thái mã giảm giá:' + error);
+            return false;
+        }
     }   
 }

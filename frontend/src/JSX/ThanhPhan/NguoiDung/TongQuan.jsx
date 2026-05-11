@@ -1,11 +1,33 @@
+import { LayThongTinNguoiDung ,KiemTra} from '../../../hook/KiemTraDangNhap';
+import { useEffect , useState } from 'react';
+import {useNavigate } from 'react-router-dom';
+import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 function TongQuan(){
+  const [thongTinNguoiDung, setThongTinNguoiDung] = useState(null);
+  const navgate = useNavigate();
+
+  useEffect(() => {
+    const kiemTraDangNhap = async () => {
+      const isLoggedIn = await KiemTra();
+      if (isLoggedIn) {
+        const thongTinNguoiDung = await LayThongTinNguoiDung();
+        setThongTinNguoiDung(thongTinNguoiDung);
+      }else {
+        setThongTinNguoiDung(null);
+        navgate('/');
+        ThongBao.ThongBao_CanhBao("Vui lòng đăng nhập để truy cập trang này.");
+      }
+    };
+    kiemTraDangNhap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
     return(
         <div className="space-y-8">
   
   <div className="relative overflow-hidden bg-gradient-to-br from-teal-600 to-emerald-500 p-8 md:p-10 rounded-[2.5rem] text-white shadow-xl shadow-teal-100/50">
     <div className="relative z-10 max-w-xl">
       <h1 className="text-3xl md:text-4xl font-black mb-3 tracking-tight">
-        Chào mừng trở lại, <span className="text-teal-100 uppercase">A Phát</span>! 👋
+        Chào mừng trở lại, <span className="text-teal-100 uppercase">{thongTinNguoiDung?.HOTEN}</span>! 👋
       </h1>
       <p className="text-teal-50 text-lg font-medium leading-relaxed opacity-90">
         Hôm nay là một ngày tuyệt vời để kiểm tra các đơn hàng mới hoặc cập nhật hồ sơ cá nhân của bạn.

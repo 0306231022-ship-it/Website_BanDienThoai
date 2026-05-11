@@ -17,6 +17,12 @@ function MuaSanPham(){
                if(isLoggedIn){
                     const thongTinNguoiDung = await LayThongTinNguoiDung();
                     setThongTinNguoiDung(thongTinNguoiDung);
+                    setThongTinDatDon({
+                        ThongTin_KhachHang: {
+                            HoTen: thongTinNguoiDung.HOTEN,
+                            SDT: thongTinNguoiDung.SDT,
+                        }
+                    });
                     const DiaChiNguoiDung= await API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
                     if (!ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang) {
                         setThongTinDatDon({
@@ -58,6 +64,8 @@ function MuaSanPham(){
                 setIDDH(ketqua.IDDH);
            }else{
                 ThongBao.ThongBao_Loi(ketqua.message);
+                setIDDH(null);
+                CloseAllModals();
            }
         } catch (error) {
             console.error('lỗ sãy ra:', error);

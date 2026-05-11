@@ -6,6 +6,8 @@ import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 import {KiemTra  , LayThongTinNguoiDung  } from '../../../hook/KiemTraDangNhap';
 import MenuND from './MenuND';
 import {Lay_SoLuong_GioHang } from '../../../hook/ThongTinHienThi_Website';
+import { io } from 'socket.io-client';
+const socket = io('http://localhost:3001'); // Replace with your server URL
 function Menu() {
     const {GetTTwebsite,TTwebsite}= useAppContext();
     const { OpenMoDal } = useModalContext();
@@ -26,9 +28,17 @@ function Menu() {
                 }else{
                     setCartCount(0);
                 }
+                 socket.on('capnhatsoluonggiohang', (data) => {
+                 if (data.idnd === userInfo.IDND) {
+                    setCartCount(data.soluong||0);
+                }
+                });
             }
         }
         fetchData();
+         return () => {
+      socket.off('capnhatsoluonggiohang');
+    };
         //eslint-disable-next-line react-hooks/exhaustive-deps 
     },[Lay_SoLuong_GioHang]);
     // Hàm để lấy lời chào dựa trên thời gian hiện tại

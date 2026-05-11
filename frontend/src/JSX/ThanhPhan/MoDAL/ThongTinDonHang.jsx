@@ -12,39 +12,22 @@ const {layDiaChi , SanPham , setSanPham ,
       HuyDonHang_Tam , DonHang_MuaNgay  } = MuaSanPham();
   const { ThongTinDatDon } = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
-  // Lấy địa chỉ khi component mount
-// Chỉ gọi một lần khi component mount
 useEffect(() => {
   layDiaChi();
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
-
-// Chỉ chạy khi trạng thái thay đổi
 useEffect(() => {
-  if (DuLieu.TrangThai === 1) {
-    layDonHang_GioHang();
+  const fetch = async () => {
+    if (DuLieu.TrangThai === 1) {
+    await layDonHang_GioHang();
   } else if (DuLieu.TrangThai === 2) {
-    DonHang_MuaNgay(DuLieu);
-    ThemDonHang_Tam();
+    await DonHang_MuaNgay(DuLieu);
+    await ThemDonHang_Tam();
   }
+  }
+  fetch();
   // eslint-disable-next-line react-hooks/exhaustive-deps
 }, [DuLieu.TrangThai ]);
-
-  
-
-/*// Xử lý đơn hàng khi trạng thái thay đổi
-useEffect(() => {
-    if (DuLieu.TrangThai === 2) {
-        DonHang_MuaNgay(DuLieu);
-        ThemDonHang_Tam();
-    }
-}, [DuLieu, DonHang_MuaNgay, ThemDonHang_Tam]);
-
-// Luôn cập nhật giỏ hàng khi địa chỉ thay đổi
-useEffect(() => {
-    
-}, [layDiaChi, layDonHang_GioHang]);*/
-
 
   //Đã đước fix phía tên
   
