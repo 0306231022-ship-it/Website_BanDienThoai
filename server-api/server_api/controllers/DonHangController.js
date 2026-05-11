@@ -523,7 +523,7 @@ export default class DonHangController{
     static async HuyDonTam_NguoiDung(req,res){
         const DuLieu = req.body;
         try {
-            const ketqua = await DonHangModel.HuyDonTam_NguoiDung(DuLieu);
+            const ketqua = await DonHangModel.XoaDonHang_Tam(DuLieu.IDDH, undefined);
             if(ketqua.ThanhCong){
                 return res.json({
                     ThanhCong:true,

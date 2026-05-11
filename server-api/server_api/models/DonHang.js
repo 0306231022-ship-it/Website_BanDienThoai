@@ -735,8 +735,13 @@ export default class DonHangModel{
             };
         }
     }
-    static async XoaDonHang_Tam(IDDH, conn){
+    static async XoaDonHang_Tam(IDDH, conn = null){
+        let ownConn = false;
         try {
+            if(!conn){
+                conn = await beginTransaction();
+                ownConn = true;
+            }
              const [xoa_chitiet] = await conn.query(`
                 DELETE FROM chitiet_donhang
                 WHERE IDDH = ?
@@ -771,6 +776,9 @@ export default class DonHangModel{
                 }
             }
              await commitTransaction(conn);
+            if(ownConn) {
+                await commitTransaction(conn);
+            }
             return { 
                 ThanhCong:true, 
                 message:'Đơn hàng đã hết hạn và đã được xóa!'

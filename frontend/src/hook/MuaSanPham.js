@@ -61,7 +61,7 @@ function MuaSanPham(){
             const formData = fun.objectToFormData({ IDND: ThongTinNguoiDung.IDND, IDSP: SanPham[0].IDSANPHAM, SoLuong: 1 , GiaSanPham: SanPham[0].DONGIA });
             const ketqua = await API.CallAPI(formData, { url: `/NguoiDung/ThemDonHang_Tam`, PhuongThuc: 1 });
            if(ketqua.ThanhCong){
-                setIDDH(ketqua.IDDH);
+                setIDDH(ketqua.IDDH);        
            }else{
                 ThongBao.ThongBao_Loi(ketqua.message);
                 setIDDH(null);
