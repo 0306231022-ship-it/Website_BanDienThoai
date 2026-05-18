@@ -7,46 +7,33 @@ import * as ThongBao from '../JS/FUNCTONS/ThongBao';
 import { useModalContext } from "../CONTEXT/QuanLiModal";
 function MuaSanPham(){
     const [ThongTinNguoiDung, setThongTinNguoiDung] = useState({});
-    const { ThongTinDatDon, setThongTinDatDon , setIDDH } = useThongTinDonHang();
+    const { setThongTinKhachHang , setIDDH , setThongTinSanPham , ThongTinDatDon } = useThongTinDonHang();
     const [SanPham, setSanPham] = useState([]);
     const { CloseAllModals } = useModalContext();
     const layDiaChi= async () => {
         try {
-              const isLoggedIn = await KiemTra();
-               if(isLoggedIn){
-                    const thongTinNguoiDung = await LayThongTinNguoiDung();
-                    setThongTinNguoiDung(thongTinNguoiDung);
-                    setThongTinDatDon({
-                        ThongTin_KhachHang: {
-                            HoTen: thongTinNguoiDung.HOTEN,
-                            SDT: thongTinNguoiDung.SDT,
-                        }
-                    });
-                    const DiaChiNguoiDung= await API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
-                    if (!ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang) {
-                        setThongTinDatDon({
-                            ThongTin_KhachHang: {
-                                HoTen: ThongTinNguoiDung.HOTEN,
-                                SDT: ThongTinNguoiDung.SDT,
-                                DiaChi_GiaoHang: DiaChiNguoiDung.ThanhCong ? DiaChiNguoiDung.DuLieu[0].DIACHI : null,
-                            }
-                        });
-                    }
-               }
-
+            const isLoggedIn = await KiemTra();
+            if(isLoggedIn){
+                const thongTinNguoiDung = await LayThongTinNguoiDung();
+                setThongTinNguoiDung(thongTinNguoiDung);
+                const DiaChiNguoiDung= await API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
+                if (!ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang) {
+                    setThongTinKhachHang(thongTinNguoiDung.HOTEN, thongTinNguoiDung.SDT, DiaChiNguoiDung.ThanhCong ? DiaChiNguoiDung.DuLieu[0].DIACHI : null);
+                }
+            }
         } catch (error) {
-            console.error("Error adding product to cart:", error);
+            console.error("Error fetching user address:", error);
         }
-        
     }
+  
     const layDonHang_GioHang = async () => {
         try {
             const isLoggedIn = await KiemTra();
             if (isLoggedIn) {
                 const thongTinNguoiDung = await LayThongTinNguoiDung();
                 setThongTinNguoiDung(thongTinNguoiDung);
-                const response = await API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${ThongTinNguoiDung.IDND}`, PhuongThuc: 2 });
-                response.ThanhCong ? setSanPham(response.dulieu) : setSanPham([]);
+                const response = await API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
+                response.ThanhCong ? setThongTinSanPham(response.dulieu) : setThongTinSanPham([]);
             }   
         } catch (error) {
             console.error("Error adding product to cart:", error);
@@ -54,13 +41,13 @@ function MuaSanPham(){
     }
     const DonHang_MuaNgay = async (DuLieu) => {
          setSanPham(DuLieu.dulieu);
+         setThongTinSanPham(DuLieu.dulieu);
     }
 
     const HuyDonHang_Tam = async()=>{
         try {
              const formData = fun.objectToFormData({ IDDH: ThongTinDatDon?.IDDH , IDND: ThongTinNguoiDung.IDND });
              const ketqua = await API.CallAPI(formData, { url: `/NguoiDung/HuyDonTam_NguoiDung`, PhuongThuc: 1 });
-             alert(JSON.stringify(ThongTinDatDon?.IDDH));
             if(ketqua.ThanhCong){
                 setIDDH(null);
                 CloseAllModals();
@@ -72,6 +59,7 @@ function MuaSanPham(){
             console.error('lỗ sãy ra:', error);
         }
     }
+    
 
     return {layDiaChi, layDonHang_GioHang , SanPham , setSanPham , DonHang_MuaNgay , HuyDonHang_Tam}; 
     

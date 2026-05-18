@@ -8,18 +8,28 @@ export const useThongTinDonHang = create((set) => ({
       SDT: "",
       DiaChi_GiaoHang: "",
     },
+    SanPham: [],
   },
 
-  // Hàm cập nhật toàn bộ thông tin (cả IDDH và Khách hàng)
-  setThongTinDatDon: (updates) =>
+    // Hàm chuyên để cập nhật thông tin khách hàng
+  setThongTinKhachHang: (HoTen, SDT, DiaChi_GiaoHang) =>
     set((state) => ({
       ThongTinDatDon: {
         ...state.ThongTinDatDon,
-        ...(updates.IDDH !== undefined && { IDDH: updates.IDDH }),
         ThongTin_KhachHang: {
           ...state.ThongTinDatDon.ThongTin_KhachHang,
-          ...updates.ThongTin_KhachHang,
+          HoTen,
+          SDT,
+          DiaChi_GiaoHang,
         },
+      },
+    })),
+    // hàm cập nhật thông tin sản phẩm
+  setThongTinSanPham: (SanPham) =>
+    set((state) => ({
+      ThongTinDatDon: {
+        ...state.ThongTinDatDon,
+        SanPham,
       },
     })),
 
@@ -32,4 +42,5 @@ export const useThongTinDonHang = create((set) => ({
       },
     })),
 }));
+
 

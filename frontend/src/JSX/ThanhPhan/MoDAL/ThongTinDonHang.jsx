@@ -1,6 +1,5 @@
 import React, { useState, useEffect} from 'react';
 import * as API from '../../../JS/API/API';
-import { LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
@@ -8,8 +7,7 @@ import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 import MuaSanPham from '../../../hook/MuaSanPham';
 
 const ThongTinDonHang = ({ DuLieu }) => {
-  const { layDiaChi, SanPham, setSanPham,
-    layDonHang_GioHang, 
+  const { SanPham, setSanPham,
     HuyDonHang_Tam, DonHang_MuaNgay } = MuaSanPham();
   const { ThongTinDatDon } = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
@@ -28,38 +26,6 @@ const ThongTinDonHang = ({ DuLieu }) => {
   // Tính toán tiền (Logic)
   const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
   const GiaTriGiamVoucher = fun.tinhTongGiamGia(maGiamGia_NguoiDung, TongTien);
-
-  // Khởi tạo thông tin
-  useEffect(() => {
-    layDiaChi();
-    const fetchUser = async () => {
-      const user = await LayThongTinNguoiDung();
-      setThongTinNguoiDung(user);
-    };
-    fetchUser();
-  
-  }, [reload]);
-
-   useEffect(() => {
-    const load_DuLieu = async () => {
-      if (!DuLieu) {
-        ThongBao.ThongBao_CanhBao("Không tìm thấy thông tin đơn hàng.");
-        return;
-      }
-      switch (DuLieu.TrangThai) {
-        case 1:
-          await layDonHang_GioHang();
-          break;
-        case 2:
-          await DonHang_MuaNgay(DuLieu);
-          break;
-        default:
-          break;
-    };
-  }
-    load_DuLieu();
-    
-   },[DuLieu]);
 
   // Đếm ngược
   useEffect(() => {
@@ -259,8 +225,8 @@ const ThongTinDonHang = ({ DuLieu }) => {
               </div>
             </div>
           ) : (
-            SanPham.length > 0 ? (
-              SanPham.map((item, index) => (
+            ThongTinDatDon.SanPham.length > 0 ? (
+              ThongTinDatDon.SanPham.map((item, index) => (
                 <section key={index} className="space-y-4">
                   <div className="flex space-x-3 bg-white p-2 rounded-xl border border-gray-50 shadow-sm">
                     <div className="w-20 h-20 bg-gray-200 rounded-lg shrink-0 overflow-hidden">

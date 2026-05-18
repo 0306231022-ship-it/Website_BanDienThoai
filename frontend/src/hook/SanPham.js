@@ -3,9 +3,13 @@ import * as API from '../JS/API/API';
 import * as fun from '../JS/FUNCTONS/function';
 import { KiemTra, LayThongTinNguoiDung } from './KiemTraDangNhap';
 import { useModalContext } from "../CONTEXT/QuanLiModal";
+import { useThongTinDonHang } from '../REDUCER/QuanLiThongTinDatDon';
+import MuaSanPham from './MuaSanPham';
 
  export const useAddToCart = () => {
     const { OpenMoDal } = useModalContext();
+    const { setThongTinDatDon } = useThongTinDonHang();
+    const { layDiaChi , layDonHang_GioHang } = MuaSanPham();
     const handleAddToCart = async (productId, DonGia , quantity) => {
          if (!productId){
             ThongBao1.ThongBao_CanhBao("Không tìm thấy sản phẩm.");
@@ -55,6 +59,7 @@ import { useModalContext } from "../CONTEXT/QuanLiModal";
             OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
             return;
         }
+        await Promise.all([layDiaChi(), layDonHang_GioHang()]);
         OpenMoDal({TrangThai:1}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
     }
     //mua mua ngay sản phẩm 
