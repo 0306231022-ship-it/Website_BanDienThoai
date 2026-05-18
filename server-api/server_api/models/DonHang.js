@@ -652,7 +652,6 @@ export default class DonHangModel{
                     message:'Mua sản phẩm thất bại!'
                  }
             }
-
               const [capnhat_kho] = await conn.query(`
                     UPDATE chitiet_phieunhap
                     SET SOLUONG = SOLUONG - ?
@@ -693,49 +692,51 @@ export default class DonHangModel{
             };
         }
     }
-    static async ThemDonHang_Tam(DuLieu){
-        let conn;
-        try {
-             conn = await beginTransaction();
-             const IDDH = TaoID('DH');
-            const [Them_DonHang] = await conn.query(`
-                INSERT INTO donhang (IDDH, IDKH, NGAYDAT, TONGTIEN , TRANGTHAI)
-                VALUES (?, ?, NOW()+INTERVAL 15 MINUTE, ?,?)
-                `,[IDDH,DuLieu.IDND,DuLieu.SoLuong*DuLieu.GiaSanPham,2]);
-            if(Them_DonHang.affectedRows === 0){
-                await rollbackTransaction(conn);
-                return { 
-                    ThanhCong:false, 
-                    message:'Thêm đơn hàng tạm thất bại!' 
-                };
-            }
-            const [them_dl_ct] = await conn.query(`
-                INSERT INTO chitiet_donhang (IDCT,IDDH,IDSANPHAM,SOLUONG,DONGIA,THANHTIEN)
-                VALUES (?, ?, ?, ?, ?, ?)
-                `,[TaoID('CT'),IDDH,DuLieu.IDSANPHAM,DuLieu.SoLuong,DuLieu.GiaSanPham,DuLieu.SoLuong*DuLieu.GiaSanPham]);
-            if(them_dl_ct.affectedRows===0){
-                 await rollbackTransaction(conn);
-                 return {
-                    ThanhCong:false,
-                    message:'Thêm đơn hàng tạm thất bại!'
-                 }
-            }
-             await commitTransaction(conn);
-             console.log('Đơn hàng tạm đã được tạo với IDDH:', IDDH);
+ static async ThemDonHang_Tam(DuLieu) {
+    let conn;
+    try {
+        conn = await beginTransaction();
+        const IDDH = TaoID('DH');
+        const tongTien = DuLieu.SoLuong * DuLieu.GiaSanPham;
+        const [Them_DonHang] = await conn.query(`
+            INSERT INTO donhang (IDDH, IDKH, NGAYDAT, TONGTIEN, TRANGTHAI)
+            VALUES (?, ?, NOW() + INTERVAL 15 MINUTE, ?, ?)
+        `, [IDDH, DuLieu.IDND, tongTien, 2]);
+        if (Them_DonHang.affectedRows === 0) {
+            await rollbackTransaction(conn);
             return { 
-                ThanhCong:true, 
-                iddh: IDDH, 
-            };
-        } catch (error) {
-            console.error('Có lỗi xảy ra:' + error);
-            if(conn) await rollbackTransaction(conn);
-            return { 
-                ThanhCong:false, 
-                message:'Lỗi khi truy vấn dữ liệu!' 
+                ThanhCong: false, 
+                message: 'Thêm đơn hàng tạm thất bại!' 
             };
         }
+        const IDCT = TaoID('CT');
+        const thanhTien = DuLieu.SoLuong * DuLieu.GiaSanPham;
+        const [them_dl_ct] = await conn.query(`
+            INSERT INTO chitiet_donhang (IDCT, IDDH, IDSANPHAM, SOLUONG, DONGIA, THANHTIEN)
+            VALUES (?, ?, ?, ?, ?, ?)
+        `, [IDCT, IDDH, DuLieu.IDSP, DuLieu.SoLuong, DuLieu.GiaSanPham, thanhTien]);
+        if (them_dl_ct.affectedRows === 0) {
+            await rollbackTransaction(conn);
+            return { ThanhCong: false, message: 'Thêm chi tiết đơn hàng thất bại!' };
+        }
+        await commitTransaction(conn);
+        return { 
+            ThanhCong: true, 
+            iddh: IDDH 
+        };
+
+    } catch (error) {
+        console.error('Có lỗi xảy ra:', error.sqlMessage || error.message || error.stack);
+        if (conn) await rollbackTransaction(conn);
+        return { 
+            ThanhCong: false, 
+            message: 'Lỗi khi truy vấn dữ liệu!' 
+        };
     }
+}
+
     static async XoaDonHang_Tam(IDDH, conn = null){
+        console.log('Xóa đơn hàng tạm với IDDH:', IDDH);
         let ownConn = false;
         try {
             if(!conn){
@@ -750,7 +751,7 @@ export default class DonHangModel{
                 await rollbackTransaction(conn);
                 return { 
                     ThanhCong:false, 
-                    message:'Xóa đơn hàng tạm thất bại!' 
+                    message:'Xóa đơn hàng tạm thất bại! aaa' 
                 };
             }
             const kiemtra = await MaGiamGiaModel.KiemTra_MaGímGia(IDDH, conn);

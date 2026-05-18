@@ -21,11 +21,11 @@ export const generateToken = (user) => {
     }
 export const TaoID = (bien) => {
   const prefix = bien.toString().slice(0, 2).toUpperCase();
-  const timePart = Date.now().toString(36).toUpperCase();
-  const randomPart = randomBytes(4).toString('hex').toUpperCase(); // 8 ký tự hex
-  return `${prefix}-${timePart}-${randomPart}`;
-}
-;
+  const timePart = Date.now().toString(36).toUpperCase().slice(-4); // lấy 4 ký tự cuối
+  const randomPart = randomBytes(4).toString('hex').toUpperCase().slice(0,2); // lấy 4 ký tự đầu
+  return `${prefix}-${timePart}-${randomPart}`; // tổng cộng ~ 10 ký tự
+};
+
 
 export function mapFilesByProduct(files) {
     if (!Array.isArray(files)) return [];

@@ -498,12 +498,18 @@ export default class DonHangController{
     }
     static async ThemDonHang_Tam(req,res){
         const DuLieu = req.body;
+        if(!DuLieu){
+            return res.json({
+                ThanhCong:false,
+                message:'Vui lòng kiểm tra lại thông tin đơn hàng!'
+             })
+        }
         try {
             const ketqua = await DonHangModel.ThemDonHang_Tam(DuLieu);
             if(ketqua.ThanhCong){
                 return res.json({
                     ThanhCong:true,
-                    IDDH:ketqua.IDDH,
+                    IDDH:ketqua.iddh,
                 })
             }else{
                 return res.json({
@@ -522,6 +528,12 @@ export default class DonHangController{
     }
     static async HuyDonTam_NguoiDung(req,res){
         const DuLieu = req.body;
+        if(!DuLieu){
+            return res.json({
+                ThanhCong:false,
+                message:'Vui lòng kiểm tra lại thông tin đơn hàng!'
+             })
+        }
         try {
             const ketqua = await DonHangModel.XoaDonHang_Tam(DuLieu.IDDH, undefined);
             if(ketqua.ThanhCong){

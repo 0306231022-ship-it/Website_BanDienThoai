@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import * as API from '../../../JS/API/API';
 import { LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
@@ -9,12 +9,10 @@ import MuaSanPham from '../../../hook/MuaSanPham';
 
 const ThongTinDonHang = ({ DuLieu }) => {
   const { layDiaChi, SanPham, setSanPham,
-    layDonHang_GioHang, ThemDonHang_Tam,
+    layDonHang_GioHang, 
     HuyDonHang_Tam, DonHang_MuaNgay } = MuaSanPham();
   const { ThongTinDatDon } = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
-
-  // State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [ThongTinNguoiDung, setThongTinNguoiDung] = useState(null);
@@ -23,8 +21,9 @@ const ThongTinDonHang = ({ DuLieu }) => {
   const [maGiamGia, setMGG] = useState([]); // Danh sách mã có thể chọn
   const [maGiamGia_NguoiDung, setMGG_NguoiDung] = useState([]); // Mã đã áp dụng
   const [PhiVanChuyen, setPhiVanChuyen] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(30);
+  const [timeLeft, setTimeLeft] = useState(5);
   const [input_diachi, setinput_diachi] = useState(false);
+  const [TaoDon, setTaoDon] = useState(false);
 
   // Tính toán tiền (Logic)
   const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
@@ -38,21 +37,29 @@ const ThongTinDonHang = ({ DuLieu }) => {
       setThongTinNguoiDung(user);
     };
     fetchUser();
+  
   }, [reload]);
 
-  useEffect(() => {
-    switch (Number(DuLieu.TrangThai)) {
-      case 1:
-        layDonHang_GioHang();
-        break;
-      case 2:
-        DonHang_MuaNgay(DuLieu);
-        ThemDonHang_Tam();
-        break;
-      default:
-        break;
-    }
-  }, [DuLieu.TrangThai]);
+   useEffect(() => {
+    const load_DuLieu = async () => {
+      if (!DuLieu) {
+        ThongBao.ThongBao_CanhBao("Không tìm thấy thông tin đơn hàng.");
+        return;
+      }
+      switch (DuLieu.TrangThai) {
+        case 1:
+          await layDonHang_GioHang();
+          break;
+        case 2:
+          await DonHang_MuaNgay(DuLieu);
+          break;
+        default:
+          break;
+    };
+  }
+    load_DuLieu();
+    
+   },[DuLieu]);
 
   // Đếm ngược
   useEffect(() => {

@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import SanPhamMoi from "./SanPhamMoi";
 import { useAddToCart  } from '../../../hook/SanPham';
 import * as ThongBao1 from '../../../JS/FUNCTONS/ThongBao';
+import { KiemTra, LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
+import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 const SanPhamTrangChu = () => {
     const [ThuongHieu, setThuongHieu] = useState([]);
     const [loading, setloading] = useState(false);
@@ -12,6 +14,7 @@ const SanPhamTrangChu = () => {
     const [flashSaleProducts, setFlashSaleProducts] = useState([]);
     const [timeLeft, setTimeLeft] = useState({ hours: '00', minutes: '00', seconds: '00' });
     const { MuaSP  } = useAddToCart();
+    const {  setThongTinDatDon , setIDDH } = useThongTinDonHang();
 
     // --- 1. LOGIC ĐẾM NGƯỢC ---
     useEffect(() => {
@@ -89,7 +92,23 @@ const SanPhamTrangChu = () => {
                 }
             ]
         }
-         MuaSP(dl);
+        // thêm đơn hàng tạm 
+        try {
+            const isLoggedIn = await KiemTra();
+            if (isLoggedIn) {
+                const thongTinNguoiDung = await LayThongTinNguoiDung();
+                const formData = fun.objectToFormData({ IDND: thongTinNguoiDung.IDND, IDSP: SanPham.IDSANPHAM, SoLuong: 1 , GiaSanPham: SanPham.GIAFLASHSALE });
+                const ketqua = await API.CallAPI(formData, { url: `/NguoiDung/ThemDonHang_Tam`, PhuongThuc: 1 });
+                alert(JSON.stringify(ketqua));
+                if(ketqua.ThanhCong){
+                    setIDDH(ketqua.IDDH);
+                     MuaSP(dl);
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi khi thêm đơn hàng tạm:', error);
+        }
+        
     }
 
     return (

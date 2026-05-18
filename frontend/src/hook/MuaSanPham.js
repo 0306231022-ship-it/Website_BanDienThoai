@@ -7,9 +7,8 @@ import * as ThongBao from '../JS/FUNCTONS/ThongBao';
 import { useModalContext } from "../CONTEXT/QuanLiModal";
 function MuaSanPham(){
     const [ThongTinNguoiDung, setThongTinNguoiDung] = useState({});
-    const { ThongTinDatDon, setThongTinDatDon } = useThongTinDonHang();
+    const { ThongTinDatDon, setThongTinDatDon , setIDDH } = useThongTinDonHang();
     const [SanPham, setSanPham] = useState([]);
-    const [IDDH, setIDDH] = useState(null);
     const { CloseAllModals } = useModalContext();
     const layDiaChi= async () => {
         try {
@@ -56,28 +55,16 @@ function MuaSanPham(){
     const DonHang_MuaNgay = async (DuLieu) => {
          setSanPham(DuLieu.dulieu);
     }
-    const ThemDonHang_Tam = async()=>{
-       try {
-            const formData = fun.objectToFormData({ IDND: ThongTinNguoiDung.IDND, IDSP: SanPham[0].IDSANPHAM, SoLuong: 1 , GiaSanPham: SanPham[0].DONGIA });
-            const ketqua = await API.CallAPI(formData, { url: `/NguoiDung/ThemDonHang_Tam`, PhuongThuc: 1 });
-           if(ketqua.ThanhCong){
-                setIDDH(ketqua.IDDH);        
-           }else{
-                ThongBao.ThongBao_Loi(ketqua.message);
-                setIDDH(null);
-                CloseAllModals();
-           }
-        } catch (error) {
-            console.error('lỗ sãy ra:', error);
-        }
-    }
+
     const HuyDonHang_Tam = async()=>{
         try {
-             const formData = fun.objectToFormData({ IDDH: IDDH , IDND: ThongTinNguoiDung.IDND });
+             const formData = fun.objectToFormData({ IDDH: ThongTinDatDon?.IDDH , IDND: ThongTinNguoiDung.IDND });
              const ketqua = await API.CallAPI(formData, { url: `/NguoiDung/HuyDonTam_NguoiDung`, PhuongThuc: 1 });
+             alert(JSON.stringify(ThongTinDatDon?.IDDH));
             if(ketqua.ThanhCong){
                 setIDDH(null);
                 CloseAllModals();
+                ThongBao.ThongBao_ThongTin('Thông tin đơn hàng đã hủy!');
             }else{
                 ThongBao.ThongBao_Loi(ketqua.message);
             }
@@ -86,7 +73,7 @@ function MuaSanPham(){
         }
     }
 
-    return {layDiaChi, layDonHang_GioHang , SanPham , setSanPham , DonHang_MuaNgay , ThemDonHang_Tam, HuyDonHang_Tam}; 
+    return {layDiaChi, layDonHang_GioHang , SanPham , setSanPham , DonHang_MuaNgay , HuyDonHang_Tam}; 
     
     // load đơn hàng
     /*const LoadDH= async()=>{
