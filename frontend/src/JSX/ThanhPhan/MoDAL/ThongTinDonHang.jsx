@@ -7,25 +7,26 @@ import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 import MuaSanPham from '../../../hook/MuaSanPham';
 
 const ThongTinDonHang = ({ DuLieu }) => {
-  const { SanPham, setSanPham,
-    HuyDonHang_Tam, DonHang_MuaNgay } = MuaSanPham();
-  const { ThongTinDatDon } = useThongTinDonHang();
+  const {HuyDonHang_Tam , dsMaGiamGia } = MuaSanPham();
+  const { ThongTinDatDon ,  setTongTien ,  setThongTinSanPham } = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setloading] = useState(false);
   const [ThongTinNguoiDung, setThongTinNguoiDung] = useState(null);
   const [DiaChi, setDiaChi] = useState('');
   const [reload, setreload] = useState(false);
-  const [maGiamGia, setMGG] = useState([]); // Danh sách mã có thể chọn
   const [maGiamGia_NguoiDung, setMGG_NguoiDung] = useState([]); // Mã đã áp dụng
   const [PhiVanChuyen, setPhiVanChuyen] = useState(0);
   const [timeLeft, setTimeLeft] = useState(5);
   const [input_diachi, setinput_diachi] = useState(false);
-  const [TaoDon, setTaoDon] = useState(false);
 
   // Tính toán tiền (Logic)
-  const TongTien = SanPham.reduce((tong, item) => tong + item.DONGIA * item.SOLUONG, 0);
-  const GiaTriGiamVoucher = fun.tinhTongGiamGia(maGiamGia_NguoiDung, TongTien);
+  const tongTien = ThongTinDatDon.SanPham.reduce((tong, item) => tong + Number(item.DONGIA) * Number(item.SOLUONG),0);
+  useEffect(() => {
+    setTongTien(tongTien);
+}, [setTongTien, tongTien, ThongTinDatDon.SanPham]);
+  const GiaTriGiamVoucher = fun.tinhTongGiamGia(maGiamGia_NguoiDung, tongTien);
+  //Chưa fix bên dưới
 
   // Đếm ngược
   useEffect(() => {
@@ -70,16 +71,16 @@ const ThongTinDonHang = ({ DuLieu }) => {
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   const TangSoLuong = (index) => {
-    const sanPhamCapNhat = [...SanPham];
+    const sanPhamCapNhat = [...ThongTinDatDon.SanPham];
     sanPhamCapNhat[index].SOLUONG += 1;
-    setSanPham(sanPhamCapNhat);
+    setThongTinSanPham(sanPhamCapNhat);
   };
 
   const GiamSoLuong = (index) => {
-    if (SanPham[index].SOLUONG > 1) {
-      const sanPhamCapNhat = [...SanPham];
+    if (ThongTinDatDon.SanPham[index].SOLUONG > 1) {
+      const sanPhamCapNhat = [...ThongTinDatDon.SanPham];
       sanPhamCapNhat[index].SOLUONG -= 1;
-      setSanPham(sanPhamCapNhat);
+       setThongTinSanPham(sanPhamCapNhat);
     }
   };
 
@@ -124,7 +125,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
         }
         break;
       case 2:
-        const selected = maGiamGia.filter(item => item.MaGG === id);
+        const selected = dsMaGiamGia.filter(item => item.MaGG === id);
         setMGG_NguoiDung(selected);
         ThongBao.ThongBao_ThanhCong('Áp dụng thành công!');
         break;
@@ -148,7 +149,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
       SOLUONG: DuLieu.dulieu[0].SOLUONG,
       IDMAGG: magg ? magg.MaGG : null,
       GIASP: DuLieu.dulieu[0].DONGIA || null,
-      TongHang: TongTien + (PhiVanChuyen > 0 ? PhiVanChuyen : 0) - GiaTriGiamVoucher,
+      TongHang: tongTien + (PhiVanChuyen > 0 ? PhiVanChuyen : 0) - GiaTriGiamVoucher,
       PhiVanChuyen: PhiVanChuyen,
       Ma: GiaTriGiamVoucher || 0,
       IDND: ThongTinNguoiDung.IDND,
@@ -279,7 +280,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
           <section className="space-y-2 pt-4 border-t">
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Tổng tiền hàng</span>
-              <span className="font-medium text-gray-800">{fun.formatCurrency(TongTien)}</span>
+              <span className="font-medium text-gray-800">{fun.formatCurrency(tongTien)}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Phí vận chuyển</span>
@@ -308,7 +309,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
           )}
           <div className="flex justify-end items-center mb-3 space-x-2">
             <span className="text-sm text-gray-600">Tổng thanh toán:</span>
-            <span className="text-xl font-bold text-orange-600">{fun.formatCurrency(TongTien + (PhiVanChuyen > 0 ? PhiVanChuyen : 0) - GiaTriGiamVoucher)}</span>
+            <span className="text-xl font-bold text-orange-600">{fun.formatCurrency(tongTien + (PhiVanChuyen > 0 ? PhiVanChuyen : 0) - GiaTriGiamVoucher)}</span>
           </div>
           <button
             onClick={DatHang}
@@ -347,8 +348,8 @@ const ThongTinDonHang = ({ DuLieu }) => {
                   </div>
                 </div>
               ) : (
-                maGiamGia.length > 0 ? (
-                  maGiamGia.map((item, index) => (
+                dsMaGiamGia.length > 0 ? (
+                  dsMaGiamGia.map((item, index) => (
                     <label key={index} className="flex border border-red-100 rounded-xl overflow-hidden relative cursor-pointer active:bg-red-50 transition-colors">
                       <div className="w-24 bg-red-500 flex flex-col items-center justify-center text-white p-2">
                         <i className="fas fa-percent text-2xl"></i>

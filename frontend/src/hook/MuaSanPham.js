@@ -8,8 +8,8 @@ import { useModalContext } from "../CONTEXT/QuanLiModal";
 function MuaSanPham(){
     const [ThongTinNguoiDung, setThongTinNguoiDung] = useState({});
     const { setThongTinKhachHang , setIDDH , setThongTinSanPham , ThongTinDatDon } = useThongTinDonHang();
-    const [SanPham, setSanPham] = useState([]);
     const { CloseAllModals } = useModalContext();
+    const [dsMaGiamGia, setDSMaGiamGia] = useState([]);
     const layDiaChi= async () => {
         try {
             const isLoggedIn = await KiemTra();
@@ -40,7 +40,6 @@ function MuaSanPham(){
         }
     }
     const DonHang_MuaNgay = async (DuLieu) => {
-         setSanPham(DuLieu.dulieu);
          setThongTinSanPham(DuLieu.dulieu);
     }
 
@@ -50,6 +49,8 @@ function MuaSanPham(){
              const ketqua = await API.CallAPI(formData, { url: `/NguoiDung/HuyDonTam_NguoiDung`, PhuongThuc: 1 });
             if(ketqua.ThanhCong){
                 setIDDH(null);
+                setThongTinSanPham([]);
+                setDSMaGiamGia([]);
                 CloseAllModals();
                 ThongBao.ThongBao_ThongTin('Thông tin đơn hàng đã hủy!');
             }else{
@@ -59,9 +60,26 @@ function MuaSanPham(){
             console.error('lỗ sãy ra:', error);
         }
     }
+    const LayMaGiamGia_gioHang = async()=>{
+        try {
+            const isLoggedIn = await KiemTra();
+            if (isLoggedIn) {
+                const thongTinNguoiDung = await LayThongTinNguoiDung();
+                setThongTinNguoiDung(thongTinNguoiDung);
+                const response = await API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
+                if(response.ThanhCong){
+                    setDSMaGiamGia(response.dulieu);
+                }else{
+                    setDSMaGiamGia([]);
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy mã giảm giá:', error);
+        }
+    }
     
 
-    return {layDiaChi, layDonHang_GioHang , SanPham , setSanPham , DonHang_MuaNgay , HuyDonHang_Tam}; 
+    return {layDiaChi, layDonHang_GioHang , DonHang_MuaNgay , HuyDonHang_Tam, LayMaGiamGia_gioHang ,dsMaGiamGia}; 
     
     // load đơn hàng
     /*const LoadDH= async()=>{
@@ -76,7 +94,6 @@ function MuaSanPham(){
                                 
                                 API.CallAPI(undefined,{ url :`/NguoiDung/ThongTinDonHang?idnd=${thongTinNguoiDung.IDND}` ,PhuongThuc:2} ),
                                 API.CallAPI(undefined,{url:`/NguoiDung/ApMaGiamGia_NguoiDung?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc:2}),
-                                API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 }),
                             ]);
                           
                             response4.ThanhCong ? setThongTin(response4.dulieu[0]) : ThongBao.ThongBao_Loi(response4.message);

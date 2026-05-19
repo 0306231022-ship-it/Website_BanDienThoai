@@ -9,6 +9,11 @@ export const useThongTinDonHang = create((set) => ({
       DiaChi_GiaoHang: "",
     },
     SanPham: [],
+    ThongTin_Gia:{
+      TongTien: 0,
+      PhiVanChuyen: 0,
+      GiamGia: 0,
+    }
   },
 
     // Hàm chuyên để cập nhật thông tin khách hàng
@@ -30,6 +35,40 @@ export const useThongTinDonHang = create((set) => ({
       ThongTinDatDon: {
         ...state.ThongTinDatDon,
         SanPham,
+      },
+    })),
+  
+    // hàm cập nhật thông tin phí vận chuyển
+  setPhiVanChuyen: (PhiVanChuyen) =>
+    set((state) => ({
+      ThongTinDatDon: {
+        ...state.ThongTinDatDon,
+        ThongTin_Gia: {
+          ...state.ThongTinDatDon.ThongTin_Gia,
+          PhiVanChuyen,
+        },
+      },
+    })),
+    // hàm cập nhật thông tin giảm giá
+  setGiamGia: (GiamGia) =>
+    set((state) => ({
+      ThongTinDatDon: {
+        ...state.ThongTinDatDon,
+        ThongTin_Gia: {
+          ...state.ThongTinDatDon.ThongTin_Gia,
+          GiamGia,
+        },
+      },
+    })),
+    // hàm cập nhật thông tin tổng tiền
+  setTongTien: (TongTien) =>
+    set((state) => ({
+      ThongTinDatDon: {
+        ...state.ThongTinDatDon,
+        ThongTin_Gia: {
+          ...state.ThongTinDatDon.ThongTin_Gia,
+          TongTien,
+        },
       },
     })),
 
