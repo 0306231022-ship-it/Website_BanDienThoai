@@ -37,6 +37,25 @@ export const useThongTinDonHang = create((set) => ({
         SanPham,
       },
     })),
+    // hàm reset thông tin đơn hàng
+  resetThongTinDonHang: () =>
+    set({
+      ThongTinDatDon: {
+        IDDH: null,
+        ThongTin_KhachHang: {
+          HoTen: "",
+          SDT: "",
+          DiaChi_GiaoHang: "",
+        },
+        SanPham: [],
+        ThongTin_Gia:{
+          TongTien: 0,
+          PhiVanChuyen: 0,
+          GiamGia: 0,
+        }
+      },
+    }),
+    
   
     // hàm cập nhật thông tin phí vận chuyển
   setPhiVanChuyen: (PhiVanChuyen) =>

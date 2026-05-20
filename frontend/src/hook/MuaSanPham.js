@@ -7,7 +7,7 @@ import * as ThongBao from '../JS/FUNCTONS/ThongBao';
 import { useModalContext } from "../CONTEXT/QuanLiModal";
 function MuaSanPham(){
     const [ThongTinNguoiDung, setThongTinNguoiDung] = useState({});
-    const { setThongTinKhachHang , setIDDH , setThongTinSanPham , ThongTinDatDon } = useThongTinDonHang();
+    const { setThongTinKhachHang , setThongTinSanPham , ThongTinDatDon , resetThongTinDonHang } = useThongTinDonHang();
     const { CloseAllModals } = useModalContext();
     const [dsMaGiamGia, setDSMaGiamGia] = useState([]);
     const layDiaChi= async () => {
@@ -44,13 +44,15 @@ function MuaSanPham(){
     }
 
     const HuyDonHang_Tam = async()=>{
+        if (!ThongTinDatDon?.IDDH) {
+            ThongBao.ThongBao_Loi('Không tìm thấy đơn hàng tạm để hủy!');
+            return;
+        }
         try {
              const formData = fun.objectToFormData({ IDDH: ThongTinDatDon?.IDDH , IDND: ThongTinNguoiDung.IDND });
              const ketqua = await API.CallAPI(formData, { url: `/NguoiDung/HuyDonTam_NguoiDung`, PhuongThuc: 1 });
             if(ketqua.ThanhCong){
-                setIDDH(null);
-                setThongTinSanPham([]);
-                setDSMaGiamGia([]);
+                resetThongTinDonHang();
                 CloseAllModals();
                 ThongBao.ThongBao_ThongTin('Thông tin đơn hàng đã hủy!');
             }else{
@@ -77,9 +79,24 @@ function MuaSanPham(){
             console.error('Lỗi khi lấy mã giảm giá:', error);
         }
     }
-    
+    const layMaGiamGia_MuaNgay = async()=>{
+        try {
+            const isLoggedIn = await KiemTra();
+            if (isLoggedIn) {
+                const arrIDThuongHieu = ThongTinDatDon.map(item => item.IDTHUONGHIEU);
+                const response = await API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia_MuaNgay?ds=${arrIDThuongHieu[0]}`, PhuongThuc: 2 });
+                if(response.ThanhCong){
+                    setDSMaGiamGia(response.dulieu);
+                }else{
+                    setDSMaGiamGia([]);
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy mã giảm giá:', error);
+        }
+    }
 
-    return {layDiaChi, layDonHang_GioHang , DonHang_MuaNgay , HuyDonHang_Tam, LayMaGiamGia_gioHang ,dsMaGiamGia}; 
+    return {layDiaChi, layDonHang_GioHang , DonHang_MuaNgay , HuyDonHang_Tam, LayMaGiamGia_gioHang ,dsMaGiamGia , layMaGiamGia_MuaNgay}; 
     
     // load đơn hàng
     /*const LoadDH= async()=>{

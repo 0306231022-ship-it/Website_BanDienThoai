@@ -4,10 +4,12 @@ import * as fun from '../JS/FUNCTONS/function';
 import { KiemTra, LayThongTinNguoiDung } from './KiemTraDangNhap';
 import { useModalContext } from "../CONTEXT/QuanLiModal";
 import MuaSanPham from './MuaSanPham';
+import { useThongTinDonHang } from '../REDUCER/QuanLiThongTinDatDon';
 
  export const useAddToCart = () => {
     const { OpenMoDal } = useModalContext();
-    const { layDiaChi , layDonHang_GioHang , LayMaGiamGia_gioHang } = MuaSanPham();
+    const { layDiaChi , layDonHang_GioHang , LayMaGiamGia_gioHang , layMaGiamGia_MuaNgay } = MuaSanPham();
+    const { setThongTinSanPham  } = useThongTinDonHang();
     const handleAddToCart = async (productId, DonGia , quantity) => {
          if (!productId){
             ThongBao1.ThongBao_CanhBao("Không tìm thấy sản phẩm.");
@@ -60,15 +62,16 @@ import MuaSanPham from './MuaSanPham';
         await Promise.all([layDiaChi(), layDonHang_GioHang(), LayMaGiamGia_gioHang()]);
         OpenMoDal({TrangThai:1}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
     }
-    //mua mua ngay sản phẩm 
+    //mua mua ngay sản phẩm khuyến mãi 
     const MuaSP= async(DuLieu)=>{
          const isLoggedIn = await KiemTra();
          if (!isLoggedIn) {
             OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
             return;
         }
-        
-         OpenMoDal(DuLieu, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
+        setThongTinSanPham(DuLieu);
+        await Promise.all([layDiaChi(), layMaGiamGia_MuaNgay()]);
+        OpenMoDal({TrangThai:2}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
     }
     return {handleAddToCart , handlebuyproduct , updateCartToServer ,MuaSP};        
 }

@@ -42,7 +42,7 @@ NguoiDungRoute.get('/chitiet_donhang', upload.none(), DonHangController.ChiTiet_
 NguoiDungRoute.get('/LayMaGiamGia', upload.none(), MaGiamGiaController.LayMaGiamGia_NguoiDung);
 NguoiDungRoute.get('/ApMaGiamGia_NguoiDung' , upload.none(), MaGiamGiaController.ApMaGiamGia_NguoiDung);
 NguoiDungRoute.get('/LayMaGiamGia_idth' , upload.none(), MaGiamGiaController.LayMaGiamGia_idth);
-
+NguoiDungRoute.get('/LayMaGiamGia_MuaNgay' , upload.none(), MaGiamGiaController.LayMaGiamGia_MuaNgay);
 
 NguoiDungRoute.get('/ThongTinDonHang', upload.none(), DonHangController.ThongTinDonHang);
 NguoiDungRoute.get('/PhiGiaoHang' , upload.none(),DonHangController.ThongTin_PhiVanChuyen);

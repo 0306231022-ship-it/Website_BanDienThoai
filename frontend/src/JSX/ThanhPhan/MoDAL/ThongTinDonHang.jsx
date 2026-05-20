@@ -8,7 +8,7 @@ import MuaSanPham from '../../../hook/MuaSanPham';
 
 const ThongTinDonHang = ({ DuLieu }) => {
   const {HuyDonHang_Tam , dsMaGiamGia } = MuaSanPham();
-  const { ThongTinDatDon ,  setTongTien ,  setThongTinSanPham } = useThongTinDonHang();
+  const { ThongTinDatDon ,  setTongTien ,  setThongTinSanPham ,  resetThongTinDonHang } = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setloading] = useState(false);
@@ -17,7 +17,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
   const [reload, setreload] = useState(false);
   const [maGiamGia_NguoiDung, setMGG_NguoiDung] = useState([]); // Mã đã áp dụng
   const [PhiVanChuyen, setPhiVanChuyen] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(10);
   const [input_diachi, setinput_diachi] = useState(false);
 
   // Tính toán tiền (Logic)
@@ -26,9 +26,6 @@ const ThongTinDonHang = ({ DuLieu }) => {
     setTongTien(tongTien);
 }, [setTongTien, tongTien, ThongTinDatDon.SanPham]);
   const GiaTriGiamVoucher = fun.tinhTongGiamGia(maGiamGia_NguoiDung, tongTien);
-  //Chưa fix bên dưới
-
-  // Đếm ngược
   useEffect(() => {
     if (DuLieu.TrangThai === 2 && timeLeft > 0) {
       const timer = setInterval(() => {
@@ -37,9 +34,22 @@ const ThongTinDonHang = ({ DuLieu }) => {
       return () => clearInterval(timer);
     } else if (timeLeft === 0 && DuLieu.TrangThai === 2) {
       HuyDonHang_Tam();
-      ThongBao.ThongBao_Loi("Thời gian giữ đơn hàng đã hết!");
     }
-  }, [timeLeft, DuLieu.TrangThai]);
+  }, [timeLeft, DuLieu.TrangThai, HuyDonHang_Tam]);
+   useEffect(() => {
+        const handleBeforeUnload = () => { 
+            resetThongTinDonHang();
+         };
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return () => {
+            resetThongTinDonHang();
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+    }, [resetThongTinDonHang]);
+  //Chưa fix bên dưới
+
+  // Đếm ngược
+  
 
   // Lấy phí ship khi địa chỉ thay đổi
   useEffect(() => {
