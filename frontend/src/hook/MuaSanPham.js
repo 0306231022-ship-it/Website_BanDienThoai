@@ -15,7 +15,6 @@ function MuaSanPham(){
             const isLoggedIn = await KiemTra();
             if(isLoggedIn){
                 const thongTinNguoiDung = await LayThongTinNguoiDung();
-                setThongTinNguoiDung(thongTinNguoiDung);
                 const DiaChiNguoiDung= await API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
                 if (!ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang) {
                     setThongTinKhachHang(thongTinNguoiDung.HOTEN, thongTinNguoiDung.SDT, DiaChiNguoiDung.ThanhCong ? DiaChiNguoiDung.DuLieu[0].DIACHI : null);

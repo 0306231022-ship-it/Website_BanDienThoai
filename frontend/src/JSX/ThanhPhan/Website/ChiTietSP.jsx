@@ -3,6 +3,10 @@ import { useParams , useNavigate } from 'react-router-dom';
 import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
 import { useAddToCart  } from '../../../hook/SanPham';
+import { KiemTra, LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
+import { useModalContext } from "../../../CONTEXT/QuanLiModal";
+import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
+import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 
 function ChiTietSanPhamUser() {
     const { id } = useParams();
@@ -13,8 +17,9 @@ function ChiTietSanPhamUser() {
     const [selectedImage, setSelectedImage] = useState("");
     const [quantity, setQuantity] = useState(1);
     const { handleAddToCart ,MuaSP  } = useAddToCart();
+    const { OpenMoDal } = useModalContext();
+    const { setIDDH } = useThongTinDonHang();
     const DuLieu = {
-        TrangThai:2,
         dulieu : [
             {
                 IDSANPHAM: id,
@@ -51,6 +56,29 @@ function ChiTietSanPhamUser() {
         if (type === 'plus') setQuantity(prev => prev < sanpham.SOLUONG ? prev + 1 : prev);
         else setQuantity(prev => prev > 1 ? prev - 1 : 1);
     };
+    const Mua = async()=>{
+        try {
+            const isLoggedIn = await KiemTra();
+            if (!isLoggedIn) {
+                OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
+                return;
+            }else{
+                const thongTinNguoiDung = await LayThongTinNguoiDung();
+                const formData = fun.objectToFormData({ IDND: thongTinNguoiDung.IDND, IDSP: sanpham.IDSANPHAM, SoLuong: 1 , GiaSanPham: sanpham.GIABAN });
+                const ketqua = await API.CallAPI(formData, { url: `/NguoiDung/ThemDonHang_Tam`, PhuongThuc: 1 });
+                if(ketqua.ThanhCong){
+                    setIDDH(ketqua.IDDH);
+                    MuaSP(DuLieu.dulieu);
+                }else{
+                    ThongBao.ThongBao_Loi(ketqua.message);
+                }
+            }
+        }catch (error) {
+            console.error("Error adding product to cart:", error);
+            OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
+            return;
+        }
+    }
 
     if (loading || !sanpham) return (
         <div className="flex flex-col items-center justify-center min-h-screen gap-4">
@@ -155,7 +183,7 @@ function ChiTietSanPhamUser() {
                                 Thêm vào giỏ hàng
                             </button>
                             <button 
-                                onClick={() => MuaSP(DuLieu)}
+                                onClick={() => Mua()}
                                 className="flex-1 bg-red-600 text-white py-5 rounded-[1.5rem] font-black uppercase tracking-widest text-[11px] hover:bg-red-700 transition-all active:scale-95 shadow-xl shadow-red-100"
                             >
                                 Mua ngay

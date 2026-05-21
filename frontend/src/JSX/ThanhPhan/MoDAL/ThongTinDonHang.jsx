@@ -8,7 +8,7 @@ import MuaSanPham from '../../../hook/MuaSanPham';
 
 const ThongTinDonHang = ({ DuLieu }) => {
   const {HuyDonHang_Tam , dsMaGiamGia } = MuaSanPham();
-  const { ThongTinDatDon ,  setTongTien ,  setThongTinSanPham ,  resetThongTinDonHang } = useThongTinDonHang();
+  const { ThongTinDatDon ,  setTongTien ,  setThongTinSanPham ,  resetThongTinDonHang , setPhiVanChuyen} = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setloading] = useState(false);
@@ -16,7 +16,6 @@ const ThongTinDonHang = ({ DuLieu }) => {
   const [DiaChi, setDiaChi] = useState('');
   const [reload, setreload] = useState(false);
   const [maGiamGia_NguoiDung, setMGG_NguoiDung] = useState([]); // Mã đã áp dụng
-  const [PhiVanChuyen, setPhiVanChuyen] = useState(0);
   const [timeLeft, setTimeLeft] = useState(10);
   const [input_diachi, setinput_diachi] = useState(false);
 
@@ -36,21 +35,15 @@ const ThongTinDonHang = ({ DuLieu }) => {
       HuyDonHang_Tam();
     }
   }, [timeLeft, DuLieu.TrangThai, HuyDonHang_Tam]);
-   useEffect(() => {
-        const handleBeforeUnload = () => { 
-            resetThongTinDonHang();
-         };
-        window.addEventListener("beforeunload", handleBeforeUnload);
-        return () => {
-            resetThongTinDonHang();
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-        };
-    }, [resetThongTinDonHang]);
-  //Chưa fix bên dưới
-
-  // Đếm ngược
-  
-
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      resetThongTinDonHang();
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [resetThongTinDonHang]);
   // Lấy phí ship khi địa chỉ thay đổi
   useEffect(() => {
     const fetchPhi = async () => {
@@ -70,7 +63,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
       }
     };
     fetchPhi();
-  }, [ThongTinDatDon?.ThongTin_KhachHang?.DiaChi_GiaoHang]);
+  }, [ThongTinDatDon?.ThongTin_KhachHang?.DiaChi_GiaoHang, setPhiVanChuyen]);
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -116,6 +109,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
       setloading(false);
     }
   }
+   //Chưa fix bên dưới
 
   const Chon_MaGiamGia = async (id) => {
     switch (DuLieu.TrangThai) {
@@ -148,7 +142,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
   const DatHang = async () => {
     const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn đặt đơn hàng này không?');
     if (!XacNhan) return;
-    if (PhiVanChuyen === -1) {
+    if (ThongTinDatDon.ThongTin_Gia.PhiVanChuyen === -1) {
       ThongBao.ThongBao_Loi('Vui lòng kiểm tra lại thông tin giao hàng!');
       return;
     }
@@ -159,8 +153,8 @@ const ThongTinDonHang = ({ DuLieu }) => {
       SOLUONG: DuLieu.dulieu[0].SOLUONG,
       IDMAGG: magg ? magg.MaGG : null,
       GIASP: DuLieu.dulieu[0].DONGIA || null,
-      TongHang: tongTien + (PhiVanChuyen > 0 ? PhiVanChuyen : 0) - GiaTriGiamVoucher,
-      PhiVanChuyen: PhiVanChuyen,
+      TongHang: tongTien + (ThongTinDatDon.ThongTin_Gia.PhiVanChuyen > 0 ? ThongTinDatDon.ThongTin_Gia.PhiVanChuyen : 0) - GiaTriGiamVoucher,
+      PhiVanChuyen: ThongTinDatDon.ThongTin_Gia.PhiVanChuyen,
       Ma: GiaTriGiamVoucher || 0,
       IDND: ThongTinNguoiDung.IDND,
       DiaChiNhanHang: ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang,
@@ -295,7 +289,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
             <div className="flex justify-between text-sm">
               <span className="text-gray-500">Phí vận chuyển</span>
               <span className="font-medium text-gray-800">
-                {PhiVanChuyen === -1 ? 'Có lỗi xảy ra!' : fun.formatCurrency(PhiVanChuyen)}
+                {ThongTinDatDon.ThongTin_Gia.PhiVanChuyen === -1 ? 'Có lỗi xảy ra!' : fun.formatCurrency(ThongTinDatDon.ThongTin_Gia.PhiVanChuyen)}
               </span>
             </div>
             <div className="flex justify-between text-sm">
@@ -319,7 +313,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
           )}
           <div className="flex justify-end items-center mb-3 space-x-2">
             <span className="text-sm text-gray-600">Tổng thanh toán:</span>
-            <span className="text-xl font-bold text-orange-600">{fun.formatCurrency(tongTien + (PhiVanChuyen > 0 ? PhiVanChuyen : 0) - GiaTriGiamVoucher)}</span>
+            <span className="text-xl font-bold text-orange-600">{fun.formatCurrency(tongTien + (ThongTinDatDon.ThongTin_Gia.PhiVanChuyen > 0 ? ThongTinDatDon.ThongTin_Gia.PhiVanChuyen : 0) - GiaTriGiamVoucher)}</span>
           </div>
           <button
             onClick={DatHang}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 const AddressEditForm = ({ onCancel, onSave }) => {
-    const { setThongTinDatDon } = useThongTinDonHang();
+    const {  setThongTinKhachHang } = useThongTinDonHang();
     const [formData, setFormData] = useState({
         hoTen: '',
         sdt: '',
@@ -26,13 +26,12 @@ const AddressEditForm = ({ onCancel, onSave }) => {
             ThongBao.ThongBao_CanhBao("Số điện thoại chỉ được chứa ký số!");
             return;
         }
-        setThongTinDatDon({
-            ThongTin_KhachHang:{
-                HoTen:formData.hoTen,
-                SDT : formData.sdt,
-                DiaChi_GiaoHang: formData.diaChiChiTiet
-            }
-        })
+        setThongTinKhachHang(
+            formData.hoTen,
+            formData.sdt,
+            formData.diaChiChiTiet
+        );
+        onSave(formData);
         ThongBao.ThongBao_ThanhCong('Đã lưu thong tin đơn hàng!')
     };
 
@@ -100,7 +99,7 @@ const AddressEditForm = ({ onCancel, onSave }) => {
 };
 function DiaChi({ DuLieu }) {
     // Lấy state và hàm cập nhật từ Zustand
-    const { ThongTinDatDon, setThongTinDatDon } = useThongTinDonHang();
+    const { ThongTinDatDon,  setThongTinKhachHang } = useThongTinDonHang();
     const [isOpen, setOpen] = useState(false);
 
     // Rút gọn đường dẫn dữ liệu để code sạch hơn
@@ -108,14 +107,11 @@ function DiaChi({ DuLieu }) {
 
     const handleSaveNewAddress = (data) => {
         // CẬP NHẬT VÀO STORE: Phải đúng cấu trúc ThongTin_KhachHang
-        setThongTinDatDon({
-            ThongTin_KhachHang: {
-                HoTen: data.hoTen,
-                SDT: data.sdt,
-                DiaChi_MacDinh: data.diaChiChiTiet 
-            }
-        });
-        
+        setThongTinKhachHang(
+                data.hoTen,
+                data.sdt,
+                data.diaChiChiTiet 
+        );
         setOpen(false);
         ThongBao.ThongBao_ThanhCong("Đã cập nhật địa chỉ thành công!");
     };
@@ -144,7 +140,7 @@ function DiaChi({ DuLieu }) {
                 <div className="mt-4 flex gap-3 text-sm text-gray-600 italic leading-relaxed">
                     <i className="fas fa-map-marker-alt text-orange-500 mt-1"></i>
                     <p className="line-clamp-3">
-                        {khachHang?.DiaChi_MacDinh || DuLieu?.DiaChi_MacDinh || "Chưa có địa chỉ"}
+                        {khachHang?.DiaChi_GiaoHang || DuLieu?.DiaChi_GiaoHang || "Chưa có địa chỉ"}
                     </p>
                 </div>
                 <div className="absolute -top-2 -right-2 bg-orange-500 text-white w-8 h-8 rounded-full flex items-center justify-center border-4 border-white shadow-lg">
