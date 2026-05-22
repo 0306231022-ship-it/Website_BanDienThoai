@@ -257,36 +257,5 @@ export default class MaGiamGiaModel{
             return false;
         }
     }
-    static async LayMaGiamGia_MuaNgay(dulieu){
-        try {
-            if (!dulieu || !dulieu.length) {
-                return {
-                    ThanhCong: false,
-                    dulieu: [],
-                    message: 'Thiếu dữ liệu thương hiệu.'
-                };
-            }
-            const placeholders = dulieu.map(() => '?').join(',');
-            const [ketqua] = await execute(`
-                SELECT MaGG, TENCHUONGTRINH, MAGIAMGIA, LOAIGIAM, GIATRIGIAM, GIATRIDON,
-                          IDTHUONGHIEU, SOLUONG, DADUNG, NGAYBATDAU, NGAYKETTHUC, TRANGTHAI 
-                FROM magiamgia
-                WHERE IDTHUONGHIEU IN (${placeholders})
-                  AND TRANGTHAI = 1
-                  AND NGAYBATDAU <= NOW()
-                  AND NGAYKETTHUC >= NOW()
-            `, dulieu);
-            return {
-                ThanhCong: true,
-                dulieu: ketqua
-            };
-        } catch (error) {
-            console.error('Có lỗi xảy ra khi lấy mã giảm giá theo thương hiệu:' + error);
-            return {
-                ThanhCong: false,
-                dulieu: [],
-                message: 'Lỗi truy vấn mã giảm giá.'
-            };
-        }
-    }   
+   
 }

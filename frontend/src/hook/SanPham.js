@@ -70,8 +70,8 @@ import { useThongTinDonHang } from '../REDUCER/QuanLiThongTinDatDon';
             return;
         }
         setThongTinSanPham(DuLieu);
-        await Promise.all([layDiaChi(), layMaGiamGia_MuaNgay()]);
         OpenMoDal({TrangThai:2}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
+        await Promise.all([layDiaChi(), layMaGiamGia_MuaNgay(DuLieu)]);
     }
     return {handleAddToCart , handlebuyproduct , updateCartToServer ,MuaSP};        
 }

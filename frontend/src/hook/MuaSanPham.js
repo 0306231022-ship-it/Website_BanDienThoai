@@ -7,9 +7,8 @@ import * as ThongBao from '../JS/FUNCTONS/ThongBao';
 import { useModalContext } from "../CONTEXT/QuanLiModal";
 function MuaSanPham(){
     const [ThongTinNguoiDung, setThongTinNguoiDung] = useState({});
-    const { setThongTinKhachHang , setThongTinSanPham , ThongTinDatDon , resetThongTinDonHang } = useThongTinDonHang();
+    const { setThongTinKhachHang , setThongTinSanPham , ThongTinDatDon , setThongTinMaGiamGia, resetThongTinDonHang } = useThongTinDonHang();
     const { CloseAllModals } = useModalContext();
-    const [dsMaGiamGia, setDSMaGiamGia] = useState([]);
     const layDiaChi= async () => {
         try {
             const isLoggedIn = await KiemTra();
@@ -69,25 +68,25 @@ function MuaSanPham(){
                 setThongTinNguoiDung(thongTinNguoiDung);
                 const response = await API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
                 if(response.ThanhCong){
-                    setDSMaGiamGia(response.dulieu);
+                    setThongTinMaGiamGia(response.dulieu);
                 }else{
-                    setDSMaGiamGia([]);
+                    setThongTinMaGiamGia([]);
                 }
             }
         } catch (error) {
             console.error('Lỗi khi lấy mã giảm giá:', error);
         }
     }
-    const layMaGiamGia_MuaNgay = async()=>{
+    const layMaGiamGia_MuaNgay = async(DuLieu)=>{
         try {
             const isLoggedIn = await KiemTra();
             if (isLoggedIn) {
-                const arrIDThuongHieu = ThongTinDatDon.map(item => item.IDTHUONGHIEU);
-                const response = await API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia_MuaNgay?ds=${arrIDThuongHieu[0]}`, PhuongThuc: 2 });
+                const arrIDThuongHieu = DuLieu.map(item => item.IDTHUONGHIEU);
+                const response = await API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia_idth?data=${arrIDThuongHieu[0]}`, PhuongThuc: 2 });
                 if(response.ThanhCong){
-                    setDSMaGiamGia(response.dulieu);
+                    setThongTinMaGiamGia(response.dulieu);
                 }else{
-                    setDSMaGiamGia([]);
+                    setThongTinMaGiamGia([]);
                 }
             }
         } catch (error) {
@@ -95,7 +94,7 @@ function MuaSanPham(){
         }
     }
 
-    return {layDiaChi, layDonHang_GioHang , DonHang_MuaNgay , HuyDonHang_Tam, LayMaGiamGia_gioHang ,dsMaGiamGia , layMaGiamGia_MuaNgay}; 
+    return {layDiaChi, layDonHang_GioHang , DonHang_MuaNgay , HuyDonHang_Tam, LayMaGiamGia_gioHang , layMaGiamGia_MuaNgay}; 
     
     // load đơn hàng
     /*const LoadDH= async()=>{

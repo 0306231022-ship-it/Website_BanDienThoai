@@ -5,9 +5,10 @@ import * as fun from '../../../JS/FUNCTONS/function';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
 import { useThongTinDonHang } from '../../../REDUCER/QuanLiThongTinDatDon';
 import MuaSanPham from '../../../hook/MuaSanPham';
+import MaGiamGia from './MaGiamGia';
 
 const ThongTinDonHang = ({ DuLieu }) => {
-  const {HuyDonHang_Tam , dsMaGiamGia } = MuaSanPham();
+  const {HuyDonHang_Tam  } = MuaSanPham();
   const { ThongTinDatDon ,  setTongTien ,  setThongTinSanPham ,  resetThongTinDonHang , setPhiVanChuyen} = useThongTinDonHang();
   const { OpenMoDal } = useModalContext();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +17,8 @@ const ThongTinDonHang = ({ DuLieu }) => {
   const [DiaChi, setDiaChi] = useState('');
   const [reload, setreload] = useState(false);
   const [maGiamGia_NguoiDung, setMGG_NguoiDung] = useState([]); // Mã đã áp dụng
-  const [timeLeft, setTimeLeft] = useState(10);
+
+  const [timeLeft, setTimeLeft] = useState(900);
   const [input_diachi, setinput_diachi] = useState(false);
 
   // Tính toán tiền (Logic)
@@ -65,6 +67,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
     fetchPhi();
   }, [ThongTinDatDon?.ThongTin_KhachHang?.DiaChi_GiaoHang, setPhiVanChuyen]);
 
+
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -111,35 +114,9 @@ const ThongTinDonHang = ({ DuLieu }) => {
   }
    //Chưa fix bên dưới
 
-  const Chon_MaGiamGia = async (id) => {
-    switch (DuLieu.TrangThai) {
-      case 1:
-        try {
-          const formdata = fun.objectToFormData({ MaGG: id, IDND: ThongTinNguoiDung.IDND })
-          const response = await API.CallAPI(formdata, { url: '/NguoiDung/ApMa_GiamGia', PhuongThuc: 1 });
-          if (response.ThanhCong) {
-            ThongBao.ThongBao_ThanhCong(response.message);
-            const magg = await API.CallAPI(undefined, { url: `/NguoiDung/ApMaGiamGia_NguoiDung?idnd=${ThongTinNguoiDung.IDND}`, PhuongThuc: 2 });
-            magg.ThanhCong ? setMGG_NguoiDung(magg.dulieu) : setMGG_NguoiDung([])
-          } else {
-            ThongBao.ThongBao_Loi(response.message);
-          }
-        } catch (error) {
-          ThongBao.ThongBao_CanhBao('Có lỗi xảy ra!');
-        }
-        break;
-      case 2:
-        const selected = dsMaGiamGia.filter(item => item.MaGG === id);
-        setMGG_NguoiDung(selected);
-        ThongBao.ThongBao_ThanhCong('Áp dụng thành công!');
-        break;
-      default:
-        break;
-    }
-    setIsModalOpen(false);
-  }
+ 
 
-  const DatHang = async () => {
+  /*const DatHang = async () => {
     const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn đặt đơn hàng này không?');
     if (!XacNhan) return;
     if (ThongTinDatDon.ThongTin_Gia.PhiVanChuyen === -1) {
@@ -173,7 +150,7 @@ const ThongTinDonHang = ({ DuLieu }) => {
     } catch (error) {
       ThongBao.ThongBao_Loi('Đã có lỗi xảy ra!');
     }
-  }
+  }*/
 
   return (
     <div className="">
@@ -316,7 +293,6 @@ const ThongTinDonHang = ({ DuLieu }) => {
             <span className="text-xl font-bold text-orange-600">{fun.formatCurrency(tongTien + (ThongTinDatDon.ThongTin_Gia.PhiVanChuyen > 0 ? ThongTinDatDon.ThongTin_Gia.PhiVanChuyen : 0) - GiaTriGiamVoucher)}</span>
           </div>
           <button
-            onClick={DatHang}
             disabled={DuLieu.TrangThai === 2 && timeLeft === 0}
             className={`w-full font-bold py-4 rounded-xl shadow-lg active:scale-[0.98] transition-transform uppercase tracking-wider ${DuLieu.TrangThai === 2 && timeLeft < 60
               ? 'bg-orange-600 animate-bounce'
@@ -352,28 +328,9 @@ const ThongTinDonHang = ({ DuLieu }) => {
                   </div>
                 </div>
               ) : (
-                dsMaGiamGia.length > 0 ? (
-                  dsMaGiamGia.map((item, index) => (
-                    <label key={index} className="flex border border-red-100 rounded-xl overflow-hidden relative cursor-pointer active:bg-red-50 transition-colors">
-                      <div className="w-24 bg-red-500 flex flex-col items-center justify-center text-white p-2">
-                        <i className="fas fa-percent text-2xl"></i>
-                        <span className="text-[10px] font-bold mt-1 text-center leading-tight uppercase">{item.TENCHUONGTRINH}</span>
-                      </div>
-                      <div className="flex-1 p-3 bg-white pr-10">
-                        <h3 className="font-bold text-sm uppercase">
-                          {item.LOAIGIAM === 1 ? `giảm ${item.GIATRIGIAM} %` : `giảm ${fun.formatCurrency(item.GIATRIGIAM)}`}
-                        </h3>
-                        <p className="text-[10px] text-gray-400 mt-1 leading-tight">{item.TENCHUONGTRINH}</p>
-                        <p className="text-[10px] text-red-500 font-bold mt-2 italic">HSD: {fun.formatDate(item.NGAYKETTHUC)}</p>
-                      </div>
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                        {item.SOLUONG_DADUNG !== item.SOLUONG && (
-                          <button onClick={() => { Chon_MaGiamGia(item.MaGG) }} className="bg-red-500 hover:bg-red-600 text-white text-[11px] font-bold px-4 py-1.5 rounded-full shadow-md active:scale-90 transition-transform uppercase">
-                            Chọn
-                          </button>
-                        )}
-                      </div>
-                    </label>
+                ThongTinDatDon?.MaGiamGia_NguoiDung.length > 0 ? (
+                  ThongTinDatDon.MaGiamGia_NguoiDung.map((item, index) => (
+                    <MaGiamGia key={index}  DuLieu={item} />
                   ))
                 ) : (
                   <div className="flex flex-col items-center justify-center py-20 text-center">

@@ -9,6 +9,7 @@ export const useThongTinDonHang = create((set) => ({
       DiaChi_GiaoHang: "",
     },
     SanPham: [],
+    MaGiamGia_NguoiDung: [],
     ThongTin_Gia:{
       TongTien: 0,
       PhiVanChuyen: 0,
@@ -37,6 +38,14 @@ export const useThongTinDonHang = create((set) => ({
         SanPham,
       },
     })),
+    // hàm cập nhật thông tin mã giảm giá
+  setThongTinMaGiamGia: (MaGiamGia_NguoiDung) =>
+    set((state) => ({
+      ThongTinDatDon: {
+        ...state.ThongTinDatDon,
+        MaGiamGia_NguoiDung,
+      },
+    })),
     // hàm reset thông tin đơn hàng
   resetThongTinDonHang: () =>
     set({
@@ -48,6 +57,7 @@ export const useThongTinDonHang = create((set) => ({
           DiaChi_GiaoHang: "",
         },
         SanPham: [],
+        MaGiamGia_NguoiDung: [],
         ThongTin_Gia:{
           TongTien: 0,
           PhiVanChuyen: 0,
