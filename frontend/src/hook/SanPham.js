@@ -73,5 +73,34 @@ import { useThongTinDonHang } from '../REDUCER/QuanLiThongTinDatDon';
         OpenMoDal({TrangThai:2}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
         await Promise.all([layDiaChi(), layMaGiamGia_MuaNgay(DuLieu)]);
     }
+  
+
+         const Chon_MaGiamGia = async (id) => {
+            /*switch (DuLieu.TrangThai) {
+              case 1:
+                try {
+                  const formdata = fun.objectToFormData({ MaGG: id, IDND: ThongTinNguoiDung.IDND })
+                  const response = await API.CallAPI(formdata, { url: '/NguoiDung/ApMa_GiamGia', PhuongThuc: 1 });
+                  if (response.ThanhCong) {
+                    ThongBao.ThongBao_ThanhCong(response.message);
+                    const magg = await API.CallAPI(undefined, { url: `/NguoiDung/ApMaGiamGia_NguoiDung?idnd=${ThongTinNguoiDung.IDND}`, PhuongThuc: 2 });
+                    magg.ThanhCong ? setMGG_NguoiDung(magg.dulieu) : setMGG_NguoiDung([])
+                  } else {
+                    ThongBao.ThongBao_Loi(response.message);
+                  }
+                } catch (error) {
+                  ThongBao.ThongBao_CanhBao('Có lỗi xảy ra!');
+                }
+                break;
+              case 2:
+                const selected = ThongTinDatDon.MaGiamGia_NguoiDung.filter(item => item.MaGG === id);
+                setMGG_NguoiDung(selected);
+                ThongBao.ThongBao_ThanhCong('Áp dụng thành công!');
+                break;
+              default:
+                break;*/
+            
+            // setIsModalOpen(false);
+          }
     return {handleAddToCart , handlebuyproduct , updateCartToServer ,MuaSP};        
 }

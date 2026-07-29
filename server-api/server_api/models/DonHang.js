@@ -386,7 +386,7 @@ export default class DonHangModel{
     static async ChiTiet_DonHang(iddh){
         let conn
         try {
-            onn = await beginTransaction();
+            conn = await beginTransaction();
             const [ketqua] = await conn.query(`
                 SELECT dh.TEN_NGUOINHAN,
                        dh.SDT_NGUOINHAN,

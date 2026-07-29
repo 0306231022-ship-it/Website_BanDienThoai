@@ -102,3 +102,25 @@ export async function getCoordinates(address) {
     lon: parseFloat(data[0].lon)
   };
 }
+export const xoaFileCu = (duongDanTuDatabase) => {
+    if (!duongDanTuDatabase) return false;
+
+    const duongDanTuyetDoi = path.resolve(duongDanTuDatabase);
+    console.log(duongDanTuyetDoi)
+
+  
+    if (fs.existsSync(duongDanTuyetDoi)) {
+        try {
+            // 2. Tiến hành xóa đồng bộ
+            fs.unlinkSync(duongDanTuyetDoi);
+            console.log(`🗑️ Đã xóa file thành công: ${duongDanTuDatabase}`);
+            return true; // Trả về true nếu xóa thành công thành công
+        } catch (err) {
+            console.error(`❌ Lỗi khi xóa file: ${err.message}`);
+            return false; // Trả về false nếu có lỗi hệ thống (ví dụ file bị khóa)
+        }
+    } else {
+        console.log(`⚠️ File không tồn tại trên ổ cứng: ${duongDanTuDatabase}`);
+        return false; // Trả về false vì không có file để xóa
+    }
+};

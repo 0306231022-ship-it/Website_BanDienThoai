@@ -93,8 +93,30 @@ function MuaSanPham(){
             console.error('Lỗi khi lấy mã giảm giá:', error);
         }
     }
+    const TimKiem_MaGiamGia = async (DuLieu) => {
+        try {
+            const isLoggedIn = await KiemTra();
+            if (isLoggedIn) {               
+                const response = await API.CallAPI(undefined, { url: `/NguoiDung/TimKiem_MaGiamGia?data=${DuLieu}`, PhuongThuc: 2 });
+                if (response.ThanhCong) {
+                    setThongTinMaGiamGia(response.dulieu);
+                } else {
+                    setThongTinMaGiamGia([]);
+                }
+            }
+        } catch (error) {
+            console.error('Lỗi khi tìm kiếm mã giảm giá:', error);
+        }
+    }
 
-    return {layDiaChi, layDonHang_GioHang , DonHang_MuaNgay , HuyDonHang_Tam, LayMaGiamGia_gioHang , layMaGiamGia_MuaNgay}; 
+    return {layDiaChi, 
+            layDonHang_GioHang , 
+            DonHang_MuaNgay , 
+            HuyDonHang_Tam, 
+            LayMaGiamGia_gioHang , 
+            layMaGiamGia_MuaNgay, 
+            TimKiem_MaGiamGia
+        }; 
     
     // load đơn hàng
     /*const LoadDH= async()=>{

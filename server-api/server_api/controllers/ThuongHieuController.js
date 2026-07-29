@@ -61,6 +61,7 @@ export default class ThuongHieuController{
                 message:'Vui lòng kiểm tra lại thông tin gửi đi!'
             })
         }
+        
          let pathFile = files[0].filename;
          let DuongDan = 'uploads/thuonghieu/' + pathFile;
         if (!pathFile) {
