@@ -1,6 +1,7 @@
 import ThuongHieuModel from '../models/ThuongHieu.js';
 import SanPhamModel from '../models/SanPham.js';
 import { body, validationResult } from "express-validator";
+import {xoaFileCu} from '../function.js';
 export default class ThuongHieuController{
     static async ThemThuongHieu(req,res){
        await Promise.all([
@@ -61,7 +62,14 @@ export default class ThuongHieuController{
                 message:'Vui lòng kiểm tra lại thông tin gửi đi!'
             })
         }
-        
+        const layAnhCu = await ThuongHieuModel.LayAnhThuongHieu(id);
+        if (!layAnhCu) {
+            return res.json({
+                status: true,
+                message: 'Không tìm thấy thương hiệu hoặc thương hiệu không hoạt động!'
+            });
+        }
+        await xoaFileCu(layAnhCu);
          let pathFile = files[0].filename;
          let DuongDan = 'uploads/thuonghieu/' + pathFile;
         if (!pathFile) {
@@ -152,7 +160,14 @@ export default class ThuongHieuController{
     }
     static async LayChiTietThuongHieu(req,res){
         const page =req.query.id || 1;
-         try {      
+         try {
+            const kiemtra = await ThuongHieuModel.kiemtraid(page);
+            if(!kiemtra){
+                return res.json({
+                    Status:true,
+                    message:'Vui lòng kiểm tra lại thông tin gửi đi!'
+                })
+            }
             const thuongHieu= await ThuongHieuModel.LayChiTietThuongHieu(page);
             if(!thuongHieu){
                 return res.json({
@@ -261,6 +276,19 @@ export default class ThuongHieuController{
          const page=req.query.page || null ;
          const limit = parseInt(req.query.limit) || 2;
          const offset = (page - 1) * limit;
+            if(!id){
+                return res.json({
+                    Status:true,
+                    message:'Vui lòng kiểm tra lại thông tin gửi đi!'
+                })
+            }
+            const kiemtra = await ThuongHieuModel.kiemtraid(id);
+            if(!kiemtra){
+                return res.json({
+                    Status:true,
+                    message:'Vui lòng kiểm tra lại thông tin gửi đi!'
+                })
+            }
          const ketqqua = await ThuongHieuModel.laysp_thuonghieu(offset,limit,id);
          return res.json({ketqqua});
     }

@@ -250,6 +250,18 @@ export default class ThuongHieuModel{
             return null;
         }
     }
+    static async LayAnhThuongHieu(id) {
+        try {
+            const [rows] = await execute(
+                'SELECT LOGO FROM thuonghieu WHERE IDTHUONGHIEU = ?',
+                [id]
+            );
+            return rows[0] ? rows[0].LOGO : null;
+        } catch (error) {
+            console.error('Lỗi khi lấy ảnh thương hiệu:', error);
+            return null;
+        }
+    }
 
    
 
