@@ -35,7 +35,7 @@ function ChiTietThuongHieu() {
         const LaySP_ThuongHieu=async()=>{
             setLoading(true)
             try {
-                const ketqua= await API.CallAPI(undefined,{url:`/admin/laysp_thuonghieu?id=${thuongHieu?.IDTHUONGHIEU}&page=${page}`, PhuongThuc:2});
+                const ketqua= await API.CallAPI(undefined,{url:`/admin/laysp_thuonghieu?id=${id}&page=${page}`, PhuongThuc:2});
                 if(ketqua.ketqqua.ThanhCong){
                     setSanPham(ketqua.ketqqua.DuLieu);
                     setPhanTrang(ketqua.ketqqua.PhanTrang);
@@ -48,7 +48,7 @@ function ChiTietThuongHieu() {
             }
         };
         LaySP_ThuongHieu();
-    },[ page ,thuongHieu])
+    },[ page ,id])
     if (loading) {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] w-full gap-4">

@@ -16,7 +16,7 @@ export default class adminModel{
                 FROM nguoidung
                 WHERE IDND = ?
                 `,[id]);
-            return idnd.length > 0 ? true : false;
+            return idnd.length > 0;
         } catch (error) {
             console.error('Có lỗi sãy ra :'+ error);
             return false;
@@ -24,12 +24,13 @@ export default class adminModel{
     }
     static async login(Data){
         try {
-            const [update] = await execute('UPDATE nguoidung SET DANGNHAPLANCUOI = NOW() WHERE EMAIL = ?',[Data]);
-            if (update.affectedRows > 0) {
-                const [ketqua]=await execute('SELECT * FROM nguoidung WHERE email=?',[Data]);
-                return ketqua[0] ?? false;
+            const [rows] = await execute('SELECT * FROM nguoidung WHERE email = ? LIMIT 1', [Data]);
+            const user = rows[0];
+             if (!user) {
+                return false;
             }
-            
+            const [update] = await execute('UPDATE nguoidung SET DANGNHAPLANCUOI = NOW() WHERE EMAIL = ?',[Data]);
+            return update.affectedRows > 0 ? user : false;
         } catch (error) {
             return false;
         }

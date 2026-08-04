@@ -10,7 +10,7 @@ import QuanLiTTCaNhan from '../ThanhPhan/Admin/Menu/QuanLiTTCaNhan';
 
 function TrangChuAdmin() {
   const {  TTwebsite, GetTTwebsite } = useAppContext();
-  const {kiemtra, DangXuat,GetTTCaNhan, TTCaNhan } = useADContext();
+  const { DangXuat,GetTTCaNhan, TTCaNhan } = useADContext();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -18,7 +18,6 @@ function TrangChuAdmin() {
   useEffect(() => {
     GetTTwebsite();
     GetTTCaNhan();
-    kiemtra();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

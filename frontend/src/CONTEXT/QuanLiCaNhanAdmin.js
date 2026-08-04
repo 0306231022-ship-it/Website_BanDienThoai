@@ -17,14 +17,6 @@ export function AppADProvider({ children }) {
     return;
    }
    }
-     //hàm kiểm tra đăng nhập
-  const kiemtra=async()=>{
-    const ketqua=await API.CallAPI(undefined,{url:'/admin/kiemtra', PhuongThuc:1});
-    if(ketqua.Status){
-       ThongBao.ThongBao_CanhBao(ketqua.message)
-       navigate('/DangNhap-admin')
-    }
-  };
    const login = async (DuLieu) => {
      const kiemtra=fun.KiemTraRong(DuLieu);
      if (!kiemtra) {
@@ -76,7 +68,7 @@ export function AppADProvider({ children }) {
    
 
   return (
-    <MoDalContext.Provider value={{  GetTTCaNhan, kiemtra, login , islogin , TTCaNhan , DangXuat}}>
+    <MoDalContext.Provider value={{  GetTTCaNhan, login , islogin , TTCaNhan , DangXuat}}>
       {children}
     </MoDalContext.Provider>
   );

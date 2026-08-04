@@ -21,7 +21,6 @@ const upload = multer();
 //==========================================
 // xử lí thông tin website
 adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
-adminRouter.post('/DangNhap',upload.none(), CanhanADController.DangNhap);
 adminRouter.post('/ChinhSuaTen', upload.none(), adminController.CapNhatTen);
 adminRouter.post('/ChinhLoGo',createUpload('logo').array("files", 5),adminController.ChinhSuaLoGo);
 

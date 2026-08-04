@@ -3,6 +3,7 @@ import CanhanADController from "../controllers/CaNhanADController.js";
 import DonHangController from "../controllers/DonHangController.js";
 import  MaGiamGiaController from "../controllers/MaGiamGiaController.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
+import authMiddleware from "../middleware/auth.js";
 const NguoiDungRoute = Router();
 import multer from "multer";
 const upload = multer();
@@ -12,7 +13,7 @@ const upload = multer();
 //xử lí tài khoản người dùng
 NguoiDungRoute.post('/DangKy', upload.none(), CanhanADController.DangKy_NguoiDung);
 NguoiDungRoute.post('/dangnhap', upload.none(), CanhanADController.DangNhap_NguoiDung);
-NguoiDungRoute.post('/kiemtra',upload.none(), CanhanADController.KiemTraDangNhap_NguoiDung);
+
 NguoiDungRoute.post('/dangxuat_nguoidung',upload.none(), CanhanADController.DangXuat_NguoiDung);
 NguoiDungRoute.post('/ChinhSuaDiaChi',upload.none(), CanhanADController.ChinhSuaDiaChi_NguoiDung);
 // xử lí sản phẩm thuộc người dùng
@@ -27,6 +28,7 @@ NguoiDungRoute.post('/ApMa_GiamGia', upload.none(), MaGiamGiaController.ThemMaGi
 // PHẦN III : ĐỊNH NGHĨA ROUTE GET admin
 //=========================================
 // PHẦN IV : ĐỊNH NGHĨA ROUTE GET NguoiDung
+NguoiDungRoute.get('/kiemtra',authMiddleware, CanhanADController.KiemTraDangNhap_NguoiDung);
 NguoiDungRoute.get('/ThongTin',upload.none(), CanhanADController.ThongTin_NguoiDung);
 NguoiDungRoute.get('/LayDiaChi',upload.none(), CanhanADController.DiaChi_NguoiDung);
 //==========================

@@ -1,7 +1,14 @@
 import jwt from 'jsonwebtoken';
 
 const authMiddleware = (req, res, next) => {
-    const token = req.cookies.token;
+    const trangthai = req.query.TrangThai;
+    console.log('TrangThai:', trangthai); // Log the value of TrangThai for debugging
+    let token = null;
+    if (trangthai === 0) {
+        token = req.cookies.token_nguoidung;
+    } else if (trangthai === 1) {
+        token = req.cookies.token_admin;
+    }
     if (!token) {
         return res.json({
             Status: true,

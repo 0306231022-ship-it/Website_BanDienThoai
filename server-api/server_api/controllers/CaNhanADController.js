@@ -156,16 +156,16 @@ export default class CanhanADController{
                                     message:'Tài khoản đã ngùng hoạt động!'
                                 })
                             }
-                            // kiểm tra loaind
-                            if(DangNhap.LOAIND === 1){
-                                return res.json({
-                                    ThanhCong: false,
-                                    message:'Bạn không có quyền truy cập vào trang này!'
-                                })
-                            }
-
-                            const token =  generateToken(DangNhap);
-                                const id = DangNhap.IDND;
+                             const token =  generateToken(DangNhap);
+                             if(DangNhap.LOAIND === 1){
+                                res.cookie('token_admin', token, {
+                                    maxAge: 24 * 60 * 60 * 1000, // 1 ngày
+                                    httpOnly: true,             // chống XSS
+                                    secure: false,              // true nếu dùng https
+                                    sameSite: 'lax',
+                                    path: '/'
+                                });
+                            }else{
                                 res.cookie('token_nguoidung', token, {
                                     maxAge: 24 * 60 * 60 * 1000, // 1 ngày
                                     httpOnly: true,             // chống XSS
@@ -173,6 +173,7 @@ export default class CanhanADController{
                                     sameSite: 'lax',
                                     path: '/'
                                 });
+                            }
                                 const { MATKHAU, ...KetQua } = DangNhap;
                                 return res.json({
                                     ThanhCong: true,
@@ -209,22 +210,27 @@ export default class CanhanADController{
             });
         });
     }
+
     static async KiemTraDangNhap_NguoiDung(req, res) {
-        // kiểm tra cookie có tồn tại hay không
-        const token = req.cookies.token_nguoidung;
-        if (!token) {
+       const userId = req.user.id; 
+        if (!userId) {
             return res.json({
                 ThanhCong: false,
                 message: 'Bạn chưa đăng nhập!'
             });
         }
-        // nếu có thì giải mã token để lấy thông tin người dùng
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            const userId = decoded.id;
+            const kiemtra_id = await adminModel.kiemtraid(userId);
+            if (!kiemtra_id) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Người dùng không tồn tại!'
+                });
+            }
             const user = await adminModel.LayTT_ID(userId);
             return res.json({
                 ThanhCong: true,
+                DuLieu: user
             });
 
         } catch (error) {
@@ -235,6 +241,7 @@ export default class CanhanADController{
             });
         }
     }
+        // chưa kiểm tra bên dưới
     static async ThongTin_NguoiDung(req,res){
         const token = req.cookies.token_nguoidung;
         if (!token) {
@@ -266,82 +273,6 @@ export default class CanhanADController{
             });
         }
     }
-
-    static async DangNhap(req, res) {
-         await body('email')
-            .notEmpty()
-            .withMessage('Email không được bỏ trống!')
-            .isEmail()
-            .withMessage('Email không hợp lệ!')
-            .isLength({ max: 255 })
-            .withMessage('Vượt quá kí tự quy định!')
-            .run(req);
-        await body('passWord')
-            .notEmpty()
-            .withMessage('Mật khẩu không được bỏ trống!')
-            .isLength({ max: 255 })
-            .withMessage('Mật khẩu vượt quá ký tự cho phép!')
-            .run(req);
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) {
-                return res.json({
-                    validation: true,
-                    errors: errors.array() 
-                });
-            }
-             const dulieu = req.body;
-             if (!dulieu) {
-                return res.json({ 
-                    Status:true, 
-                    message: 'Vui lòng kiểm tra lại dữ liệu!' 
-                });
-            } 
-            try {
-                 const DangNhap = await adminModel.login(dulieu.email);
-                 if(!DangNhap){
-                    return res.json({
-                        Status:true,
-                        message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-                    })
-                 }
-                 if(DangNhap){
-                     const isMatch = await compare(dulieu.passWord, DangNhap.MATKHAU);
-                      if (isMatch) {
-                        if (DangNhap.TRANGTHAI !== 1) {
-                            return res.json({
-                                Status:true,
-                                message:'Tài khoản đã ngùng hoạt động!'
-                            })
-                        };
-                         const token = await generateToken(DangNhap);
-                         const id = DangNhap.IDND;
-                         res.cookie('token', token, {
-                             maxAge: 24 * 60 * 60 * 1000, // 1 ngày
-                             httpOnly: true,             // chống XSS
-                             secure: false,              // true nếu dùng https
-                            sameSite: 'lax'
-                        });
-                        const { MATKHAU, ...KetQua } = DangNhap;
-                        return res.json({
-                             ThanhCong: true,
-                             message: 'Bạn đã đăng nhập thành công!',
-                             DuLieu: KetQua
-                        });
-                      }else{
-                        return res.json({
-                            Status:true,
-                            message:'Email hoặc hoặc mật khẩu sai!'
-                        })
-                      }
-                 }
-            } catch (error) {
-                console.error("Lỗi trong quá trình đăng nhập:", error);
-                return res.json({
-                    Status: true,
-                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-                });
-            }
-        }
             static async kiemtra(req, res) {
                  const adminId = req.user.id;
                  if(adminId){
