@@ -17,58 +17,12 @@ export function AppADProvider({ children }) {
     return;
    }
    }
-   const login = async (DuLieu) => {
-     const kiemtra=fun.KiemTraRong(DuLieu);
-     if (!kiemtra) {
-       return {
-         Status: true,
-         message: 'Vui lòng nhập đầy đủ thông tin!'
-       }
-     }
-     if (!fun.validateEmail(DuLieu.email)) {
-       return {
-         validation : true,
-         errors: [
-           { path: "email", msg: "Email không hợp lệ!" },
-         ]
-       }
-     }
-      const formdata=fun.objectToFormData(DuLieu);
-      const ketqqua=await API.CallAPI(formdata,{PhuongThuc:1,url :'/admin/DangNhap' });
-      if(ketqqua.ThanhCong){
-        setislogin(true);
-        setTTCaNhan(ketqqua.DuLieu);
-        ThongBao.ThongBao_ThanhCong(ketqqua.message);
-        navigate('/admin');
-      }else{
-         return ketqqua;
-      }   
-   };
-     //hàm đăng xuất
-   const DangXuat = async () => {
-       const kiemtra = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn đăng xuất không?');
-       if (!kiemtra) return;
-       try {
-           const ketqua = await API.CallAPI(undefined, { url:'/admin/DangXuat' , PhuongThuc:1 });
-           if (ketqua?.ThanhCong) {
-               ThongBao.ThongBao_ThanhCong(ketqua.message);
-               setTTCaNhan(null);
-               setislogin(false);
-               navigate('/DangNhap-admin');
-           } else {
-               ThongBao.ThongBao_Loi(ketqua?.message || 'Đăng xuất thất bại');
-           }
-       } catch (error) {
-           console.error(error);
-           ThongBao.ThongBao_Loi('Đã xảy ra lỗi khi đăng xuất');
-           return;
-       }
-   }
+  
   
    
 
   return (
-    <MoDalContext.Provider value={{  GetTTCaNhan, login , islogin , TTCaNhan , DangXuat}}>
+    <MoDalContext.Provider value={{  GetTTCaNhan, islogin , TTCaNhan}}>
       {children}
     </MoDalContext.Provider>
   );

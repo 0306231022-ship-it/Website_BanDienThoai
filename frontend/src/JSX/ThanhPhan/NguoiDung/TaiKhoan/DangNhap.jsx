@@ -45,7 +45,6 @@ function DangNhap() {
         try {
             const formdata_send = fun.objectToFormData(formData);
             const ketqua = await API.CallAPI(formdata_send, { url: '/NguoiDung/dangnhap', PhuongThuc: 1 });
-            alert(JSON.stringify(ketqua));
             if (ketqua.ThanhCong) {
                 ThongBao.ThongBao_ThanhCong(ketqua.message);
                 const userData = ketqua.DuLieu;
@@ -53,7 +52,6 @@ function DangNhap() {
                     navigate('/admin');
                 }
                 CloseAllModals();
-                window.location.reload();
             } else {
                 ThongBao.ThongBao_Loi(ketqua.message);
             }

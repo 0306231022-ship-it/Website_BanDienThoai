@@ -7,19 +7,27 @@ import { useADContext } from '../../CONTEXT/QuanLiCaNhanAdmin';
 
 import QuanLiTT from '../ThanhPhan/Admin/Menu/QuanLiTT';
 import QuanLiTTCaNhan from '../ThanhPhan/Admin/Menu/QuanLiTTCaNhan';
+import { useNavigate } from 'react-router-dom';
+import useQuanLiDangNhap from '../../hook/KiemTraDangNhap';
 
 function TrangChuAdmin() {
   const {  TTwebsite, GetTTwebsite } = useAppContext();
-  const { DangXuat,GetTTCaNhan, TTCaNhan } = useADContext();
-
+  const { GetTTCaNhan, TTCaNhan } = useADContext();
+  const { DangXuat } = useQuanLiDangNhap();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+ const navigate = useNavigate();
 
   useEffect(() => {
     GetTTwebsite();
     GetTTCaNhan();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  const XuLyDangXuat = async (trangthai) => {
+    const thanhcong = await DangXuat(trangthai);
+    if (thanhcong) {
+      navigate('/'); 
+    }
+  };
 
 
 
@@ -140,7 +148,7 @@ function TrangChuAdmin() {
                   <div className="p-2">
                     <button
                       onClick={() => {
-                        DangXuat();
+                        XuLyDangXuat(1);
                         setIsMenuOpen(false);
                       }}
                       className="w-full flex items-center px-4 py-2.5 text-sm text-red-600 rounded-lg hover:bg-red-50 transition-colors group"

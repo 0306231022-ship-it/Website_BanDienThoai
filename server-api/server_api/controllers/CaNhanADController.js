@@ -241,7 +241,52 @@ export default class CanhanADController{
             });
         }
     }
-        // chưa kiểm tra bên dưới
+     static async DangXuat(req, res) {
+         const userId = req.user.id;
+         console.log('User ID from token:', userId); // Debugging line
+         const trangthai = parseInt(req.query.TrangThai);
+        if (!userId) {
+            return res.json({
+                ThanhCong: false,
+                message: 'Bạn chưa đăng nhập!'
+            });
+        }
+        try {
+            const kiemtra_id = await adminModel.kiemtraid(userId);
+            if (!kiemtra_id) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Người dùng không tồn tại!'
+                });
+            }
+            if(trangthai === 1){
+                res.clearCookie('token_admin', {
+                    httpOnly: true,
+                    sameSite: 'lax',
+                    secure: false,
+                    path: '/'
+                });
+            }else{
+                res.clearCookie('token_nguoidung', {
+                    httpOnly: true,
+                    sameSite: 'lax',
+                    secure: false,
+                    path: '/'
+                });
+            }
+        } catch (error) {
+            console.error('Lỗi trong quá trình kiểm tra đăng nhập:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Token không hợp lệ!'
+            });
+        }
+          return res.json({
+                    ThanhCong: true,
+                    message: 'Bạn đã đăng xuất thành công!'
+                });
+            }
+    // chưa kiểm tra bên dưới
     static async ThongTin_NguoiDung(req,res){
         const token = req.cookies.token_nguoidung;
         if (!token) {
@@ -306,18 +351,7 @@ export default class CanhanADController{
                     })
                  }
              }
-             static async DangXuat(req, res) {
-                res.clearCookie('token', {
-                    httpOnly: true,
-                    sameSite: 'lax',
-                    secure: false,
-                    path: '/'
-                });
-                return res.json({
-                    ThanhCong: true,
-                    message: 'Bạn đã đăng xuất thành công!'
-                });
-            }
+            
             static async CapNhatTen(req,res){
                  const { Ten } = req.body;
                  if (!Ten) {
@@ -335,18 +369,7 @@ export default class CanhanADController{
                 }
                 
             }
-            static async DangXuat_NguoiDung(req, res) {
-                res.clearCookie('token_nguoidung', {
-                    httpOnly: true,
-                    sameSite: 'lax',
-                    secure: false,
-                    path: '/'
-                });
-                return res.json({
-                    ThanhCong: true,
-                    message: 'Bạn đã đăng xuất thành công!'
-                });
-            }
+  
             static async DiaChi_NguoiDung(req,res){
                 const IDND = req.query.IDND;
                 if(!IDND){
