@@ -12,7 +12,7 @@ function LichSuDonHang() {
     const [orders, setOrders] = useState([]);
     const [error, setError] = useState(null);
     const { OpenMoDal } = useModalContext();
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchOrders = async () => {
             setLoading(true);
             try {
@@ -37,7 +37,7 @@ function LichSuDonHang() {
             }
         }
         fetchOrders();
-    }, [page]);
+    }, [page]);*/
     
     const allOrders = [
         { id: "TECH2025-001", date: "01/01/2026", status: "dagiao", statusText: "Đã giao hàng", total: "2.500.000đ" },

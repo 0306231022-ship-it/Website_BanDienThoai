@@ -3,15 +3,13 @@ import jwt from 'jsonwebtoken';
 const authMiddleware = (req, res, next) => {
     const trangthai = parseInt(req.query.TrangThai);
     let token = null;
-    if(!trangthai){
-        token = req.cookies.token_nguoidung || req.cookies.token_admin;
-    }
     if (trangthai === 0) {
         token = req.cookies.token_nguoidung;
     } else if (trangthai === 1) {
         token = req.cookies.token_admin;
+    } else {
+        token = req.cookies.token_nguoidung || req.cookies.token_admin;
     }
-
     if (!token) {
         return res.json({
             ThanhCong: false,

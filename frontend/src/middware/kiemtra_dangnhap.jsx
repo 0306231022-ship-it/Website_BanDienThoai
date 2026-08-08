@@ -1,44 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import * as api from '../JS/API/API';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
+import { Lay_TTCaNhan } from '../hook/ThongTinHienThi_Website';
 
-const ProtectedRoutes = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(null);
-    const [isAdmin, setIsAdmin] = useState(false);
+const ProtectedRoutes = () => {
+    const [status, setStatus] = useState({ isLoading: true, isAdmin: false });
 
     useEffect(() => {
+        let isMounted = true;
         const checkAuth = async () => {
             try {
-                const kiemtra = await api.CallAPI(undefined, { url: '/NguoiDung/kiemtra', PhuongThuc: 2 });
-                if (kiemtra && kiemtra.ThanhCong) {
-                    setIsLoggedIn(true);
-                    setIsAdmin(kiemtra.DuLieu.LOAIND === 1);
-                } else {
-                    setIsLoggedIn(false);
-                    setIsAdmin(false);
-                }
-            } catch (error) {
-                console.error('Lỗi khi kiểm tra trạng thái đăng nhập:', error);
-                setIsLoggedIn(false);
-                setIsAdmin(false);
+                const res = await Lay_TTCaNhan(1);
+                if (!isMounted) return;
+
+                const loaind = res?.DuLieu?.LOAIND ?? res?.LOAIND;
+                const isAdmin = res?.ThanhCong && loaind === 1;
+
+                setStatus({ isLoading: false, isAdmin: isAdmin });
+            } catch (err) {
+                if (isMounted) setStatus({ isLoading: false, isAdmin: false });
             }
         };
         checkAuth();
+        return () => { isMounted = false; };
     }, []);
-    if (isLoggedIn === null) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <p className="text-gray-500 font-medium">Đang xác thực tài khoản...</p>
-            </div>
-        );
-    }
-    if (!isLoggedIn || !isAdmin) {
-        return <Navigate to="/" replace />;
-    }
-    if (isLoggedIn && isAdmin) {
-        return <Navigate to="/admin" replace />;
-    }
-    return children;
+
+    if (status.isLoading) return <div className="flex items-center justify-center h-screen"><p className="text-gray-500 font-medium">Đang tải trang...</p></div>;
+    if (status.isAdmin) return <Navigate to="/admin" replace />;
+    return <Outlet />;
 };
 
 export default ProtectedRoutes;

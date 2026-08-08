@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
-import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
+
 
 function ChinhSuaSo({ DuLieu, url }) {
-  const { GetTTwebsite } = useAppContext();
+
   
   // Ánh xạ dữ liệu đầu vào
   const stkCu = DuLieu?.DuLieu;
@@ -80,7 +80,6 @@ function ChinhSuaSo({ DuLieu, url }) {
       if (ketqua.ThanhCong) {
         setLoading(false);
         setOk(ketqua.message);
-        GetTTwebsite(); // Cập nhật lại context
         return;
       }else{
         setErr(ketqua.message || 'Cập nhật thất bại, vui lòng thử lại!');

@@ -2,9 +2,19 @@ import Chung from "../CaiDatWebsite/Chung";
 import { Routes, Route ,Link } from 'react-router-dom';
 import HoSo from "../ThongTinCaNhan/HoSoAdmin";
 import XemCaiDat from "../CaiDatWebsite/XemCaiDat";
-import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
+import { useEffect, useState } from "react";
+import {website} from '../../../../hook/ThongTinHienThi_Website';
+import { useNavigate } from 'react-router-dom';
 function QuanLiTTCaNhan() {
-    const { TTwebsite } = useAppContext();
+    const [TTwebsite, setWebsite] = useState([]);
+    const navigate = useNavigate();
+    useEffect(() => {
+        const GetTTwebsite = async () => {
+          const data = await website();
+          setWebsite(data);
+        };
+      GetTTwebsite();
+      }, [navigate]);
 
 
 

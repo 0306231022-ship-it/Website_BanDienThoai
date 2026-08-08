@@ -1,37 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import * as api from '../JS/API/API';
 import { Navigate } from 'react-router-dom';
+import { Lay_TTCaNhan } from '../hook/ThongTinHienThi_Website';
 
 const ProtectedRoute = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(null);
+    const [status, setStatus] = useState({ isLoading: true, isAllowed: false });
 
     useEffect(() => {
+        let isMounted = true;
         const checkAuth = async () => {
             try {
-                const kiemtra = await api.CallAPI(undefined, { url: '/NguoiDung/kiemtra?TrangThai=1', PhuongThuc: 2 });
-                if (kiemtra && kiemtra.ThanhCong) {
-                    setIsLoggedIn(true);
-                } else {
-                    setIsLoggedIn(false);
-                }
-            } catch (error) {
-                console.error('Lỗi khi kiểm tra trạng thái đăng nhập:', error);
-                setIsLoggedIn(false);
+                const res = await Lay_TTCaNhan(1);
+                if (!isMounted) return;
+                const rawData = Array.isArray(res?.DuLieu) ? res?.DuLieu[0] : (res?.DuLieu ?? res);
+                const loaind = Number(rawData?.LOAIND ?? rawData?.loaind);
+                const isSuccess = Boolean(res?.ThanhCong || res?.thanhCong || res?.success);
+                const isAdmin = isSuccess && loaind === 1;
+                setStatus({ isLoading: false, isAllowed: isAdmin });
+            } catch (err) {
+                console.error("Lỗi xác thực:", err);
+                if (isMounted) setStatus({ isLoading: false, isAllowed: false });
             }
         };
 
         checkAuth();
+        return () => { isMounted = false; };
     }, []);
-    if (isLoggedIn === null) {
-        return (
-            <div className="flex items-center justify-center h-screen">
-                <p className="text-gray-500 font-medium">Đang xác thực tài khoản...</p>
-            </div>
-        );
-    }
-    if (!isLoggedIn) {
-        return <Navigate to="/" replace />;
-    }
+
+    if (status.isLoading) return <div style={{ padding: 20 }}>Đang xác thực Admin...</div>;
+    if (!status.isAllowed) return <Navigate to="/" replace />;
+
     return children;
 };
 

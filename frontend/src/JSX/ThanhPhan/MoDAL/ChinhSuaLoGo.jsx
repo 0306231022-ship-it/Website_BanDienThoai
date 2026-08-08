@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import * as fun from '../../../JS/FUNCTONS/function';
 import * as API from '../../../JS/API/API'
-import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
 
 function ChinhSuaLoGo({DuLieu , url}) {
-  const { GetTTwebsite} =useAppContext();
   const [file, setfile] = useState([]); 
   const [AnhTam, setAnhTam] = useState([]);
   const [err, seterr] = useState('');
@@ -70,7 +68,7 @@ function ChinhSuaLoGo({DuLieu , url}) {
 
       if (ketqua.ThanhCong) {
         setok(ketqua.message);
-        GetTTwebsite();
+        //GetTTwebsite();
         return;
       }
     } catch (error) {

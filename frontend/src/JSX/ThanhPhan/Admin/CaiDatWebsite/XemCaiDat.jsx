@@ -1,10 +1,18 @@
 
 import { Link } from 'react-router-dom';
-import {useAppContext} from '../../../../CONTEXT/TrangChuAdmin';
+import { useEffect, useState } from 'react';
+import { website } from '../../../../hook/ThongTinHienThi_Website';
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
 function XemCaiDat(){
-    const { TTwebsite} = useAppContext();
     const { OpenMoDal} = useModalContext();
+      const [TTwebsite,setWebsite]=useState([])
+      useEffect(() => {
+        const GetTTwebsite = async () => {
+          const data= await website()
+          setWebsite(data);
+        };
+        GetTTwebsite();
+      }, []);
     return(
         <>
             <div className="p-6 min-h-screen">

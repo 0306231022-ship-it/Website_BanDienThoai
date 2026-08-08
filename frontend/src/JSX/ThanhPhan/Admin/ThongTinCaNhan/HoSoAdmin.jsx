@@ -1,19 +1,22 @@
 import { Link } from "react-router-dom";
-import { useADContext } from '../../../../CONTEXT/QuanLiCaNhanAdmin';
-import { useAppContext } from "../../../../CONTEXT/TrangChuAdmin";
+
+import { useEffect , useState} from "react";
 import { useModalContext } from "../../../../CONTEXT/QuanLiModal";
-import { useEffect } from "react";
-
+import { website } from "../../../../hook/ThongTinHienThi_Website";
 function HoSo() {
-    const { TTCaNhan, GetTTCaNhan } = useADContext();
-    const { TTwebsite, GetTTwebsite } = useAppContext();
-    const { MoModal, } = useModalContext();
 
-    useEffect(() => {
-        GetTTwebsite();
-        GetTTCaNhan();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+
+    const { OpenMoDal } = useModalContext();
+
+
+        const [TTwebsite,setWebsite]=useState([])
+         useEffect(() => {
+           const GetTTwebsite = async () => {
+             const data= await website()
+             setWebsite(data);
+           };
+           GetTTwebsite();
+         }, []);
 
     // Helper function để lấy URL ảnh
     const getImageUrl = (path) => path ? `http://localhost:3001/${path}` : 'https://via.placeholder.com/150';
@@ -39,13 +42,13 @@ function HoSo() {
                     </h3>
 
                     <button 
-                        onClick={() => MoModal('logo', { avatar: TTCaNhan?.AVATAR, TEN: TTCaNhan?.HOTEN })} 
+                        //onClick={() => OpenMoDal({ avatar: TTCaNhan?.AVATAR, TEN: TTCaNhan?.HOTEN },{TenTrang:'logo'})}
                         className="flex items-center justify-between w-full py-3 px-3 rounded-xl hover:bg-indigo-50 cursor-pointer transition duration-200 ease-in-out group"
                     >
                         <div className="flex items-center space-x-4">
                             <div className="w-12 h-12 rounded-full bg-indigo-100 overflow-hidden flex-shrink-0 border-2 border-indigo-300">
                                 <img 
-                                    src={getImageUrl(TTCaNhan?.AVATAR)} 
+                                    //src={getImageUrl(TTCaNhan?.AVATAR)} 
                                     alt="Avatar"
                                     className="w-full h-full object-cover" 
                                     loading="lazy" 
@@ -53,7 +56,7 @@ function HoSo() {
                             </div>
 
                             <div className='text-left'>
-                                <p className="font-bold text-gray-900 text-lg group-hover:text-indigo-800">{TTCaNhan?.HOTEN || "Chưa cập nhật"}</p>
+                                <p className="font-bold text-gray-900 text-lg group-hover:text-indigo-800">{"Chưa cập nhật"}</p>
                                 <div className="text-sm text-gray-500 flex items-center mt-1 gap-2">
                                     <img src={getImageUrl(TTwebsite?.LoGo)} alt="Logo" className="w-6 h-6 rounded-full border shadow-sm"/>  
                                     <span>{TTwebsite?.TenWebsite}</span>

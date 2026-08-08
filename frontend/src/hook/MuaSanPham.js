@@ -11,14 +11,14 @@ function MuaSanPham(){
     const { CloseAllModals } = useModalContext();
     const layDiaChi= async () => {
         try {
-            const isLoggedIn = await KiemTra();
+            /*const isLoggedIn = await KiemTra();
             if(isLoggedIn){
                 const thongTinNguoiDung = await LayThongTinNguoiDung();
                 const DiaChiNguoiDung= await API.CallAPI(undefined, { url: `/NguoiDung/LayDiaChi?IDND=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
                 if (!ThongTinDatDon.ThongTin_KhachHang.DiaChi_GiaoHang) {
                     setThongTinKhachHang(thongTinNguoiDung.HOTEN, thongTinNguoiDung.SDT, DiaChiNguoiDung.ThanhCong ? DiaChiNguoiDung.DuLieu[0].DIACHI : null);
                 }
-            }
+            }*/
         } catch (error) {
             console.error("Error fetching user address:", error);
         }
@@ -26,13 +26,13 @@ function MuaSanPham(){
   
     const layDonHang_GioHang = async () => {
         try {
-            const isLoggedIn = await KiemTra();
+            /*const isLoggedIn = await KiemTra();
             if (isLoggedIn) {
                 const thongTinNguoiDung = await LayThongTinNguoiDung();
                 setThongTinNguoiDung(thongTinNguoiDung);
                 const response = await API.CallAPI(undefined, { url: `/NguoiDung/giohang?idnd=${thongTinNguoiDung.IDND}`, PhuongThuc: 2 });
                 response.ThanhCong ? setThongTinSanPham(response.dulieu) : setThongTinSanPham([]);
-            }   
+            }*/   
         } catch (error) {
             console.error("Error adding product to cart:", error);
         }
@@ -62,7 +62,7 @@ function MuaSanPham(){
     }
     const LayMaGiamGia_gioHang = async()=>{
         try {
-            const isLoggedIn = await KiemTra();
+            /*const isLoggedIn = await KiemTra();
             if (isLoggedIn) {
                 const thongTinNguoiDung = await LayThongTinNguoiDung();
                 setThongTinNguoiDung(thongTinNguoiDung);
@@ -72,14 +72,14 @@ function MuaSanPham(){
                 }else{
                     setThongTinMaGiamGia([]);
                 }
-            }
+            }*/
         } catch (error) {
             console.error('Lỗi khi lấy mã giảm giá:', error);
         }
     }
     const layMaGiamGia_MuaNgay = async(DuLieu)=>{
         try {
-            const isLoggedIn = await KiemTra();
+            /*const isLoggedIn = await KiemTra();
             if (isLoggedIn) {
                 const arrIDThuongHieu = DuLieu.map(item => item.IDTHUONGHIEU);
                 const response = await API.CallAPI(undefined, { url: `/NguoiDung/LayMaGiamGia_idth?data=${arrIDThuongHieu[0]}`, PhuongThuc: 2 });
@@ -88,14 +88,14 @@ function MuaSanPham(){
                 }else{
                     setThongTinMaGiamGia([]);
                 }
-            }
+            }*/
         } catch (error) {
             console.error('Lỗi khi lấy mã giảm giá:', error);
         }
     }
     const TimKiem_MaGiamGia = async (DuLieu) => {
         try {
-            const isLoggedIn = await KiemTra();
+            /*const isLoggedIn = await KiemTra();
             if (isLoggedIn) {               
                 const response = await API.CallAPI(undefined, { url: `/NguoiDung/TimKiem_MaGiamGia?data=${DuLieu}`, PhuongThuc: 2 });
                 if (response.ThanhCong) {
@@ -103,7 +103,7 @@ function MuaSanPham(){
                 } else {
                     setThongTinMaGiamGia([]);
                 }
-            }
+            }*/
         } catch (error) {
             console.error('Lỗi khi tìm kiếm mã giảm giá:', error);
         }

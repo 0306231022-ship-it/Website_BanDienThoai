@@ -6,7 +6,7 @@ function TongQuan(){
   const [thongTinNguoiDung, setThongTinNguoiDung] = useState(null);
   const navgate = useNavigate();
 
-  useEffect(() => {
+  /*useEffect(() => {
     const kiemTraDangNhap = async () => {
       const isLoggedIn = await KiemTra();
       if (isLoggedIn) {
@@ -20,7 +20,7 @@ function TongQuan(){
     };
     kiemTraDangNhap();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []);*/
     return(
         <div className="space-y-8">
   

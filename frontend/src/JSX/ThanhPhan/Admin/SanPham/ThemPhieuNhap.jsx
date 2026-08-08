@@ -3,11 +3,9 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import * as API from '../../../../JS/API/API';
 import * as fun from '../../../../JS/FUNCTONS/function';
 import * as ThongBao from '../../../../JS/FUNCTONS/ThongBao';
-import { useADContext } from '../../../../CONTEXT/QuanLiCaNhanAdmin';
 function ThemPhieuNhap() {
     const { id } = useParams();
     const [errID, seterrID] = useState('')
-    const { GetTTCaNhan, TTCaNhan } = useADContext();
     const [danhSachNhaCungCap, setDanhSachNhaCungCap] = useState([]);
     const [danhSachThuongHieu, setDanhSachThuongHieu] = useState([]);
     const [err, setErr] = useState('');
@@ -45,7 +43,6 @@ function ThemPhieuNhap() {
     const [errValidate, setErrValidate] = useState([]);
 
     useEffect(() => {
-        GetTTCaNhan();
         setLoading(true);
         const LayDL = async () => {
             try {
@@ -247,7 +244,7 @@ function ThemPhieuNhap() {
             const DuLieu = {
                 ThongTinChung: {
                     IDNCC: thongTinPhieu.NhaCungCap,
-                    IDND: TTCaNhan?.IDND,
+                    //IDND: TTCaNhan?.IDND,
                     GHICHU: thongTinPhieu.GhiChu,
                     CheDoLuu: CheDo,
                     THANHTOAN: {
@@ -393,7 +390,7 @@ function ThemPhieuNhap() {
                     </div>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Nhân viên nhập</label>
-                        <input type="text" value={TTCaNhan?.HOTEN || ''} readOnly className="w-full bg-gray-100 border-gray-300 rounded-md p-2 text-gray-500 cursor-not-allowed border" />
+                        <input type="text" value={ ''} readOnly className="w-full bg-gray-100 border-gray-300 rounded-md p-2 text-gray-500 cursor-not-allowed border" />
                     </div>
                     <div className="col-span-1 md:col-span-4 mt-2">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Ghi chú phiếu nhập</label>

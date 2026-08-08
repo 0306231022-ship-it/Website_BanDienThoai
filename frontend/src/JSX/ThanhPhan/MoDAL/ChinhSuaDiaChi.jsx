@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as fun from '../../../JS/FUNCTONS/function';
 import * as API from '../../../JS/API/API';
-import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
+
 
 function SuaDiaChi({DuLieu , url}) {
     const [DiaChi, setDiaChi] = useState('');
@@ -9,7 +9,7 @@ function SuaDiaChi({DuLieu , url}) {
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
     const id = DuLieu.id;
-    const { GetTTwebsite} =useAppContext();
+
 
     const Reset = () => {
         setDiaChi('');
@@ -40,7 +40,7 @@ function SuaDiaChi({DuLieu , url}) {
                 seterr(KetQua.errors[0]?.msg || 'Dữ liệu không hợp lệ');
             } else if (KetQua.ThanhCong) {
                 setok(KetQua.message);
-                GetTTwebsite();
+                //GetTTwebsite();
             }
         } catch (error) {
             seterr('Lỗi kết nối máy chủ!');

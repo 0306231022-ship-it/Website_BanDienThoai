@@ -11,7 +11,7 @@ import { useThongTinDonHang } from '../REDUCER/QuanLiThongTinDatDon';
     const { layDiaChi , layDonHang_GioHang , LayMaGiamGia_gioHang , layMaGiamGia_MuaNgay } = MuaSanPham();
     const { setThongTinSanPham  } = useThongTinDonHang();
     const handleAddToCart = async (productId, DonGia , quantity) => {
-         if (!productId){
+         /*if (!productId){
             ThongBao1.ThongBao_CanhBao("Không tìm thấy sản phẩm.");
             return;
          } 
@@ -34,7 +34,7 @@ import { useThongTinDonHang } from '../REDUCER/QuanLiThongTinDatDon';
             } catch (error) {
                 console.error("Error adding product to cart:", error);
             }
-        }
+        }*/
     };
     const updateCartToServer = async (sanPhamRef) => {
         const currentCart = sanPhamRef.current;
@@ -53,25 +53,25 @@ import { useThongTinDonHang } from '../REDUCER/QuanLiThongTinDatDon';
     };
     //mua sản phẩm trong giỏ hàng
     const handlebuyproduct = async (sanPhamRef) => {
-        await updateCartToServer(sanPhamRef)
+       /* await updateCartToServer(sanPhamRef)
         const isLoggedIn = await KiemTra();
          if (!isLoggedIn) {
             OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
             return;
         }
         await Promise.all([layDiaChi(), layDonHang_GioHang(), LayMaGiamGia_gioHang()]);
-        OpenMoDal({TrangThai:1}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
+        OpenMoDal({TrangThai:1}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });*/
     }
     //mua mua ngay sản phẩm khuyến mãi 
     const MuaSP= async(DuLieu)=>{
-         const isLoggedIn = await KiemTra();
+        /* const isLoggedIn = await KiemTra();
          if (!isLoggedIn) {
             OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
             return;
         }
         setThongTinSanPham(DuLieu);
         OpenMoDal({TrangThai:2}, { TenTrang: 'ThongTinDonHang', TieuDe: 'Thông tin đơn hàng' });
-        await Promise.all([layDiaChi(), layMaGiamGia_MuaNgay(DuLieu)]);
+        await Promise.all([layDiaChi(), layMaGiamGia_MuaNgay(DuLieu)]);*/
     }
   
 

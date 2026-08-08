@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 function ThemDiaChi() {
     const [thongTinNguoiDung, setThongTinNguoiDung] = useState(null);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchThongTinNguoiDung = async () => {
             try {
                 const userInfo = await LayThongTinNguoiDung();
@@ -14,7 +14,7 @@ function ThemDiaChi() {
             }
         };
         fetchThongTinNguoiDung();
-    }, []);
+    }, []);*/
 
 
     return(

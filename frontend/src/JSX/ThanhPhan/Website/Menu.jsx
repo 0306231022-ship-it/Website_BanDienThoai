@@ -1,23 +1,31 @@
 import '../../../CSS/Menu.css';
 import { Link } from "react-router-dom";
 import {  useEffect ,useState} from 'react';
-import {useAppContext} from '../../../CONTEXT/TrangChuAdmin';
 import { useModalContext } from "../../../CONTEXT/QuanLiModal";
-import {KiemTra  , LayThongTinNguoiDung  } from '../../../hook/KiemTraDangNhap';
 import MenuND from './MenuND';
 import {Lay_SoLuong_GioHang } from '../../../hook/ThongTinHienThi_Website';
 import { io } from 'socket.io-client';
-const socket = io('http://localhost:3001'); // Replace with your server URL
+import { website } from '../../../hook/ThongTinHienThi_Website';
+const socket = io('http://localhost:3001');
 function Menu() {
-    const {GetTTwebsite,TTwebsite}= useAppContext();
+   
     const { OpenMoDal } = useModalContext();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
     const [cartCount, setCartCount] = useState(0);
+         const [TTwebsite,setWebsite]=useState([])
+          useEffect(() => {
+            const GetTTwebsite = async () => {
+              const data= await website()
+              setWebsite(data);
+            };
+            GetTTwebsite();
+          }, []);
      useEffect(() => {
-        GetTTwebsite();
+        
         const fetchData = async () => {
-            const loggedIn = await KiemTra();
+            
+            /*const loggedIn = await KiemTra();
             setIsLoggedIn(loggedIn);
             if (loggedIn) {
                 const userInfo = await LayThongTinNguoiDung();
@@ -33,7 +41,7 @@ function Menu() {
                     setCartCount(data.soluong||0);
                 }
                 });
-            }
+            }*/
         }
         fetchData();
          return () => {

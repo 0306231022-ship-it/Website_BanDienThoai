@@ -5,7 +5,6 @@ export default function useQuanLiDangNhap() {
     async function DangXuat(trangthai) {
         const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc muốn đăng xuất không?');
         if (!XacNhan) return false;
-        
         try {
             const ketqua = await API.CallAPI(undefined, { 
                 url: `/NguoiDung/dangxuat_nguoidung?TrangThai=${trangthai}`, 
@@ -14,7 +13,7 @@ export default function useQuanLiDangNhap() {
             
             if (ketqua.ThanhCong) {
                 ThongBao.ThongBao_ThanhCong(ketqua.message);
-                return true; // Trả về true để component biết đường chuyển hướng
+                return true;
             } else {
                 ThongBao.ThongBao_Loi(ketqua.message);
                 return false;

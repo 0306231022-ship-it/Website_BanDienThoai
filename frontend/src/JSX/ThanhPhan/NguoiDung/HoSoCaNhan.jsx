@@ -1,20 +1,9 @@
 import { Link } from "react-router-dom";
-import {KiemTra  , LayThongTinNguoiDung } from '../../../hook/KiemTraDangNhap';
 import { useEffect, useState } from "react";
 function HoSoCaNhan() {
     const [thongTinNguoiDung, setThongTinNguoiDung] = useState(null);
 
-    useEffect(() => {
-        const fetchThongTinNguoiDung = async () => {
-            try {
-                const userInfo = await LayThongTinNguoiDung();
-                setThongTinNguoiDung(userInfo);
-            } catch (error) {
-                console.error("Lỗi khi lấy thông tin người dùng:", error);
-            }
-        };
-        fetchThongTinNguoiDung();
-    }, []);
+  
     
 
     return (

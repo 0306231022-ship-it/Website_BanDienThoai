@@ -1,14 +1,13 @@
 import { useState } from "react";
 import * as fun from '../../../JS/FUNCTONS/function';
 import * as API from '../../../JS/API/API';
-import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
+
 
 function SuaMoTa({DuLieu,url}) {
     const [MoTa, setMoTa] = useState('');
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
     const [Loading, setLoading] = useState(false);
-    const { GetTTwebsite} =useAppContext();
     const id=DuLieu.id;
 
     const Reset = () => {
@@ -44,7 +43,7 @@ function SuaMoTa({DuLieu,url}) {
                 seterr(KetQua.errors[0]?.msg || 'Dữ liệu không hợp lệ');
             } else if (KetQua.ThanhCong) {
                 setok(KetQua.message);
-                GetTTwebsite();
+                //GetTTwebsite();
             }else {
                 seterr(KetQua.message)
             }

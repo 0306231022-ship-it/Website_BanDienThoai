@@ -5,11 +5,11 @@ function Menu({ user }) {
     const [showUserMenu, setShowUserMenu] = useState(false);
     const navigate = useNavigate();
     const handleLogout = async () => {
-        const result = await DangXuat();
+        /*const result = await DangXuat();
         if (result) {
             navigate('/');
             window.location.reload();
-        }
+        }*/
     }
 
     return (

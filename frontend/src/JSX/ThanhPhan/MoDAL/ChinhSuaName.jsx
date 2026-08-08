@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
-import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
+
 
 function ChinhSuaTen({DuLieu , url}) {
-  const { GetTTwebsite} =useAppContext();
   const tenCu = DuLieu?.DuLieu;
   const id = DuLieu?.id;
   const [ten, setTen] = useState('');
@@ -65,7 +64,7 @@ function ChinhSuaTen({DuLieu , url}) {
       if (ketqua.ThanhCong) {
         setLoading(false);
         setOk(ketqua.message);
-        GetTTwebsite();
+        //GetTTwebsite();
         return;
       }
     } catch (error) {

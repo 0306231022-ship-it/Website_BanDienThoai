@@ -96,7 +96,7 @@ const SanPhamTrangChu = () => {
         }
         // thêm đơn hàng tạm 
         try {
-            const isLoggedIn = await KiemTra();
+           /* const isLoggedIn = await KiemTra();
             if (isLoggedIn) {
                 const thongTinNguoiDung = await LayThongTinNguoiDung();
                 const formData = fun.objectToFormData({ IDND: thongTinNguoiDung.IDND, IDSP: SanPham.IDSANPHAM, SoLuong: 1 , GiaSanPham: SanPham.GIAFLASHSALE });
@@ -107,7 +107,7 @@ const SanPhamTrangChu = () => {
                 }
             }else{
                 OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
-            }
+            }*/
         } catch (error) {
             console.error('Lỗi khi thêm đơn hàng tạm:', error);
         }

@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
 import * as fun from '../../../../../JS/FUNCTONS/function';
 import * as API from '../../../../../JS/API/API';
-import { useAppContext } from '../../../../../CONTEXT/TrangChuAdmin';
+import { website } from "../../../../../hook/ThongTinHienThi_Website";
 
 function SuaEmail() {
     const { modalState } = useModalContext();
@@ -10,7 +10,14 @@ function SuaEmail() {
     const [Loading, setLoading] = useState(false);
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
-    const { GetTTwebsite} =useAppContext();
+         const [TTwebsite,setWebsite]=useState([])
+          useEffect(() => {
+            const GetTTwebsite = async () => {
+              const data= await website()
+              setWebsite(data);
+            };
+            GetTTwebsite();
+          }, []);
 
 
     const Reset = () => {
@@ -43,7 +50,7 @@ function SuaEmail() {
                 seterr(KetQua.errors[0]?.msg || 'Email không hợp lệ');
             } else if (KetQua.ThanhCong) {
                 setok(KetQua.message);
-                GetTTwebsite();
+                setWebsite(prev => ({ ...prev, Email: Email }));
             }
         } catch (error) {
             seterr('Lỗi kết nối máy chủ!');

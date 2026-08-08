@@ -28,14 +28,14 @@ function TrangChuNguoiDung() {
     const location = useLocation();
 
     const logout = async () => {
-        const result = await DangXuat();
+        /*const result = await DangXuat();
         if (result) {
             navigate('/');
             window.location.reload();
-        }
+        }*/
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchAuth = async () => {
             try {
                 const loggedIn = await KiemTra();
@@ -51,7 +51,7 @@ function TrangChuNguoiDung() {
             }
         };
         fetchAuth();
-    }, []);
+    }, []);*/
 
     const ChuyenTab = (ten, tieuDe) => {
         CloseAllModals();

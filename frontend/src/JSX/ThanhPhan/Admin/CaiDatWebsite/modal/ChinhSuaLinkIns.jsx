@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
 import * as fun from '../../../../../JS/FUNCTONS/function';
 import * as API from '../../../../../JS/API/API';
-import { useAppContext } from '../../../../../CONTEXT/TrangChuAdmin';
+
 
 function SuaLinkInstagram() {
     const { modalState } = useModalContext();
@@ -10,7 +10,7 @@ function SuaLinkInstagram() {
     const [Loading, setLoading] = useState(false);
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
-    const { GetTTwebsite} =useAppContext();
+ 
 
 
     const Reset = () => {
@@ -49,7 +49,7 @@ function SuaLinkInstagram() {
                 seterr(KetQua.errors[0]?.msg || 'Dữ liệu không hợp lệ');
             } else if (KetQua.ThanhCong) {
                 setok(KetQua.message);
-                GetTTwebsite();
+                //GetTTwebsite();
             }
         } catch (error) {
             seterr('Lỗi kết nối máy chủ!');

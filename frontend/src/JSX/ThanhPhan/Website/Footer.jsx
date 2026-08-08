@@ -1,14 +1,12 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useAppContext } from '../../../CONTEXT/TrangChuAdmin';
+
 
 function Footer() {
-    const { GetTTwebsite, TTwebsite } = useAppContext();
+    const [TTwebsite, setWebsite] = React.useState([]);
 
-    useEffect(() => {
-        GetTTwebsite();
-    }, []);
+
 
     return (
         <footer className="bg-[#0a0a0a] text-gray-400 py-16 border-t border-white/5">

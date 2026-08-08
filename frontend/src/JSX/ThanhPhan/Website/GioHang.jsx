@@ -16,7 +16,7 @@ function GioHang() {
     const [sanpham, setSanPham] = useState([]);
     const [TongTien, setTongTien] = useState(0);
     const sanPhamRef = useRef([]);
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             const loggedIn = await KiemTra();
@@ -35,7 +35,7 @@ function GioHang() {
             } else { setLoading(false); }
         };
         fetchData();
-    }, [OpenMoDal]);
+    }, [OpenMoDal]);*/
 
     useEffect(() => {
         sanPhamRef.current = sanpham;
@@ -61,7 +61,7 @@ function GioHang() {
     };
 
     const handleXoaSanPham = async (id) => {
-        const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn xóa sản phẩm này?');
+        /*const XacNhan = await ThongBao.ThongBao_XacNhanTT('Bạn có chắc chắn muốn xóa sản phẩm này?');
         if (!XacNhan) return;
         const loggedIn = await KiemTra();
         if (loggedIn) {
@@ -80,7 +80,7 @@ function GioHang() {
                     ThongBao.ThongBao_Loi(ketqua.message)
                 }
             } catch (error) { console.error(error); }
-        }
+        }*/
     };
 
     if (loading) return <div className="flex items-center justify-center min-h-screen uppercase tracking-widest text-gray-400 animate-pulse">Đang tải...</div>;

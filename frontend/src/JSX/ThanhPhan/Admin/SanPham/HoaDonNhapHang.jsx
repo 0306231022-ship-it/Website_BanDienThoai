@@ -3,16 +3,22 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { useParams } from 'react-router-dom';
 import * as API from '../../../../JS/API/API';
-import { useAppContext } from '../../../../CONTEXT/TrangChuAdmin';
+import { website } from '../../../../hook/ThongTinHienThi_Website';
 import * as fun from '../../../../JS/FUNCTONS/function'
 
 const HoaDonNhapKho = () => {
     const { id } = useParams();
-    const { TTwebsite } = useAppContext();
     const componentRef = useRef();
     const [DuLieu_hoadon, setDuLieu] = useState({});
     const [loading, setloading] = useState(true);
-
+         const [TTwebsite,setWebsite]=useState([])
+          useEffect(() => {
+            const GetTTwebsite = async () => {
+              const data= await website()
+              setWebsite(data);
+            };
+            GetTTwebsite();
+          }, []);
     useEffect(() => {
         const laydl = async () => {
             setloading(true);

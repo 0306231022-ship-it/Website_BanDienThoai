@@ -1,38 +1,32 @@
 // Tạm thời xong nhiệm vụ
 import { Link, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-
-import { useAppContext } from '../../CONTEXT/TrangChuAdmin';
-import { useADContext } from '../../CONTEXT/QuanLiCaNhanAdmin';
-
 import QuanLiTT from '../ThanhPhan/Admin/Menu/QuanLiTT';
 import QuanLiTTCaNhan from '../ThanhPhan/Admin/Menu/QuanLiTTCaNhan';
 import { useNavigate } from 'react-router-dom';
 import useQuanLiDangNhap from '../../hook/KiemTraDangNhap';
+import {website, Lay_TTCaNhan} from '../../hook/ThongTinHienThi_Website';
 
 function TrangChuAdmin() {
-  const {  TTwebsite, GetTTwebsite } = useAppContext();
-  const { GetTTCaNhan, TTCaNhan } = useADContext();
   const { DangXuat } = useQuanLiDangNhap();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
- const navigate = useNavigate();
-
+  const [TTwebsite,setWebsite]=useState([])
+  const [TTCaNhan,setTTCaNhan]=useState([])
+  const navigate = useNavigate();
   useEffect(() => {
-    GetTTwebsite();
-    GetTTCaNhan();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const GetTTwebsite = async () => {
+      const [data, data2] = await Promise.all([website(),Lay_TTCaNhan(1)]);
+      setWebsite(data.DuLieu);
+      setTTCaNhan(data2.DuLieu);
+    };
+  GetTTwebsite();
+  }, [navigate]);
   const XuLyDangXuat = async (trangthai) => {
     const thanhcong = await DangXuat(trangthai);
     if (thanhcong) {
       navigate('/'); 
     }
   };
-
-
-
-
-
   return (
     <>
       

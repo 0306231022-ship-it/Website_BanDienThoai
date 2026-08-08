@@ -57,7 +57,7 @@ function ChiTietSanPhamUser() {
         else setQuantity(prev => prev > 1 ? prev - 1 : 1);
     };
     const Mua = async()=>{
-        try {
+        /*try {
             const isLoggedIn = await KiemTra();
             if (!isLoggedIn) {
                 OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
@@ -77,7 +77,7 @@ function ChiTietSanPhamUser() {
             console.error("Error adding product to cart:", error);
             OpenMoDal(null, { TenTrang: 'ThongBao', TieuDe: 'Hộp thông tin' });
             return;
-        }
+        }*/
     }
 
     if (loading || !sanpham) return (
