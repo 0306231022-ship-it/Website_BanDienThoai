@@ -4,17 +4,15 @@ import HoSo from "../ThongTinCaNhan/HoSoAdmin";
 import XemCaiDat from "../CaiDatWebsite/XemCaiDat";
 import { useEffect, useState } from "react";
 import {website} from '../../../../hook/ThongTinHienThi_Website';
-import { useNavigate } from 'react-router-dom';
 function QuanLiTTCaNhan() {
     const [TTwebsite, setWebsite] = useState([]);
-    const navigate = useNavigate();
     useEffect(() => {
         const GetTTwebsite = async () => {
           const data = await website();
-          setWebsite(data);
+          setWebsite(data.DuLieu);
         };
       GetTTwebsite();
-      }, [navigate]);
+      }, []);
 
 
 

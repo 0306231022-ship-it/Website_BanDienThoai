@@ -9,9 +9,7 @@ function ChinhSuaLoGo({DuLieu , url}) {
   const [LoiValidate, setLoi] = useState({});
   const [ok, setok] = useState('');
   const [loading, setLoading] = useState(false); 
-  const LoGoServer = DuLieu?.DuLieu ;
-  const id = DuLieu?.id;
-
+  const LoGoServer = DuLieu?.avatar;
 
   const handleMultipleFilesChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
@@ -43,11 +41,9 @@ function ChinhSuaLoGo({DuLieu , url}) {
       setLoading(false);
       return;
     }
-   const DuLieu = id
-      ? fun.objectToFormData({ id: id })
-      : fun.objectToFormData({ id: "" });
+
     try {
-      const ketqua = await API.CallAPI(DuLieu || undefined, { 
+      const ketqua = await API.CallAPI(undefined, { 
         fileArray: file,
         url: url, 
         PhuongThuc: 1 
@@ -97,7 +93,7 @@ function ChinhSuaLoGo({DuLieu , url}) {
               ) : (
                 <img
                   alt="Default Logo"
-                  src={`http://localhost:3001/${LoGoServer}`}
+                  src={fun.getImageUrl(LoGoServer)}
                   className="w-full h-full rounded-full object-cover border-4 border-white shadow-sm"
                 />
               )}

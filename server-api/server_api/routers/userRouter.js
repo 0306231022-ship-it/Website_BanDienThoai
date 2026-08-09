@@ -4,6 +4,8 @@ import DonHangController from "../controllers/DonHangController.js";
 import  MaGiamGiaController from "../controllers/MaGiamGiaController.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
 import authMiddleware from "../middleware/auth.js";
+import createUpload from '../middleware/upload.js';
+import XacThucOTPController from '../controllers/XacThucOTPController.js';
 const NguoiDungRoute = Router();
 import multer from "multer";
 const upload = multer();
@@ -14,6 +16,9 @@ const upload = multer();
 NguoiDungRoute.post('/dangnhap', upload.none(), CanhanADController.DangNhap_NguoiDung);
 NguoiDungRoute.post('/dangxuat_nguoidung',upload.none(), authMiddleware, CanhanADController.DangXuat);
 NguoiDungRoute.get('/kiemtra',authMiddleware, CanhanADController.KiemTraDangNhap_NguoiDung);
+NguoiDungRoute.post('/ChinhSuaTenNguoiDung',upload.none(), authMiddleware, CanhanADController.ChinhSuaTen_NguoiDung);
+NguoiDungRoute.post('/ChinhSuaAnhNguoiDung',createUpload('AnhDaiDien').any(), authMiddleware, CanhanADController.ChinhSuaAnhNguoiDung);
+NguoiDungRoute.post('/XacThuc_email',upload.none(), authMiddleware,XacThucOTPController.XacThucEmail);
 //Chưa xử lí bên dưới
 NguoiDungRoute.post('/DangKy', upload.none(), CanhanADController.DangKy_NguoiDung);
 

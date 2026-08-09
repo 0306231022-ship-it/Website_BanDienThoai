@@ -35,6 +35,48 @@ export default class adminModel{
             return false;
         }
     }
+    static async ChinhSuaAnhNguoiDung(DuongDan, userId){
+        try {
+            const [update] = await execute(`
+                UPDATE nguoidung
+                SET AVATAR = ?
+                WHERE IDND = ?
+            `, [DuongDan, userId]);
+            return update.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật ảnh đại diện:', error);
+            return false;
+        }
+    }
+    static async ChinhSuaTen_NguoiDung(Ten, userId){
+        try {
+            const [update] = await execute(`
+                UPDATE nguoidung
+                SET HOTEN = ?
+                WHERE IDND = ?
+            `, [Ten, userId]);
+            return update.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật tên người dùng:', error);
+            return false;
+        }
+    }
+    static async kiemtra_email(email){
+        try {
+            const [kiemtra] = await execute(`
+                SELECT EMAIL
+                FROM nguoidung
+                WHERE EMAIL = ?
+                LIMIT 1
+                `,[email]);
+            return kiemtra.length>0;
+        } catch (error) {
+            console.error('Đã có lỗi sảy ra:' +error);
+            return false;
+        }
+    }
+
+    //chưa sửa bên dưới
     static async DangKy_NguoiDung(Data){
         try {
             const [insert] = await execute(`
@@ -46,14 +88,6 @@ export default class adminModel{
             console.error('Lỗi trong quá trình đăng ký:', error);
             return false;
         }
-    }
-    static async LayTT_Email(email){
-        try {
-           const [ketqua]= await execute('SELECT * FROM nguoidung WHERE EMAIL=? LIMIT 1',[email])
-           return ketqua.length >0 ? true : false
-          } catch (error) {
-            return false
-          }
     }
     static async LayDiaChiMacDinh(IDND){
         try {

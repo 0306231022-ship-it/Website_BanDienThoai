@@ -1,23 +1,24 @@
 import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
+import * as fun from '../../../../../JS/FUNCTONS/function';
 function ChinhSuaImgaeVaTens({DuLieu}) {
-
+   const { OpenMoDal } = useModalContext();
   return (
     <div className="w-full bg-white rounded-3xl p-6">
       <div className="flex flex-col items-center mb-10 pt-4">
         <div className="relative group">
           <div className="absolute inset-0 bg-blue-100 rounded-full scale-110 opacity-50 group-hover:scale-125 transition-transform duration-500"></div>
-          <img alt="Logo" className="relative w-28 h-28 rounded-full object-cover border-4 border-white shadow-xl" />
+          <img alt="Logo" src={fun.getImageUrl(DuLieu?.avatar)} className="relative w-28 h-28 rounded-full object-cover border-4 border-white shadow-xl" />
         </div>
       </div>
       <div className="space-y-3">
-        <button  className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-2xl transition-all group">
+        <button  onClick={() => OpenMoDal({ DuLieu: DuLieu?.TEN },{TenTrang:'ChinhSuaTen', url:'/NguoiDung/ChinhSuaTenNguoiDung'})} className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-2xl transition-all group">
           <div className="flex items-center gap-4">
             <div className="w-11 h-11 bg-white shadow-sm text-blue-600 rounded-xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-colors">
               <i className="fa-solid fa-font text-lg"></i>
             </div>
             <div className="text-left">
               <span className="block text-xs font-bold text-gray-400 uppercase tracking-tight">Tên người dùng </span>
-              <span className="text-[15px] font-bold text-gray-700">Nguyễn </span>
+              <span className="text-[15px] font-bold text-gray-700">{DuLieu?.TEN || "Chưa cập nhật"}</span>
             </div>
           </div>
           <div className="w-8 h-8 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
@@ -25,6 +26,7 @@ function ChinhSuaImgaeVaTens({DuLieu}) {
           </div>
         </button>
         <button
+          onClick={() => OpenMoDal({ avatar: DuLieu?.avatar },{TenTrang:'SuaAnhThuongHieu', url:'/NguoiDung/ChinhSuaAnhNguoiDung'})}
           className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-purple-50 border border-gray-100 rounded-2xl transition-all group"
         >
           <div className="flex items-center gap-4">

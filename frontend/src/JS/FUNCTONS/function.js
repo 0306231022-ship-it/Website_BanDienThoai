@@ -174,3 +174,5 @@ export function tinhTongGiamGia(dulieu, tongTien) {
   }
   return tongGiam;
 }
+ // Helper function để lấy URL ảnh
+  export  const getImageUrl = (path) => path ? `http://localhost:3001/${path}` : 'https://via.placeholder.com/150';

@@ -25,6 +25,7 @@ import ThemMa from "../JSX/ThanhPhan/Admin/MaGiamGia/ThemMa";
 import DiaChi from "../JSX/ThanhPhan/MoDAL/ThongTinNguoiDung_DonHang";
 import CancelOrderModal from "../JSX/ThanhPhan/MoDAL/XacNhanHuyDon";
 import ChinhSuaImgaeVaTens from "../JSX/ThanhPhan/Admin/ThongTinCaNhan/Modal/ChinhSuaLoGo&Ten";
+import ChinhSuaEmailVaSdt from "../JSX/ThanhPhan/Admin/ThongTinCaNhan/Modal/ThongTinLienHe";
 
 const MoDalContext = createContext();
 
@@ -54,7 +55,8 @@ const MODAL_REGISTRY = {
     'ThemMa' : ThemMa ,
     'DiaChi' : DiaChi ,
     'HuyDon_NguoiDung' : CancelOrderModal,
-    'logo' : ChinhSuaImgaeVaTens
+    'logo' : ChinhSuaImgaeVaTens,
+    'EmailVaSdt' : ChinhSuaEmailVaSdt,
 };
 
 export function AppMDProvider({ children }) {

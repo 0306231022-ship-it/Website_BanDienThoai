@@ -4,6 +4,7 @@ import adminModel from '../models/adminModel.js';
 import { generateToken } from '../function.js';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import { xoaFileCu } from '../function.js';
 export default class CanhanADController{
     static async DangKy_NguoiDung(req, res) {
         const dulieu = req.body;
@@ -243,7 +244,6 @@ export default class CanhanADController{
     }
      static async DangXuat(req, res) {
          const userId = req.user.id;
-         console.log('User ID from token:', userId); // Debugging line
          const trangthai = parseInt(req.query.TrangThai);
         if (!userId) {
             return res.json({
@@ -286,6 +286,97 @@ export default class CanhanADController{
                     message: 'Bạn đã đăng xuất thành công!'
                 });
             }
+    static async ChinhSuaAnhNguoiDung(req, res) {
+        const userId = req.user.id;
+        const files = req.files;
+        if (!userId) {
+            return res.json({
+                ThanhCong: false,
+                message: 'Bạn chưa đăng nhập!'
+            });
+        }
+        try {
+            const kiemtra_id = await adminModel.kiemtraid(userId);
+            if (!kiemtra_id) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Người dùng không tồn tại!'
+                });
+            }
+            const layAnhCu = await adminModel.LayTT_ID(userId);
+            if (!layAnhCu) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Không tìm thấy ảnh đại diện người dùng!'
+                });
+            }
+            await xoaFileCu(layAnhCu.AVATAR);
+            let pathFile = files[0].filename;
+            let DuongDan = 'uploads/AnhDaiDien/' + pathFile;
+            if (!pathFile) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Lỗi tải ảnh!'
+                })
+            };
+            const ketqua = await adminModel.ChinhSuaAnhNguoiDung(DuongDan, userId);
+            if (ketqua) {
+                return res.json({
+                    ThanhCong: true,
+                    message: 'Cập nhật ảnh đại diện thành công!'
+                });
+            } else {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Cập nhật ảnh đại diện thất bại, vui lòng thử lại sau!'
+                });
+            }
+        } catch (error) {
+            console.error('Lỗi trong quá trình cập nhật ảnh đại diện:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
+            });
+        }
+    }
+    static async ChinhSuaTen_NguoiDung(req, res) {
+        const userId = req.user.id;
+        const { Ten } = req.body;
+        if (!userId) {
+            return res.json({
+                ThanhCong: false,
+                message: 'Bạn chưa đăng nhập!'
+            });
+        }
+        try {
+            const kiemtra_id = await adminModel.kiemtraid(userId);
+            if (!kiemtra_id) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Người dùng không tồn tại!'
+                });
+            }
+            const ketqua = await adminModel.ChinhSuaTen_NguoiDung(Ten, userId);
+            if (ketqua) {
+                return res.json({
+                    ThanhCong: true,
+                    message: 'Cập nhật tên người dùng thành công!'
+                });
+            } else {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Cập nhật tên người dùng thất bại, vui lòng thử lại sau!'
+                });
+            }
+        } catch (error) {
+            console.error('Lỗi trong quá trình cập nhật tên người dùng:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
+            });
+        }
+    }
+
     // chưa kiểm tra bên dưới
     static async ThongTin_NguoiDung(req,res){
         const token = req.cookies.token_nguoidung;
