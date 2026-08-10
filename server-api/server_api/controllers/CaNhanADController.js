@@ -1,10 +1,12 @@
 import pkg from 'bcrypt';
 const { hash, compare } = pkg;
 import adminModel from '../models/adminModel.js';
+import XacThucModelr from '../models/XacThucOTP.js';
 import { generateToken } from '../function.js';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { xoaFileCu } from '../function.js';
+import XacThucModel from '../models/XacThucOTP.js';
 export default class CanhanADController{
     static async DangKy_NguoiDung(req, res) {
         const dulieu = req.body;
@@ -370,6 +372,72 @@ export default class CanhanADController{
             }
         } catch (error) {
             console.error('Lỗi trong quá trình cập nhật tên người dùng:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
+            });
+        }
+    }
+    static async ChinhSuaEmailNguoiDung(req,res){
+        try {
+            const DuLieu = req.body;
+              await Promise.all([
+                 body('Email')
+                    .notEmpty()
+                    .withMessage('Email không được bỏ trống!')
+                    .isEmail()
+                    .withMessage('Email không hợp lệ!')
+                    .isLength({ max: 255 })
+                    .withMessage('Vượt quá kí tự quy định!')
+                    .run(req),
+                body('Otp')
+                    .notEmpty()
+                    .withMessage('mã otp không được bỏ trống!')
+                    .isLength({ max: 6 })
+                    .withMessage('Vượt quá kí tự quy định!')
+                    .custom(async (value) => {
+                        const email = req.body.Email;
+                        const kiemtra = await XacThucModel.kiemtra_email(email);
+                        if(!kiemtra){
+                            throw new Error('Không tồn tại mã otp trên hệ thống!');
+                        }
+                        const maotp = kiemtra.MA_OTP;
+                        if(maotp!==value){
+                            const solansai = parseInt(kiemtra.SO_LAN_SAI);
+                            if(solansai>=5){
+                                const huyotp = await XacThucModel.Huy_otp(email);
+                                if(!huyotp){
+                                    throw new Error('Lỗi hệ thống!');
+                                }
+                            }
+                            const tang = await XacThucModel.Tang_sai(email);
+                            if(!tang){
+                                 throw new Error('Lỗi hệ thống, Vui long thực hiện sau!');
+                            }
+                             throw new Error('Mã otp sai, Vui lòng nhập lại!');
+                        }
+                    })
+              ]);
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                Validate: true,                
+                errors: errors.array() 
+            });
+        }
+        const update = await adminModel.update_email(DuLieu.Email);
+        if(!update){
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi hệ thống, Vui lòng thu8wr lại sau'
+            })
+        }
+        return res.json({
+            ThanhCong:true,
+            message:'Cập nhật email thành công!'
+        })
+        } catch (error) {
+            console.error('Lỗi trong quá trình cập nhật email người dùng:', error);
             return res.json({
                 ThanhCong: false,
                 message: 'Có lỗi xảy ra, vui lòng thử lại sau!'

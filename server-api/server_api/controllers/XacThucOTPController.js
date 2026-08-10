@@ -11,6 +11,23 @@ export default class XacThucOTPController{
                     message:'Vui lòng kiểm tra lại dữ liệu'
                 })
             }
+            await Promise.all([
+                 body('email')
+                .notEmpty()
+                .withMessage('Email không được bỏ trống!')
+                .isEmail()
+                .withMessage('Email không hợp lệ!')
+                .isLength({ max: 255 })
+                .withMessage('Vượt quá kí tự quy định!')
+                .run(req),
+            ]);
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                Validate: true,                
+                errors: errors.array() 
+            });
+        }
             const kiemtra = await adminModel.kiemtra_email(email.email);
             if(kiemtra){
                 return res.json({

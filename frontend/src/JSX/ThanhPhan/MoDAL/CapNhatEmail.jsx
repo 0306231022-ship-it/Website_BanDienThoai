@@ -19,7 +19,12 @@ function ChinhSuaEmail({ DuLieu, url }) {
   };
 
   // Hàm hủy/thay đổi lại email nếu nhập sai
-  const handleResetEmail = () => {
+  const handleResetEmail = async() => {
+    try {
+      const huyotp = await API.CallAPI(fun.objectToFormData({email:email}),{url:'/NguoiDung/huy_otp'})
+    } catch (error) {
+      
+    }
     setotp(false);
     setOtpValue('');
     setErr('');
@@ -71,7 +76,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
         );
 
         if (XacThuc.ThanhCong) {
-          setotp(true); // Khóa input email & hiện ô nhập OTP
+          setotp(true);
           setOk('Mã OTP đã được gửi đến email mới. Vui lòng kiểm tra!');
         } else {
           setErr(XacThuc.message || 'Không thể gửi mã xác thực!');
@@ -95,7 +100,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
       const DuLieuGui = fun.objectToFormData({
         Email: email,
         id: id || null,
-        Otp: otpValue // Gửi kèm mã OTP lên server
+        Otp: otpValue
       });
 
       const ketqua = await API.CallAPI(DuLieuGui, {
@@ -103,7 +108,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
         url: url
       });
 
-      if (ketqua.Status) {
+      if (!ketqua.ThanhCong) {
         setErr(ketqua.message);
         setLoading(false);
         return;
@@ -150,7 +155,6 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                // KHÓA INPUT KHI ĐANG LOADING HOẶC ĐÃ GỬI OTP
                 disabled={loading || otp}
                 className={`w-full px-5 py-4 rounded-2xl outline-none transition-all font-medium text-lg shadow-sm
                   ${
@@ -163,7 +167,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 placeholder="Nhập email mới..."
               />
 
-              {/* Nút xóa email (Chỉ hiện khi chưa gửi OTP) */}
+            
               {email && !loading && !otp && (
                 <button
                   onClick={() => setEmail('')}
@@ -188,6 +192,13 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 </div>
               )}
             </div>
+               {errValidate.Otp && (
+              <div className="flex items-center gap-2 animate-shake">
+                <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
+                <p className="text-[12px] text-red-600 font-bold">
+                  {errValidate.Otp}
+                </p>
+              </div>)}
           </div>
 
           {/* INPUT MÃ OTP (CHỈ HIỂN THỊ KHI OTP = TRUE) */}
