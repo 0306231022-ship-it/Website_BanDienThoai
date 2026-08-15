@@ -63,4 +63,72 @@ export default class XacThucOTPController{
         }
 
     }
+    static async huy_otp(req,res){
+        const email = req.body.email;
+        try {
+            if(!email){
+                return res.json({
+                    ThanhCong:false,
+                    message:'Vui lòng kiểm tra lại thông tin!'
+                })
+            }
+            const kiemtra = XacThucModel.kiemtra_email(email);
+            if(!kiemtra){
+                return res.json({
+                    ThanhCong:false,
+                    message:'Email này không tồn tại mã xác thực!'
+                })
+            }
+            const huyotp = XacThucModel.Huy_otp(email);
+            if(!huyotp){
+                return res.json({
+                    ThanhCong:false,
+                    message:'Hủy mã OTP thất bại!'
+                })
+            }
+            return res.json({
+                ThanhCong:true,
+                message:'Hủy OTP thành công!'
+            })
+
+        } catch (error) {
+            console.error('Có lỗi sảy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi hệ thống, Vui lòng kiểm tra lại!'
+            })
+        }
+    }
+    static async XacThuc_sdt(req,res){
+         const userId = req.user.id;
+         try {
+            const dl = adminModel.LayTT_ID(userId);
+            const email = dl.EMAIL;
+             const kiemtra2= await XacThucModel.kiemtra_email(email);
+            if(kiemtra2){
+                return res.json({
+                    ThanhCong:false,
+                    message:'Vui lòng thực hiện sau giây lát!'
+                })
+            }
+            const them = await XacThucModel.themotp(email);
+            if(them){
+                return res.json({
+                    ThanhCong:true,
+                    message:'Vui lòng kiểm tra lại mã otp'
+                })
+            }else{
+                return res.json({
+                    ThanhCong:false,
+                    message:'Vui lòng kiểm tra lại thông tin!'
+                })
+            }
+         } catch (error) {
+             console.error('Có lỗi sảy ra:' + error);
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi hệ thống, Vui lòng kiểm tra lại!'
+            })
+         }
+    }
 }

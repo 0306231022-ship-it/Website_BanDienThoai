@@ -3,27 +3,31 @@ import * as API from '../../../JS/API/API';
 import * as fun from '../../../JS/FUNCTONS/function';
 import * as ThongBao from '../../../JS/FUNCTONS/ThongBao';
 
-function ChinhSuaEmail({ DuLieu, url }) {
-  const emailCu = DuLieu?.DuLieu;
+function ChinhSuaSoDienThoai({ DuLieu, url }) {
+  const sdtCu = DuLieu?.DuLieu;
   const id = DuLieu?.id;
 
-  const [email, setEmail] = useState('');
-  const [otpValue, setOtpValue] = useState(''); // Thêm state lưu mã OTP người dùng nhập
+  const [sdt, setSdt] = useState('');
+  const [otpValue, setOtpValue] = useState(''); // State lưu mã OTP người dùng nhập
   const [err, setErr] = useState('');
   const [errValidate, setErrValidate] = useState({});
   const [ok, setOk] = useState('');
   const [loading, setLoading] = useState(false);
   const [otp, setotp] = useState(false); // Trạng thái đã gửi OTP thành công
 
-  const validateEmailFormat = (value) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  // Hàm kiểm tra định dạng số điện thoại Việt Nam (10 chữ số, bắt đầu bằng các đầu số phổ biến)
+  const validatePhoneFormat = (value) => {
+    return /(0[3|5|7|8|9])+([0-9]{8})\b/.test(value.trim());
   };
 
-  // Hàm hủy/thay đổi lại email nếu nhập sai
-  const handleResetEmail = async() => {
+  // Hàm hủy/thay đổi lại số điện thoại nếu nhập sai
+  const handleResetSdt = async () => {
     try {
-      const huyotp = await API.CallAPI(fun.objectToFormData({email:email}),{url:'/NguoiDung/huy_otp', PhuongThuc:1});
-      if(!huyotp.ThanhCong){
+      const huyotp = await API.CallAPI(
+        fun.objectToFormData({ sdt: sdt }),
+        { url: '/NguoiDung/huy_otp', PhuongThuc: 1 }
+      );
+      if (!huyotp.ThanhCong) {
         ThongBao.ThongBao_Loi(huyotp.message);
         return;
       }
@@ -32,10 +36,9 @@ function ChinhSuaEmail({ DuLieu, url }) {
       setErr('');
       setOk('');
     } catch (error) {
-      console.error(' Đã có lỗi sảy ra:'+ error);
-      ThongBao.ThongBao_CanhBao('Lỗi kết nối hệ thống, Vui lòng thử lại sau.')
+      console.error('Đã có lỗi xảy ra:' + error);
+      ThongBao.ThongBao_CanhBao('Lỗi kết nối hệ thống, Vui lòng thử lại sau.');
     }
-  
   };
 
   const handleUpdate = async () => {
@@ -46,20 +49,20 @@ function ChinhSuaEmail({ DuLieu, url }) {
 
     // === BƯỚC 1: GỬI MÃ OTP (NẾU CHƯA GỬI OTP) ===
     if (!otp) {
-      if (email === emailCu) {
-        setErr('Bạn chưa thay đổi email cần cập nhật!');
+      if (sdt === sdtCu) {
+        setErr('Bạn chưa thay đổi số điện thoại cần cập nhật!');
         setLoading(false);
         return;
       }
 
-      if (!email || !email.trim()) {
-        setErr('Vui lòng nhập email!');
+      if (!sdt || !sdt.trim()) {
+        setErr('Vui lòng nhập số điện thoại!');
         setLoading(false);
         return;
       }
 
-      if (!validateEmailFormat(email)) {
-        setErr('Email không đúng định dạng!');
+      if (!validatePhoneFormat(sdt)) {
+        setErr('Số điện thoại không đúng định dạng (Ví dụ: 0912345678)!');
         setLoading(false);
         return;
       }
@@ -70,21 +73,16 @@ function ChinhSuaEmail({ DuLieu, url }) {
         return;
       }
 
-      if (email.length > 255) {
-        setErr('Email không được vượt quá 255 ký tự!');
-        setLoading(false);
-        return;
-      }
-
       try {
+        // Đổi API URL sang xác thực SĐT
         const XacThuc = await API.CallAPI(
-          fun.objectToFormData({ email: email }),
-          { url: '/NguoiDung/XacThuc_email', PhuongThuc: 1 }
+          fun.objectToFormData({ sdt: sdt }),
+          { url: '/NguoiDung/XacThuc_sdt', PhuongThuc: 1 }
         );
 
         if (XacThuc.ThanhCong) {
           setotp(true);
-          setOk('Mã OTP đã được gửi đến email mới. Vui lòng kiểm tra!');
+          setOk('Mã OTP đã được gửi đến email đã đăng ký. Vui lòng kiểm tra!');
         } else {
           setErr(XacThuc.message || 'Không thể gửi mã xác thực!');
         }
@@ -96,7 +94,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
       return;
     }
 
-    // === BƯỚC 2: XÁC NHẬN OTP VÀ CẬP NHẬT EMAIL ===
+    // === BƯỚC 2: XÁC NHẬN OTP VÀ CẬP NHẬT SỐ ĐIỆN THOẠI ===
     if (!otpValue || !otpValue.trim()) {
       setErr('Vui lòng nhập mã OTP!');
       setLoading(false);
@@ -105,7 +103,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
 
     try {
       const DuLieuGui = fun.objectToFormData({
-        Email: email,
+        Sdt: sdt,
         id: id || null,
         Otp: otpValue
       });
@@ -132,8 +130,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
       }
 
       if (ketqua.ThanhCong) {
-        setOk(ketqua.message || 'Cập nhật email thành công!');
-        // GetTTwebsite();
+        setOk(ketqua.message || 'Cập nhật số điện thoại thành công!');
       }
     } catch (error) {
       setErr('Đã xảy ra lỗi ngoài ý muốn');
@@ -146,38 +143,37 @@ function ChinhSuaEmail({ DuLieu, url }) {
     <div className="w-full bg-white animate-fadeIn">
       <div className="p-8">
         <div className="space-y-6">
-          {/* INPUT EMAIL */}
+          {/* INPUT SỐ ĐIỆN THOẠI */}
           <div className="space-y-2">
             <div className="flex justify-between items-end px-1">
               <label className="text-[13px] font-bold text-gray-400 uppercase tracking-wider">
-                Email hiển thị
+                Số điện thoại hiển thị
               </label>
               <span className="text-[11px] text-blue-500 font-medium italic">
-                Email cũ: {emailCu}
+                SĐT cũ: {sdtCu}
               </span>
             </div>
 
             <div className="relative group">
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="tel"
+                value={sdt}
+                onChange={(e) => setSdt(e.target.value)}
                 disabled={loading || otp}
                 className={`w-full px-5 py-4 rounded-2xl outline-none transition-all font-medium text-lg shadow-sm
                   ${
-                    err || errValidate.Email
+                    err || errValidate.Sdt || errValidate.sdt
                       ? 'bg-red-50 border-2 border-red-500 text-red-900'
                       : 'bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white text-gray-800'
                   }
                   ${loading || otp ? 'opacity-60 cursor-not-allowed bg-gray-100' : ''}
                 `}
-                placeholder="Nhập email mới..."
+                placeholder="Nhập số điện thoại mới..."
               />
 
-            
-              {email && !loading && !otp && (
+              {sdt && !loading && !otp && (
                 <button
-                  onClick={() => setEmail('')}
+                  onClick={() => setSdt('')}
                   type="button"
                   className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-300 hover:text-red-500 transition-all active:scale-90"
                 >
@@ -190,7 +186,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <i className="fa-solid fa-lock text-gray-400"></i>
                   <button
-                    onClick={handleResetEmail}
+                    onClick={handleResetSdt}
                     type="button"
                     className="text-xs text-blue-600 hover:underline font-semibold"
                   >
@@ -199,13 +195,15 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 </div>
               )}
             </div>
-               {errValidate.Otp && (
+
+            {errValidate.Otp && (
               <div className="flex items-center gap-2 animate-shake">
                 <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
                 <p className="text-[12px] text-red-600 font-bold">
                   {errValidate.Otp}
                 </p>
-              </div>)}
+              </div>
+            )}
           </div>
 
           {/* INPUT MÃ OTP (CHỈ HIỂN THỊ KHI OTP = TRUE) */}
@@ -228,11 +226,11 @@ function ChinhSuaEmail({ DuLieu, url }) {
 
           {/* THÔNG BÁO LỖI / THÀNH CÔNG */}
           <div className="min-h-[20px] px-1">
-            {errValidate.Email ? (
+            {errValidate.Sdt || errValidate.sdt ? (
               <div className="flex items-center gap-2 animate-shake">
                 <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
                 <p className="text-[12px] text-red-600 font-bold">
-                  {errValidate.Email}
+                  {errValidate.Sdt || errValidate.sdt}
                 </p>
               </div>
             ) : err ? (
@@ -249,7 +247,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
               <div className="flex items-start gap-2">
                 <i className="fa-solid fa-circle-info text-blue-400 mt-1 text-[10px]"></i>
                 <p className="text-[12px] text-gray-400 leading-relaxed">
-                  Email hiện tại là <strong className="text-gray-600">"{email || emailCu}"</strong>.
+                  Số điện thoại hiện tại là <strong className="text-gray-600">"{sdt || sdtCu}"</strong>.
                 </p>
               </div>
             )}
@@ -286,4 +284,4 @@ function ChinhSuaEmail({ DuLieu, url }) {
   );
 }
 
-export default ChinhSuaEmail;
+export default ChinhSuaSoDienThoai;

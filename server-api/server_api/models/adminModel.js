@@ -75,6 +75,19 @@ export default class adminModel{
             return false;
         }
     }
+    static async update_email(Email ,ID){
+        try {
+            const [ipdate] = await execute(`
+                UPDATE nguoidung
+                SET EMAIL = ?
+                WHERE IDND = ?
+                `,[Email,ID]);
+            return ipdate.affectedRows >0;
+        } catch (error) {
+            console.error('Lỗi hệ thống!');
+            return false;
+        }
+    }
 
     //chưa sửa bên dưới
     static async DangKy_NguoiDung(Data){

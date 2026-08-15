@@ -379,6 +379,7 @@ export default class CanhanADController{
         }
     }
     static async ChinhSuaEmailNguoiDung(req,res){
+         const userId = req.user.id;
         try {
             const DuLieu = req.body;
               await Promise.all([
@@ -425,7 +426,7 @@ export default class CanhanADController{
                 errors: errors.array() 
             });
         }
-        const update = await adminModel.update_email(DuLieu.Email);
+        const update = await adminModel.update_email(DuLieu.Email,userId);
         if(!update){
             return res.json({
                 ThanhCong:false,
@@ -443,6 +444,9 @@ export default class CanhanADController{
                 message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
             });
         }
+    }
+    static async ChinhSuaSdtNguoiDung(req,res){
+        
     }
 
     // chưa kiểm tra bên dưới

@@ -51,8 +51,8 @@ function ChinhSuaEmailVaSdt({ DuLieu }) {
         <button
           onClick={() =>
             OpenMoDal(
-              { DuLieu: DuLieu?.sdt || DuLieu?.phone },
-              { TenTrang: "ChinhSuaSdt", url: "/NguoiDung/ChinhSuaSdtNguoiDung" }
+              { DuLieu: DuLieu?.SDT || DuLieu?.phone },
+              { TenTrang: "ChinhSuaSDT", url: "/NguoiDung/ChinhSuaSdtNguoiDung" }
             )
           }
           className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-blue-50 border border-gray-100 rounded-2xl transition-all group"
