@@ -88,6 +88,19 @@ export default class adminModel{
             return false;
         }
     }
+    static async update_sdt(Sdt,userId){
+        try {
+            const [update] = await execute(`
+                UPDATE nguoidung
+                SET SDT = ?
+                WHERE IDND = ?
+                `,[Sdt,userId]);
+            return update.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi hệ thống!');
+            return false;
+        }
+    }
 
     //chưa sửa bên dưới
     static async DangKy_NguoiDung(Data){

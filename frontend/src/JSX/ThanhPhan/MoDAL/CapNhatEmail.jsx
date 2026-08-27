@@ -8,22 +8,17 @@ function ChinhSuaEmail({ DuLieu, url }) {
   const id = DuLieu?.id;
 
   const [email, setEmail] = useState('');
-  const [otpValue, setOtpValue] = useState(''); // Thêm state lưu mã OTP người dùng nhập
+  const [otpValue, setOtpValue] = useState('');
   const [err, setErr] = useState('');
   const [errValidate, setErrValidate] = useState({});
   const [ok, setOk] = useState('');
   const [loading, setLoading] = useState(false);
-  const [otp, setotp] = useState(false); // Trạng thái đã gửi OTP thành công
+  const [otp, setotp] = useState(false);
 
-  const validateEmailFormat = (value) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  };
-
-  // Hàm hủy/thay đổi lại email nếu nhập sai
-  const handleResetEmail = async() => {
+  const handleResetEmail = async () => {
     try {
-      const huyotp = await API.CallAPI(fun.objectToFormData({email:email}),{url:'/NguoiDung/huy_otp', PhuongThuc:1});
-      if(!huyotp.ThanhCong){
+      const huyotp = await API.CallAPI(fun.objectToFormData({ email: email }), { url: '/NguoiDung/huy_otp', PhuongThuc: 1 });
+      if (!huyotp.ThanhCong) {
         ThongBao.ThongBao_Loi(huyotp.message);
         return;
       }
@@ -31,11 +26,11 @@ function ChinhSuaEmail({ DuLieu, url }) {
       setOtpValue('');
       setErr('');
       setOk('');
+      setErrValidate({});
     } catch (error) {
-      console.error(' Đã có lỗi sảy ra:'+ error);
-      ThongBao.ThongBao_CanhBao('Lỗi kết nối hệ thống, Vui lòng thử lại sau.')
+      console.error('Đã có lỗi xảy ra:' + error);
+      ThongBao.ThongBao_CanhBao('Lỗi kết nối hệ thống, Vui lòng thử lại sau.');
     }
-  
   };
 
   const handleUpdate = async () => {
@@ -44,7 +39,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
     setOk('');
     setErrValidate({});
 
-    // === BƯỚC 1: GỬI MÃ OTP (NẾU CHƯA GỬI OTP) ===
+    // === BƯỚC 1: GỬI MÃ OTP ===
     if (!otp) {
       if (email === emailCu) {
         setErr('Bạn chưa thay đổi email cần cập nhật!');
@@ -58,7 +53,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
         return;
       }
 
-      if (!validateEmailFormat(email)) {
+      if (!fun.validateEmail(email)) {
         setErr('Email không đúng định dạng!');
         setLoading(false);
         return;
@@ -115,12 +110,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
         url: url
       });
 
-      if (!ketqua.ThanhCong) {
-        setErr(ketqua.message);
-        setLoading(false);
-        return;
-      }
-
+      // BƯỚC KIỂM TRA 1: Ưu tiên kiểm tra lỗi Validate trước
       if (ketqua.Validate) {
         const errorsFromServer = {};
         ketqua.errors.forEach((Err) => {
@@ -131,10 +121,15 @@ function ChinhSuaEmail({ DuLieu, url }) {
         return;
       }
 
-      if (ketqua.ThanhCong) {
-        setOk(ketqua.message || 'Cập nhật email thành công!');
-        // GetTTwebsite();
+      // BƯỚC KIỂM TRA 2: Kiểm tra cờ ThanhCong từ Backend
+      if (!ketqua.ThanhCong) {
+        setErr(ketqua.message || 'Thao tác thất bại!');
+        setLoading(false);
+        return;
       }
+
+      // BƯỚC KIỂM TRA 3: Thành công
+      setOk(ketqua.message || 'Cập nhật email thành công!');
     } catch (error) {
       setErr('Đã xảy ra lỗi ngoài ý muốn');
     } finally {
@@ -174,7 +169,6 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 placeholder="Nhập email mới..."
               />
 
-            
               {email && !loading && !otp && (
                 <button
                   onClick={() => setEmail('')}
@@ -185,7 +179,6 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 </button>
               )}
 
-              {/* Icon Khóa khi đang ở bước OTP */}
               {otp && (
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <i className="fa-solid fa-lock text-gray-400"></i>
@@ -199,13 +192,6 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 </div>
               )}
             </div>
-               {errValidate.Otp && (
-              <div className="flex items-center gap-2 animate-shake">
-                <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
-                <p className="text-[12px] text-red-600 font-bold">
-                  {errValidate.Otp}
-                </p>
-              </div>)}
           </div>
 
           {/* INPUT MÃ OTP (CHỈ HIỂN THỊ KHI OTP = TRUE) */}
@@ -220,13 +206,28 @@ function ChinhSuaEmail({ DuLieu, url }) {
                 onChange={(e) => setOtpValue(e.target.value)}
                 disabled={loading}
                 maxLength={6}
-                className="w-full px-5 py-4 rounded-2xl outline-none transition-all font-bold text-xl tracking-widest text-center bg-blue-50 border-2 border-blue-300 focus:border-blue-600 focus:bg-white text-blue-900 shadow-sm"
+                className={`w-full px-5 py-4 rounded-2xl outline-none transition-all font-bold text-xl tracking-widest text-center shadow-sm
+                  ${
+                    errValidate.Otp 
+                      ? 'bg-red-50 border-2 border-red-500 text-red-900' 
+                      : 'bg-blue-50 border-2 border-blue-300 focus:border-blue-600 focus:bg-white text-blue-900'
+                  }`}
                 placeholder="Nhập mã OTP..."
               />
+              
+              {/* HIỂN THỊ LỖI OTP NGAY DƯỚI INPUT OTP */}
+              {errValidate.Otp && (
+                <div className="flex items-center gap-2 animate-shake px-1">
+                  <i className="fa-solid fa-triangle-exclamation text-red-500 text-xs"></i>
+                  <p className="text-[12px] text-red-600 font-bold">
+                    {errValidate.Otp}
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
-          {/* THÔNG BÁO LỖI / THÀNH CÔNG */}
+          {/* THÔNG BÁO LỖI CHUNG / THÀNH CÔNG */}
           <div className="min-h-[20px] px-1">
             {errValidate.Email ? (
               <div className="flex items-center gap-2 animate-shake">

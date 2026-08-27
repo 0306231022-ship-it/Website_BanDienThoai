@@ -15,10 +15,6 @@ function ChinhSuaSoDienThoai({ DuLieu, url }) {
   const [loading, setLoading] = useState(false);
   const [otp, setotp] = useState(false); // Trạng thái đã gửi OTP thành công
 
-  // Hàm kiểm tra định dạng số điện thoại Việt Nam (10 chữ số, bắt đầu bằng các đầu số phổ biến)
-  const validatePhoneFormat = (value) => {
-    return /(0[3|5|7|8|9])+([0-9]{8})\b/.test(value.trim());
-  };
 
   // Hàm hủy/thay đổi lại số điện thoại nếu nhập sai
   const handleResetSdt = async () => {
@@ -61,7 +57,7 @@ function ChinhSuaSoDienThoai({ DuLieu, url }) {
         return;
       }
 
-      if (!validatePhoneFormat(sdt)) {
+      if (!fun.validateEmail(sdt)) {
         setErr('Số điện thoại không đúng định dạng (Ví dụ: 0912345678)!');
         setLoading(false);
         return;
@@ -112,14 +108,8 @@ function ChinhSuaSoDienThoai({ DuLieu, url }) {
         PhuongThuc: 1,
         url: url
       });
-
-      if (!ketqua.ThanhCong) {
-        setErr(ketqua.message);
-        setLoading(false);
-        return;
-      }
-
       if (ketqua.Validate) {
+        alert(JSON.stringify(ketqua))
         const errorsFromServer = {};
         ketqua.errors.forEach((Err) => {
           errorsFromServer[Err.path] = Err.msg;
@@ -128,6 +118,15 @@ function ChinhSuaSoDienThoai({ DuLieu, url }) {
         setLoading(false);
         return;
       }
+      
+
+      if (!ketqua.ThanhCong) {
+        setErr(ketqua.message);
+        setLoading(false);
+        return;
+      }
+
+  
 
       if (ketqua.ThanhCong) {
         setOk(ketqua.message || 'Cập nhật số điện thoại thành công!');

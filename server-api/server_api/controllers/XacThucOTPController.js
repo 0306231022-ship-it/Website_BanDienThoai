@@ -102,7 +102,7 @@ export default class XacThucOTPController{
     static async XacThuc_sdt(req,res){
          const userId = req.user.id;
          try {
-            const dl = adminModel.LayTT_ID(userId);
+            const dl = await adminModel.LayTT_ID(userId);
             const email = dl.EMAIL;
              const kiemtra2= await XacThucModel.kiemtra_email(email);
             if(kiemtra2){
@@ -124,7 +124,7 @@ export default class XacThucOTPController{
                 })
             }
          } catch (error) {
-             console.error('Có lỗi sảy ra:' + error);
+            console.error('Có lỗi sảy ra:' + error);
             return res.json({
                 ThanhCong:false,
                 message:'Lỗi hệ thống, Vui lòng kiểm tra lại!'

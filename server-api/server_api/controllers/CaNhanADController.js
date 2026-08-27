@@ -402,22 +402,23 @@ export default class CanhanADController{
                         if(!kiemtra){
                             throw new Error('Không tồn tại mã otp trên hệ thống!');
                         }
-                        const maotp = kiemtra.MA_OTP;
-                        if(maotp!==value){
-                            const solansai = parseInt(kiemtra.SO_LAN_SAI);
-                            if(solansai>=5){
-                                const huyotp = await XacThucModel.Huy_otp(email);
-                                if(!huyotp){
-                                    throw new Error('Lỗi hệ thống!');
-                                }
+                        const SO_LAN_SAI = parseInt(kiemtra.SO_LAN_SAI);
+                        if(SO_LAN_SAI >= 5){
+                            const huyotp = await XacThucModel.Huy_otp(email);
+                             if(!huyotp){
+                                throw new Error('Lỗi hệ thống!');
                             }
+                        }
+                        const SoSanh_MatKhau = await compare(value, kiemtra.MA_OTP);
+                        if(!SoSanh_MatKhau){
                             const tang = await XacThucModel.Tang_sai(email);
                             if(!tang){
-                                 throw new Error('Lỗi hệ thống, Vui long thực hiện sau!');
+                                 throw new Error('Lỗi hệ thống, Vui lòng thực hiện sau!');
                             }
                              throw new Error('Mã otp sai, Vui lòng nhập lại!');
-                        }
+                        }   
                     })
+                    .run(req),
               ]);
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -430,7 +431,14 @@ export default class CanhanADController{
         if(!update){
             return res.json({
                 ThanhCong:false,
-                message:'Lỗi hệ thống, Vui lòng thu8wr lại sau'
+                message:'Lỗi hệ thống, Vui lòng thử lại sau'
+            })
+        }
+        const HUY_OTP = await XacThucModel.Huy_otp(DuLieu.Email);
+        if(!HUY_OTP){
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi hệ thống khi hủy mã OTP đã thực hiện'
             })
         }
         return res.json({
@@ -446,7 +454,80 @@ export default class CanhanADController{
         }
     }
     static async ChinhSuaSdtNguoiDung(req,res){
+          const userId = req.user.id;
+          const DuLieu = req.body;
+          try {
+                const thongtin= await adminModel.LayTT_ID(userId);
+                const email = thongtin.EMAIL;
+              await Promise.all([
+                body('Sdt')
+                    .notEmpty()
+                    .withMessage('SĐT không được bỏ trống!')
+                    .isMobilePhone('vi-VN').withMessage('Số điện thoại không đúng định dạng Việt Nam')
+                    .run(req),
+                body('Otp')
+                    .notEmpty()
+                    .withMessage('mã otp không được bỏ trống!')
+                    .isLength({ max: 6 })
+                    .withMessage('Vượt quá kí tự quy định!')
+                    .custom(async (value) => {
+                        const sdt = req.body.Sdt;
+                        const kiemtra = await XacThucModel.kiemtra_email(email);
+                        if(!kiemtra){
+                            throw new Error('Không tồn tại mã otp trên hệ thống!');
+                        }
+                        const SO_LAN_SAI = parseInt(kiemtra.SO_LAN_SAI);
+                        if(SO_LAN_SAI >= 5){
+                            const huyotp = await XacThucModel.Huy_otp(email);
+                             if(!huyotp){
+                                throw new Error('Lỗi hệ thống!');
+                            }
+                        }
+                        const SoSanh_MatKhau = await compare(value, kiemtra.MA_OTP);
+                        if(!SoSanh_MatKhau){
+                            const tang = await XacThucModel.Tang_sai(email);
+                            if(!tang){
+                                 throw new Error('Lỗi hệ thống, Vui lòng thực hiện sau!');
+                            }
+                             throw new Error('Mã otp sai, Vui lòng nhập lại!');
+                        }   
+                    })
+                    .run(req),
+              ]);
+               const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                Validate: true,                
+                errors: errors.array() 
+            });
+        }
+        const update = await adminModel.update_sdt(DuLieu.Sdt,userId);
+        if(!update){
+            return res.json({
+                ThanhCong:false,
+                message:'Không thể cập nhật dữ liệu!'
+            })
+        }
+        const HUY_OTP = await XacThucModel.Huy_otp(email);
+        if(!HUY_OTP){
+            return res.json({
+                ThanhCong:false,
+                message:'Lỗi hệ thống khi hủy mã OTP đã thực hiện'
+            })
+        }
+        return res.json({
+            ThanhCong: true,
+            message:'Cập nhật dữ liệu thành công!'
+        })
+          
+          } catch (error) {
+              console.error('Lỗi trong quá trình cập nhật sdt người dùng:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
+            });
         
+          }
     }
 
     // chưa kiểm tra bên dưới
