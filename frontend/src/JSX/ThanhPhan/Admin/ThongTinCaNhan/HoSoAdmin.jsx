@@ -63,19 +63,57 @@ function HoSo() {
                 </main>
 
                 {/* 3. THÔNG TIN CÁ NHÂN */}
-                <main className="bg-white p-6 rounded-xl shadow-md mt-6 border border-gray-100">
-                    <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3">🔑 Thông tin cá nhân</h3>
+              <main className="bg-white p-6 rounded-xl shadow-md mt-6 border border-gray-100">
+  <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3">🔑 Thông tin cá nhân</h3>
 
-                    <button  onClick={() => OpenMoDal({ email: TTCaNhan?.EMAIL, sdt: TTCaNhan?.SDT },{TenTrang:'EmailVaSdt'})} className="flex justify-between items-center w-full py-4 px-3 rounded-xl hover:bg-gray-50 transition group border-b border-gray-100">
-                        <div className='flex flex-col items-start text-left'>
-                            <p className="font-semibold text-gray-800 group-hover:text-indigo-600">
-                                <i className="fa-solid fa-phone-volume text-indigo-500 w-5 mr-3"></i> Thông tin liên hệ
-                            </p>
-                            <p className="text-sm text-gray-500 mt-1 pl-8">{TTCaNhan?.EMAIL || "Chưa cập nhật"}, {TTCaNhan?.SDT || "Chưa cập nhật"}</p>
-                        </div>
-                        <i className="fa-solid fa-chevron-right text-gray-300 group-hover:text-indigo-500"></i>
-                    </button>
-                </main>
+  {/* 1. THÔNG TIN LIÊN HỆ */}
+  <button 
+    onClick={() => OpenMoDal({ email: TTCaNhan?.EMAIL, sdt: TTCaNhan?.SDT }, { TenTrang: 'EmailVaSdt' })} 
+    className="flex justify-between items-center w-full py-4 px-3 rounded-xl hover:bg-gray-50 transition group border-b border-gray-100"
+  >
+    <div className="flex flex-col items-start text-left">
+      <p className="font-semibold text-gray-800 group-hover:text-indigo-600">
+        <i className="fa-solid fa-phone-volume text-indigo-500 w-5 mr-3"></i> Thông tin liên hệ
+      </p>
+      <p className="text-sm text-gray-500 mt-1 pl-8">
+        {TTCaNhan?.EMAIL || "Chưa cập nhật"}, {TTCaNhan?.SDT || "Chưa cập nhật"}
+      </p>
+    </div>
+    <i className="fa-solid fa-chevron-right text-gray-300 group-hover:text-indigo-500"></i>
+  </button>
+
+  {/* 2. THAY ĐỔI MẬT KHẨU */}
+  <button 
+    onClick={() => OpenMoDal({ email: TTCaNhan?.EMAIL }, { TenTrang: 'DoiMatKhau' })} 
+    className="flex justify-between items-center w-full py-4 px-3 rounded-xl hover:bg-gray-50 transition group border-b border-gray-100"
+  >
+    <div className="flex flex-col items-start text-left">
+      <p className="font-semibold text-gray-800 group-hover:text-indigo-600">
+        <i className="fa-solid fa-lock text-indigo-500 w-5 mr-3"></i> Thay đổi mật khẩu
+      </p>
+      <p className="text-sm text-gray-500 mt-1 pl-8">
+        Cập nhật mật khẩu mới để tăng cường bảo mật tài khoản
+      </p>
+    </div>
+    <i className="fa-solid fa-chevron-right text-gray-300 group-hover:text-indigo-500"></i>
+  </button>
+
+  {/* 3. QUÊN MẬT KHẨU */}
+  <button 
+    onClick={() => OpenMoDal({ email: TTCaNhan?.EMAIL }, { TenTrang: 'QuenMatKhau' })} 
+    className="flex justify-between items-center w-full py-4 px-3 rounded-xl hover:bg-gray-50 transition group"
+  >
+    <div className="flex flex-col items-start text-left">
+      <p className="font-semibold text-gray-800 group-hover:text-indigo-600">
+        <i className="fa-solid fa-key text-indigo-500 w-5 mr-3"></i> Quên mật khẩu
+      </p>
+      <p className="text-sm text-gray-500 mt-1 pl-8">
+        Khôi phục lại mật khẩu thông qua Email đăng ký
+      </p>
+    </div>
+    <i className="fa-solid fa-chevron-right text-gray-300 group-hover:text-indigo-500"></i>
+  </button>
+</main>
             </div>
 
         </>

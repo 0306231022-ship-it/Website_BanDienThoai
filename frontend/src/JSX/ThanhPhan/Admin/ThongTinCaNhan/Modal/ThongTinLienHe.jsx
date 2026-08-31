@@ -51,7 +51,7 @@ function ChinhSuaEmailVaSdt({ DuLieu }) {
         <button
           onClick={() =>
             OpenMoDal(
-              { DuLieu: DuLieu?.SDT || DuLieu?.phone },
+              { DuLieu: DuLieu?.sdt },
               { TenTrang: "ChinhSuaSDT", url: "/NguoiDung/ChinhSuaSdtNguoiDung" }
             )
           }
