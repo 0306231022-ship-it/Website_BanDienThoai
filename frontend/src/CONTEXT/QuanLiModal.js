@@ -27,6 +27,8 @@ import CancelOrderModal from "../JSX/ThanhPhan/MoDAL/XacNhanHuyDon";
 import ChinhSuaImgaeVaTens from "../JSX/ThanhPhan/Admin/ThongTinCaNhan/Modal/ChinhSuaLoGo&Ten";
 import ChinhSuaEmailVaSdt from "../JSX/ThanhPhan/Admin/ThongTinCaNhan/Modal/ThongTinLienHe";
 import ChinhSuaSoDienThoai from "../JSX/ThanhPhan/MoDAL/CapNhatSDT";
+import DoiMatKhau from "../JSX/ThanhPhan/MoDAL/DoiMatKhau";
+import QuenMatKhau from "../JSX/ThanhPhan/MoDAL/QuenMatKhau";
 
 const MoDalContext = createContext();
 
@@ -58,7 +60,9 @@ const MODAL_REGISTRY = {
     'HuyDon_NguoiDung' : CancelOrderModal,
     'logo' : ChinhSuaImgaeVaTens,
     'EmailVaSdt' : ChinhSuaEmailVaSdt,
-    'ChinhSuaSDT': ChinhSuaSoDienThoai
+    'ChinhSuaSDT': ChinhSuaSoDienThoai,
+    'DoiMatKhau' : DoiMatKhau,
+    'QuenMatKhau': QuenMatKhau
 };
 
 export function AppMDProvider({ children }) {

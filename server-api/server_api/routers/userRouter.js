@@ -21,8 +21,9 @@ NguoiDungRoute.post('/ChinhSuaAnhNguoiDung',createUpload('AnhDaiDien').any(), au
 NguoiDungRoute.post('/XacThuc_email',upload.none(), authMiddleware,XacThucOTPController.XacThucEmail);
 NguoiDungRoute.post('/ChinhSuaEmailNguoiDung',upload.none(), authMiddleware, CanhanADController.ChinhSuaEmailNguoiDung);
 NguoiDungRoute.post('/huy_otp', upload.none(),authMiddleware, XacThucOTPController.huy_otp);
-NguoiDungRoute.post('/XacThuc_sdt' , upload.none(), authMiddleware, XacThucOTPController.XacThuc_sdt);
 NguoiDungRoute.post('/ChinhSuaSdtNguoiDung', upload.none(), authMiddleware, CanhanADController.ChinhSuaSdtNguoiDung );
+NguoiDungRoute.post('/DoiMatKhau', upload.none(), authMiddleware, CanhanADController.DoiMatKhau_NguoiDung);
+NguoiDungRoute.post('/DatLaiMatKhau', upload.none(), CanhanADController.DatLaiMatKhau_NguoiDung);
 //Chưa xử lí bên dưới
 NguoiDungRoute.post('/DangKy', upload.none(), CanhanADController.DangKy_NguoiDung);
 

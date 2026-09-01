@@ -84,7 +84,7 @@ function HoSo() {
 
   {/* 2. THAY ĐỔI MẬT KHẨU */}
   <button 
-    onClick={() => OpenMoDal({ email: TTCaNhan?.EMAIL }, { TenTrang: 'DoiMatKhau' })} 
+    onClick={() => OpenMoDal(undefined, { TenTrang: 'DoiMatKhau', TieuDe:'Đổi mật khẩu', icon:'fa-solid fa-shield-halved text-indigo-500' })} 
     className="flex justify-between items-center w-full py-4 px-3 rounded-xl hover:bg-gray-50 transition group border-b border-gray-100"
   >
     <div className="flex flex-col items-start text-left">
@@ -100,7 +100,7 @@ function HoSo() {
 
   {/* 3. QUÊN MẬT KHẨU */}
   <button 
-    onClick={() => OpenMoDal({ email: TTCaNhan?.EMAIL }, { TenTrang: 'QuenMatKhau' })} 
+    onClick={() => OpenMoDal({ email: TTCaNhan?.EMAIL }, { TenTrang: 'QuenMatKhau', TieuDe:' Quên mật khẩu' , icon:'fa-solid fa-key text-indigo-500' })} 
     className="flex justify-between items-center w-full py-4 px-3 rounded-xl hover:bg-gray-50 transition group"
   >
     <div className="flex flex-col items-start text-left">

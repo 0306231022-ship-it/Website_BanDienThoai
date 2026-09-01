@@ -492,6 +492,162 @@ export default class CanhanADController{
         
           }
     }
+    static async DoiMatKhau_NguoiDung(req,res){
+        try {
+            const userId = req.user.id;
+            const {MatKhauMoi} = req.body;
+            await Promise.all([
+                body('MatKhauCu')
+                    .notEmpty()
+                    .withMessage('Mật khẩu cũ không được bỏ trống!')
+                    .isLength({ max: 255 })
+                    .withMessage('Mật khẩu cũ vượt quá ký tự cho phép!')
+                    .custom(async (value, { req }) => {
+                        const kiemtra = await adminModel.LayTT_ID(userId);
+                        const SoSanh_MatKhau = await compare(value, kiemtra.MATKHAU);
+                        if (!SoSanh_MatKhau) {
+                            throw new Error('Mật khẩu cũ không đúng!');
+                        }
+                        return true;
+                    })
+                    .run(req),
+                body('MatKhauMoi')
+                    .notEmpty()
+                    .withMessage('Mật khẩu mới không được bỏ trống!')
+                    .isLength({ max: 255 })
+                    .withMessage('Mật khẩu mới vượt quá ký tự cho phép!')
+                    .run(req),
+                body('XacNhanMatKhau')
+                    .notEmpty()
+                    .withMessage('Xác nhận mật khẩu không được bỏ trống!')
+                    .isLength({ max: 255 })
+                    .withMessage('Xác nhận mật khẩu vượt quá ký tự cho phép!')
+                    .custom((value, { req }) => {
+                        if (value !== req.body.MatKhauMoi) {
+                            throw new Error('Xác nhận mật khẩu không trùng khớp!');
+                        }
+                        return true;
+                    })
+                    .run(req)
+            ]);
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    Validate: true,
+                    errors: errors.array()
+                });
+            }
+            const hashedPassword = await hash(MatKhauMoi, 10);
+            const ketqua = await adminModel.DoiMatKhau_NguoiDung(userId, hashedPassword);
+            if (!ketqua) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Cập nhật mật khẩu thất bại, vui lòng thử lại sau!'
+                });
+            }
+            return res.json({
+                ThanhCong: true,
+                message: 'Cập nhật mật khẩu thành công!'
+            });
+        } catch (error) {
+            console.error('Lỗi trong quá trình đổi mật khẩu người dùng:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
+            });
+        }
+    }
+  static async DatLaiMatKhau_NguoiDung(req, res) {
+    try {
+        const emailInput = req.body.Email || req.body.email;
+        const matKhauMoiInput = req.body.MatKhauMoi || req.body.matKhauMoi;
+
+        await Promise.all([
+            body('Email')
+                .trim()
+                .notEmpty().withMessage('Email không được bỏ trống!')
+                .isEmail().withMessage('Email không đúng định dạng!')
+                .isLength({ max: 255 }).withMessage('Email vượt quá ký tự quy định!')
+                .run(req),
+
+            body('MatKhauMoi')
+                .trim()
+                .notEmpty().withMessage('Mật khẩu mới không được bỏ trống!')
+                .isLength({ min: 6, max: 255 }).withMessage('Mật khẩu mới phải từ 6 đến 255 ký tự!')
+                .run(req),
+
+            body('Otp')
+                .trim()
+                .notEmpty().withMessage('Mã OTP không được bỏ trống!')
+                .isLength({ min: 6, max: 6 }).withMessage('Mã OTP phải đúng 6 ký tự!')
+                .custom(async (value, { req }) => {
+                    const email = req.body.Email || req.body.email;
+                    if (!email) {
+                        throw new Error('Không tìm thấy thông tin Email!');
+                    }
+
+                    // 1. Kiểm tra OTP có tồn tại không
+                    const kiemtra = await XacThucModel.kiemtra_email(email);
+                    if (!kiemtra || !kiemtra.MA_OTP) {
+                        throw new Error('Mã OTP không tồn tại hoặc đã hết hạn!');
+                    }
+
+                    // 2. Kiểm tra số lần nhập sai
+                    const SO_LAN_SAI = parseInt(kiemtra.SO_LAN_SAI || 0);
+                    if (SO_LAN_SAI >= 5) {
+                        await XacThucModel.Huy_otp(email);
+                        throw new Error('Mã OTP đã bị hủy do nhập sai quá 5 lần. Vui lòng lấy mã mới!');
+                    }
+
+                    // 3. So sánh mã OTP
+                    const SoSanh_MatKhau = await compare(value, kiemtra.MA_OTP);
+                    if (!SoSanh_MatKhau) {
+                        // Tăng số lần sai trong DB
+                        await XacThucModel.Tang_sai(email);
+                        throw new Error(`Mã OTP không chính xác! (Bấm sai ${SO_LAN_SAI + 1}/5 lần)`);
+                    }
+
+                    return true; // OTP hợp lệ
+                })
+                .run(req)
+        ]);
+
+        // Kiểm tra kết quả Validation
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.json({
+                Validate: true,
+                errors: errors.array()
+            });
+        }
+
+        // Cập nhật mật khẩu mới
+        const hashedPassword = await hash(matKhauMoiInput, 10);
+        const ketqua = await adminModel.DatLaiMatKhau_NguoiDung(emailInput, hashedPassword);
+
+        if (!ketqua) {
+            return res.json({
+                ThanhCong: false,
+                message: 'Cập nhật mật khẩu thất bại, vui lòng thử lại sau!'
+            });
+        }
+
+        // Hủy OTP sau khi đổi mật khẩu thành công
+        await XacThucModel.Huy_otp(emailInput);
+
+        return res.json({
+            ThanhCong: true,
+            message: 'Đặt lại mật khẩu thành công!'
+        });
+
+    } catch (error) {
+        console.error('Lỗi trong quá trình đặt lại mật khẩu người dùng:', error);
+        return res.json({
+            ThanhCong: false,
+            message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
+        });
+    }
+}
 
     // chưa kiểm tra bên dưới
     static async ThongTin_NguoiDung(req,res){

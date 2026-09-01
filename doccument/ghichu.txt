@@ -39,3 +39,7 @@ dùng INNER JOIN để kết bảng nha
 Chia lấy phần nguyên : Math.ceil
 =============================================
 //$Phí = Phí\_Cố\_Định + (Số\_km \times Đơn\_giá/km)$.
+============================================
+Trạng thái xác thực email
+1: email tồn tại
+0: email không tồn tại

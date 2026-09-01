@@ -101,6 +101,32 @@ export default class adminModel{
             return false;
         }
     }
+    static async DoiMatKhau_NguoiDung(userId, hashedPassword){
+        try {
+            const [update] = await execute(`
+                UPDATE nguoidung
+                SET MATKHAU = ?
+                WHERE IDND = ?
+            `, [hashedPassword, userId]);
+            return update.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi cập nhật mật khẩu:', error);
+            return false;
+        }
+    }
+    static async DatLaiMatKhau_NguoiDung(email, hashedPassword){
+        try {
+            const [update] = await execute(`
+                UPDATE nguoidung
+                SET MATKHAU = ?
+                WHERE EMAIL = ?
+            `, [hashedPassword, email]);
+            return update.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi khi đặt lại mật khẩu:', error);
+            return false;
+        }
+    }
 
     //chưa sửa bên dưới
     static async DangKy_NguoiDung(Data){

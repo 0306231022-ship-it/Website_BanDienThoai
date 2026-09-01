@@ -73,7 +73,7 @@ function ChinhSuaEmail({ DuLieu, url }) {
 
       try {
         const XacThuc = await API.CallAPI(
-          fun.objectToFormData({ email: email }),
+          fun.objectToFormData({ email: email, TrangThai: 0 }),
           { url: '/NguoiDung/XacThuc_email', PhuongThuc: 1 }
         );
 
