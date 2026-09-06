@@ -9,7 +9,7 @@ function ChinhSuaLoGo({DuLieu , url}) {
   const [LoiValidate, setLoi] = useState({});
   const [ok, setok] = useState('');
   const [loading, setLoading] = useState(false); 
-  const LoGoServer = DuLieu?.avatar;
+  const LoGoServer = DuLieu?.DuLieu;
 
   const handleMultipleFilesChange = (e) => {
     const selectedFiles = Array.from(e.target.files);

@@ -2,6 +2,16 @@ import cron from 'node-cron';
 import PhieuNhapModal from './models/PhieuNhapMoDel.js';
 import DonHangModel from './models/DonHang.js';
 import MaGiamGiaModel from './models/MaGiamGia.js';
+import XacThucModel from './models/XacThucOTP.js';
+// 1 phút 1 lần : '*/1 * * * *'
+cron.schedule('*/1 * * * *', async () => {
+    console.log(`--- [${new Date().toLocaleTimeString()}] Đang kiểm tra OTP HẾT HẠN ---`);
+    try {
+        const result = await XacThucModel.XoaOTP_HetHan();
+    } catch (error) {
+        console.error('Lỗi thực thi tác vụ 1 phút:', error.message);
+    }
+});
 
 cron.schedule('0 0 0 * * *', async () => {
     console.log('--- Bắt đầu tiến trình tự động 12h đêm ---');
@@ -43,6 +53,7 @@ cron.schedule('*/15 * * * *', async () => {
     scheduled: true,
     timezone: "Asia/Ho_Chi_Minh" 
 });
+
 
 console.log('Cron Job đã được kích hoạt...');
 // Chuyển trạng thái mã giảm giá đã hết hạn

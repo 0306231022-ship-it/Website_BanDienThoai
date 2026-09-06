@@ -5,10 +5,7 @@ import authMiddleware from "../middleware/auth.js";
 import createUpload from '../middleware/upload.js';
 import multer from "multer";
 import { body, validationResult } from "express-validator";
-import {validateSocialLinks} from '../validation/KiemTraLinkFaceBook.js';
-import { validateIns } from '../validation/KiemTraIns.js';
 import { validateEmail } from "../validation/KLiemTraEmail.js";
-import { validateSoDienThoai } from "../validation/KiemTraSoDienThoai.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
 import NhaCungCapController from "../controllers/NhaCungCapController.js";
 import PhieuNhapController from "../controllers/PhieuNhapController.js";
@@ -16,37 +13,25 @@ import SanPhamController from "../controllers/SanPhamController.js";
 import FlashSaleController from "../controllers/flashSaleController.js";
 import DonHangController from "../controllers/DonHangController.js";
 import MaGiamGiaController from "../controllers/MaGiamGiaController.js";
+import {CapQuyen} from '../middleware/CapQuyen.js';
 const adminRouter = Router();
 const upload = multer();
 //==========================================
 // xử lí thông tin website
 adminRouter.post('/ThongTinWebsite', adminController.LayWebsite);
-adminRouter.post('/ChinhSuaTen', upload.none(), adminController.CapNhatTen);
-adminRouter.post('/ChinhLoGo',createUpload('logo').array("files", 5),adminController.ChinhSuaLoGo);
+adminRouter.post('/ChinhSuaTen', CapQuyen(1), upload.none(), adminController.CapNhatTen);
+adminRouter.post('/ChinhLoGo',CapQuyen(1),createUpload('logo').array("files", 5),adminController.ChinhSuaLoGo);
+adminRouter.post('/ChinhSuaMoTa',CapQuyen(1),upload.none(),adminController.CapNhatMoTa);
+adminRouter.post('/ChinhSuaFacebook', CapQuyen(1), upload.none(),adminController.CapNhatLinkFaceBook);
+adminRouter.post('/ChinhSuaInstagram', CapQuyen(1), upload.none(), adminController.CapNhatIns );
+adminRouter.post('/ChinhSuaDiaChi', CapQuyen(1), upload.none(), adminController.CapNhatDiaChi);
+adminRouter.post('/ChinhSuaZalo', CapQuyen(1), upload.none(), adminController.CapNhatSoDienThoai);
+// ĐÃ SỬA TỚI ĐÂY
 
-  adminRouter.post('/ChinhSuaMoTa',upload.none(),[
-    body('MoTa')
-     .notEmpty()
-     .withMessage('Vui lòng nhập đầy đủ thông tin!')
-     .isLength({max:255})
-     .withMessage('Vượt quá kí tự cho phép!')
-  ],
-(req, res, next) => {
-     const errors = validationResult(req);
-     if (!errors.isEmpty()) {
-            return res.json({ Validate: true, errors: errors.array() });
-    }
-    next();
-},adminController.CapNhatMoTa);
-adminRouter.post('/ChinhSuaFacebook', upload.none(), validateSocialLinks,adminController.CapNhatLinkFaceBook);
-adminRouter.post('/ChinhSuaInstagram', upload.none(), validateIns, adminController.CapNhatIns );
-//adminRouter.post('/ChinhSuaDiaChi', upload.none(), validateDiaChi, adminController.CapNhatDiaChi);
-adminRouter.post('/ChinhSuaEmail', upload.none(), validateEmail, adminController.CapNhatEmail);
-adminRouter.post('/ChinhSuaSoDienThoai', upload.none(), validateSoDienThoai, adminController.CapNhatSoDienThoai);
-adminRouter.post('/kiemtra', authMiddleware, CanhanADController.kiemtra );
-adminRouter.post('/DangXuat', authMiddleware, CanhanADController.DangXuat);
+adminRouter.post('/ChinhSuaEmail', CapQuyen(1), upload.none(), validateEmail, adminController.CapNhatEmail);
+
 //=========================================
-adminRouter.post('/ChinhSuaTenUS', upload.none(),  [
+adminRouter.post('/ChinhSuaTenUS', CapQuyen(1), upload.none(),  [
     body('Ten')
     .notEmpty()
     .withMessage('Vui lòng nhập đầy đủ thông tin!')

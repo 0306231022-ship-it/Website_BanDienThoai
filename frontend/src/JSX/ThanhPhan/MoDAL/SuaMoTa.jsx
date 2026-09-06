@@ -36,16 +36,23 @@ function SuaMoTa({DuLieu,url}) {
 
         try {
             const KetQua = await API.CallAPI(DuLieu, { url: url , PhuongThuc: 1 });
-
-            if (KetQua.status) {
-                seterr(KetQua.message);
-            } else if (KetQua.Validate) {
-                seterr(KetQua.errors[0]?.msg || 'Dữ liệu không hợp lệ');
-            } else if (KetQua.ThanhCong) {
+            if(KetQua.validate){
+                const errorsFromServer = {};
+                KetQua.errors.forEach(Err => {
+                    errorsFromServer[Err.path] = Err.msg;
+                });
+                seterr(Object.values(errorsFromServer).join(', '));
+                setLoading(false);
+                return;
+            }
+            if(KetQua.ThanhCong){
                 setok(KetQua.message);
-                //GetTTwebsite();
-            }else {
-                seterr(KetQua.message)
+                setLoading(false);
+                return;
+            }else{
+                seterr(KetQua.message);
+                setLoading(false);
+                return;
             }
         } catch (error) {
             seterr('Không thể kết nối đến hệ thống, Vui lòng thử lại sau!');

@@ -1,7 +1,6 @@
 import pkg from 'bcrypt';
 const { hash, compare } = pkg;
 import adminModel from '../models/adminModel.js';
-import XacThucModelr from '../models/XacThucOTP.js';
 import { generateToken } from '../function.js';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';

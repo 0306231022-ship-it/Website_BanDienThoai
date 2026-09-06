@@ -1,18 +1,15 @@
 import { useState } from "react";
-import { useModalContext } from "../../../../../CONTEXT/QuanLiModal";
 import * as fun from '../../../../../JS/FUNCTONS/function';
 import * as API from '../../../../../JS/API/API';
 
 
-function SuaLinkInstagram() {
-    const { modalState } = useModalContext();
+function SuaLinkInstagram({DuLieu}) {
+
     const [InstaUrl, setInstaUrl] = useState('');
     const [Loading, setLoading] = useState(false);
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
  
-
-
     const Reset = () => {
         setInstaUrl('');
         seterr('');
@@ -42,14 +39,19 @@ function SuaLinkInstagram() {
 
         try {
             const KetQua = await API.CallAPI(DuLieu, { url: '/admin/ChinhSuaInstagram', PhuongThuc: 1 });
-    
-            if (KetQua.Status) {
-                seterr(KetQua.message);
-            } else if (KetQua.Validate) {
-                seterr(KetQua.errors[0]?.msg || 'Dữ liệu không hợp lệ');
-            } else if (KetQua.ThanhCong) {
+            if(KetQua.validate) {
+                const errorsFromServer = {};
+                KetQua.errors.forEach(Err => {
+                    errorsFromServer[Err.path] = Err.msg;
+                });
+                seterr(Object.values(errorsFromServer).join(', '));
+                setLoading(false);
+                return;
+            }
+            if(KetQua.ThanhCong) {
                 setok(KetQua.message);
-                //GetTTwebsite();
+            } else {
+                seterr(KetQua.message);
             }
         } catch (error) {
             seterr('Lỗi kết nối máy chủ!');
@@ -69,7 +71,7 @@ function SuaLinkInstagram() {
                             <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Link hiện tại</label>
                         </div>
                         <div className="bg-pink-50/30 border border-pink-100 rounded-2xl p-4 text-pink-600/70 text-sm truncate">
-                            {modalState.DuLieu.LinkInstagram || "Chưa có liên kết Instagram"}
+                            {DuLieu.DuLieu || "Chưa có liên kết Instagram"}
                         </div>
                     </div>
 

@@ -1,30 +1,18 @@
-import pkg from 'bcrypt';
-const { hash, compare } = pkg;
-import jwt from 'jsonwebtoken';
-import adminModel from '../models/adminModel.js';
+import { xoaFileCu } from '../function.js';
 import CaiDatModel from '../models/CaiDatWebsite.js';
-import { validationResult } from "express-validator";
-
-
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
-const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
-
+import { body, validationResult } from 'express-validator';
 export default class adminController{
-    static async generateToken(user){
-        return jwt.sign(
-            {id : user.IDND},
-            JWT_SECRET,
-            {expiresIn:JWT_EXPIRES_IN}
-        );
-    }
+
     static async CapNhatTen(req,res){
-        await body('Ten')
-            .notEmpty()
-            .withMessage('Vui lòng nhập đầy đủ thông tin!')
-            .isLength({max:50})
-            .withMessage('Vượt quá kí tự cho phép!')
-            .run(req);
+        try {
+             await Promise.all([
+            body('Ten')
+                .notEmpty()
+                .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                .isLength({max:50})
+                .withMessage('Vượt quá kí tự cho phép!')
+                .run(req)
+        ]);
         const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.json({
@@ -35,209 +23,216 @@ export default class adminController{
          const { Ten } = req.body;
          if (!Ten) {
             return res.json({ 
-                Status:true, 
+                ThanhCong:false,
                 message: 'Vui lòng kiểm tra lại dữ liệu!' 
             });
         } 
-        const CaiDat= CaiDatModel.updateTen(Ten);
-        if(CaiDat===1){
-            return res.json({
-                Status: true,
-                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
-            })
-        };
-        if(CaiDat){
-            return res.json({
-                 ThanhCong:true,
-                 message:'Cập nhật tên website thành công!'
-            })
-        };
+        const CaiDat= await CaiDatModel.updateTen(Ten);
         if(!CaiDat){
             return res.json({
-                ThatBai:true,
-                message:'Cập nhật tên website thất bại!'
+                ThanhCong: false,
+                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
             })
-        };
+        }
+        return res.json({
+            ThanhCong:true,
+            message:'Cập nhật tên website thành công!'
+        })
+       
+        } catch (error) {
+            console.error('Lỗi trong CapNhatTen:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Đã xảy ra lỗi trong quá trình cập nhật tên website.'
+            });
+        }
+       
     }
     static async ChinhSuaLoGo(req,res){
-       const files = req.files;
-      const hinhAnhDeLuuDB = `${files[0].destination}/${files[0].filename}`.replace(/\\/g, '/');
-        if (!files || files.length === 0) {
-            return res.json({
-                validation: true,
-                errors: [{ path: "files", msg: "Vui lòng tải lên ít nhất 1 ảnh" }]
-            });
-        }
-        const errors = [];
-        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-        for (const file of files) {
-            if (!allowedTypes.includes(file.mimetype)) {
-                errors.push({ 
-                    path: "files", 
-                    msg: `File ${file.originalname} không đúng định dạng JPG hoặc PNG` 
-                });
-                break; 
+        try {
+            const files = req.files;
+            const AnhCu = await CaiDatModel.GetTTWebsite();
+            const DuongDanAnhCu = AnhCu?.LoGo;
+            await xoaFileCu(DuongDanAnhCu);
+            let pathFile = files[0].filename;
+            let DuongDan = 'uploads/logo/' + pathFile;
+            if (!pathFile) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Lỗi tải ảnh!'
+                })
+            };
+            const ketqua= await CaiDatModel.updateHinhAnh(DuongDan);
+            if(!ketqua){
+                return res.json({
+                    ThanhCong: false,
+                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
+                })
             }
-        }
-       if (files.length < 1 || files.length > 5) {
-            errors.push({ path: "files", msg: "Không được upload quá 5 ảnh" });
-        }
-        if (errors.length > 0) {
-            return res.json({ Validate: true, errors });
-        }
-        const index = hinhAnhDeLuuDB.indexOf("uploads");
-        const relativePath = hinhAnhDeLuuDB.substring(index);
-        const ketqua= CaiDatModel.updateHinhAnh(relativePath);
-        if(ketqua===1){
-            return res.json({
-                Status : true,
-                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-            });
-        };
-        if(ketqua){
             return res.json({
                 ThanhCong:true,
-                message:'Cập nhật thành công!'
+                message:'Cập nhật logo website thành công!'
             })
-        };
-        if(!ketqua){
+        }catch (error) {
+            console.error('Lỗi trong ChinhSuaLoGo:', error);
             return res.json({
-                Status:true,
-                message:'Cập nhật thất bại!'
-            })
-        };
-    }
-    static async CapNhatMoTa(req,res){
-         const { MoTa } = req.body;
-         if (!MoTa) {
-            return res.json({ 
-                Status:true, 
-                message: 'Vui lòng kiểm tra lại dữ liệu!' 
-            });
-        } 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.json({
-                validation: true,
-                errors: errors.array() 
+                ThanhCong: false,
+                message: 'Đã xảy ra lỗi trong quá trình cập nhật logo.'
             });
         }
-         const CaiDat= CaiDatModel.updateMoTa(MoTa);
-        if(CaiDat===1){
+    }
+    
+    static async CapNhatMoTa(req,res){
+        try{
+            const { MoTa } = req.body;
+            await Promise.all([
+                body('MoTa')
+                    .notEmpty()
+                    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                    .isLength({max:500})
+                    .withMessage('Vượt quá kí tự cho phép!')
+                    .run(req)
+            ]);
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    validation: true,
+                    errors: errors.array() 
+                });
+            }
+            const CaiDat= await CaiDatModel.updateMoTa(MoTa);
+            if(!CaiDat){
+                return res.json({
+                    ThanhCong: false,
+                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
+                })
+            }
             return res.json({
-                Status: true,
-                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
+                ThanhCong:true,
+                message:'Cập nhật mô tả website thành công!'
             })
-        };
-        if(CaiDat){
+        }catch (error) {
+            console.error('Lỗi trong CapNhatMoTa:', error);
             return res.json({
-                 ThanhCong:true,
-                 message:'Cập nhật mô tả website thành công!'
-            })
-        };
-        if(!CaiDat){
-            return res.json({
-                ThatBai:true,
-                message:'Cập nhật mô tả website thất bại!'
-            })
-        };
-
+                ThanhCong: false,
+                message: 'Đã xảy ra lỗi trong quá trình cập nhật mô tả.'
+            });
+        }
     }
     static async CapNhatLinkFaceBook(req,res){
-          const { FacebookUrl } = req.body;
-         if (!FacebookUrl) {
-            return res.json({ 
-                Status:true, 
-                message: 'Vui lòng kiểm tra lại dữ liệu!' 
-            });
-        } 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
+        try {
+            const { FacebookUrl } = req.body;
+            await Promise.all([
+                body('FacebookUrl')
+                    .notEmpty()
+                    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                    .isURL()
+                    .withMessage('Vui lòng nhập đúng định dạng URL!')
+                    .run(req)
+            ]);
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    validation: true,
+                    errors: errors.array()
+                });
+            }
+             const CaiDat= await CaiDatModel.updateLinkFaceBook(FacebookUrl);
+             if(!CaiDat){
+                return res.json({
+                    ThanhCong: false,
+                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
+                })
+            }
             return res.json({
-                validation: true,
-                errors: errors.array() 
+                ThanhCong:true,
+                message:'Cập nhật link FaceBook thành công!'
+            })
+        } catch (error) {
+            console.error('Lỗi trong CapNhatLinkFaceBook:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Đã xảy ra lỗi trong quá trình cập nhật link FaceBook.'
             });
         }
-         const CaiDat= CaiDatModel.updateLinkFaceBook(FacebookUrl);
-        if(CaiDat===1){
-            return res.json({
-                Status: true,
-                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
-            })
-        };
-        if(CaiDat){
-            return res.json({
-                 ThanhCong:true,
-                 message:'Cập nhật link FaceBook thành công!'
-            })
-        };
-        if(!CaiDat){
-            return res.json({
-                ThatBai:true,
-                message:'Cập nhật link FaceBook thất bại!'
-            })
-        };
-
     }
     static async  CapNhatIns(req,res){
-          const { InstagramUrl } = req.body;
-         if (!InstagramUrl) {
-            return res.json({ 
-                Status:true, 
-                message: 'Vui lòng kiểm tra lại dữ liệu!' 
-            });
-        } 
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
+        try {
+            const { InstagramUrl } = req.body;
+            await Promise.all([
+                body('InstagramUrl')
+                    .notEmpty()
+                    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                    .isURL()
+                    .withMessage('Vui lòng nhập đúng định dạng URL!')
+                    .run(req)
+            ]);
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    validation: true,
+                    errors: errors.array()
+                });
+            }
+            const CaiDat= await CaiDatModel.updateLinkIns(InstagramUrl);
+            if(!CaiDat){
+                return res.json({
+                    ThanhCong: false,
+                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
+                })
+            }
             return res.json({
-                validation: true,
-                errors: errors.array() 
+                ThanhCong:true,
+                message:'Cập nhật link Instagram thành công!'
+            })
+        }
+        catch (error) {
+            console.error('Lỗi trong CapNhatIns:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Đã xảy ra lỗi trong quá trình cập nhật link Instagram.'
             });
         }
-         const CaiDat= CaiDatModel.updateLinkIns(InstagramUrl);
-        if(CaiDat===1){
-            return res.json({
-                Status: true,
-                message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau! '
-            })
-        };
-        if(CaiDat){
-            return res.json({
-                 ThanhCong:true,
-                 message:'Cập nhật link Instagram thành công!'
-            })
-        };
-        if(!CaiDat){
-            return res.json({
-                ThatBai:true,
-                message:'Cập nhật link Instagram thất bại!'
-            })
-        };
-
     }
     static async CapNhatDiaChi(req, res) {
-    try {
-        const { DiaChi } = req.body;
-        const result = await CaiDatModel.updateDiaChi(DiaChi);
-        if (result) {
+        try {
+            const { Ten } = req.body;
+            await Promise.all([
+                body('Ten')
+                    .notEmpty()
+                    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                    .isLength({ max: 255 })
+                    .withMessage('Vượt quá kí tự cho phép!')
+                    .run(req)
+            ]);
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    Validate: true,
+                    errors: errors.array()
+                });
+            }
+             const result = await CaiDatModel.updateDiaChi(Ten);
+             if (!result) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Không có thay đổi nào được thực hiện.'
+                });
+            }
             return res.json({
                 ThanhCong: true,
                 message: 'Cập nhật địa chỉ mới thành công!'
             });
+        } catch (error) {
+            console.error('Lỗi trong CapNhatDiaChi:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Đã xảy ra lỗi trong quá trình cập nhật địa chỉ.'
+            });
         }
-        
-        return res.json({
-            ThatBai: true,
-            message: 'Không có thay đổi nào được thực hiện.'
-        });
-
-    } catch (error) {
-        return res.json({
-            Status: true,
-            message: 'Lỗi máy chủ, vui lòng thử lại sau!'
-        });
     }
-}
+    // đã chỉnh sửa xong
+
    static async CapNhatEmail(req, res) {
     try {
         const { Email } = req.body;
@@ -263,29 +258,45 @@ export default class adminController{
     }
 }
     static async CapNhatSoDienThoai(req, res) {
-    try {
-        const { SoDienThoai } = req.body;
-        const result = await CaiDatModel.updateSoDienThoai(SoDienThoai);
-
-        if (result) {
+        try {
+            const {Sdt} = req.body;
+            await Promise.all([
+                body('Sdt')
+                    .notEmpty()
+                    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                    .isLength({ min: 10, max: 15 })
+                    .withMessage('Số điện thoại phải có độ dài từ 10 đến 15 ký tự!')
+                    .matches(/^\+?\d+$/)
+                    .withMessage('Số điện thoại chỉ được chứa các chữ số và có thể bắt đầu bằng dấu +.')
+                    .run(req)
+            ]);
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    Validate: true,
+                    errors: errors.array()
+                });
+            }
+            const result = await CaiDatModel.updateSoDienThoai(Sdt);
+            if(!result){
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Cập nhật thất bại, vui lòng thử lại!'
+                });
+            }
             return res.json({
                 ThanhCong: true,
                 message: 'Cập nhật số điện thoại thành công!'
             });
+        } catch (error) {
+            console.error('Lỗi trong CapNhatSoDienThoai:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Đã xảy ra lỗi trong quá trình cập nhật số điện thoại.'
+            });
         }
-        
-        return res.json({
-            ThatBai: true,
-            message: 'Số điện thoại này đã tồn tại hoặc cập nhật thất bại.'
-        });
-
-    } catch (error) {
-        return res.json({
-            Status: true,
-            message: 'Lỗi máy chủ khi cập nhật Hotline!'
-        });
     }
-}
+
 
     static async LayWebsite(req,res){
         const kq= await CaiDatModel.GetTTWebsite();

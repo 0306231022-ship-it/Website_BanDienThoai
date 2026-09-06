@@ -8,8 +8,8 @@ function XemCaiDat(){
       const [TTwebsite,setWebsite]=useState([])
       useEffect(() => {
         const GetTTwebsite = async () => {
-          const data= await website()
-          setWebsite(data);
+          const data= await website();
+          setWebsite(data.DuLieu);
         };
         GetTTwebsite();
       }, []);
@@ -76,7 +76,7 @@ function XemCaiDat(){
                         </div>
                         <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
                     </button>
-                    <button  onClick={() =>  OpenMoDal("SuaLinkIns", {LinkInstagram : TTwebsite.LinkInstagram })} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
+                    <button  onClick={() =>  OpenMoDal({DuLieu: TTwebsite.LinkInstagram }, { TenTrang: 'SuaLinkInstagram'})} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="fa-brands fa-instagram bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 bg-clip-text text-transparent w-5 mr-3"></i> Instagram
@@ -92,7 +92,7 @@ function XemCaiDat(){
 
                 <main className="bg-white p-6 rounded-xl shadow-md mt-6 mb-8 border border-gray-100">
                     <h3 className="text-xl font-bold text-gray-800 border-b pb-3 mb-3"><i className="fa-solid fa-square-phone text-green-600 w-5 mr-3"></i> Thông tin liên hệ</h3>
-                    <button onClick={() =>  OpenMoDal("SuaDiaChi", { DiaChi: TTwebsite.DiaChi })} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
+                    <button onClick={() =>  OpenMoDal({DuLieu: TTwebsite.DiaChi}, { TenTrang: 'ChinhSuaTen', url: '/admin/ChinhSuaDiaChi'})} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="text-red-600 fa-solid fa-location-dot w-5 mr-3"></i> Địa chỉ
@@ -101,7 +101,7 @@ function XemCaiDat(){
                         </div>
                         <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
                     </button>
-                    <button  onClick={() =>  OpenMoDal("SuaEmail", {Email : TTwebsite.Email })} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
+                    <button  onClick={() =>  OpenMoDal({DuLieu: TTwebsite.Email}, { TenTrang: 'ChinhSuaTen', url: '/admin/ChinhSuaEmail'})} className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group border-b border-gray-100">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="fa-solid fa-envelope text-blue-600 w-5 mr-3"></i> Email
@@ -110,7 +110,7 @@ function XemCaiDat(){
                         </div>
                         <i className="fa-solid fa-chevron-right w-4 h-4 text-gray-300 group-hover:text-indigo-500 ml-4 flex-shrink-0"></i>
                     </button>
-                    <button onClick={() =>  OpenMoDal("Suazalo", {zalo : TTwebsite.Zalo })}  className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
+                    <button onClick={() =>  OpenMoDal({DuLieu: TTwebsite.Zalo}, { TenTrang: 'ChinhSuaSDT', url: '/admin/ChinhSuaZalo'})}  className="flex justify-between items-center w-full py-3 px-3 rounded-xl hover:bg-gray-50 transition duration-150 ease-in-out group">
                         <div className='flex flex-col items-start text-left'>
                             <p className="font-semibold text-base mb-1 text-gray-800 group-hover:text-indigo-600 flex items-center">
                                 <i className="fa-solid fa-phone text-green-600 w-5 mr-3"></i> Số điện thoại / Zalo

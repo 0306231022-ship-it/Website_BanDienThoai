@@ -44,8 +44,6 @@ export default class XacThucModel {
             return false;
         }
     }
-
-   
     static async Tang_sai(email) {
         try {
             const [result] = await execute(`
@@ -60,8 +58,6 @@ export default class XacThucModel {
             return false;
         }
     }
-
-   
     static async Huy_otp(email) {
         try {
             const [result] = await execute(`
@@ -72,6 +68,18 @@ export default class XacThucModel {
             return result?.affectedRows > 0;
         } catch (error) {
             console.error('Lỗi trong Huy_otp:', error);
+            return false;
+        }
+    }
+    static async XoaOTP_HetHan() {
+        try {
+            const [result] = await execute(`
+                DELETE FROM xacthucotp 
+                WHERE NGAY_KET_THUC < NOW()
+            `);
+            return result?.affectedRows > 0;
+        } catch (error) {
+            console.error('Lỗi trong XoaOTP_HetHan:', error);
             return false;
         }
     }

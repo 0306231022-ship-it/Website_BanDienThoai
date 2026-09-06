@@ -29,6 +29,7 @@ import ChinhSuaEmailVaSdt from "../JSX/ThanhPhan/Admin/ThongTinCaNhan/Modal/Thon
 import ChinhSuaSoDienThoai from "../JSX/ThanhPhan/MoDAL/CapNhatSDT";
 import DoiMatKhau from "../JSX/ThanhPhan/MoDAL/DoiMatKhau";
 import QuenMatKhau from "../JSX/ThanhPhan/MoDAL/QuenMatKhau";
+import ChinhSuaLinkIns from "../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/ChinhSuaLinkIns";
 
 const MoDalContext = createContext();
 
@@ -62,7 +63,8 @@ const MODAL_REGISTRY = {
     'EmailVaSdt' : ChinhSuaEmailVaSdt,
     'ChinhSuaSDT': ChinhSuaSoDienThoai,
     'DoiMatKhau' : DoiMatKhau,
-    'QuenMatKhau': QuenMatKhau
+    'QuenMatKhau': QuenMatKhau,
+    'SuaLinkInstagram': ChinhSuaLinkIns
 };
 
 export function AppMDProvider({ children }) {

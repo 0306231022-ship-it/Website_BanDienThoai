@@ -9,8 +9,6 @@ function SuaLinkFacebook({DuLieu}) {
     const [err, seterr] = useState('');
     const [ok, setok] = useState('');
 
-
-
     const Reset = () => {
         setFacebookUrl('');
         seterr('');
@@ -39,14 +37,21 @@ function SuaLinkFacebook({DuLieu}) {
 
         try {
             const KetQua = await API.CallAPI(DuLieu, { url: '/admin/ChinhSuaFacebook', PhuongThuc: 1 });
-            if (KetQua.Status) {
-                seterr(KetQua.message);
-            } else if (KetQua.Validate) {
-                seterr(KetQua.errors[0]?.msg || 'Dữ liệu không hợp lệ');
-            } else if (KetQua.ThanhCong) {
-                setok(KetQua.message);
-                //GetTTwebsite();
+            if(KetQua.validate) {
+                const errorsFromServer = {};
+                KetQua.errors.forEach(Err => {
+                    errorsFromServer[Err.path] = Err.msg;
+                });
+                seterr(Object.values(errorsFromServer).join(', '));
+                setLoading(false);
+                return;
             }
+            if(KetQua.ThanhCong) {
+                setok(KetQua.message);
+            }else {
+                seterr(KetQua.message);
+            }
+     
         } catch (error) {
             seterr('Không thể kết nối đến máy chủ, vui lòng thử lại!');
         } finally {
@@ -65,7 +70,7 @@ function SuaLinkFacebook({DuLieu}) {
                             <label className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.15em]">Link hiện tại</label>
                         </div>
                         <div className="bg-blue-50/30 border border-blue-100 rounded-2xl p-4 text-blue-600/70 text-sm truncate leading-relaxed">
-                            { DuLieu.LinkFacebook || "Chưa thiết lập liên kết"}
+                            { DuLieu.DuLieu || "Chưa thiết lập liên kết"}
                         </div>
                     </div>
 
