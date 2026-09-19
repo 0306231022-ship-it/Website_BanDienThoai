@@ -5,7 +5,6 @@ import authMiddleware from "../middleware/auth.js";
 import createUpload from '../middleware/upload.js';
 import multer from "multer";
 import { body, validationResult } from "express-validator";
-import { validateEmail } from "../validation/KLiemTraEmail.js";
 import ThuongHieuController from "../controllers/ThuongHieuController.js";
 import NhaCungCapController from "../controllers/NhaCungCapController.js";
 import PhieuNhapController from "../controllers/PhieuNhapController.js";
@@ -26,9 +25,8 @@ adminRouter.post('/ChinhSuaFacebook', CapQuyen(1), upload.none(),adminController
 adminRouter.post('/ChinhSuaInstagram', CapQuyen(1), upload.none(), adminController.CapNhatIns );
 adminRouter.post('/ChinhSuaDiaChi', CapQuyen(1), upload.none(), adminController.CapNhatDiaChi);
 adminRouter.post('/ChinhSuaZalo', CapQuyen(1), upload.none(), adminController.CapNhatSoDienThoai);
+adminRouter.post('/ChinhSuaEmail', CapQuyen(1), upload.none(), adminController.CapNhatEmail);
 // ĐÃ SỬA TỚI ĐÂY
-
-adminRouter.post('/ChinhSuaEmail', CapQuyen(1), upload.none(), validateEmail, adminController.CapNhatEmail);
 
 //=========================================
 adminRouter.post('/ChinhSuaTenUS', CapQuyen(1), upload.none(),  [

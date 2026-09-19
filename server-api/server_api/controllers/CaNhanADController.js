@@ -560,7 +560,6 @@ export default class CanhanADController{
     try {
         const emailInput = req.body.Email || req.body.email;
         const matKhauMoiInput = req.body.MatKhauMoi || req.body.matKhauMoi;
-
         await Promise.all([
             body('Email')
                 .trim()
@@ -568,13 +567,11 @@ export default class CanhanADController{
                 .isEmail().withMessage('Email không đúng định dạng!')
                 .isLength({ max: 255 }).withMessage('Email vượt quá ký tự quy định!')
                 .run(req),
-
             body('MatKhauMoi')
                 .trim()
                 .notEmpty().withMessage('Mật khẩu mới không được bỏ trống!')
                 .isLength({ min: 6, max: 255 }).withMessage('Mật khẩu mới phải từ 6 đến 255 ký tự!')
                 .run(req),
-
             body('Otp')
                 .trim()
                 .notEmpty().withMessage('Mã OTP không được bỏ trống!')
@@ -584,14 +581,10 @@ export default class CanhanADController{
                     if (!email) {
                         throw new Error('Không tìm thấy thông tin Email!');
                     }
-
-                    // 1. Kiểm tra OTP có tồn tại không
                     const kiemtra = await XacThucModel.kiemtra_email(email);
                     if (!kiemtra || !kiemtra.MA_OTP) {
                         throw new Error('Mã OTP không tồn tại hoặc đã hết hạn!');
                     }
-
-                    // 2. Kiểm tra số lần nhập sai
                     const SO_LAN_SAI = parseInt(kiemtra.SO_LAN_SAI || 0);
                     if (SO_LAN_SAI >= 5) {
                         await XacThucModel.Huy_otp(email);

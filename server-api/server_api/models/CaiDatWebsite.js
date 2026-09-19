@@ -71,17 +71,16 @@ export default class CaiDatModel{
             return false;
         }
     }
-     //Đã sửa đến đây
     static async updateEmail(DuLieu){
         try {
             const [ketqua]= await execute('UPDATE caidatwebsite SET Email=?  WHERE IDWEBSITE = ?',[DuLieu,'ID-WBSS02']);
-            return ketqua.affectedRows >0 ? true : false;
+            return ketqua.affectedRows >0;
         } catch (error) {
             console.error('Lỗi trong updateEmail:', error);
             return false;
         }
     }
-  
+   //Đã sửa đến đây
     static async LayThongTin_DiaChi(){
         try {
             const [DiaChi] = await execute(`

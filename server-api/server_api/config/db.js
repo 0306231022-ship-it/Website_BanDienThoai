@@ -27,4 +27,3 @@ export async function rollbackTransaction(connection) {
    await connection.rollback();
    connection.release();
 }
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNzYxODcwODQ5LCJleHAiOjE3NjE4OTk2NDl9.tNZZ9OdF4-UlOZ_GQU94jGGS2X-He394_F0eK8nGfjY

@@ -231,32 +231,44 @@ export default class adminController{
             });
         }
     }
-    // đã chỉnh sửa xong
-
    static async CapNhatEmail(req, res) {
-    try {
-        const { Email } = req.body;
-        const result = await CaiDatModel.updateEmail(Email);
-
-        if (result) {
+        try {
+            const { Ten } = req.body;
+            await Promise.all([
+                body('Ten')
+                    .notEmpty()
+                    .withMessage('Vui lòng nhập đầy đủ thông tin!')
+                    .isEmail()
+                    .withMessage('Vui lòng nhập đúng định dạng Email!')
+                    .run(req)
+            ]);
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    Validate: true,
+                    errors: errors.array()
+                });
+            }
+            const result = await CaiDatModel.updateEmail(Ten);
+            if (!result) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Không có thay đổi nào được thực hiện.'
+                });
+            }
             return res.json({
                 ThanhCong: true,
-                message: 'Cập nhật Email hệ thống thành công!'
+                message: 'Cập nhật Email mới thành công!'
+            });
+        } catch (error) {
+            console.error('Lỗi trong CapNhatEmail:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Đã xảy ra lỗi trong quá trình cập nhật Email.'
             });
         }
-        
-        return res.json({
-            ThatBai: true,
-            message: 'Email mới trùng với Email cũ hoặc cập nhật thất bại.'
-        });
-
-    } catch (error) {
-        return res.json({
-            Status: true,
-            message: 'Lỗi máy chủ khi cập nhật Email!'
-        });
-    }
-}
+   }
+ // đã chỉnh sửa xong
     static async CapNhatSoDienThoai(req, res) {
         try {
             const {Sdt} = req.body;
