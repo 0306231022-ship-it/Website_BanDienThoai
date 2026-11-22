@@ -54,6 +54,35 @@ export default class CanhanADController{
                         }
                         return true;
                     })
+                    .run(req),
+                body('otp')
+                    .notEmpty()
+                    .withMessage('Mã OTP không được bỏ trống!')
+                    .isLength({ max: 6 })
+                    .withMessage('Mã OTP vượt quá ký tự cho phép!')
+                    .custom(async (value) => {
+                        const email = req.body.email;
+                        const kiemtra = await XacThucModel.kiemtra_email(email);
+                        if(!kiemtra){
+                            throw new Error('Không tồn tại mã otp trên hệ thống!');
+                        }
+                        const SO_LAN_SAI = parseInt(kiemtra.SO_LAN_SAI);
+                        if(SO_LAN_SAI >= 5){
+                            const huyotp = await XacThucModel.Huy_otp(email);
+                             if(!huyotp){
+                                throw new Error('Lỗi hệ thống!');
+                            }
+                        }
+                        const SoSanh_MatKhau = await compare(value, kiemtra.MA_OTP);
+                        if(!SoSanh_MatKhau){
+                            const tang = await XacThucModel.Tang_sai(email);
+                            if(!tang){
+                                 throw new Error('Lỗi hệ thống, Vui lòng thực hiện sau!');
+                            }
+                             throw new Error('Mã otp sai, Vui lòng nhập lại!');
+                        }   
+                        return true;
+                    })
                     .run(req)
             ]).then(() => {
                 const errors = validationResult(req);
@@ -109,7 +138,6 @@ export default class CanhanADController{
                     message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
                 });
             });
-       
     }
     static async DangNhap_NguoiDung(req, res) {
         Promise.all([
@@ -590,8 +618,6 @@ export default class CanhanADController{
                         await XacThucModel.Huy_otp(email);
                         throw new Error('Mã OTP đã bị hủy do nhập sai quá 5 lần. Vui lòng lấy mã mới!');
                     }
-
-                    // 3. So sánh mã OTP
                     const SoSanh_MatKhau = await compare(value, kiemtra.MA_OTP);
                     if (!SoSanh_MatKhau) {
                         // Tăng số lần sai trong DB

@@ -19,13 +19,15 @@ NguoiDungRoute.get('/kiemtra',authMiddleware, CanhanADController.KiemTraDangNhap
 NguoiDungRoute.post('/ChinhSuaTenNguoiDung',upload.none(), authMiddleware, CanhanADController.ChinhSuaTen_NguoiDung);
 NguoiDungRoute.post('/ChinhSuaAnhNguoiDung',createUpload('AnhDaiDien').any(), authMiddleware, CanhanADController.ChinhSuaAnhNguoiDung);
 NguoiDungRoute.post('/XacThuc_email',upload.none(), authMiddleware,XacThucOTPController.XacThucEmail);
+NguoiDungRoute.post('/xacThuc_email_DangKy',upload.none(), XacThucOTPController.XacThucEmail);
 NguoiDungRoute.post('/ChinhSuaEmailNguoiDung',upload.none(), authMiddleware, CanhanADController.ChinhSuaEmailNguoiDung);
 NguoiDungRoute.post('/huy_otp', upload.none(),authMiddleware, XacThucOTPController.huy_otp);
 NguoiDungRoute.post('/ChinhSuaSdtNguoiDung', upload.none(), authMiddleware, CanhanADController.ChinhSuaSdtNguoiDung );
 NguoiDungRoute.post('/DoiMatKhau', upload.none(), authMiddleware, CanhanADController.DoiMatKhau_NguoiDung);
 NguoiDungRoute.post('/DatLaiMatKhau', upload.none(), CanhanADController.DatLaiMatKhau_NguoiDung);
-//Chưa xử lí bên dưới
 NguoiDungRoute.post('/DangKy', upload.none(), CanhanADController.DangKy_NguoiDung);
+//Chưa xử lí bên dưới
+
 
 NguoiDungRoute.post('/ChinhSuaDiaChi',upload.none(), CanhanADController.ChinhSuaDiaChi_NguoiDung);
 // xử lí sản phẩm thuộc người dùng

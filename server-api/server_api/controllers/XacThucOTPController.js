@@ -22,28 +22,26 @@ export default class XacThucOTPController{
                 .withMessage('Vượt quá kí tự quy định!')
                 .run(req),
             ]);
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.json({
-                Validate: true,                
-                errors: errors.array() 
-            });
-        }
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    Validate: true,                
+                    errors: errors.array() 
+                });
+            }
             const kiemtra = await adminModel.kiemtra_email(email.email);
-            if(TrangThai===1){
-                if(kiemtra){
-                    return res.json({
-                        ThanhCong:false,
-                        message:'email đã tồn tại!'
-                    })
-                }
-            }else{
-                if(!kiemtra){
-                    return res.json({
-                        ThanhCong:false,
-                        message:'Email không tồn tại!'
-                    })
-                }
+            const trangThaiNum = Number(TrangThai);
+            if (trangThaiNum === 1 && kiemtra) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Email đã tồn tại!'
+                });
+            }
+            if (trangThaiNum === 2 && !kiemtra) {
+                return res.json({
+                    ThanhCong: false,
+                    message: 'Email không tồn tại!'
+                });
             }
             const kiemtra2= await XacThucModel.kiemtra_email(email.email);
             if(kiemtra2){
@@ -53,7 +51,8 @@ export default class XacThucOTPController{
                 })
             }
             const them = await XacThucModel.themotp(email.email);
-            if(them){
+            console.log('them otp result:', them);
+            if(them.ThanhCong){
                 return res.json({
                     ThanhCong:true,
                     message:'Vui lòng kiểm tra lại mã otp'
@@ -61,7 +60,7 @@ export default class XacThucOTPController{
             }else{
                 return res.json({
                     ThanhCong:false,
-                    message:'Vui lòng kiểm tra lại thông tin!'
+                    message: them.message || 'Có lỗi xảy ra khi gửi mã OTP. Vui lòng thử lại!'
                 })
             }
         } catch (error) {
@@ -71,7 +70,6 @@ export default class XacThucOTPController{
                 message:'Lỗi khi truy vấn dữ liệu!'
             })
         }
-
     }
     static async huy_otp(req,res){
         const email = req.body.email;
@@ -82,14 +80,14 @@ export default class XacThucOTPController{
                     message:'Vui lòng kiểm tra lại thông tin!'
                 })
             }
-            const kiemtra = XacThucModel.kiemtra_email(email);
+            const kiemtra = await XacThucModel.kiemtra_email(email);
             if(!kiemtra){
                 return res.json({
                     ThanhCong:false,
                     message:'Email này không tồn tại mã xác thực!'
                 })
             }
-            const huyotp = XacThucModel.Huy_otp(email);
+            const huyotp = await XacThucModel.Huy_otp(email);
             if(!huyotp){
                 return res.json({
                     ThanhCong:false,

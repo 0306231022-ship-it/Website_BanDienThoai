@@ -30,6 +30,7 @@ import ChinhSuaSoDienThoai from "../JSX/ThanhPhan/MoDAL/CapNhatSDT";
 import DoiMatKhau from "../JSX/ThanhPhan/MoDAL/DoiMatKhau";
 import QuenMatKhau from "../JSX/ThanhPhan/MoDAL/QuenMatKhau";
 import ChinhSuaLinkIns from "../JSX/ThanhPhan/Admin/CaiDatWebsite/modal/ChinhSuaLinkIns";
+import XacThucOTP from "../JSX/ThanhPhan/MoDAL/OTP";
 
 const MoDalContext = createContext();
 
@@ -64,7 +65,8 @@ const MODAL_REGISTRY = {
     'ChinhSuaSDT': ChinhSuaSoDienThoai,
     'DoiMatKhau' : DoiMatKhau,
     'QuenMatKhau': QuenMatKhau,
-    'SuaLinkInstagram': ChinhSuaLinkIns
+    'SuaLinkInstagram': ChinhSuaLinkIns,
+    'XacThucOTP': XacThucOTP
 };
 
 export function AppMDProvider({ children }) {

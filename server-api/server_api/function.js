@@ -1,5 +1,4 @@
-import { randomUUID, randomBytes } from 'crypto';
-import { hash, compare } from 'bcrypt';
+import { randomBytes } from 'crypto';
 import jwt from 'jsonwebtoken';
 import NodeGeocoder from 'node-geocoder';
 import fs from 'fs';
@@ -9,12 +8,12 @@ const options = {
   provider: 'openstreetmap',
 };
 
-const geocoder = NodeGeocoder(options);
+
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
 const PASSWORD_HASH_ROUNDS = parseInt(process.env.PASSWORD_HASH_ROUNDS) || 10;
-
+ 
 export const generateToken = (user) => {
     return jwt.sign(
         { id: user.IDND },
@@ -128,24 +127,31 @@ export const xoaFileCu = (duongDanTuDatabase) => {
     }
 };
 // ==================== CẤU HÌNH ĐỒNG BỘ TẠI ĐÂY ====================
-const EMAIL_HE_THONG = 'dc01.nnh.2048ae@gmail.com'; 
-const MAT_KHAU_UNG_DUNG = 'rusn pjlj rwhp xunn';
-
+const EMAIL_HE_THONG = process.env.EMAIL_HE_THONG;
+const MAT_KHAU_UNG_DUNG = process.env.MAT_KHAU_UNG_DUNG;
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
-    user: EMAIL_HE_THONG, // Đăng nhập bằng Gmail cá nhân
+    user: EMAIL_HE_THONG,
     pass: MAT_KHAU_UNG_DUNG 
   }
 });
-
 export const taoMaOTP = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
-
 export const guiEmailOTP = async (emailNguoiNhan, maOTP) => {
+  const cleanEmail = typeof emailNguoiNhan === 'string' ? emailNguoiNhan.trim().toUpperCase() : '';
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+    return {
+      ThanhCong: false,
+      maLoi: "INVALID_EMAIL",
+      chiTietLoi: "Địa chỉ email không hợp lệ"
+    };
+  }
   const mailOptions = {
-    // Đảm bảo phần email trong dấu <> khớp 100% với user đăng nhập ở trên
     from: `"Hệ Thống Xác Thực" <${EMAIL_HE_THONG}>`,
     to: emailNguoiNhan,                                     
     subject: 'Mã xác thực OTP của bạn',
@@ -161,16 +167,67 @@ export const guiEmailOTP = async (emailNguoiNhan, maOTP) => {
       </div>
     `
   };
-
   try {
     const info = await transporter.sendMail(mailOptions);
+    console.log(`📧 Email OTP đã được gửi đến: ${emailNguoiNhan}, Message ID: ${info.messageId}`);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    if(ìnfo.rejected.length > 0) {
+      return {
+        ThanhCong: false,
+        maLoi: "EMAIL_REJECTED",
+        chiTietLoi: `Email bị từ chối gửi đến: ${info.rejected.join(', ')}`
+      };
+    }
     return { 
       ThanhCong: true, 
-      messageId: info.messageId 
+      message: 'Mã OTP đã được gửi thành công. Vui lòng kiểm tra email của bạn!' 
     };
-
-  } catch (error) {
-    console.error("Gửi mail thất bại lỗi là:", error.message);
-    return { ThanhCong: false, error: error.message };
+  }catch (error) {
+    console.error('Lỗi khi gửi email OTP:', error);
+    switch (error.code) {
+      case 'EAUTH':
+      case 'SMTP_AUTH_ERROR':
+        return {
+          ThanhCong: false,
+          maLoi: "SMTP_AUTH_ERROR",
+          chiTietLoi: "Lỗi xác thực SMTP. Vui lòng kiểm tra lại thông tin đăng nhập email của hệ thống!"
+        };
+      case 'ETIMEDOUT':
+        return {
+          ThanhCong: false,
+          maLoi: "ETIMEDOUT",
+          chiTietLoi: "Kết nối đến máy chủ SMTP bị hết thời gian chờ. Vui lòng kiểm tra kết nối mạng hoặc cấu hình máy chủ SMTP!"
+        };
+      case 'SMTP_CONNECTION_ERROR':
+        return {
+          ThanhCong: false,
+          maLoi: "SMTP_CONNECTION_ERROR",
+          chiTietLoi: "Lỗi kết nối đến máy chủ SMTP. Vui lòng kiểm tra lại kết nối mạng hoặc cấu hình máy chủ SMTP!"
+        };
+      case 'EENVELOPE':
+        return {
+          ThanhCong: false,
+          maLoi: "EENVELOPE",
+          chiTietLoi: "Lỗi phong bì email. Vui lòng kiểm tra lại địa chỉ email người nhận!"
+        };
+      case 'EMAIL_REJECTED':
+        return {
+          ThanhCong: false,
+          maLoi: "EMAIL_REJECTED",
+          chiTietLoi: "Máy chủ SMTP từ chối gửi email. Vui lòng kiểm tra lại địa chỉ email người nhận!"
+        };
+      case 'NO_RECIPIENT_ACCEPTED':
+        return {
+          ThanhCong: false,
+          maLoi: "NO_RECIPIENT_ACCEPTED",
+          chiTietLoi: "Không có địa chỉ email nào được chấp nhận gửi. Vui lòng kiểm tra lại địa chỉ email người nhận!"
+        };
+      case 'SMTP_TIMEOUT':
+        return {
+          ThanhCong: false,
+          maLoi: "SMTP_TIMEOUT",
+          chiTietLoi: "Kết nối đến máy chủ SMTP bị hết thời gian chờ. Vui lòng kiểm tra kết nối mạng hoặc cấu hình máy chủ SMTP!"
+        };
+      }
   }
 };

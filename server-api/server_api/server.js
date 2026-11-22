@@ -1,5 +1,5 @@
 // server.js
-import 'dotenv/config.js';
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -66,7 +66,6 @@ const io = new Server(server, {
 // Lắng nghe kết nối socket
 io.on("connection", (socket) => {
   console.log("Client đã kết nối:", socket.id);
-
   // Cho phép client join room theo userId
   socket.on("join-room", (userId) => {
     socket.join(userId.toString());

@@ -127,8 +127,6 @@ export default class adminModel{
             return false;
         }
     }
-
-    //chưa sửa bên dưới
     static async DangKy_NguoiDung(Data){
         try {
             const [insert] = await execute(`
@@ -141,6 +139,7 @@ export default class adminModel{
             return false;
         }
     }
+    //chưa sửa bên dưới
     static async LayDiaChiMacDinh(IDND){
         try {
             const [ketqua] = await execute(`

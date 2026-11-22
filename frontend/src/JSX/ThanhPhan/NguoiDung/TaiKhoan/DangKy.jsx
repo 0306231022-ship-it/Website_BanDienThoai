@@ -43,10 +43,8 @@ function DangKy() {
             return;
         }
         try {
-            const formdata= fun.objectToFormData(formData);
-            const ketqua = await API.CallAPI(formdata, {url :'/NguoiDung/DangKy', PhuongThuc:1});
-            //alert(JSON.stringify(ketqua));
-            //{"validation":true,"errors":[{"type":"field","value":"","msg":"Mật khẩu không được bỏ trống!","path":"password","location":"body"},{"type":"field","value":"","msg":"Tên không được bỏ trống!","path":"name","location":"body"},{"type":"field","value":"","msg":"Số điện thoại không được bỏ trống!","path":"phone","location":"body"},{"type":"field","value":"","msg":"Email không được bỏ trống!","path":"email","location":"body"},{"type":"field","value":"","msg":"Email không hợp lệ!","path":"email","location":"body"},{"type":"field","value":"","msg":"Mật khẩu xác nhận không được bỏ trống!","path":"confirm_password","location":"body"}]}
+            const ketqua = await API.CallAPI(fun.objectToFormData({email: formData.email, TrangThai:1}), {url :'/NguoiDung/xacThuc_email_DangKy', PhuongThuc:1});
+            alert(JSON.stringify(ketqua))
             if(ketqua.validation){
                 const newErr = {};
                 ketqua.errors.forEach(error => {
@@ -56,8 +54,8 @@ function DangKy() {
                 return;
             }
             if(ketqua.ThanhCong){
-                ThongBao.ThongBao_ThanhCong(ketqua.message);
-                ChuyenTab();
+                ThongBao.ThongBao_ThanhCong('Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.');
+                OpenMoDal(formData, { TenTrang: 'XacThucOTP', TieuDe: 'Xác Thực OTP'});
             }else{
                 ThongBao.ThongBao_Loi(ketqua.message);
             }
