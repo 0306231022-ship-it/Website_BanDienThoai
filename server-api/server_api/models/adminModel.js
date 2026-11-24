@@ -133,7 +133,7 @@ export default class adminModel{
                 INSERT INTO nguoidung (IDND, HOTEN, SDT, EMAIL, MATKHAU, NGAYTHAMGIA, TRANGTHAI ,LOAIND) 
                 VALUES (?, ?, ?, ?, ?, NOW(), 1, 0)
             `, [TaoID('ND'), Data.name, Data.phone, Data.email, Data.password]);
-            return insert.affectedRows > 0 ? true : false;
+            return insert.affectedRows > 0;
         } catch (error) {
             console.error('Lỗi trong quá trình đăng ký:', error);
             return false;

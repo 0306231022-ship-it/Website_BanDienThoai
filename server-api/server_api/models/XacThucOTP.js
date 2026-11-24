@@ -4,7 +4,6 @@ import pkg from 'bcrypt';
 const { hash } = pkg;
 
 export default class XacThucModel {
-
     static async kiemtra_email(email) {
         try {
             const [rows] = await execute(`
@@ -14,15 +13,12 @@ export default class XacThucModel {
                 ORDER BY NGAY_TAO DESC 
                 LIMIT 1
             `, [email]);
-
             return rows.length > 0 ? rows[0] : false;
         } catch (error) {
             console.error('Lỗi trong kiemtra_email:', error);
             return false;
         }
     }
-
-  
     static async themotp(email) {
         console.log('them otp:', email)
         try {
@@ -47,20 +43,26 @@ export default class XacThucModel {
                     message: thongBaoLoi
                 };
             }
-
+            const kiemtra = await this.kiemtra_email(email);
+            if (kiemtra) {
+                return {
+                    ThanhCong: false,
+                    message: 'Đã tồn tại mã OTP chưa hết hạn cho email này. Vui lòng kiểm tra email hoặc thử lại sau!'
+                };
+            }
             const mahash = await hash(maotp, 10);
-
-            await execute('DELETE FROM xacthucotp WHERE EMAIL = ?', [email]);
-
             const [result] = await execute(`
                 INSERT INTO xacthucotp(ID_OTP, MA_OTP, EMAIL, NGAY_TAO, NGAY_KET_THUC, SO_LAN_SAI)
                 VALUES(?, ?, ?, NOW(), DATE_ADD(NOW(), INTERVAL 5 MINUTE), 0)
             `, [TaoID('OTP'), mahash, email]);
             return result?.affectedRows > 0 ? { ThanhCong: true, message: 'Mã OTP đã được gửi thành công. Vui lòng kiểm tra email của bạn!' } 
-                    : { ThanhCong: false, message: 'Không thể lưu mã OTP vào cơ sở dữ liệu. Vui lòng thử lại!' };
+                                            : { ThanhCong: false, message: 'Không thể lưu mã OTP vào cơ sở dữ liệu. Vui lòng thử lại!' };
         } catch (error) {
             console.error('Lỗi trong themotp:', error);
-            return { ThanhCong: false, message: 'Có lỗi xảy ra khi gửi mã OTP. Vui lòng thử lại!' };
+            return { 
+                ThanhCong: false, 
+                message: 'Có lỗi xảy ra khi gửi mã OTP. Vui lòng thử lại!' 
+            };
         }
     }
     static async Tang_sai(email) {

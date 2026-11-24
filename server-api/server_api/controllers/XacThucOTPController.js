@@ -2,16 +2,12 @@ import { body, validationResult } from 'express-validator';
 import adminModel from '../models/adminModel.js';
 import XacThucModel from '../models/XacThucOTP.js';
 export default class XacThucOTPController{
+
+    //kiểm tra tính hợp lệ của email và gửi mã OTP
     static async XacThucEmail(req,res){
         const email = req.body;
         const TrangThai = req.body.TrangThai;
         try {
-            if(!email.email){
-                return res.json({
-                    ThanhCong:false,
-                    message:'Vui lòng kiểm tra lại dữ liệu'
-                })
-            }
             await Promise.all([
                  body('email')
                 .notEmpty()
@@ -55,7 +51,7 @@ export default class XacThucOTPController{
             if(them.ThanhCong){
                 return res.json({
                     ThanhCong:true,
-                    message:'Vui lòng kiểm tra lại mã otp'
+                    message: them.message || 'Mã OTP đã được gửi thành công. Vui lòng kiểm tra email của bạn!'
                 })
             }else{
                 return res.json({

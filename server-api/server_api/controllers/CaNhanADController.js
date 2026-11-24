@@ -8,136 +8,85 @@ import { xoaFileCu } from '../function.js';
 import XacThucModel from '../models/XacThucOTP.js';
 export default class CanhanADController{
     static async DangKy_NguoiDung(req, res) {
-        const dulieu = req.body;
-            Promise.all([
-                body('email')
-                    .notEmpty()
-                    .withMessage('Email không được bỏ trống!')
-                    .isEmail()
-                    .withMessage('Email không hợp lệ!')
-                    .isLength({ max: 225 })
-                    .custom(async (value) => {
-                        const existingUser = await adminModel.LayTT_Email(value);
-                        if (existingUser) {
-                            throw new Error('Email đã tồn tại!');
+        try {
+            const dulieu = req.body;
+        await Promise.all([
+            body('email')
+                .notEmpty()
+                .withMessage('Email không được bỏ trống!')
+                .isEmail()
+                .withMessage('Email không hợp lệ!')
+                .isLength({ max: 255 })
+                .withMessage('Vượt quá kí tự quy định!')
+                .replace(/\s+/g, '') // Loại bỏ khoảng trắng
+                .run(req),
+            body('otp')
+                .notEmpty()
+                .withMessage('Mã OTP không được bỏ trống!')
+                .isLength({ max: 6 })
+                .withMessage('Mã OTP vượt quá ký tự cho phép!')
+                .custom(async (value) => {
+                    const email = req.body.email;
+                    const kiemtra = await XacThucModel.kiemtra_email(email);
+                    if(!kiemtra){
+                        throw new Error('Không tồn tại mã otp trên hệ thống!');
+                    }
+                    const SO_LAN_SAI = parseInt(kiemtra.SO_LAN_SAI);
+                    if(SO_LAN_SAI >= 5){
+                        const huyotp = await XacThucModel.Huy_otp(email);
+                        if(!huyotp){
+                            throw new Error('Lỗi hệ thống!');
                         }
-                    })
-                    .run(req),
-                body('password')
-                    .notEmpty()
-                    .withMessage('Mật khẩu không được bỏ trống!')
-                    .isLength({ max: 225 })
-                    .withMessage('Mật khẩu vượt quá ký tự cho phép!')
-                    .isLength({ min: 6 })
-                    .withMessage('Mật khẩu phải có ít nhất 6 ký tự!')
-                    .run(req),
-                body('name')
-                    .notEmpty()
-                    .withMessage('Tên không được bỏ trống!')
-                    .isLength({ max: 255 })
-                    .withMessage('Tên vượt quá ký tự cho phép!')
-                    .run(req),
-                body('phone')
-                    .notEmpty()
-                    .withMessage('Số điện thoại không được bỏ trống!')
-                    .isLength({ max: 10 })
-                    .withMessage('Số điện thoại vượt quá ký tự cho phép!')
-                    .run(req),
-                body('confirm_password')
-                    .notEmpty()
-                    .withMessage('Mật khẩu xác nhận không được bỏ trống!')
-                    .isLength({ max: 225 })
-                    .withMessage('Mật khẩu xác nhận vượt quá ký tự cho phép!')
-                    .custom((value, { req }) => {
-                        if (value !== req.body.password) {
-                            throw new Error('Mật khẩu xác nhận không khớp!');
+                    }
+                    const SoSanh_MatKhau = await compare(value, kiemtra.MA_OTP);
+                    if(!SoSanh_MatKhau){
+                        const tang = await XacThucModel.Tang_sai(email);
+                        if(!tang){
+                            throw new Error('Lỗi hệ thống, Vui lòng thực hiện sau!');
                         }
-                        return true;
-                    })
-                    .run(req),
-                body('otp')
-                    .notEmpty()
-                    .withMessage('Mã OTP không được bỏ trống!')
-                    .isLength({ max: 6 })
-                    .withMessage('Mã OTP vượt quá ký tự cho phép!')
-                    .custom(async (value) => {
-                        const email = req.body.email;
-                        const kiemtra = await XacThucModel.kiemtra_email(email);
-                        if(!kiemtra){
-                            throw new Error('Không tồn tại mã otp trên hệ thống!');
-                        }
-                        const SO_LAN_SAI = parseInt(kiemtra.SO_LAN_SAI);
-                        if(SO_LAN_SAI >= 5){
-                            const huyotp = await XacThucModel.Huy_otp(email);
-                             if(!huyotp){
-                                throw new Error('Lỗi hệ thống!');
-                            }
-                        }
-                        const SoSanh_MatKhau = await compare(value, kiemtra.MA_OTP);
-                        if(!SoSanh_MatKhau){
-                            const tang = await XacThucModel.Tang_sai(email);
-                            if(!tang){
-                                 throw new Error('Lỗi hệ thống, Vui lòng thực hiện sau!');
-                            }
-                             throw new Error('Mã otp sai, Vui lòng nhập lại!');
-                        }   
-                        return true;
-                    })
-                    .run(req)
-            ]).then(() => {
-                const errors = validationResult(req);
-                if (!errors.isEmpty()) {
-                    return res.json({
-                        validation: true,
-                        errors: errors.array() 
-                    });
-                }
-                if (!dulieu) {
-                    return res.json({ 
-                        ThanhCong: false,
-                        message: 'Vui lòng kiểm tra lại dữ liệu!' 
-                    });
-                }
-                hash(dulieu.password, 10).then(hashedPassword => {
-                    const newUser = {
-                        name: dulieu.name,
-                        email: dulieu.email,
-                        phone: dulieu.phone,
-                        password: hashedPassword
-                    };
-                    adminModel.DangKy_NguoiDung(newUser).then(result => {
-                        if (result) {
-                            return res.json({
-                                ThanhCong: true,
-                                message: 'Bạn đã đăng ký thành công! Vui lòng đăng nhập để tiếp tục.'
-                            });
-                        } else {
-                            return res.json({
-                                ThanhCong : false,
-                                message: 'Đăng ký thất bại, vui lòng thử lại sau!'
-                            });
-                        }
-                    }).catch(err => {
-                        console.error('Lỗi trong quá trình đăng ký:', err);
-                        return res.json({
-                            ThanhCong: false,
-                            message: 'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-                        });
-                    });
-                }).catch(err => {
-                    console.error('Lỗi trong quá trình băm mật khẩu:', err);
-                    return res.json({
-                        ThanhCong: false,
-                        message: 'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-                    });
+                        throw new Error('Mã otp sai, Vui lòng nhập lại!');
+                    }   
+                    return true;
+                })
+                .run(req),
+        ]).then(() => {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return res.json({
+                    Validate: true,
+                    errors: errors.array()
                 });
-            }).catch(err => {
-                console.error('Lỗi trong quá trình xác thực:', err);
+            }
+        })
+        const hashpassword = await hash(dulieu.password, 10);
+        const newUser = {
+            name: dulieu.name,
+            email: dulieu.email,
+            phone: dulieu.phone,
+            password: hashpassword
+        };
+        const them = await adminModel.DangKy_NguoiDung(newUser);
+        if (them) {
+            const huyotp = await XacThucModel.Huy_otp(dulieu.email);
+            if(!huyotp){
                 return res.json({
                     ThanhCong: false,
-                    message:'Không thể kết nối đến hệ thống, Vui lòng thử lại sau!'
-                });
+                    message: 'Lỗi hệ thống khi hủy mã OTP đã thực hiện'
+                })
+            }
+            return res.json({
+                ThanhCong: true,
+                message: 'Bạn đã đăng ký thành công! Vui lòng đăng nhập để tiếp tục'
+            })
+        }
+        }catch (error) {
+            console.error('Lỗi trong quá trình đăng ký người dùng:', error);
+            return res.json({
+                ThanhCong: false,
+                message: 'Có lỗi xảy ra, vui lòng thử lại sau!'
             });
+        }
+       
     }
     static async DangNhap_NguoiDung(req, res) {
         Promise.all([

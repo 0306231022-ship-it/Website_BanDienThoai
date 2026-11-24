@@ -171,7 +171,7 @@ export const guiEmailOTP = async (emailNguoiNhan, maOTP) => {
     const info = await transporter.sendMail(mailOptions);
     console.log(`📧 Email OTP đã được gửi đến: ${emailNguoiNhan}, Message ID: ${info.messageId}`);
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    if(ìnfo.rejected.length > 0) {
+    if(info.rejected.length > 0) {
       return {
         ThanhCong: false,
         maLoi: "EMAIL_REJECTED",
